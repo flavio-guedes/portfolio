@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Flávio Guedes — Portfolio & Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --sidebar-bg: #111;
+    --card-bg: #161616;
+    --card-hover: #1c1c1c;
+    --border: #1e1e1e;
+    --border2: #252525;
+    --green: #b0ff5e;
+    --cyan: #5ef0ff;
+    --orange: #ff7a30;
+    --text: #e8e8e8;
+    --muted: #444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -150px; left: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(176,255,94,0.05) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -80px; right: 100px;
+    width: 700px; height: 450px;
+    background: radial-gradient(circle, rgba(94,240,255,0.04) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid #202020;
+    padding: 32px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 10;
+  }
+
+  .logo-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  /* ── TIPOGRAFIA BOLD: Outfit 800 para o nome ── */
+  .logo-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.0;
+    margin-bottom: 5px;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-line1 {
+    background: linear-gradient(115deg, #5ef0ff 0%, #a8f8ff 60%, #e0fffe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+
+  .logo-line2 {
+    background: linear-gradient(115deg, #b0ff5e 0%, #6fffd4 60%, #5ef0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .tags-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    color: #888;
+    background: #151515;
+    box-shadow: 0 0 0 1px #2a2a2a;
+    transition: box-shadow .2s, color .2s;
+  }
+  .tag:hover { color: var(--green); box-shadow: 0 0 0 1px #b0ff5e44; }
+
+  .filter-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .filter-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .filter-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 9px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    border-left: 2px solid transparent;
+    transition: background .15s;
+  }
+  .filter-item:hover { background: #1a1a1a; }
+  .filter-item.active { background: #1a1a1a; border-left-color: var(--green); color: var(--green); }
+
+  .filter-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  .filter-count {
+    font-size: 10px;
+    background: #1e1e1e;
+    padding: 1px 6px;
+    border-radius: 10px;
+    color: var(--muted);
+  }
+
+  .contact-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .contact-list { display: flex; flex-direction: column; gap: 7px; }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 11.5px;
+    color: #484848;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .contact-item:hover { color: var(--text); }
+
+  .contact-icon {
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    background: #181818;
+    border: 1px solid #222;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .edit-btn {
+    margin-top: auto;
+    padding: 9px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: #555;
+    cursor: pointer;
+    font-size: 11.5px;
+    text-align: center;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .edit-btn:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    padding: 48px 56px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── TIPOGRAFIA BOLD: Outfit 900 para o header ── */
+  .main-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 0.95;
+    margin-bottom: 14px;
+    letter-spacing: -2px;
+    background: linear-gradient(160deg, #d8d8d8 20%, #707070 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .main-title .highlight {
+    background: linear-gradient(130deg, var(--green) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .main-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    font-weight: 300;
+    letter-spacing: 0.2px;
+  }
+
+  .section { margin-bottom: 48px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    position: relative;
+  }
+
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--sec-color, #b0ff5e) 0%, rgba(94,240,255,0.4) 50%, transparent 100%);
+    opacity: 0.35;
+  }
+
+  .section-title-row { display: flex; align-items: center; gap: 9px; }
+
+  .section-dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .section-count {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 13px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color .25s, background .25s, transform .2s, box-shadow .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: #2a2a2a;
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .card:hover::after { opacity: 1; }
+
+  /* Card title — gradient driven by --c1/--c2 set inline */
+  .card-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+  }
+
+  .card-url { font-size: 10.5px; color: #3d3d3d; font-weight: 300; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+
+  /* ── MODALS ── */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.88);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+  }
+  .hidden { display: none !important; }
+
+  .modal {
+    background: #161616;
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 28px;
+    width: 560px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-label { font-size: 10px; color: #555; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  .form-input, .form-select {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 9px 13px;
+    color: var(--text);
+    font-size: 13.5px;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color .2s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--green); }
+  .form-select option { background: #1a1a1a; }
+
+  /* Color picker row */
+  .color-pair {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .color-swatch-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+  .color-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 6px 10px;
+    transition: border-color .2s;
+  }
+  .color-input-row:focus-within { border-color: var(--green); }
+  .color-swatch {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+    background: none;
+  }
+  input[type="color"] { -webkit-appearance: none; appearance: none; }
+  input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
+  .color-hex-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 12.5px;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+  }
+  .color-preview-bar {
+    height: 3px;
+    border-radius: 2px;
+    margin-top: 2px;
+    opacity: 0.6;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: #0e0e0e;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .85; }
+
+  .btn-secondary {
+    background: transparent;
+    color: #555;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+  }
+  .btn-secondary:hover { border-color: var(--text); color: var(--text); }
+
+  .tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border2);
+    font-size: 12.5px;
+    cursor: pointer;
+    color: #555;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+  }
+  .tab.active { border-color: var(--green); color: var(--green); background: rgba(176,255,94,0.05); }
+
+  .admin-section { margin-bottom: 16px; }
+  .admin-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .admin-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 9px 13px;
+    margin-bottom: 7px;
+    gap: 10px;
+  }
+
+  .admin-item-info { flex: 1; min-width: 0; }
+  .admin-item-title { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-item-url { font-size: 10.5px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  /* Color dot in admin list */
+  .admin-color-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid #333;
+  }
+
+  .btn-icon {
+    background: #181818;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #555;
+    transition: all .2s;
+  }
+  .btn-icon:hover { border-color: var(--green); color: var(--green); }
+  .btn-icon.del:hover { border-color: #ff5e5e; color: #ff5e5e; }
+
+  .divider { border-top: 1px solid var(--border2); margin-top: 14px; padding-top: 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 9px; }
+  .grid3 { display: grid; grid-template-columns: 60px 1fr 1fr; gap: 9px; margin-bottom: 9px; }
+  .grid-sec { display: grid; grid-template-columns: 1fr 1fr 60px; gap: 8px; align-items: end; }
+
+  .pw-modal {
+    background: #161616;
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 36px 32px;
+    width: 340px;
+    max-width: 95vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+  }
+  .pw-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+  .pw-sub { font-size: 12.5px; color: #555; }
+  .pw-error { font-size: 11.5px; color: #ff5e5e; }
+
+  @media (max-width: 768px) {
+    body { flex-direction: column; }
+    #sidebar { width: 100%; height: auto; position: static; padding: 24px 18px; }
+    #main { padding: 28px 18px; }
+    .main-title { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div>
+    <div class="logo-label">Portfolio & Links</div>
+    <div class="logo-name">
+      <span class="logo-line1" id="name-line1">Flávio</span>
+      <span class="logo-line2" id="name-line2">Guedes</span>
+    </div>
+    <div class="logo-sub" id="sidebar-role">Content Manager & IA</div>
+    <div class="tags-row" id="sidebar-tags"></div>
+  </div>
+  <div>
+    <div class="filter-label">Filtrar</div>
+    <div class="filter-list" id="filter-list"></div>
+  </div>
+  <div>
+    <div class="contact-label">Contato</div>
+    <div class="contact-list" id="contact-list"></div>
+  </div>
+  <button class="edit-btn" onclick="openAuth()">⚙ Editar conteúdo</button>
+</aside>
+
+<main id="main">
+  <h1 class="main-title">Trabalhos &amp; <span class="highlight">Projetos</span></h1>
+  <p class="main-subtitle" id="main-subtitle">Estratégia de conteúdo, IA aplicada e crescimento de marca</p>
+  <div id="sections-container"></div>
+</main>
+
+<!-- AUTH -->
+<div class="overlay hidden" id="auth-overlay">
+  <div class="pw-modal">
+    <div style="font-size:28px">🔒</div>
+    <div class="pw-title">Área restrita</div>
+    <div class="pw-sub">Digite a senha para editar</div>
+    <input class="form-input" type="password" id="pw-input" placeholder="Senha" style="width:100%;text-align:center" onkeydown="if(event.key==='Enter')checkPw()"/>
+    <div class="pw-error hidden" id="pw-error">Senha incorreta.</div>
+    <div style="display:flex;gap:8px;width:100%">
+      <button class="btn-secondary" style="flex:1" onclick="closeAuth()">Cancelar</button>
+      <button class="btn-primary" style="flex:1" onclick="checkPw()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="overlay hidden" id="admin-overlay">
+  <div class="modal" style="width:640px;position:relative">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="modal-title">✏️ Editar conteúdo</div>
+      <button class="btn-secondary" style="padding:5px 12px;font-size:12px" onclick="closeAdmin()">Fechar</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('links')">Links</button>
+      <button class="tab" onclick="switchTab('sections')">Seções</button>
+      <button class="tab" onclick="switchTab('contato')">Contato</button>
+      <button class="tab" onclick="switchTab('perfil')">Perfil</button>
+    </div>
+
+    <!-- LINKS -->
+    <div id="tab-links">
+      <div id="admin-sections-list"></div>
+      <div class="divider">
+        <div class="admin-section-title">Adicionar novo link</div>
+        <div class="grid2">
+          <div class="form-group"><label class="form-label">Título</label><input class="form-input" id="new-title" placeholder="Meu Projeto"/></div>
+          <div class="form-group"><label class="form-label">URL</label><input class="form-input" id="new-url" placeholder="https://..."/></div>
+        </div>
+        <div class="grid2" style="margin-bottom:9px">
+          <div class="form-group"><label class="form-label">Seção</label><select class="form-select" id="new-section"></select></div>
+          <div class="form-group"><label class="form-label">Tags (vírgula)</label><input class="form-input" id="new-tags" placeholder="IA, marketing"/></div>
+        </div>
+
+        <!-- COR TEMA DO PROJETO -->
+        <div class="form-group" style="margin-bottom:12px">
+          <label class="form-label">Cor tema do projeto</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="color-swatch-wrap">
+              <div style="font-size:9px;color:#444;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Cor inicial</div>
+              <div class="color-input-row">
+                <input type="color" class="color-swatch" id="new-color1" value="#b0ff5e" oninput="syncColorHex('new-color1','new-color1-hex');previewGradient()"/>
+                <input class="color-hex-input" id="new-color1-hex" value="#b0ff5e" maxlength="7" oninput="syncColorPicker('new-color1-hex','new-color1');previewGradient()"/>
+              </div>
+              <div class="color-preview-bar" id="preview-bar1" style="background:#b0ff5e"></div>
+            </div>
+            <div class="color-swatch-wrap">
+              <div style="font-size:9px;color:#444;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Cor final</div>
+              <div class="color-input-row">
+                <input type="color" class="color-swatch" id="new-color2" value="#5ef0ff" oninput="syncColorHex('new-color2','new-color2-hex');previewGradient()"/>
+                <input class="color-hex-input" id="new-color2-hex" value="#5ef0ff" maxlength="7" oninput="syncColorPicker('new-color2-hex','new-color2');previewGradient()"/>
+              </div>
+              <div class="color-preview-bar" id="preview-bar2" style="background:#5ef0ff"></div>
+            </div>
+          </div>
+          <div id="gradient-preview" style="height:4px;border-radius:2px;margin-top:6px;background:linear-gradient(115deg,#b0ff5e,#5ef0ff);opacity:0.7"></div>
+          <div style="font-size:10px;color:#444;margin-top:4px">↑ Preview do degradê no título e borda das tags</div>
+        </div>
+
+        <button class="btn-primary" onclick="addLink()">+ Adicionar link</button>
+      </div>
+    </div>
+
+    <!-- SECTIONS -->
+    <div id="tab-sections" class="hidden">
+      <div id="admin-sections-mgmt"></div>
+      <div class="divider">
+        <div class="admin-section-title">Nova seção</div>
+        <div class="grid-sec">
+          <div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="sec-name" placeholder="Portfolio"/></div>
+          <div class="form-group"><label class="form-label">Cor (hex)</label><input class="form-input" id="sec-color" placeholder="#b0ff5e"/></div>
+          <button class="btn-primary" style="height:38px" onclick="addSection()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTATO -->
+    <div id="tab-contato" class="hidden">
+      <div id="admin-contacts-list"></div>
+      <div class="divider">
+        <div class="admin-section-title">Adicionar contato</div>
+        <div class="grid3">
+          <div class="form-group"><label class="form-label">Ícone</label><input class="form-input" id="ct-icon" placeholder="✉"/></div>
+          <div class="form-group"><label class="form-label">Label</label><input class="form-input" id="ct-label" placeholder="email@..."/></div>
+          <div class="form-group"><label class="form-label">Href</label><input class="form-input" id="ct-href" placeholder="mailto:..."/></div>
+        </div>
+        <button class="btn-primary" onclick="addContact()">+ Adicionar</button>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div id="tab-perfil" class="hidden">
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="prof-name"/></div>
+        <div class="form-group"><label class="form-label">Cargo</label><input class="form-input" id="prof-role"/></div>
+        <div class="form-group"><label class="form-label">Tags (vírgula)</label><input class="form-input" id="prof-tags"/></div>
+        <div class="form-group"><label class="form-label">Subtítulo</label><input class="form-input" id="prof-sub"/></div>
+        <div class="form-group"><label class="form-label">Nova senha</label><input class="form-input" type="password" id="prof-pw" placeholder="Deixe em branco p/ manter"/></div>
+        <button class="btn-primary" onclick="saveProfile()">💾 Salvar perfil</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Cor tema padrão ─────────────────────────────────────────────
+const DEFAULT_C1 = '#b0ff5e';
+const DEFAULT_C2 = '#5ef0ff';
+
+const DEFAULT = {
+  password: "flavio2026",
+  profile: {
+    name: "Flávio\nGuedes",
+    role: "Content Manager & IA",
+    tags: ["Content", "IA", "Marketing", "Design"],
+    subtitle: "Estratégia de conteúdo, IA aplicada e crescimento de marca"
+  },
+  sections: [
+    { id: "portfolio", name: "Portfólio", color: "#b0ff5e" },
+    { id: "cases",     name: "Cases",     color: "#ff7a30" }
+  ],
+  links: [
+    { id: 1, section: "portfolio", title: "Content Manager & IA", url: "https://flavio-guedes-portfolio.netlify.app", tags: ["content","IA"], c1: "#b0ff5e", c2: "#5ef0ff" },
+    { id: 2, section: "cases", title: "Agentes de IA p/ Marketing", url: "https://casemarketingflavioguedes.netlify.app", tags: ["IA","marketing","agentes"], c1: "#ff7a30", c2: "#ffcc00" },
+    { id: 3, section: "cases", title: "Sistema de Agentes de IA", url: "https://agentesdemarketing.netlify.app", tags: ["IA","sistema"], c1: "#a78bfa", c2: "#5ef0ff" },
+    { id: 4, section: "cases", title: "Help Automotiva", url: "https://casehelpautomotivaflavioguedes.netlify.app", tags: ["automotivo","conteúdo"], c1: "#ff7a30", c2: "#ff3060" },
+    { id: 5, section: "cases", title: "Estratégia Digital — Dr. Renato Bacher", url: "#", tags: ["saúde","marketing","tráfego"], c1: "#5ef0ff", c2: "#b0ff5e" }
+  ],
+  contacts: [
+    { id: 1, icon: "✉",  label: "flavioguedes@email.com", href: "mailto:flavioguedes@email.com" },
+    { id: 2, icon: "💬", label: "(21) 99971-9474",        href: "https://wa.me/5521999719474" },
+    { id: 3, icon: "in", label: "oflavioguedes",          href: "https://linkedin.com/in/oflavioguedes" },
+    { id: 4, icon: "▶",  label: "oflavioguedes",          href: "#" }
+  ]
+};
+
+function load() {
+  try { return JSON.parse(localStorage.getItem('fgdata')) || JSON.parse(JSON.stringify(DEFAULT)); }
+  catch(e) { return JSON.parse(JSON.stringify(DEFAULT)); }
+}
+function save(d) { localStorage.setItem('fgdata', JSON.stringify(d)); }
+
+let DATA = load();
+let activeFilter = 'all';
+let activeTab = 'links';
+
+// ── Helpers de cor ───────────────────────────────────────────────
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex, 16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+
+function cardTitleStyle(c1, c2) {
+  return `background:linear-gradient(115deg,${c1} 0%,${c2} 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;`;
+}
+
+function cardTagStyle(c1, c2) {
+  return `background:linear-gradient(#141414,#141414) padding-box,linear-gradient(115deg,${c1}55,${c2}55) border-box;border:1px solid transparent;font-size:9.5px;padding:2px 8px;border-radius:20px;color:#6a6a6a;`;
+}
+
+function cardShimmerBg(c1, c2) {
+  return `background:linear-gradient(90deg,transparent,${c1}70,${c2}50,transparent)`;
+}
+
+// ── Render ───────────────────────────────────────────────────────
+function render() {
+  const parts = DATA.profile.name.split('\n');
+  document.getElementById('name-line1').textContent = parts[0] || '';
+  document.getElementById('name-line2').textContent = parts[1] || '';
+  document.getElementById('sidebar-role').textContent = DATA.profile.role;
+  document.getElementById('main-subtitle').textContent = DATA.profile.subtitle;
+
+  document.getElementById('sidebar-tags').innerHTML = DATA.profile.tags
+    .map(t => `<span class="tag">${t}</span>`).join('');
+
+  const countAll = DATA.links.length;
+  document.getElementById('filter-list').innerHTML =
+    `<div class="filter-item ${activeFilter==='all'?'active':''}" onclick="setFilter('all')">
+       <span><span class="filter-dot" style="background:#b0ff5e"></span>Todos</span>
+       <span class="filter-count">${countAll}</span>
+     </div>` +
+    DATA.sections.map(s => {
+      const c = DATA.links.filter(l => l.section === s.id).length;
+      return `<div class="filter-item ${activeFilter===s.id?'active':''}" onclick="setFilter('${s.id}')">
+        <span><span class="filter-dot" style="background:${s.color}"></span>${s.name}</span>
+        <span class="filter-count">${c}</span>
+      </div>`;
+    }).join('');
+
+  document.getElementById('contact-list').innerHTML = DATA.contacts.map(c =>
+    `<a class="contact-item" href="${c.href}" target="_blank">
+       <div class="contact-icon">${c.icon}</div>
+       <span>${c.label}</span>
+     </a>`).join('');
+
+  const filtered = activeFilter === 'all' ? DATA.sections : DATA.sections.filter(s => s.id === activeFilter);
+  document.getElementById('sections-container').innerHTML = filtered.map(sec => {
+    const links = DATA.links.filter(l => l.section === sec.id);
+    if (!links.length) return '';
+    return `<div class="section">
+      <div class="section-header" style="--sec-color:${sec.color}">
+        <div class="section-title-row">
+          <div class="section-dot" style="background:${sec.color};box-shadow:0 0 8px ${sec.color}55"></div>
+          <div class="section-title" style="color:${sec.color}">${sec.name}</div>
+        </div>
+        <div class="section-count">${links.length}</div>
+      </div>
+      <div class="cards-grid">
+        ${links.map(l => {
+          const c1 = l.c1 || DEFAULT_C1;
+          const c2 = l.c2 || DEFAULT_C2;
+          return `<a class="card" href="${l.url}" target="_blank" rel="noopener"
+            onmouseenter="this.querySelector('.card-shimmer').style.opacity='1'"
+            onmouseleave="this.querySelector('.card-shimmer').style.opacity='0'">
+            <div class="card-shimmer" style="position:absolute;top:0;left:0;right:0;height:1px;${cardShimmerBg(c1,c2)};opacity:0;transition:opacity .3s"></div>
+            <div class="card-title" style="${cardTitleStyle(c1,c2)}">${l.title}</div>
+            <div class="card-url">${l.url.replace(/^https?:\/\//,'')}</div>
+            <div class="card-tags">${(l.tags||[]).map(t=>`<span style="${cardTagStyle(c1,c2)}">${t}</span>`).join('')}</div>
+          </a>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(id) { activeFilter = id; render(); }
+
+// ── Color picker sync ────────────────────────────────────────────
+function syncColorHex(pickerId, hexId) {
+  document.getElementById(hexId).value = document.getElementById(pickerId).value;
+}
+function syncColorPicker(hexId, pickerId) {
+  const val = document.getElementById(hexId).value;
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) document.getElementById(pickerId).value = val;
+}
+function previewGradient() {
+  const c1 = document.getElementById('new-color1').value;
+  const c2 = document.getElementById('new-color2').value;
+  document.getElementById('gradient-preview').style.background = `linear-gradient(115deg,${c1},${c2})`;
+  document.getElementById('preview-bar1').style.background = c1;
+  document.getElementById('preview-bar2').style.background = c2;
+}
+
+// ── Auth ─────────────────────────────────────────────────────────
+function openAuth() {
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').classList.add('hidden');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+function closeAuth() { document.getElementById('auth-overlay').classList.add('hidden'); }
+function checkPw() {
+  if (document.getElementById('pw-input').value === DATA.password) {
+    closeAuth(); openAdmin();
+  } else {
+    document.getElementById('pw-error').classList.remove('hidden');
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+// ── Admin ────────────────────────────────────────────────────────
+function openAdmin() { document.getElementById('admin-overlay').classList.remove('hidden'); switchTab('links'); }
+function closeAdmin() { document.getElementById('admin-overlay').classList.add('hidden'); render(); }
+
+function switchTab(t) {
+  activeTab = t;
+  ['links','sections','contato','perfil'].forEach(tab => {
+    document.getElementById(`tab-${tab}`).classList.toggle('hidden', tab !== t);
+  });
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    el.classList.toggle('active', ['links','sections','contato','perfil'][i] === t);
+  });
+  if (t === 'links')    renderAdminLinks();
+  if (t === 'sections') renderAdminSections();
+  if (t === 'contato')  renderAdminContacts();
+  if (t === 'perfil')   renderAdminProfile();
+}
+
+function renderAdminLinks() {
+  document.getElementById('new-section').innerHTML = DATA.sections.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  document.getElementById('admin-sections-list').innerHTML = DATA.sections.map(sec => {
+    const links = DATA.links.filter(l => l.section === sec.id);
+    if (!links.length) return `<div class="admin-section"><div class="admin-section-title" style="color:${sec.color}">${sec.name} <span style="color:#333">(vazio)</span></div></div>`;
+    return `<div class="admin-section">
+      <div class="admin-section-title" style="color:${sec.color}">${sec.name}</div>
+      ${links.map(l => {
+        const c1 = l.c1 || DEFAULT_C1;
+        const c2 = l.c2 || DEFAULT_C2;
+        return `<div class="admin-item">
+          <div style="width:10px;height:10px;border-radius:50%;background:linear-gradient(115deg,${c1},${c2});flex-shrink:0;border:1px solid #333"></div>
+          <div class="admin-item-info">
+            <div class="admin-item-title">${l.title}</div>
+            <div class="admin-item-url">${l.url}</div>
+          </div>
+          <div class="admin-item-actions">
+            <button class="btn-icon" onclick="editLink(${l.id})">✏️</button>
+            <button class="btn-icon del" onclick="deleteLink(${l.id})">🗑</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+function addLink() {
+  const title = document.getElementById('new-title').value.trim();
+  const url   = document.getElementById('new-url').value.trim();
+  const sec   = document.getElementById('new-section').value;
+  const tags  = document.getElementById('new-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const c1    = document.getElementById('new-color1').value || DEFAULT_C1;
+  const c2    = document.getElementById('new-color2').value || DEFAULT_C2;
+  if (!title || !url) return alert('Preencha título e URL.');
+  DATA.links.push({ id: Date.now(), section: sec, title, url, tags, c1, c2 });
+  save(DATA);
+  document.getElementById('new-title').value = '';
+  document.getElementById('new-url').value = '';
+  document.getElementById('new-tags').value = '';
+  document.getElementById('new-color1').value = DEFAULT_C1;
+  document.getElementById('new-color1-hex').value = DEFAULT_C1;
+  document.getElementById('new-color2').value = DEFAULT_C2;
+  document.getElementById('new-color2-hex').value = DEFAULT_C2;
+  previewGradient();
+  renderAdminLinks();
+}
+
+function deleteLink(id) {
+  if (!confirm('Remover este link?')) return;
+  DATA.links = DATA.links.filter(l => l.id !== id);
+  save(DATA); renderAdminLinks();
+}
+
+function editLink(id) {
+  const l = DATA.links.find(x => x.id === id); if (!l) return;
+  const t  = prompt('Título:', l.title); if (t === null) return;
+  const u  = prompt('URL:', l.url); if (u === null) return;
+  const tg = prompt('Tags (vírgula):', (l.tags||[]).join(', ')); if (tg === null) return;
+  const c1 = prompt('Cor inicial (hex):', l.c1 || DEFAULT_C1); if (c1 === null) return;
+  const c2 = prompt('Cor final (hex):', l.c2 || DEFAULT_C2); if (c2 === null) return;
+  l.title = t.trim(); l.url = u.trim();
+  l.tags = tg.split(',').map(t=>t.trim()).filter(Boolean);
+  l.c1 = c1.trim() || DEFAULT_C1;
+  l.c2 = c2.trim() || DEFAULT_C2;
+  save(DATA); renderAdminLinks();
+}
+
+function renderAdminSections() {
+  document.getElementById('admin-sections-mgmt').innerHTML = DATA.sections.map(s => `
+    <div class="admin-item">
+      <div style="display:flex;align-items:center;gap:10px;flex:1">
+        <div style="width:11px;height:11px;border-radius:50%;background:${s.color};flex-shrink:0"></div>
+        <div class="admin-item-title">${s.name}</div>
+      </div>
+      <button class="btn-icon del" onclick="deleteSection('${s.id}')">🗑</button>
+    </div>`).join('');
+}
+
+function addSection() {
+  const name  = document.getElementById('sec-name').value.trim();
+  const color = document.getElementById('sec-color').value.trim() || '#b0ff5e';
+  if (!name) return alert('Informe o nome.');
+  const id = name.toLowerCase().replace(/\s+/g,'-');
+  if (DATA.sections.find(s => s.id === id)) return alert('Seção já existe.');
+  DATA.sections.push({ id, name, color });
+  save(DATA);
+  document.getElementById('sec-name').value = '';
+  document.getElementById('sec-color').value = '';
+  renderAdminSections();
+}
+
+function deleteSection(id) {
+  const count = DATA.links.filter(l => l.section === id).length;
+  if (count && !confirm(`Esta seção tem ${count} link(s). Remover tudo?`)) return;
+  DATA.sections = DATA.sections.filter(s => s.id !== id);
+  DATA.links     = DATA.links.filter(l => l.section !== id);
+  save(DATA); renderAdminSections();
+}
+
+function renderAdminContacts() {
+  document.getElementById('admin-contacts-list').innerHTML = DATA.contacts.map(c => `
+    <div class="admin-item">
+      <div style="display:flex;align-items:center;gap:9px;flex:1;min-width:0">
+        <div class="contact-icon">${c.icon}</div>
+        <div style="min-width:0">
+          <div class="admin-item-title">${c.label}</div>
+          <div class="admin-item-url">${c.href}</div>
+        </div>
+      </div>
+      <button class="btn-icon del" onclick="deleteContact(${c.id})">🗑</button>
+    </div>`).join('');
+}
+
+function addContact() {
+  const icon  = document.getElementById('ct-icon').value.trim();
+  const label = document.getElementById('ct-label').value.trim();
+  const href  = document.getElementById('ct-href').value.trim();
+  if (!label) return alert('Informe o label.');
+  DATA.contacts.push({ id: Date.now(), icon, label, href: href || '#' });
+  save(DATA);
+  document.getElementById('ct-icon').value = '';
+  document.getElementById('ct-label').value = '';
+  document.getElementById('ct-href').value = '';
+  renderAdminContacts();
+}
+
+function deleteContact(id) {
+  DATA.contacts = DATA.contacts.filter(c => c.id !== id);
+  save(DATA); renderAdminContacts();
+}
+
+function renderAdminProfile() {
+  document.getElementById('prof-name').value = DATA.profile.name;
+  document.getElementById('prof-role').value = DATA.profile.role;
+  document.getElementById('prof-tags').value = DATA.profile.tags.join(', ');
+  document.getElementById('prof-sub').value  = DATA.profile.subtitle;
+  document.getElementById('prof-pw').value   = '';
+}
+
+function saveProfile() {
+  DATA.profile.name     = document.getElementById('prof-name').value.trim();
+  DATA.profile.role     = document.getElementById('prof-role').value.trim();
+  DATA.profile.tags     = document.getElementById('prof-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  DATA.profile.subtitle = document.getElementById('prof-sub').value.trim();
+  const pw = document.getElementById('prof-pw').value;
+  if (pw.trim()) DATA.password = pw.trim();
+  save(DATA); alert('Perfil salvo! ✅');
+}
+
+render();
+</script>
+</body>
+</html>

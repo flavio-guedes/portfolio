@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flávio Guedes — BDR Sênior</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --ink:   #0f0f0f;
+  --paper: #faf8f4;
+  --warm:  #f0ebe0;
+  --line:  #e0d9cc;
+  --gold:  #c8a84b;
+  --gold2: #e8c97a;
+  --rust:  #c4522a;
+  --teal:  #1a6b6b;
+  --muted: #7a7060;
+  --r: 10px;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans:  'Figtree', system-ui, sans-serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NOISE TEXTURE ── */
+body::after {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top:0; z-index:100;
+  background: rgba(250,248,244,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 0 5vw;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 18px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--gold); }
+
+.nav-links {
+  display: flex; gap: 28px; list-style:none;
+}
+.nav-links a {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--ink);
+  color: var(--paper) !important;
+  padding: 8px 18px;
+  border-radius: 40px;
+}
+.nav-cta:hover { background: var(--gold) !important; color: var(--ink) !important; }
+
+.hamburger {
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:4px;
+}
+.hamburger span {
+  display:block;
+  width:22px;
+  height:2px;
+  background:var(--ink);
+  transition: all .3s;
+  border-radius:2px;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 92vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 80px 5vw 60px;
+  gap: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content:'';
+  position:absolute;
+  top:-120px; right:-120px;
+  width:600px; height:600px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(200,168,75,.12) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.hero-eyebrow::before {
+  content:'';
+  display:block;
+  width:28px; height:1px;
+  background:var(--gold);
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(42px, 5.5vw, 76px);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 440px;
+  margin-bottom: 36px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap:wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .25s;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-primary:hover { background: var(--gold); color: var(--ink); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+}
+.btn-outline:hover { border-color: var(--ink); }
+
+/* hero right */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform .2s, box-shadow .2s;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,.07);
+}
+
+.stat-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 20px;
+  flex-shrink:0;
+}
+.ic-gold { background: rgba(200,168,75,.12); }
+.ic-teal { background: rgba(26,107,107,.1); }
+.ic-rust { background: rgba(196,82,42,.1); }
+
+.stat-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--ink);
+}
+.stat-lbl { font-size: 12px; color: var(--muted); margin-top:2px; }
+
+/* ── SECTION COMMON ── */
+section { padding: 80px 5vw; }
+
+.section-header {
+  display:flex; align-items:baseline; gap:16px;
+  margin-bottom: 48px;
+}
+.section-num {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--gold);
+  font-style: italic;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 400;
+  letter-spacing: -.01em;
+}
+.section-line {
+  flex:1; height:1px;
+  background: var(--line);
+  margin-left:16px;
+}
+
+/* ── PROPOSTA DE VALOR ── */
+.valor-section { background: var(--ink); color: var(--paper); }
+.valor-section .section-title { color: var(--paper); }
+.valor-section .section-num { color: var(--gold); }
+.valor-section .section-line { background: rgba(255,255,255,.15); }
+
+.valor-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.valor-quote {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.5vw, 30px);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--paper);
+}
+.valor-quote em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.valor-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.valor-pill {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r);
+  background: rgba(255,255,255,.04);
+  transition: background .2s;
+}
+.valor-pill:hover { background: rgba(200,168,75,.1); border-color: rgba(200,168,75,.3); }
+.valor-pill-icon { font-size: 20px; }
+.valor-pill-text { font-size: 13px; color: rgba(255,255,255,.75); line-height:1.4; }
+.valor-pill-text strong { color: var(--paper); display:block; font-size:14px; }
+
+/* ── EXPERIÊNCIA ── */
+.exp-list { display:flex; flex-direction:column; gap:2px; }
+
+.exp-item {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: white;
+  transition: box-shadow .2s;
+}
+.exp-item:hover { box-shadow: 0 4px 24px rgba(0,0,0,.06); }
+
+.exp-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select:none;
+}
+
+.exp-num {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style:italic;
+  color: var(--gold);
+  width: 24px;
+}
+
+.exp-meta { display:flex; flex-direction:column; gap:3px; }
+.exp-role {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight:400;
+}
+.exp-company { font-size: 12px; color: var(--muted); }
+
+.exp-right {
+  display:flex; align-items:center; gap:12px;
+}
+.exp-period {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing:.04em;
+  color: var(--muted);
+  white-space:nowrap;
+}
+.exp-toggle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+  color: var(--muted);
+  transition: all .25s;
+  flex-shrink:0;
+}
+.exp-item.open .exp-toggle { transform:rotate(45deg); background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+.exp-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s ease, padding .3s;
+}
+.exp-body-inner {
+  padding: 0 24px 24px;
+  padding-left: 64px;
+}
+.exp-item.open .exp-body { max-height: 600px; }
+
+.exp-desc { font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:14px; }
+
+.exp-tags { display:flex; flex-wrap:wrap; gap:6px; }
+.exp-tag {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing:.06em;
+  text-transform: uppercase;
+}
+.tag-gold { background:rgba(200,168,75,.12); color: #8a6820; border:1px solid rgba(200,168,75,.3); }
+.tag-teal { background:rgba(26,107,107,.1); color: var(--teal); border:1px solid rgba(26,107,107,.25); }
+.tag-rust { background:rgba(196,82,42,.1); color: var(--rust); border:1px solid rgba(196,82,42,.25); }
+.tag-ink  { background:rgba(15,15,15,.06); color: var(--ink); border:1px solid var(--line); }
+
+/* ── COMPETÊNCIAS ── */
+.comp-section { background: var(--warm); }
+
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.comp-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 28px 24px;
+  transition: transform .2s, box-shadow .2s;
+}
+.comp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.08);
+}
+
+.comp-card-icon { font-size: 28px; margin-bottom: 14px; }
+.comp-card-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.comp-card-list { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.comp-card-list li {
+  font-size: 13px;
+  color: var(--muted);
+  padding-left:14px;
+  position:relative;
+}
+.comp-card-list li::before {
+  content:'—';
+  position:absolute; left:0;
+  color: var(--gold);
+  font-size: 10px;
+  top: 2px;
+}
+
+/* ── CASOS / RESULTADOS ── */
+.casos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.caso-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.caso-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 36px rgba(0,0,0,.08);
+}
+
+.caso-top {
+  padding: 28px 28px 0;
+}
+.caso-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.caso-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.caso-desc { font-size: 13px; color: var(--muted); line-height:1.6; }
+
+.caso-metrics {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+}
+.metric-item {
+  flex:1;
+  padding: 16px 20px;
+  border-right: 1px solid var(--line);
+  text-align:center;
+}
+.metric-item:last-child { border-right:none; }
+.metric-num {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink);
+  display:block;
+}
+.metric-lbl { font-size: 10px; color:var(--muted); }
+
+/* ── SKILLS CLOUD ── */
+.skills-section { background: var(--ink); }
+.skills-section .section-title { color: var(--paper); }
+.skills-section .section-num { color: var(--gold2); }
+.skills-section .section-line { background: rgba(255,255,255,.1); }
+
+.skills-wrap {
+  display:flex; flex-wrap:wrap; gap:10px;
+}
+.skill-tag {
+  padding: 9px 18px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all .2s;
+  cursor:default;
+}
+.sk-primary {
+  background: rgba(200,168,75,.15);
+  border: 1px solid rgba(200,168,75,.35);
+  color: var(--gold2);
+}
+.sk-primary:hover { background: var(--gold); color: var(--ink); border-color:var(--gold); }
+.sk-secondary {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.65);
+}
+.sk-secondary:hover { background: rgba(255,255,255,.1); color: white; }
+
+/* ── CONTATO ── */
+.contact-section {
+  background: var(--paper);
+  text-align: center;
+  padding: 100px 5vw;
+}
+
+.contact-intro {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: 1.2;
+  max-width: 640px;
+  margin: 0 auto 36px;
+  font-weight:400;
+}
+.contact-intro em { color: var(--gold); font-style:italic; }
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap:wrap;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,.4);
+  text-align: center;
+  padding: 24px 5vw;
+  font-size: 12px;
+  letter-spacing:.04em;
+}
+footer a { color: var(--gold); text-decoration:none; }
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity:0;
+  transform: translateY(24px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible {
+  opacity:1;
+  transform:none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns:1fr; padding-top:50px; min-height:auto; gap:40px; }
+  .hero::before { width:300px; height:300px; top:-60px; right:-60px; }
+  .hero-right { flex-direction:row; flex-wrap:wrap; }
+  .stat-card { flex:1; min-width:160px; }
+
+  .valor-grid { grid-template-columns:1fr; gap:36px; }
+  .comp-grid { grid-template-columns:repeat(2,1fr); }
+  .casos-grid { grid-template-columns:1fr; }
+}
+
+@media (max-width: 640px) {
+  nav { padding: 0 20px; }
+  .nav-links { display:none; position:absolute; top:60px; left:0; right:0; background:var(--paper); flex-direction:column; padding:20px; border-bottom:1px solid var(--line); gap:0; }
+  .nav-links.open { display:flex; }
+  .nav-links li a { display:block; padding:12px 0; border-bottom:1px solid var(--line); }
+  .nav-links li:last-child a { border:none; }
+  .hamburger { display:flex; }
+
+  section { padding: 60px 20px; }
+  .hero { padding: 40px 20px 50px; }
+  .hero h1 { font-size: 38px; }
+
+  .exp-header { grid-template-columns:auto 1fr; }
+  .exp-right { flex-direction:column; align-items:flex-end; gap:6px; }
+  .exp-period { display:none; }
+  .exp-body-inner { padding-left:24px; }
+
+  .comp-grid { grid-template-columns:1fr; }
+  .stat-card { flex-direction:column; text-align:center; }
+  .hero-right { gap:10px; }
+
+  .section-header { flex-wrap:wrap; }
+  .section-line { display:none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Flávio <span>Guedes</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#valor">Proposta</a></li>
+    <li><a href="#exp">Experiência</a></li>
+    <li><a href="#comp">Skills</a></li>
+    <li><a href="#casos">Cases</a></li>
+    <li><a href="#contato" class="nav-cta">Falar comigo</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left reveal">
+    <div class="hero-eyebrow">BDR Sênior · 100% Home Office</div>
+    <h1>Estratégia que<br>abre <em>portas</em><br>e fecha deals.</h1>
+    <p class="hero-desc">12+ anos construindo funis de aquisição, qualificando oportunidades B2B e conectando marcas a clientes de alto valor. Martech, SaaS e grandes contas.</p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn btn-primary">📬 Falar comigo</a>
+      <a href="#casos" class="btn btn-outline">Ver cases →</a>
+    </div>
+  </div>
+
+  <div class="hero-right reveal">
+    <div class="stat-card">
+      <div class="stat-icon ic-gold">🏆</div>
+      <div>
+        <div class="stat-num">12+</div>
+        <div class="stat-lbl">Anos em marketing digital & performance</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon ic-teal">🎯</div>
+      <div>
+        <div class="stat-num">B2B</div>
+        <div class="stat-lbl">Funis de captação · SaaS · Martech · Tech</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon ic-rust">🚀</div>
+      <div>
+        <div class="stat-num">10+</div>
+        <div class="stat-lbl">Marcas e empresas atendidas</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon ic-gold">📊</div>
+      <div>
+        <div class="stat-num">Data</div>
+        <div class="stat-lbl">Orientado a métricas, KPIs e conversão</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPOSTA DE VALOR -->
+<section class="valor-section" id="valor">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Por que eu?</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="valor-grid">
+    <div class="valor-quote reveal">
+      Não sou só quem prospecta — sou quem <em>entende o negócio do cliente antes de falar com ele.</em> Estratégia de conteúdo, dados e escuta ativa como alicerce de cada abordagem.
+    </div>
+
+    <div class="valor-pills reveal">
+      <div class="valor-pill">
+        <div class="valor-pill-icon">🎯</div>
+        <div class="valor-pill-text">
+          <strong>Qualificação inteligente de leads</strong>
+          Mapeio jornada do comprador e priorizo oportunidades com real potencial de conversão.
+        </div>
+      </div>
+      <div class="valor-pill">
+        <div class="valor-pill-icon">📣</div>
+        <div class="valor-pill-text">
+          <strong>Prospecção outbound + inbound qualificado</strong>
+          Cold outreach com narrativa personalizada, social selling e automação de sequências.
+        </div>
+      </div>
+      <div class="valor-pill">
+        <div class="valor-pill-icon">📈</div>
+        <div class="valor-pill-text">
+          <strong>Orientado a pipeline e metas</strong>
+          KPIs, CRM e funil como linguagem nativa — não como obrigação.
+        </div>
+      </div>
+      <div class="valor-pill">
+        <div class="valor-pill-icon">🤖</div>
+        <div class="valor-pill-text">
+          <strong>IA aplicada à prospecção</strong>
+          Uso de ferramentas de IA generativa para escalar pesquisa, personalização e automação.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA -->
+<section id="exp" style="background: var(--paper);">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Trajetória</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="exp-list reveal">
+
+    <div class="exp-item open">
+      <div class="exp-header" onclick="toggleExp(this)">
+        <span class="exp-num">①</span>
+        <div class="exp-meta">
+          <div class="exp-role">Design Head / Estratégia Criativa</div>
+          <div class="exp-company">Take4Content · Presencial · São Paulo</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">Fev/2026 – atual</span>
+          <span class="exp-toggle">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-inner">
+          <p class="exp-desc">Coordenação de estratégia criativa e fluxos de produção para múltiplas marcas. Alinhamento entre criação e objetivos comerciais — traduzindo posicionamento em campanhas orientadas a resultado.</p>
+          <div class="exp-tags">
+            <span class="exp-tag tag-gold">Estratégia de conteúdo</span>
+            <span class="exp-tag tag-teal">Gestão de time</span>
+            <span class="exp-tag tag-rust">Performance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header" onclick="toggleExp(this)">
+        <span class="exp-num">②</span>
+        <div class="exp-meta">
+          <div class="exp-role">Diretor de Arte Sênior / Estratégia Criativa</div>
+          <div class="exp-company">Usabit · Tecnologia / Software · Híbrido</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">Mar/2024 – Mai/2025</span>
+          <span class="exp-toggle">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-inner">
+          <p class="exp-desc">Empresa de tecnologia com interface direta com times de marketing, copy e mídia. Projetos criativos complexos com foco em impacto mensurável. Estruturação de processos e padronização de entregas em ambiente de produto digital e performance.</p>
+          <div class="exp-tags">
+            <span class="exp-tag tag-gold">Martech/Tech</span>
+            <span class="exp-tag tag-teal">Funil de aquisição</span>
+            <span class="exp-tag tag-rust">Tráfego pago</span>
+            <span class="exp-tag tag-ink">SaaS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header" onclick="toggleExp(this)">
+        <span class="exp-num">③</span>
+        <div class="exp-meta">
+          <div class="exp-role">Diretor de Criação</div>
+          <div class="exp-company">My Dream Foods · Remoto</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">Fev/2023 – Jul/2023</span>
+          <span class="exp-toggle">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-inner">
+          <p class="exp-desc">Planejamento e execução de campanhas digitais integradas. Estruturação da narrativa de marca, posicionamento e funil de conteúdo com acompanhamento de métricas para ajuste de abordagem e escala.</p>
+          <div class="exp-tags">
+            <span class="exp-tag tag-gold">Branding</span>
+            <span class="exp-tag tag-teal">Campanhas digitais</span>
+            <span class="exp-tag tag-ink">Posicionamento</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header" onclick="toggleExp(this)">
+        <span class="exp-num">④</span>
+        <div class="exp-meta">
+          <div class="exp-role">Diretor de Arte Pleno</div>
+          <div class="exp-company">BCW Brasil · Colgate · AstraZeneca · Anbima</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">Jan/2022 – Set/2022</span>
+          <span class="exp-toggle">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-inner">
+          <p class="exp-desc">Interface com stakeholders de grandes contas nacionais e internacionais. Key Visuals, Motion Design e campanhas integradas para marcas com alto padrão de entrega e compliance. Gestão de múltiplos clientes com expectativas distintas.</p>
+          <div class="exp-tags">
+            <span class="exp-tag tag-gold">Grandes contas</span>
+            <span class="exp-tag tag-teal">B2B/B2C</span>
+            <span class="exp-tag tag-rust">Stakeholders</span>
+            <span class="exp-tag tag-ink">Campanhas integradas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header" onclick="toggleExp(this)">
+        <span class="exp-num">⑤</span>
+        <div class="exp-meta">
+          <div class="exp-role">Head de Criação e Comunicação</div>
+          <div class="exp-company">IEJUR · Instituto de Estudos Jurídicos (SaaS Jurídico)</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">Abr/2021 – Ago/2021</span>
+          <span class="exp-toggle">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-inner">
+          <p class="exp-desc">Liderança de funis completos de captação integrando e-mail marketing, social media e Ads. Criação de layouts persuasivos focados em conversão de leads para pós-graduações. Conexão de métricas de performance às decisões de comunicação em ambiente B2B jurídico.</p>
+          <div class="exp-tags">
+            <span class="exp-tag tag-gold">Funil B2B</span>
+            <span class="exp-tag tag-teal">E-mail marketing</span>
+            <span class="exp-tag tag-rust">Lead gen</span>
+            <span class="exp-tag tag-ink">SaaS jurídico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header" onclick="toggleExp(this)">
+        <span class="exp-num">⑥</span>
+        <div class="exp-meta">
+          <div class="exp-role">Coordenador de Projetos de Marketing</div>
+          <div class="exp-company">Agência Watermelon · Remoto</div>
+        </div>
+        <div class="exp-right">
+          <span class="exp-period">Abr/2020 – Mar/2021</span>
+          <span class="exp-toggle">+</span>
+        </div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-body-inner">
+          <p class="exp-desc">Coordenação de performance e lançamentos de produtos digitais. Supervisão de criativos para prospecção de leads em larga escala. Gestão de prazos, entregas e interface com cliente em ambiente de agência.</p>
+          <div class="exp-tags">
+            <span class="exp-tag tag-gold">Infoprodutos</span>
+            <span class="exp-tag tag-teal">Lead gen em escala</span>
+            <span class="exp-tag tag-ink">Coordenação</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPETÊNCIAS -->
+<section class="comp-section" id="comp">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Competências</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="comp-grid">
+    <div class="comp-card reveal">
+      <div class="comp-card-icon">🎯</div>
+      <div class="comp-card-title">Geração de Demanda</div>
+      <ul class="comp-card-list">
+        <li>Prospecção outbound estruturada</li>
+        <li>Qualificação de leads (BANT, SPIN)</li>
+        <li>Social selling no LinkedIn</li>
+        <li>Sequências de e-mail personalizadas</li>
+        <li>Pipeline e gestão de funil</li>
+      </ul>
+    </div>
+
+    <div class="comp-card reveal">
+      <div class="comp-card-icon">📊</div>
+      <div class="comp-card-title">Dados & Performance</div>
+      <ul class="comp-card-list">
+        <li>Definição e acompanhamento de KPIs</li>
+        <li>Google Analytics / Meta Insights</li>
+        <li>Testes A/B e otimização</li>
+        <li>CRO (Conversion Rate Optimization)</li>
+        <li>Análise de funil e atribuição</li>
+      </ul>
+    </div>
+
+    <div class="comp-card reveal">
+      <div class="comp-card-icon">🤖</div>
+      <div class="comp-card-title">Martech & IA</div>
+      <ul class="comp-card-list">
+        <li>IA generativa aplicada ao processo</li>
+        <li>Automação de marketing</li>
+        <li>E-mail marketing e fluxos</li>
+        <li>Meta Business Suite</li>
+        <li>Pesquisa e enriquecimento de leads</li>
+      </ul>
+    </div>
+
+    <div class="comp-card reveal">
+      <div class="comp-card-icon">✍️</div>
+      <div class="comp-card-title">Comunicação & Copy</div>
+      <ul class="comp-card-list">
+        <li>Copywriting estratégico</li>
+        <li>Storytelling de valor</li>
+        <li>Posicionamento de marca</li>
+        <li>Conteúdo orientado a conversão</li>
+        <li>Narrativa consultiva</li>
+      </ul>
+    </div>
+
+    <div class="comp-card reveal">
+      <div class="comp-card-icon">🏗️</div>
+      <div class="comp-card-title">Processos & Gestão</div>
+      <ul class="comp-card-list">
+        <li>Coordenação de times criativos</li>
+        <li>Planejamento editorial</li>
+        <li>Gestão de múltiplos projetos</li>
+        <li>Padronização de entregas</li>
+        <li>Alinhamento estratégico</li>
+      </ul>
+    </div>
+
+    <div class="comp-card reveal">
+      <div class="comp-card-icon">🎨</div>
+      <div class="comp-card-title">Design Estratégico</div>
+      <ul class="comp-card-list">
+        <li>Figma / Adobe Creative Suite</li>
+        <li>Landing pages e criativos</li>
+        <li>Design de apresentações</li>
+        <li>Identidade visual e branding</li>
+        <li>Motion Design</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CASES / RESULTADOS -->
+<section id="casos" style="background:white;">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Cases relevantes</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="casos-grid">
+
+    <div class="caso-card reveal">
+      <div class="caso-top">
+        <div class="caso-eyebrow">SaaS Jurídico · B2B</div>
+        <div class="caso-title">Funil de captação para pós-graduação jurídica</div>
+        <p class="caso-desc">Estruturação completa do funil multicanal (Ads + e-mail + social) para captação e qualificação de leads B2B em ambiente de ensino jurídico. Criação de materiais persuasivos orientados a conversão e integração com equipe comercial.</p>
+      </div>
+      <div class="caso-metrics">
+        <div class="metric-item">
+          <span class="metric-num">Full</span>
+          <span class="metric-lbl">Funil gerenciado</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">3ch</span>
+          <span class="metric-lbl">Canais integrados</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">B2B</span>
+          <span class="metric-lbl">Jurídico / SaaS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-top">
+        <div class="caso-eyebrow">Agência · Lançamentos digitais</div>
+        <div class="caso-title">Prospecção em escala para infoprodutos</div>
+        <p class="caso-desc">Coordenação de campanhas de captação de leads em larga escala para lançamentos de produtos digitais. Supervisão de criativos e automações com foco em volume qualificado e baixo CAC.</p>
+      </div>
+      <div class="caso-metrics">
+        <div class="metric-item">
+          <span class="metric-num">↑</span>
+          <span class="metric-lbl">Volume de leads</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">↓</span>
+          <span class="metric-lbl">Custo de aquisição</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">Auto</span>
+          <span class="metric-lbl">Fluxos automatizados</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-top">
+        <div class="caso-eyebrow">Tecnologia · Usabit</div>
+        <div class="caso-title">Marketing de performance em empresa de tech</div>
+        <p class="caso-desc">Interface direta com times de marketing, copy e mídia em empresa de software. Criação de materiais de performance, alinhamento de processos internos e padronização de entregas para ambiente orientado a dados.</p>
+      </div>
+      <div class="caso-metrics">
+        <div class="metric-item">
+          <span class="metric-num">14m</span>
+          <span class="metric-lbl">Atuação contínua</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">Tech</span>
+          <span class="metric-lbl">Ambiente SaaS</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">KPI</span>
+          <span class="metric-lbl">Orientado a dados</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-top">
+        <div class="caso-eyebrow">Grandes contas · BCW Brasil</div>
+        <div class="caso-title">Campanhas integradas B2B/B2C — Colgate & AstraZeneca</div>
+        <p class="caso-desc">Criação e execução de campanhas para marcas globais com alto padrão de compliance. Gestão de stakeholders exigentes, entrega simultânea de múltiplos clientes e interface consultiva com lideranças de marketing.</p>
+      </div>
+      <div class="caso-metrics">
+        <div class="metric-item">
+          <span class="metric-num">3+</span>
+          <span class="metric-lbl">Grandes contas</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">Global</span>
+          <span class="metric-lbl">Marcas internacionais</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">B2B</span>
+          <span class="metric-lbl">Healthcare & FMCG</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS CLOUD -->
+<section class="skills-section">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Stack completo</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-wrap reveal">
+    <span class="skill-tag sk-primary">Geração de Demanda B2B</span>
+    <span class="skill-tag sk-primary">Qualificação de Leads</span>
+    <span class="skill-tag sk-primary">Funil de Conversão</span>
+    <span class="skill-tag sk-primary">Social Selling</span>
+    <span class="skill-tag sk-primary">Outbound Estratégico</span>
+    <span class="skill-tag sk-primary">Análise de Pipeline</span>
+    <span class="skill-tag sk-primary">KPIs & Métricas</span>
+    <span class="skill-tag sk-primary">Martech & Automação</span>
+    <span class="skill-tag sk-primary">CRO</span>
+    <span class="skill-tag sk-primary">IA Aplicada ao Marketing</span>
+    <span class="skill-tag sk-secondary">Meta Business Suite</span>
+    <span class="skill-tag sk-secondary">Google Analytics</span>
+    <span class="skill-tag sk-secondary">E-mail Marketing</span>
+    <span class="skill-tag sk-secondary">Tráfego Pago</span>
+    <span class="skill-tag sk-secondary">Copywriting</span>
+    <span class="skill-tag sk-secondary">Storytelling</span>
+    <span class="skill-tag sk-secondary">Figma</span>
+    <span class="skill-tag sk-secondary">Adobe Creative Suite</span>
+    <span class="skill-tag sk-secondary">Motion Design</span>
+    <span class="skill-tag sk-secondary">Gestão de Times</span>
+    <span class="skill-tag sk-secondary">Planejamento Editorial</span>
+    <span class="skill-tag sk-secondary">Posicionamento de Marca</span>
+    <span class="skill-tag sk-secondary">Branding</span>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contact-section" id="contato">
+  <p class="contact-intro reveal">
+    Pronto para abrir<br>novas <em>conversas</em><br>e oportunidades.
+  </p>
+  <div class="contact-links reveal">
+    <a href="mailto:flavioguedesmkt@gmail.com" class="btn btn-primary">✉️ flavioguedesmkt@gmail.com</a>
+    <a href="https://linkedin.com/in/oflavioguedes" target="_blank" class="btn btn-outline">LinkedIn →</a>
+    <a href="https://flavio-guedes-portfolio.netlify.app" target="_blank" class="btn btn-outline">Portfólio →</a>
+    <a href="https://behance.net/oflavioguedes" target="_blank" class="btn btn-outline">Behance →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Flávio Guedes · BDR Sênior · São Paulo & Rio de Janeiro · <a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a></p>
+</footer>
+
+<script>
+// Toggle experiência
+function toggleExp(header) {
+  const item = header.closest('.exp-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.exp-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Hamburger menu
+const ham = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+ham.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

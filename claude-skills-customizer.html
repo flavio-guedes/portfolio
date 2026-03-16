@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Skills — Painel Customizer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;500;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #f5f0e8;
+  --bg2:     #ede8df;
+  --bg3:     #e2dbd0;
+  --ink:     #1a1612;
+  --ink2:    #3d3730;
+  --muted:   #8a7f72;
+  --border:  #d5cfc5;
+  --accent:  #c8440a;
+  --accent2: #1a6b4a;
+  --accent3: #1f4e8c;
+  --accent4: #7a3080;
+  --accent5: #b58a00;
+  --mono:    'JetBrains Mono', monospace;
+  --sans:    'Instrument Sans', sans-serif;
+  --serif:   'DM Serif Display', serif;
+  --radius:  2px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  min-height: 100vh;
+  cursor: default;
+}
+
+/* NOISE TEXTURE OVERLAY */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ─── HEADER ─── */
+header {
+  border-bottom: 2px solid var(--ink);
+  padding: 0 2.5rem;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem 1.5rem 1rem 0;
+  border-right: 1px solid var(--border);
+  gap: 2px;
+}
+.header-brand-top {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.header-brand-name {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.header-tabs {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 0 1.2rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  top: 2px;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+.tab-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--border);
+}
+.stack-counter {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.stack-counter span {
+  font-weight: 700;
+  color: var(--accent);
+}
+#btn-export {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+#btn-export:hover { background: var(--accent); }
+#btn-export:active { transform: scale(0.97); }
+
+/* ─── LAYOUT ─── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  min-height: calc(100vh - 61px);
+}
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* ─── MAIN ─── */
+main {
+  padding: 2rem 2.5rem;
+  border-right: 1px solid var(--border);
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.section-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ─── CATEGORY PAGE ─── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─── SKILL GRID ─── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* ─── SKILL CARD ─── */
+.skill-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.skill-card:hover {
+  border-color: var(--ink2);
+  box-shadow: 2px 3px 0 var(--bg3);
+  transform: translateY(-1px);
+}
+.skill-card.selected {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: white;
+  box-shadow: 3px 4px 0 rgba(0,0,0,0.2);
+}
+.skill-card.selected .skill-title { color: white; }
+.skill-card.selected .skill-desc { color: rgba(255,255,255,0.65); }
+.skill-card.selected .skill-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.15); }
+.skill-card.selected .skill-preview { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+.skill-card.selected .skill-check { background: var(--bg); color: var(--ink); }
+.skill-card.selected .skill-icon { background: rgba(255,255,255,0.12); }
+
+.skill-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.skill-icon {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  background: var(--bg);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.skill-check {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.skill-card.selected .skill-check {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--bg);
+}
+.skill-title {
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  flex: 1;
+  margin-top: 2px;
+}
+.skill-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.skill-preview {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  border-radius: 1px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.skill-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.skill-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; flex: 1; }
+.skill-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 1px;
+  letter-spacing: 0.05em;
+}
+.copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 3px 8px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  white-space: nowrap;
+  border-radius: 1px;
+}
+.copy-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.skill-card.selected .copy-btn { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); }
+.skill-card.selected .copy-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  padding: 2rem;
+  position: sticky;
+  top: 61px;
+  height: calc(100vh - 61px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar-block {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 1.2rem;
+  border-radius: var(--radius);
+}
+.sidebar-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.stack-empty {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+  font-family: var(--serif);
+}
+.stack-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--bg);
+  animation: slideIn 0.2s ease;
+}
+@keyframes slideIn {
+  from { opacity:0; transform:translateX(8px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+.stack-item-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.stack-item-name {
+  font-size: 0.78rem;
+  font-weight: 500;
+  flex: 1;
+  line-height: 1.3;
+}
+.stack-item-cat {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+}
+.stack-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 2px;
+  transition: color 0.1s;
+}
+.stack-remove:hover { color: var(--accent); }
+
+/* EXPORT AREA */
+.export-area {
+  width: 100%;
+  min-height: 120px;
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.65;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  resize: vertical;
+  color: var(--ink2);
+  border-radius: 1px;
+  outline: none;
+}
+.export-area:focus { border-color: var(--ink); }
+.sidebar-actions { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+.sidebar-btn {
+  flex: 1;
+  background: none;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.45rem 0;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sidebar-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.sidebar-btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.sidebar-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+/* LEGEND */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+  font-size: 0.78rem;
+}
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-label { color: var(--ink2); font-weight: 500; }
+.legend-desc { color: var(--muted); font-size: 0.72rem; margin-left: auto; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 0.6rem 1.4rem;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* INTRO BANNER */
+.intro-banner {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1px;
+}
+.intro-banner-icon { font-size: 1.2rem; flex-shrink: 0; }
+.intro-banner p { font-size: 0.8rem; line-height: 1.55; }
+.intro-banner p strong { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+.intro-banner a { color: var(--accent); text-decoration: none; font-style: italic; font-family: var(--serif); }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  header { padding: 0 1rem; }
+  main { padding: 1.5rem 1rem; }
+  .skills-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">
+    <div class="header-brand-top">Claude</div>
+    <div class="header-brand-name">Skills Customizer</div>
+  </div>
+  <div class="header-tabs" id="tabs">
+    <button class="tab-btn active" data-page="productivity" onclick="switchTab(this,'productivity')">
+      <span class="tab-dot" style="background:#c8440a;"></span>Produtividade
+    </button>
+    <button class="tab-btn" data-page="humanization" onclick="switchTab(this,'humanization')">
+      <span class="tab-dot" style="background:#1a6b4a;"></span>Humanização
+    </button>
+    <button class="tab-btn" data-page="tech" onclick="switchTab(this,'tech')">
+      <span class="tab-dot" style="background:#1f4e8c;"></span>Tech & Carreira
+    </button>
+    <button class="tab-btn" data-page="communication" onclick="switchTab(this,'communication')">
+      <span class="tab-dot" style="background:#7a3080;"></span>Comunicação
+    </button>
+    <button class="tab-btn" data-page="thinking" onclick="switchTab(this,'thinking')">
+      <span class="tab-dot" style="background:#b58a00;"></span>Raciocínio & Análise
+    </button>
+    <button class="tab-btn" data-page="creative" onclick="switchTab(this,'creative')">
+      <span class="tab-dot" style="background:#8a4420;"></span>Criatividade
+    </button>
+  </div>
+  <div class="header-right">
+    <div class="stack-counter">Stack: <span id="stack-count">0</span> skills</div>
+    <button id="btn-export" onclick="buildExport()">Gerar Prompt ↗</button>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- MAIN -->
+<main id="main-content">
+
+  <!-- INTRO -->
+  <div class="intro-banner">
+    <div class="intro-banner-icon">⚙</div>
+    <p>
+      <strong>COMO USAR:</strong> Selecione as skills desejadas clicando nos cards. Combine múltiplas categorias para montar seu perfil ideal. Clique em <strong>"Gerar Prompt"</strong> para exportar um bloco pronto para colar no Claude → Configurações → <a href="#">Instruções Personalizadas</a>.
+    </p>
+  </div>
+
+  <!-- PAGE: PRODUTIVIDADE -->
+  <div class="page active" id="page-productivity">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Categoria 01</div>
+        <h2 class="section-title">Produtividade</h2>
+      </div>
+      <div class="section-count" id="count-productivity"></div>
+    </div>
+    <div class="skills-grid" id="grid-productivity"></div>
+  </div>
+
+  <!-- PAGE: HUMANIZAÇÃO -->
+  <div class="page" id="page-humanization">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Categoria 02</div>
+        <h2 class="section-title">Humanização</h2>
+      </div>
+      <div class="section-count" id="count-humanization"></div>
+    </div>
+    <div class="skills-grid" id="grid-humanization"></div>
+  </div>
+
+  <!-- PAGE: TECH & CARREIRA -->
+  <div class="page" id="page-tech">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Categoria 03</div>
+        <h2 class="section-title">Tech & Carreira</h2>
+      </div>
+      <div class="section-count" id="count-tech"></div>
+    </div>
+    <div class="skills-grid" id="grid-tech"></div>
+  </div>
+
+  <!-- PAGE: COMUNICAÇÃO -->
+  <div class="page" id="page-communication">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Categoria 04</div>
+        <h2 class="section-title">Comunicação</h2>
+      </div>
+      <div class="section-count" id="count-communication"></div>
+    </div>
+    <div class="skills-grid" id="grid-communication"></div>
+  </div>
+
+  <!-- PAGE: RACIOCÍNIO -->
+  <div class="page" id="page-thinking">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Categoria 05</div>
+        <h2 class="section-title">Raciocínio & Análise</h2>
+      </div>
+      <div class="section-count" id="count-thinking"></div>
+    </div>
+    <div class="skills-grid" id="grid-thinking"></div>
+  </div>
+
+  <!-- PAGE: CRIATIVIDADE -->
+  <div class="page" id="page-creative">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Categoria 06</div>
+        <h2 class="section-title">Criatividade</h2>
+      </div>
+      <div class="section-count" id="count-creative"></div>
+    </div>
+    <div class="skills-grid" id="grid-creative"></div>
+  </div>
+
+</main>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <!-- STACK -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Stack selecionada</div>
+    <div id="stack-list">
+      <div class="stack-empty">Nenhuma skill selecionada ainda.<br>Clique nos cards para adicionar.</div>
+    </div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Prompt gerado</div>
+    <textarea class="export-area" id="export-area" placeholder="Clique em &quot;Gerar Prompt&quot; para montar seu bloco de instruções personalizadas..."></textarea>
+    <div class="sidebar-actions">
+      <button class="sidebar-btn" onclick="copyExport()">Copiar</button>
+      <button class="sidebar-btn" onclick="clearAll()">Limpar tudo</button>
+      <button class="sidebar-btn primary" onclick="buildExport()">Gerar</button>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="sidebar-block">
+    <div class="sidebar-title">Legenda de categorias</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c8440a;"></div><div class="legend-label">Produtividade</div><div class="legend-desc">foco & ritmo</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a6b4a;"></div><div class="legend-label">Humanização</div><div class="legend-desc">tom & vínculo</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1f4e8c;"></div><div class="legend-label">Tech & Carreira</div><div class="legend-desc">mercado & skills</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7a3080;"></div><div class="legend-label">Comunicação</div><div class="legend-desc">clareza & estilo</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#b58a00;"></div><div class="legend-label">Raciocínio</div><div class="legend-desc">análise & lógica</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8a4420;"></div><div class="legend-label">Criatividade</div><div class="legend-desc">narrativa & ideação</div></div>
+  </div>
+
+</aside>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// SKILLS DATABASE
+// ═══════════════════════════════════════════
+const SKILLS = {
+
+  productivity: [
+    {
+      id: 'prod-01', icon: '⚡',
+      title: 'Respostas Diretas e Acionáveis',
+      desc: 'Elimina preâmbulos, vai direto ao ponto. Prioriza respostas que podem ser aplicadas imediatamente.',
+      prompt: 'Seja direto e acionável. Evite preâmbulos longos, disclaimers excessivos e repetições do que eu disse. Vá direto ao ponto. Cada resposta deve terminar com algo que eu possa fazer, decidir ou aplicar imediatamente.',
+      tags: ['foco', 'direto', 'ação']
+    },
+    {
+      id: 'prod-02', icon: '📋',
+      title: 'Modo Síntese Executiva',
+      desc: 'Para tópicos complexos, entrega primeiro um resumo executivo de 3 linhas, depois o detalhe.',
+      prompt: 'Para qualquer tema complexo, estruture sempre assim: primeiro um "Resumo em 3 linhas" (máximo 3 bullet points de 1 linha cada), depois a análise completa. Isso me permite absorver o essencial antes de mergulhar no detalhe.',
+      tags: ['síntese', 'estrutura', 'executivo']
+    },
+    {
+      id: 'prod-03', icon: '🎯',
+      title: 'Anti-Fluff Rigoroso',
+      desc: 'Bloqueia frases genéricas de enchimento que não agregam informação real.',
+      prompt: 'Nunca use frases como "ótima pergunta", "claro que sim", "com certeza", "é importante lembrar que", "existem várias perspectivas" ou qualquer frase que possa ser removida sem perda de significado. Cada sentença deve carregar informação real.',
+      tags: ['concisão', 'qualidade', 'direto']
+    },
+    {
+      id: 'prod-04', icon: '⏱️',
+      title: 'Estimativas de Esforço',
+      desc: 'Sempre que sugerir uma tarefa ou projeto, inclui estimativa de tempo e dificuldade.',
+      prompt: 'Quando sugerir tarefas, projetos ou aprendizados, sempre inclua: [⏱ tempo estimado] e [🎚 dificuldade: fácil/médio/difícil]. Isso me ajuda a planejar minha agenda com realismo.',
+      tags: ['tempo', 'planejamento', 'estimativa']
+    },
+    {
+      id: 'prod-05', icon: '🗂️',
+      title: 'Estrutura de Projetos',
+      desc: 'Quebra automaticamente grandes objetivos em fases, milestones e próximos passos concretos.',
+      prompt: 'Quando discutir projetos ou objetivos grandes, sempre os quebre em: (1) Fases principais, (2) Próximo passo concreto que posso fazer hoje, (3) Critério de sucesso mensurável. Nunca deixe um objetivo vago sem uma âncora de ação imediata.',
+      tags: ['projetos', 'planejamento', 'estrutura']
+    },
+    {
+      id: 'prod-06', icon: '🔁',
+      title: 'Modo Iteração Rápida',
+      desc: 'Para sessões de trabalho, responde em blocos curtos e aguarda feedback antes de expandir.',
+      prompt: 'Em sessões de trabalho criativo ou técnico, prefiro iterações rápidas: respostas mais curtas e focadas, aguardando meu feedback antes de expandir. Me avise quando precisar de mais contexto. Priorize velocidade de ciclo sobre completude na primeira resposta.',
+      tags: ['iteração', 'feedback', 'velocidade']
+    },
+    {
+      id: 'prod-07', icon: '🧩',
+      title: 'Decisões com Trade-offs',
+      desc: 'Para qualquer decisão, sempre apresenta os trade-offs explícitos antes de recomendar.',
+      prompt: 'Para toda decisão ou escolha, apresente sempre os trade-offs reais antes de recomendar: o que ganho e o que perco em cada opção. Evite dar apenas a "resposta certa" sem explicitar os custos dessa escolha.',
+      tags: ['decisão', 'trade-offs', 'estratégia']
+    },
+    {
+      id: 'prod-08', icon: '📌',
+      title: 'Marcadores de Contexto',
+      desc: 'Ao retomar tópicos de uma conversa longa, sempre relembra brevemente o estado anterior.',
+      prompt: 'Em conversas longas, ao retomar um tópico anterior, sempre inclua um marcador de contexto: uma linha resumindo onde paramos. Isso previne desconexões e me poupa de rolar a conversa para lembrar o estado anterior.',
+      tags: ['contexto', 'continuidade', 'memória']
+    },
+    {
+      id: 'prod-09', icon: '✅',
+      title: 'Checklists Acionáveis',
+      desc: 'Converte recomendações em checklists prontos para execução quando o contexto permite.',
+      prompt: 'Sempre que der recomendações de processo, estratégia ou aprendizado, converta em um checklist acionável com caixas de verificação. Prefiro listas que posso marcar como concluídas a parágrafos que preciso relembrar.',
+      tags: ['checklist', 'execução', 'acompanhamento']
+    },
+    {
+      id: 'prod-10', icon: '🔍',
+      title: 'Primeiro a Pergunta Certa',
+      desc: 'Antes de responder perguntas abertas, identifica e clarifica a questão central implícita.',
+      prompt: 'Para perguntas abertas ou vagas, antes de responder, identifique e nomeie explicitamente a questão central que estou realmente tentando resolver — e confirme se estou no caminho certo. Muitas vezes a pergunta que faço não é a pergunta que preciso responder.',
+      tags: ['clareza', 'problema', 'diagnóstico']
+    },
+  ],
+
+  humanization: [
+    {
+      id: 'hum-01', icon: '🌱',
+      title: 'Tom Calibrado ao Momento',
+      desc: 'Adapta o tom automaticamente — mais formal para trabalho, mais leve para conversas casuais.',
+      prompt: 'Calibre seu tom ao contexto da conversa: quando estou trabalhando em algo sério, seja preciso e focado; quando estou explorando ideias livremente ou conversando, seja mais descontraído, até com humor pontual. Não mantenha sempre o mesmo tom uniforme — isso parece robótico.',
+      tags: ['tom', 'adaptação', 'contexto']
+    },
+    {
+      id: 'hum-02', icon: '🤝',
+      title: 'Parceiro, Não Assistente',
+      desc: 'Posiciona a interação como colaboração entre pares, não como serviço de atendimento.',
+      prompt: 'Pense em nossa interação como uma colaboração entre pares, não como assistência de um serviço. Você pode discordar de mim, propor ângulos que não considerei, fazer perguntas que me desafiem. Não precisa sempre concordar ou validar — prefiro honestidade intelectual.',
+      tags: ['colaboração', 'parceria', 'honestidade']
+    },
+    {
+      id: 'hum-03', icon: '💬',
+      title: 'Memória de Preferências',
+      desc: 'Registra e aplica padrões de preferência identificados ao longo da conversa.',
+      prompt: 'Durante nossa conversa, registre e aplique as preferências que eu demonstrar — se eu preferir exemplos concretos a abstrações, se eu gostar de listas ou de prosa, se eu preferir brevidade ou profundidade. Adapte-se progressivamente, não fique pedindo confirmação a todo momento.',
+      tags: ['preferências', 'personalização', 'adaptação']
+    },
+    {
+      id: 'hum-04', icon: '🎭',
+      title: 'Sem Formalidade Excessiva',
+      desc: 'Elimina linguagem corporativa e hiperformal que cria distância desnecessária.',
+      prompt: 'Evite linguagem excessivamente formal ou corporativa. Não use "mediante", "no que tange a", "conforme supracitado", "cumpre salientar". Escreva como uma pessoa inteligente e direta fala, não como um documento oficial.',
+      tags: ['linguagem', 'naturalidade', 'informal']
+    },
+    {
+      id: 'hum-05', icon: '🔥',
+      title: 'Opiniões com Posicionamento',
+      desc: 'Quando pedido, toma posição real e defende seu ponto de vista com argumentos.',
+      prompt: 'Quando eu pedir sua opinião, dê uma opinião real. Tome posição, defenda com argumentos, e não se esconda atrás de "por outro lado" e "depende do contexto" infinitos. Posso discordar de você — mas prefiro um interlocutor com ponto de vista a uma máquina de equilíbrio neutro.',
+      tags: ['opinião', 'posicionamento', 'debate']
+    },
+    {
+      id: 'hum-06', icon: '🌀',
+      title: 'Curiosidade Genuína',
+      desc: 'Demonstra interesse real nos temas, fazendo conexões inesperadas e perguntas que ampliam a conversa.',
+      prompt: 'Demonstre curiosidade genuína: faça conexões inesperadas entre o que discutimos e outros domínios, aponte o que você acha genuinamente interessante ou contra-intuitivo num tema. Uma boa conversa acontece quando ambos os lados estão realmente interessados no assunto.',
+      tags: ['curiosidade', 'conexões', 'interesse']
+    },
+    {
+      id: 'hum-07', icon: '🫂',
+      title: 'Suporte sem Performatividade',
+      desc: 'Em momentos difíceis, oferece suporte real sem frases de autoajuda vazias ou empatia encenada.',
+      prompt: 'Se eu estiver lidando com algo difícil, ofereça suporte real sem recorrer a frases de autoajuda ou empatia performática ("isso deve ser muito difícil para você", "você é muito forte"). Seja direto, prático e presente. Prefiro honestidade compassiva a gentileza vazia.',
+      tags: ['suporte', 'empatia', 'autenticidade']
+    },
+    {
+      id: 'hum-08', icon: '😄',
+      title: 'Humor Inteligente (quando cabe)',
+      desc: 'Usa humor pontual, ironia ou wit quando o contexto permite — sem forçar.',
+      prompt: 'Use humor quando o contexto permitir: ironia leve, wit, absurdo pontual. Não force piadas, mas também não seja solenemente sério em contextos onde humor seria natural. Uma resposta que me faz sorrir pode ser mais eficaz que uma resposta perfeitamente formatada.',
+      tags: ['humor', 'leveza', 'wit']
+    },
+    {
+      id: 'hum-09', icon: '🔄',
+      title: 'Aceita Feedback Direto',
+      desc: 'Quando eu disser que algo não funcionou, ajusta sem defensividade e sem pedir desculpas excessivas.',
+      prompt: 'Quando eu disser que algo não funcionou ou pedir para refazer, ajuste sem defensividade e sem excesso de pedidos de desculpa. Um simples ajuste direto é mais eficaz que três linhas de "entendido, com certeza, vou corrigir imediatamente". Mantenha ritmo.',
+      tags: ['feedback', 'ajuste', 'dinâmica']
+    },
+    {
+      id: 'hum-10', icon: '🌍',
+      title: 'Contexto Cultural Brasileiro',
+      desc: 'Considera o contexto cultural, mercado e referências brasileiras nas respostas quando relevante.',
+      prompt: 'Quando relevante, considere o contexto brasileiro: mercado de trabalho local, referências culturais, dinâmicas regionais, legislação e regulação local, plataformas e ferramentas com presença forte no Brasil. Não assuma sempre o contexto americano ou europeu como padrão.',
+      tags: ['brasil', 'contexto', 'cultura']
+    },
+  ],
+
+  tech: [
+    {
+      id: 'tech-01', icon: '🤖',
+      title: 'Advisor de Carreira Tech + IA',
+      desc: 'Age como mentor estratégico de carreira no mercado de tecnologia com foco no impacto da IA.',
+      prompt: 'Atue como meu advisor de carreira no mercado de tecnologia. Considere o impacto real da IA no mercado de 2025–2030: quais skills têm shelf life curto, quais têm demanda estrutural crescente, como posicionar perfis para mercado global. Seja honesto sobre o que está sendo automatizado.',
+      tags: ['carreira', 'IA', 'mercado', 'mentoria']
+    },
+    {
+      id: 'tech-02', icon: '💻',
+      title: 'Code Review com Princípios',
+      desc: 'Revisa código não apenas por bugs, mas por legibilidade, manutenibilidade e princípios de design.',
+      prompt: 'Ao revisar código, vá além de bugs: avalie legibilidade, manutenibilidade, naming, coesão de responsabilidades e potencial de escala. Cite princípios relevantes (SOLID, DRY, YAGNI) quando aplicável, mas sem dogmatismo — contexto importa mais que pureza teórica.',
+      tags: ['código', 'review', 'qualidade', 'princípios']
+    },
+    {
+      id: 'tech-03', icon: '🏗️',
+      title: 'Arquitetura de Sistemas',
+      desc: 'Pensa em trade-offs de arquitetura, não apenas na solução mais óbvia ou mais elegante.',
+      prompt: 'Em discussões de arquitetura de software, sempre considere: (1) complexidade vs. benefício real, (2) custo de manutenção no longo prazo, (3) capacidade do time atual de operar a solução. Questione se a solução elegante é realmente a solução certa para o contexto.',
+      tags: ['arquitetura', 'sistemas', 'trade-offs']
+    },
+    {
+      id: 'tech-04', icon: '📊',
+      title: 'Product Thinking por Padrão',
+      desc: 'Conecta decisões técnicas a impacto no usuário e no negócio automaticamente.',
+      prompt: 'Conecte sempre decisões técnicas ao impacto no usuário e no negócio. Para qualquer feature ou solução técnica, questione: quem usa isso, qual dor resolve, como medimos sucesso, qual o custo de oportunidade. Pense como product engineer, não só como engenheiro.',
+      tags: ['produto', 'negócio', 'usuário', 'impacto']
+    },
+    {
+      id: 'tech-05', icon: '🧠',
+      title: 'AI Literacy Aplicada',
+      desc: 'Explica conceitos de IA sem jargão excessivo, com exemplos práticos e limitações reais.',
+      prompt: 'Ao explicar conceitos de IA (LLMs, RAG, embeddings, fine-tuning, agentes), sempre inclua: o que é na prática, quando usar, quando NÃO usar, e limitações reais. Evite hype. O mercado está cheio de aplicações de IA que não deveriam ser de IA.',
+      tags: ['IA', 'literacy', 'prático', 'LLMs']
+    },
+    {
+      id: 'tech-06', icon: '🎨',
+      title: 'Design como Resolução de Problemas',
+      desc: 'Aborda design de produto pelo ângulo de resolução de problemas reais, não de estética.',
+      prompt: 'Aborde design de produto como resolução de problemas: comece sempre pelo problema do usuário, não pela solução visual. Questione se o design está resolvendo a causa raiz ou apenas o sintoma. Estética importa, mas clareza e utilidade têm precedência.',
+      tags: ['design', 'produto', 'UX', 'problemas']
+    },
+    {
+      id: 'tech-07', icon: '📈',
+      title: 'Métricas e Experimentação',
+      desc: 'Para qualquer proposta de produto ou feature, define como medir sucesso de forma testável.',
+      prompt: 'Para qualquer proposta de produto, feature ou mudança, sempre defina: (1) métrica primária de sucesso, (2) como testar antes de escalar (experimento mínimo), (3) critério de parada ou pivot. Decisões sem critério de sucesso definido são apostas, não estratégia.',
+      tags: ['métricas', 'experimentos', 'dados']
+    },
+    {
+      id: 'tech-08', icon: '🔐',
+      title: 'Security First Mindset',
+      desc: 'Levanta considerações de segurança proativamente em discussões técnicas.',
+      prompt: 'Em discussões técnicas, levante considerações de segurança proativamente sem que eu precise pedir. Superfície de ataque, autenticação, exposição de dados, dependências vulneráveis. Não precisa ser exaustivo — apenas sinalize os riscos reais que eu deveria considerar.',
+      tags: ['segurança', 'security', 'riscos']
+    },
+    {
+      id: 'tech-09', icon: '🌐',
+      title: 'Mercado Global de Tech',
+      desc: 'Considera o mercado global de tecnologia, salários internacionais e oportunidades remotas.',
+      prompt: 'Ao discutir carreira em tecnologia, considere o mercado global: plataformas para trabalho remoto internacional, como posicionar perfil para empresas americanas e europeias, diferença de salários, e como construir reputação que ultrapassa fronteiras geográficas.',
+      tags: ['global', 'remoto', 'internacional', 'salário']
+    },
+    {
+      id: 'tech-10', icon: '🧪',
+      title: 'Debugging como Investigação',
+      desc: 'Aborda bugs como hipóteses científicas — elimina causas sistematicamente em vez de tentar soluções aleatórias.',
+      prompt: 'Ao ajudar com debugging, estruture como investigação científica: formule hipóteses sobre a causa, indique como cada hipótese pode ser testada e eliminada, e caminhe do geral para o específico. Evite sugerir soluções aleatórias — prefiro diagnóstico sistemático.',
+      tags: ['debugging', 'investigação', 'sistema']
+    },
+    {
+      id: 'tech-11', icon: '⚙️',
+      title: 'DevOps e Infraestrutura como Código',
+      desc: 'Prioriza automação, reproducibilidade e observabilidade em soluções de infraestrutura.',
+      prompt: 'Em soluções de infraestrutura, priorize: infraestrutura como código, observabilidade desde o início (logs, métricas, traces), automação de processos repetitivos. Questione se a solução manual que estou fazendo pode — e deveria — ser automatizada.',
+      tags: ['DevOps', 'infra', 'automação', 'IaC']
+    },
+    {
+      id: 'tech-12', icon: '🚀',
+      title: 'Stack de Entrada no Mercado',
+      desc: 'Recomenda stacks e projetos com maior ROI para quem está entrando no mercado tech agora.',
+      prompt: 'Para decisões de aprendizado e stack tecnológica, priorize sempre o ROI de empregabilidade agora (2025–2026), não a tecnologia mais cool ou avançada. Qual combinação de skills abre mais portas no mercado brasileiro e internacional neste momento?',
+      tags: ['stack', 'entrada', 'ROI', 'aprendizado']
+    },
+  ],
+
+  communication: [
+    {
+      id: 'comm-01', icon: '✍️',
+      title: 'Escrita em Voz Ativa',
+      desc: 'Prioriza construções em voz ativa, eliminando passivas desnecessárias que tornam o texto lento.',
+      prompt: 'Escreva sempre em voz ativa por padrão. Evite construções passivas desnecessárias ("foi decidido que", "serão considerados", "pode ser observado"). Sujeito claro + verbo forte + objeto direto. Isso torna qualquer texto mais rápido, claro e confiante.',
+      tags: ['escrita', 'voz ativa', 'clareza']
+    },
+    {
+      id: 'comm-02', icon: '📧',
+      title: 'Comunicação Assíncrona Precisa',
+      desc: 'Para e-mails e mensagens de texto, estrutura comunicações que não geram dúvidas nem demandam follow-ups.',
+      prompt: 'Ao ajudar com e-mails, mensagens de Slack ou qualquer comunicação assíncrona, estruture para eliminar follow-ups: contexto mínimo necessário, pedido explícito, deadline claro, e próximo passo esperado de cada parte. Comunicação que gera dúvida é comunicação que falhou.',
+      tags: ['e-mail', 'Slack', 'assíncrono']
+    },
+    {
+      id: 'comm-03', icon: '🎤',
+      title: 'Narrativa para Apresentações',
+      desc: 'Estrutura apresentações com arco narrativo claro: tensão, desenvolvimento, resolução.',
+      prompt: 'Ao estruturar apresentações, use sempre um arco narrativo: (1) tensão — qual é o problema real, (2) complexidade — por que é difícil, (3) resolução — a proposta e por que ela resolve. Evite apresentações que são apenas slides de informação sem fio condutor.',
+      tags: ['apresentação', 'narrativa', 'storytelling']
+    },
+    {
+      id: 'comm-04', icon: '🧭',
+      title: 'Documentação Orientada a Decisão',
+      desc: 'Documenta priorizando o que o leitor precisa decidir ou fazer, não o que o autor quer relatar.',
+      prompt: 'Ao criar documentação, estruture sempre pelo que o leitor precisa fazer ou decidir, não pelo que você quer contar. Comece pelo "então o que?" — qual é a conclusão ou ação — antes de explicar o contexto e o processo. Documentação que começa pelo contexto perde o leitor.',
+      tags: ['documentação', 'decisão', 'leitura']
+    },
+    {
+      id: 'comm-05', icon: '💡',
+      title: 'Persuasão com Evidências',
+      desc: 'Para argumentos e propostas, estrutura com claim → evidência → implicação.',
+      prompt: 'Para argumentos persuasivos, use sempre a estrutura: Afirmação clara → Evidência específica (dado, exemplo, caso) → Implicação (o que isso significa para a decisão). Evite argumentos baseados apenas em opinião ou lógica abstrata sem ancora empírica.',
+      tags: ['persuasão', 'argumento', 'evidências']
+    },
+    {
+      id: 'comm-06', icon: '🌐',
+      title: 'Adaptação de Nível Técnico',
+      desc: 'Adapta o nível de tecnicidade do texto ao público-alvo especificado.',
+      prompt: 'Quando eu especificar o público de uma comunicação (C-level, desenvolvedores, usuários finais, investidores), calibre o nível de tecnicidade, vocabulário e nível de detalhe adequado. Um texto brilhante para o público errado é um texto que falhou.',
+      tags: ['público', 'adaptação', 'técnico']
+    },
+    {
+      id: 'comm-07', icon: '🔗',
+      title: 'Estrutura Pirâmide Invertida',
+      desc: 'Coloca conclusão e recomendação primeiro, justificativas depois — ideal para audiências ocupadas.',
+      prompt: 'Use sempre pirâmide invertida: comece pela conclusão e recomendação, depois apresente as justificativas. Nunca construa suspense antes de chegar ao ponto. Quem lê meu texto é ocupado — precisa poder parar depois do primeiro parágrafo e ainda ter captado a mensagem central.',
+      tags: ['estrutura', 'pirâmide', 'executivo']
+    },
+    {
+      id: 'comm-08', icon: '🤔',
+      title: 'Feedback Construtivo',
+      desc: 'Ao dar feedback em textos ou ideias, usa o modelo SBI (Situação, Comportamento, Impacto).',
+      prompt: 'Ao dar feedback sobre textos, ideias ou trabalhos, use o modelo SBI: (Situação) contexto específico onde ocorre o problema, (Comportamento) o que exatamente está funcionando ou não, (Impacto) o efeito concreto disso no leitor ou resultado. Evite feedback vago como "está confuso" sem especificar onde e por quê.',
+      tags: ['feedback', 'SBI', 'construtivo']
+    },
+  ],
+
+  thinking: [
+    {
+      id: 'think-01', icon: '🧩',
+      title: 'Pensamento de Sistemas',
+      desc: 'Analisa problemas considerando interdependências, loops de feedback e efeitos não-intencionais.',
+      prompt: 'Ao analisar problemas, aplique pensamento sistêmico: identifique interdependências não óbvias, loops de feedback (o que acontece quando a solução é aplicada em escala?), e consequências de segunda ordem. Evite análises lineares causa-efeito quando o problema é sistêmico.',
+      tags: ['sistemas', 'interdependências', 'complexidade']
+    },
+    {
+      id: 'think-02', icon: '🎯',
+      title: 'Primeiros Princípios',
+      desc: 'Desafia suposições estabelecidas e reconstrói raciocínio a partir do zero quando necessário.',
+      prompt: 'Quando analisar problemas, questione as suposições por baixo da pergunta antes de respondê-la. Pergunte: "isso é verdade porque sempre foi feito assim, ou porque existe uma razão fundamental?" Raciocínio por primeiros princípios é mais trabalhoso, mas produz soluções que análise por analogia nunca encontraria.',
+      tags: ['primeiros princípios', 'suposições', 'raciocínio']
+    },
+    {
+      id: 'think-03', icon: '⚖️',
+      title: 'Análise de Premissas Ocultas',
+      desc: 'Identifica e torna explícitas as premissas implícitas em argumentos e decisões.',
+      prompt: 'Para qualquer argumento, proposta ou decisão, identifique as premissas implícitas que precisam ser verdadeiras para a conclusão funcionar. Premissas ocultas são onde a maioria dos raciocínios falha. Torne-as explícitas para que possam ser testadas ou desafiadas.',
+      tags: ['premissas', 'argumentação', 'lógica']
+    },
+    {
+      id: 'think-04', icon: '🔬',
+      title: 'Pensamento Probabilístico',
+      desc: 'Expressa incerteza em probabilidades, não em certezas vagas como "provavelmente" ou "talvez".',
+      prompt: 'Expresse incerteza com calibração: em vez de "talvez" ou "provavelmente", indique faixas de probabilidade quando relevante ("70% de confiança que...", "entre 2 e 5 anos"). Pensamento probabilístico produz decisões melhores do que ilusão de certeza ou evasão da incerteza.',
+      tags: ['probabilidade', 'incerteza', 'calibração']
+    },
+    {
+      id: 'think-05', icon: '🪞',
+      title: 'Advogado do Diabo Construtivo',
+      desc: 'Para qualquer plano ou ideia, apresenta os melhores argumentos contra antes de validar.',
+      prompt: 'Para qualquer plano, estratégia ou ideia que eu apresentar, antes de concordar ou complementar, apresente os melhores argumentos contrários — não os mais fáceis de refutar, mas os mais difíceis de responder. Advogar o diabo de forma inteligente fortalece as ideias boas e elimina as ruins mais cedo.',
+      tags: ['crítica', 'diabo', 'robustez']
+    },
+    {
+      id: 'think-06', icon: '🗺️',
+      title: 'Mapeamento de Incógnitas',
+      desc: 'Para decisões importantes, separa o que sabemos do que não sabemos do que não sabemos que não sabemos.',
+      prompt: 'Para decisões importantes, aplique o framework de conhecimento: (1) o que sabemos com confiança, (2) o que sabemos que não sabemos — incógnitas mapeadas, (3) o que provavelmente não sabemos que não sabemos — riscos cegos. A terceira categoria é onde as maiores surpresas estão.',
+      tags: ['incógnitas', 'risco', 'mapeamento']
+    },
+    {
+      id: 'think-07', icon: '📐',
+      title: 'Análise de Oportunidade de Custo',
+      desc: 'Para qualquer decisão de alocação de tempo ou recurso, torna explícito o que NÃO está sendo feito.',
+      prompt: 'Para qualquer decisão de alocação — tempo, dinheiro, atenção — torne explícito o custo de oportunidade: o que estou deixando de fazer ao escolher isso? A melhor escolha nem sempre é a mais óbvia — é aquela cuja alternativa desprezada tem valor menor.',
+      tags: ['custo de oportunidade', 'trade-offs', 'alocação']
+    },
+    {
+      id: 'think-08', icon: '🔭',
+      title: 'Previsão com Horizonte Definido',
+      desc: 'Para análises de tendência, separa previsões de curto, médio e longo prazo com premissas explícitas.',
+      prompt: 'Ao fazer previsões ou análises de tendência, sempre segmente por horizonte: curto prazo (1 ano — maior confiança), médio prazo (3 anos — tendências estruturais), longo prazo (5–10 anos — apostas conceituais). Indique explicitamente quais premissas precisam ser verdadeiras em cada horizonte.',
+      tags: ['previsão', 'horizonte', 'tendência']
+    },
+  ],
+
+  creative: [
+    {
+      id: 'creat-01', icon: '🌊',
+      title: 'Modo Expansão de Ideias',
+      desc: 'Para sessões criativas, gera múltiplas direções divergentes antes de convergir para uma solução.',
+      prompt: 'Em sessões criativas, adote modo divergente antes de convergir: gere pelo menos 3 direções radicalmente diferentes para qualquer problema criativo antes de recomendar uma. A melhor ideia raramente é a primeira — mas é fácil parar na primeira que parece boa o suficiente.',
+      tags: ['divergência', 'criatividade', 'expansão']
+    },
+    {
+      id: 'creat-02', icon: '🎲',
+      title: 'Reencadramentos Inesperados',
+      desc: 'Propõe ângulos não óbvios e perspectivas que invertem ou subvertem o problema original.',
+      prompt: 'Para problemas criativos, sempre proponha pelo menos um reencadramento radical: inverta a pergunta, mude o sujeito da ação, remova a restrição que parece mais óbvia ou adicione uma restrição artificial que force pensamento criativo. O ângulo mais interessante raramente é o mais óbvio.',
+      tags: ['reencadramento', 'ângulos', 'inversão']
+    },
+    {
+      id: 'creat-03', icon: '📖',
+      title: 'Narrativa como Estratégia',
+      desc: 'Usa pensamento narrativo para tornar ideias complexas compreensíveis e memoráveis.',
+      prompt: 'Use narrativa como ferramenta estratégica: para qualquer ideia complexa, encontre a história que a torna visceral. Personagem + conflito + resolução é mais poderoso que qualquer slide de bullet points. Me ajude a encontrar a narrativa por baixo de qualquer conceito técnico ou estratégico.',
+      tags: ['narrativa', 'storytelling', 'estratégia']
+    },
+    {
+      id: 'creat-04', icon: '🎨',
+      title: 'Referências Cruzadas de Domínios',
+      desc: 'Conecta o problema atual com soluções encontradas em domínios completamente diferentes.',
+      prompt: 'Ao trabalhar em problemas criativos, conecte com soluções encontradas em domínios não relacionados: como esse problema foi resolvido na biologia, na arquitetura, no esporte, na música? Transferências de padrões entre domínios produzem as inovações mais interessantes.',
+      tags: ['cross-domain', 'analogia', 'transferência']
+    },
+    {
+      id: 'creat-05', icon: '✨',
+      title: 'Qualidade de Execução Visual',
+      desc: 'Para outputs visuais e de design, exige padrão de execução distinto, não apenas funcional.',
+      prompt: 'Para qualquer output visual — interfaces, apresentações, documentos — exija padrão de execução que vai além do funcional: escolhas tipográficas intencionais, hierarquia visual clara, uso de espaço como elemento de design, paleta com ponto de vista. "Funciona" não é o mesmo que "é bom".',
+      tags: ['design', 'visual', 'execução', 'estética']
+    },
+    {
+      id: 'creat-06', icon: '🔮',
+      title: 'Especulação Estruturada',
+      desc: 'Para cenários futuros e inovação, usa o framework "e se..." com rigor analítico.',
+      prompt: 'Para exploração de futuros possíveis ou inovação disruptiva, use especulação estruturada: "e se [premissa atual] deixasse de ser verdade?" Mude uma suposição fundamental e explore as implicações em cadeia. Especulação rigorosa é diferente de devaneio — tem lógica interna consistente.',
+      tags: ['futurismo', 'especulação', 'inovação']
+    },
+    {
+      id: 'creat-07', icon: '🌱',
+      title: 'Ideias em Estado Embrionário',
+      desc: 'Ao explorar ideias incipientes, não critica prematuramente — desenvolve o potencial antes de avaliar.',
+      prompt: 'Quando eu estiver explorando uma ideia que ainda está se formando, adote postura de desenvolvimento, não de avaliação. Encontre o melhor potencial da ideia antes de identificar seus problemas. Crítica prematura mata ideias que poderiam ter se tornado algo notável com mais desenvolvimento.',
+      tags: ['brainstorm', 'desenvolvimento', 'ideia']
+    },
+  ]
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let selectedSkills = new Set();
+
+// ═══════════════════════════════════════════
+// INIT — build all grids
+// ═══════════════════════════════════════════
+function init() {
+  Object.entries(SKILLS).forEach(([cat, skills]) => {
+    const grid = document.getElementById('grid-' + cat);
+    const count = document.getElementById('count-' + cat);
+    if (count) count.textContent = skills.length + ' skills';
+    if (!grid) return;
+    skills.forEach(skill => {
+      grid.appendChild(makeCard(skill, cat));
+    });
+  });
+}
+
+function makeCard(skill, cat) {
+  const div = document.createElement('div');
+  div.className = 'skill-card';
+  div.id = 'card-' + skill.id;
+  div.innerHTML = `
+    <div class="skill-card-top">
+      <div class="skill-icon">${skill.icon}</div>
+      <div class="skill-title">${skill.title}</div>
+      <div class="skill-check">✓</div>
+    </div>
+    <div class="skill-desc">${skill.desc}</div>
+    <div class="skill-preview">${skill.prompt}</div>
+    <div class="skill-footer">
+      <div class="skill-tags">${skill.tags.map(t=>`<span class="skill-tag">${t}</span>`).join('')}</div>
+      <button class="copy-btn" onclick="copySkill(event,'${skill.id}')">Copiar</button>
+    </div>
+  `;
+  div.addEventListener('click', (e) => {
+    if (e.target.classList.contains('copy-btn')) return;
+    toggleSkill(skill.id, cat, skill.title);
+  });
+  return div;
+}
+
+// ═══════════════════════════════════════════
+// TOGGLE SKILL
+// ═══════════════════════════════════════════
+function toggleSkill(id, cat, title) {
+  const card = document.getElementById('card-' + id);
+  if (selectedSkills.has(id)) {
+    selectedSkills.delete(id);
+    card.classList.remove('selected');
+  } else {
+    selectedSkills.add(id);
+    card.classList.add('selected');
+  }
+  updateStackSidebar();
+  updateCounter();
+}
+
+function updateCounter() {
+  document.getElementById('stack-count').textContent = selectedSkills.size;
+}
+
+function updateStackSidebar() {
+  const list = document.getElementById('stack-list');
+  if (selectedSkills.size === 0) {
+    list.innerHTML = '<div class="stack-empty">Nenhuma skill selecionada ainda.<br>Clique nos cards para adicionar.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  selectedSkills.forEach(id => {
+    const skill = findSkill(id);
+    if (!skill) return;
+    const item = document.createElement('div');
+    item.className = 'stack-item';
+    item.innerHTML = `
+      <div class="stack-item-dot"></div>
+      <div style="flex:1">
+        <div class="stack-item-name">${skill.skill.title}</div>
+        <div class="stack-item-cat">${catLabel(skill.cat)}</div>
+      </div>
+      <button class="stack-remove" onclick="removeFromStack('${id}')" title="Remover">×</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function removeFromStack(id) {
+  selectedSkills.delete(id);
+  const card = document.getElementById('card-' + id);
+  if (card) card.classList.remove('selected');
+  updateStackSidebar();
+  updateCounter();
+}
+
+function findSkill(id) {
+  for (const [cat, skills] of Object.entries(SKILLS)) {
+    const s = skills.find(sk => sk.id === id);
+    if (s) return { skill: s, cat };
+  }
+  return null;
+}
+
+function catLabel(cat) {
+  const map = { productivity:'Produtividade', humanization:'Humanização', tech:'Tech & Carreira', communication:'Comunicação', thinking:'Raciocínio', creative:'Criatividade' };
+  return map[cat] || cat;
+}
+
+// ═══════════════════════════════════════════
+// COPY SINGLE SKILL
+// ═══════════════════════════════════════════
+function copySkill(e, id) {
+  e.stopPropagation();
+  const found = findSkill(id);
+  if (!found) return;
+  navigator.clipboard.writeText(found.skill.prompt).then(() => {
+    showToast('Skill copiada para o clipboard ✓');
+  });
+}
+
+// ═══════════════════════════════════════════
+// BUILD EXPORT
+// ═══════════════════════════════════════════
+function buildExport() {
+  if (selectedSkills.size === 0) {
+    showToast('Selecione ao menos uma skill primeiro');
+    return;
+  }
+  const lines = [];
+  lines.push('# Instruções Personalizadas — Claude Customizer');
+  lines.push('# Gerado via Skills Panel · ' + new Date().toLocaleDateString('pt-BR'));
+  lines.push('');
+
+  const byCat = {};
+  selectedSkills.forEach(id => {
+    const found = findSkill(id);
+    if (!found) return;
+    const { skill, cat } = found;
+    if (!byCat[cat]) byCat[cat] = [];
+    byCat[cat].push(skill);
+  });
+
+  Object.entries(byCat).forEach(([cat, skills]) => {
+    lines.push('## ' + catLabel(cat).toUpperCase());
+    skills.forEach(s => {
+      lines.push('');
+      lines.push('### ' + s.title);
+      lines.push(s.prompt);
+    });
+    lines.push('');
+  });
+
+  const text = lines.join('\n');
+  document.getElementById('export-area').value = text;
+  showToast(`Prompt gerado com ${selectedSkills.size} skills ✓`);
+
+  // Scroll to sidebar on mobile
+  document.getElementById('export-area').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function copyExport() {
+  const text = document.getElementById('export-area').value;
+  if (!text.trim()) { showToast('Gere o prompt primeiro'); return; }
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Prompt copiado para o clipboard ✓');
+  });
+}
+
+function clearAll() {
+  selectedSkills.clear();
+  document.querySelectorAll('.skill-card.selected').forEach(c => c.classList.remove('selected'));
+  document.getElementById('export-area').value = '';
+  updateStackSidebar();
+  updateCounter();
+  showToast('Stack limpa');
+}
+
+// ═══════════════════════════════════════════
+// TAB NAVIGATION
+// ═══════════════════════════════════════════
+function switchTab(btn, pageId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const page = document.getElementById('page-' + pageId);
+  if (page) page.classList.add('active');
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ═══════════════════════════════════════════
+// RUN
+// ═══════════════════════════════════════════
+init();
+</script>
+</body>
+</html>

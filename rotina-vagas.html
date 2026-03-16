@@ -12,18 +12,18 @@
    TOKENS & RESET
 ═══════════════════════════════════════════ */
 :root{
-  --bg:#07080c;--bg2:#0d0f16;--bg3:#12141e;--bg4:#181a26;
-  --surface:#1a1c28;--surface2:#1f2130;--surface3:#252838;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);--border3:rgba(255,255,255,0.15);
-  --text:#e8eaf2;--text2:#9499b4;--text3:#5a5f7a;--text4:#383c55;
-  --blue:#3b82f6;--blue2:#60a5fa;--blue-dim:rgba(59,130,246,0.12);
-  --violet:#8b5cf6;--violet2:#a78bfa;--violet-dim:rgba(139,92,246,0.12);
-  --amber:#f59e0b;--amber2:#fbbf24;--amber-dim:rgba(245,158,11,0.12);
-  --green:#10b981;--green2:#34d399;--green-dim:rgba(16,185,129,0.12);
-  --coral:#f43f5e;--coral-dim:rgba(244,63,94,0.12);
-  --cyan:#06b6d4;--cyan-dim:rgba(6,182,212,0.12);
+  --bg:#f4f5f9;--bg2:#eef0f6;--bg3:#e8eaf2;--bg4:#dfe2ef;
+  --surface:#ffffff;--surface2:#f8f9fc;--surface3:#f0f2f8;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.11);--border3:rgba(0,0,0,0.18);
+  --text:#1a1d2e;--text2:#4a5070;--text3:#8890b0;--text4:#b0b8d0;
+  --blue:#2563eb;--blue2:#3b82f6;--blue-dim:rgba(37,99,235,0.10);
+  --violet:#7c3aed;--violet2:#8b5cf6;--violet-dim:rgba(124,58,237,0.10);
+  --amber:#d97706;--amber2:#f59e0b;--amber-dim:rgba(217,119,6,0.10);
+  --green:#059669;--green2:#10b981;--green-dim:rgba(5,150,105,0.10);
+  --coral:#e11d48;--coral-dim:rgba(225,29,72,0.10);
+  --cyan:#0891b2;--cyan-dim:rgba(8,145,178,0.10);
   --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;--r-2xl:28px;
-  --sh:0 4px 24px rgba(0,0,0,0.4);--sh-lg:0 8px 48px rgba(0,0,0,0.5);
+  --sh:0 2px 12px rgba(0,0,0,0.08);--sh-lg:0 8px 40px rgba(0,0,0,0.14);
   --font:'DM Sans',sans-serif;--display:'Syne',sans-serif;--mono:'DM Mono',monospace;
   --nav-h:58px;
 }
@@ -34,34 +34,34 @@ a{color:inherit;text-decoration:none}
 button,select,input,textarea{font-family:var(--font)}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-::selection{background:rgba(139,92,246,0.3);color:var(--text)}
+::-webkit-scrollbar-thumb{background:var(--border3);border-radius:4px}
+::selection{background:rgba(124,58,237,0.18);color:var(--text)}
 
 /* ── AMBIENT LIGHTS ── */
-.ambient{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(120px);opacity:0.15}
+.ambient{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(120px);opacity:0.07}
 .a1{width:600px;height:400px;background:radial-gradient(circle,#3b82f6,transparent 70%);top:-100px;right:-100px}
 .a2{width:400px;height:400px;background:radial-gradient(circle,#8b5cf6,transparent 70%);bottom:-80px;left:-80px}
-.a3{width:300px;height:300px;background:radial-gradient(circle,#06b6d4,transparent 70%);top:40%;left:30%;opacity:0.06}
+.a3{width:300px;height:300px;background:radial-gradient(circle,#06b6d4,transparent 70%);top:40%;left:30%;opacity:0.04}
 body>*:not(.ambient){position:relative;z-index:1}
 
 /* ═══════════════════════════════════════════
    HEADER
 ═══════════════════════════════════════════ */
 .header{
-  background:linear-gradient(135deg,#05060d 0%,#0a0d1a 50%,#080b18 100%);
+  background:linear-gradient(135deg,#ffffff 0%,#f4f6ff 50%,#eef0ff 100%);
   border-bottom:1px solid var(--border);
   padding:32px 40px 28px;
   position:relative;overflow:hidden;
 }
 .header-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.6}
 .header-inner{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:1300px;margin:0 auto}
-.header-brand{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--violet2);margin-bottom:8px;opacity:0.7}
+.header-brand{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--violet);margin-bottom:8px;opacity:0.7}
 .header-title{font-family:var(--display);font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);letter-spacing:-0.03em;line-height:1.1}
-.header-title em{font-style:normal;background:linear-gradient(120deg,#60a5fa,#a78bfa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-title em{font-style:normal;background:linear-gradient(120deg,#2563eb,#7c3aed,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .header-sub{font-size:12px;color:var(--text3);margin-top:6px;font-weight:400}
 .header-badges{display:flex;gap:6px;flex-wrap:wrap}
-.hbadge{font-size:10px;font-weight:500;padding:4px 11px;border-radius:99px;border:1px solid var(--border2);color:var(--text3);background:rgba(255,255,255,0.04);letter-spacing:0.04em}
-.hbadge.live{border-color:rgba(16,185,129,0.4);color:var(--green2);background:var(--green-dim)}
+.hbadge{font-size:10px;font-weight:500;padding:4px 11px;border-radius:99px;border:1px solid var(--border2);color:var(--text3);background:rgba(0,0,0,0.04);letter-spacing:0.04em}
+.hbadge.live{border-color:rgba(5,150,105,0.4);color:var(--green);background:var(--green-dim)}
 .hbadge.live::before{content:'●';margin-right:5px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
@@ -69,7 +69,7 @@ body>*:not(.ambient){position:relative;z-index:1}
    NAV
 ═══════════════════════════════════════════ */
 .nav{
-  background:rgba(13,15,22,0.95);backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:200;
   height:var(--nav-h);
@@ -84,7 +84,7 @@ body>*:not(.ambient){position:relative;z-index:1}
 }
 .tab svg{width:14px;height:14px;flex-shrink:0}
 .tab:hover{color:var(--text2)}
-.tab.active{color:var(--text);border-bottom-color:var(--violet2)}
+.tab.active{color:var(--text);border-bottom-color:var(--violet)}
 .tab .tcount{font-size:9px;background:var(--violet);color:#fff;border-radius:99px;padding:1px 6px;font-weight:700}
 .nav-sep{width:1px;height:20px;background:var(--border);margin:0 4px;flex-shrink:0}
 
@@ -105,7 +105,7 @@ body>*:not(.ambient){position:relative;z-index:1}
 }
 .card-accent::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--violet),var(--cyan))}
 .card-title{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--text2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.card-title svg{width:14px;height:14px;color:var(--violet2)}
+.card-title svg{width:14px;height:14px;color:var(--violet)}
 
 /* ═══════════════════════════════════════════
    FORM ELEMENTS
@@ -148,28 +148,28 @@ body>*:not(.ambient){position:relative;z-index:1}
    BADGES & TAGS
 ═══════════════════════════════════════════ */
 .badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap}
-.b-blue{background:var(--blue-dim);color:var(--blue2);border:1px solid rgba(59,130,246,0.2)}
-.b-violet{background:var(--violet-dim);color:var(--violet2);border:1px solid rgba(139,92,246,0.2)}
-.b-green{background:var(--green-dim);color:var(--green2);border:1px solid rgba(16,185,129,0.2)}
-.b-amber{background:var(--amber-dim);color:var(--amber2);border:1px solid rgba(245,158,11,0.2)}
-.b-coral{background:var(--coral-dim);color:#fb7185;border:1px solid rgba(244,63,94,0.2)}
-.b-cyan{background:var(--cyan-dim);color:#22d3ee;border:1px solid rgba(6,182,212,0.2)}
-.b-gray{background:rgba(255,255,255,0.06);color:var(--text2);border:1px solid var(--border)}
+.b-blue{background:var(--blue-dim);color:var(--blue2);border:1px solid rgba(37,99,235,0.2)}
+.b-violet{background:var(--violet-dim);color:var(--violet2);border:1px solid rgba(124,58,237,0.2)}
+.b-green{background:var(--green-dim);color:var(--green2);border:1px solid rgba(5,150,105,0.2)}
+.b-amber{background:var(--amber-dim);color:var(--amber2);border:1px solid rgba(217,119,6,0.2)}
+.b-coral{background:var(--coral-dim);color:#e11d48;border:1px solid rgba(225,29,72,0.2)}
+.b-cyan{background:var(--cyan-dim);color:#0891b2;border:1px solid rgba(8,145,178,0.2)}
+.b-gray{background:rgba(0,0,0,0.05);color:var(--text2);border:1px solid var(--border)}
 
 /* Status */
-.st-enviado{background:rgba(59,130,246,0.15);color:var(--blue2);border:1px solid rgba(59,130,246,0.25)}
-.st-respondeu{background:rgba(16,185,129,0.15);color:var(--green2);border:1px solid rgba(16,185,129,0.25)}
-.st-entrevista{background:rgba(245,158,11,0.15);color:var(--amber2);border:1px solid rgba(245,158,11,0.25)}
-.st-oferta{background:rgba(139,92,246,0.15);color:var(--violet2);border:1px solid rgba(139,92,246,0.25)}
-.st-negado{background:rgba(244,63,94,0.15);color:#fb7185;border:1px solid rgba(244,63,94,0.25)}
-.st-pendente{background:rgba(255,255,255,0.06);color:var(--text2);border:1px solid var(--border2)}
+.st-enviado{background:rgba(37,99,235,0.1);color:#1d4ed8;border:1px solid rgba(37,99,235,0.2)}
+.st-respondeu{background:rgba(5,150,105,0.1);color:#047857;border:1px solid rgba(5,150,105,0.2)}
+.st-entrevista{background:rgba(217,119,6,0.1);color:#b45309;border:1px solid rgba(217,119,6,0.2)}
+.st-oferta{background:rgba(124,58,237,0.1);color:#6d28d9;border:1px solid rgba(124,58,237,0.2)}
+.st-negado{background:rgba(225,29,72,0.1);color:#be123c;border:1px solid rgba(225,29,72,0.2)}
+.st-pendente{background:rgba(0,0,0,0.05);color:var(--text2);border:1px solid var(--border2)}
 
 /* ═══════════════════════════════════════════
    SECTION HEADER
 ═══════════════════════════════════════════ */
 .sec-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
 .sec-title{font-family:var(--display);font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
-.sec-title svg{width:18px;height:18px;color:var(--violet2)}
+.sec-title svg{width:18px;height:18px;color:var(--violet)}
 .sec-sub{font-size:12px;color:var(--text3);margin-top:3px}
 
 /* ═══════════════════════════════════════════
@@ -192,7 +192,7 @@ body>*:not(.ambient){position:relative;z-index:1}
 .kpi.k-amber::after{background:var(--amber)}
 .kpi.k-cyan::after{background:var(--cyan)}
 .kpi-n{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-0.04em;line-height:1}
-.kn-blue{color:var(--blue2)}.kn-violet{color:var(--violet2)}.kn-green{color:var(--green2)}.kn-amber{color:var(--amber2)}.kn-cyan{color:#22d3ee}
+.kn-blue{color:#1d4ed8}.kn-violet{color:#6d28d9}.kn-green{color:#047857}.kn-amber{color:#b45309}.kn-cyan{color:#0e7490}
 .kpi-l{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);margin-top:4px}
 .kpi-trend{font-size:10px;color:var(--text3);margin-top:2px}
 
@@ -230,10 +230,10 @@ body>*:not(.ambient){position:relative;z-index:1}
   padding:12px 14px;border-radius:var(--r-md);border-left:3px solid;
   background:var(--bg3);font-size:12px;line-height:1.6;color:var(--text2);
 }
-.ins-violet{border-color:var(--violet);background:rgba(139,92,246,0.05)}
-.ins-blue{border-color:var(--blue);background:rgba(59,130,246,0.05)}
-.ins-green{border-color:var(--green);background:rgba(16,185,129,0.05)}
-.ins-amber{border-color:var(--amber);background:rgba(245,158,11,0.05)}
+.ins-violet{border-color:var(--violet);background:rgba(124,58,237,0.05)}
+.ins-blue{border-color:var(--blue);background:rgba(37,99,235,0.05)}
+.ins-green{border-color:var(--green);background:rgba(5,150,105,0.05)}
+.ins-amber{border-color:var(--amber);background:rgba(217,119,6,0.05)}
 .insight-item strong{color:var(--text);font-weight:600}
 
 /* Chart mini */
@@ -534,7 +534,7 @@ body>*:not(.ambient){position:relative;z-index:1}
 ═══════════════════════════════════════════ */
 .mode-tabs{display:flex;gap:2px;background:var(--bg3);border-radius:var(--r-md);padding:3px;width:fit-content;margin-bottom:16px}
 .mode-tab{padding:7px 16px;border-radius:10px;border:none;background:transparent;color:var(--text3);font-size:11.5px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:var(--display);letter-spacing:0.04em}
-.mode-tab.active{background:var(--surface3);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3)}
+.mode-tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.12)}
 
 /* ═══════════════════════════════════════════
    RESPONSIVE
@@ -568,6 +568,43 @@ body>*:not(.ambient){position:relative;z-index:1}
   body{background:#fff;color:#000}
   .cv-preview{border:none;box-shadow:none;padding:0;color:#2d3142}
 }
+
+/* ═══════════════════════════════════════════
+   DARK MODE OVERRIDE
+═══════════════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#07080c;--bg2:#0d0f16;--bg3:#12141e;--bg4:#181a26;
+  --surface:#1a1c28;--surface2:#1f2130;--surface3:#252838;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);--border3:rgba(255,255,255,0.15);
+  --text:#e8eaf2;--text2:#9499b4;--text3:#5a5f7a;--text4:#383c55;
+  --blue:#3b82f6;--blue2:#60a5fa;--blue-dim:rgba(59,130,246,0.12);
+  --violet:#8b5cf6;--violet2:#a78bfa;--violet-dim:rgba(139,92,246,0.12);
+  --amber:#f59e0b;--amber2:#fbbf24;--amber-dim:rgba(245,158,11,0.12);
+  --green:#10b981;--green2:#34d399;--green-dim:rgba(16,185,129,0.12);
+  --coral:#f43f5e;--coral-dim:rgba(244,63,94,0.12);
+  --cyan:#06b6d4;--cyan-dim:rgba(6,182,212,0.12);
+  --sh:0 4px 24px rgba(0,0,0,0.4);--sh-lg:0 8px 48px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] .header{ background:linear-gradient(135deg,#05060d 0%,#0a0d1a 50%,#080b18 100%); }
+[data-theme="dark"] .nav{ background:rgba(13,15,22,0.95); }
+[data-theme="dark"] .hbadge{ background:rgba(255,255,255,0.04); }
+[data-theme="dark"] .kn-blue{color:#60a5fa}[data-theme="dark"] .kn-violet{color:#a78bfa}
+[data-theme="dark"] .kn-green{color:#34d399}[data-theme="dark"] .kn-amber{color:#fbbf24}
+[data-theme="dark"] .st-enviado{background:rgba(59,130,246,0.15);color:#60a5fa;border-color:rgba(59,130,246,0.25)}
+[data-theme="dark"] .st-respondeu{background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.25)}
+[data-theme="dark"] .st-entrevista{background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.25)}
+[data-theme="dark"] .st-oferta{background:rgba(139,92,246,0.15);color:#a78bfa;border-color:rgba(139,92,246,0.25)}
+[data-theme="dark"] .st-negado{background:rgba(244,63,94,0.15);color:#fb7185;border-color:rgba(244,63,94,0.25)}
+[data-theme="dark"] .st-pendente{background:rgba(255,255,255,0.06);color:#9499b4;border-color:rgba(255,255,255,0.1)}
+[data-theme="dark"] .b-gray{background:rgba(255,255,255,0.06);color:#9499b4;border-color:rgba(255,255,255,0.1)}
+[data-theme="dark"] .b-blue{color:#60a5fa;border-color:rgba(59,130,246,0.2);background:rgba(59,130,246,0.12)}
+[data-theme="dark"] .b-amber{color:#fbbf24;border-color:rgba(245,158,11,0.2);background:rgba(245,158,11,0.12)}
+[data-theme="dark"] .b-cyan{color:#22d3ee;border-color:rgba(6,182,212,0.2);background:rgba(6,182,212,0.12)}
+[data-theme="dark"] .mode-tab.active{background:var(--surface3);box-shadow:0 1px 4px rgba(0,0,0,0.3)}
+[data-theme="dark"] .ins-violet{background:rgba(139,92,246,0.05)}
+[data-theme="dark"] .ins-blue{background:rgba(59,130,246,0.05)}
+[data-theme="dark"] .ins-green{background:rgba(16,185,129,0.05)}
+[data-theme="dark"] .ins-amber{background:rgba(245,158,11,0.05)}
 </style>
 </head>
 <body>
@@ -591,22 +628,42 @@ body>*:not(.ambient){position:relative;z-index:1}
       <div class="hbadge live">Insights ao vivo</div>
       <div class="hbadge" id="hb-total">0 candidaturas</div>
       <div class="hbadge">6 módulos ativos</div>
-      <div class="hbadge">CV com IA</div>
+      <button class="hbadge" id="theme-toggle" onclick="toggleTheme()" style="cursor:pointer;border:none;background:rgba(0,0,0,0.04)">☀ Claro</button>
+      <button class="hbadge" onclick="exportBackup()" style="cursor:pointer;border:none;background:rgba(0,0,0,0.04)">↓ Backup</button>
+      <label class="hbadge" style="cursor:pointer;background:rgba(0,0,0,0.04)">↑ Importar
+        <input type="file" accept=".json" style="display:none" onchange="importBackup(event)">
+      </label>
+      <button class="hbadge" id="apikey-btn" onclick="toggleApiKeyPanel()" style="cursor:pointer;border:none;background:rgba(0,0,0,0.04)">🔑 API Key</button>
     </div>
   </div>
-</header>
+  <!-- Painel de API Key — fica escondido abaixo do header -->
+  <div id="apikey-panel" style="display:none;position:absolute;top:100%;right:40px;z-index:300;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px 16px;box-shadow:var(--sh-lg);min-width:340px">
+    <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+      <span>🔑</span> Chave da API Anthropic
+      <button onclick="toggleApiKeyPanel()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px">✕</button>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.5">
+      Sua chave fica salva <strong>só neste navegador</strong> — nunca é enviada para nenhum servidor além da Anthropic.
+      Obtenha em <a href="https://console.anthropic.com" target="_blank" style="color:var(--violet)">console.anthropic.com</a>
+    </div>
+    <div style="display:flex;gap:6px">
+      <input id="in-apikey" class="finput" type="password" placeholder="sk-ant-api03-..." style="flex:1;font-size:12px;padding:8px 10px">
+      <button class="btn btn-primary btn-sm" onclick="saveApiKey()"><i data-lucide="check"></i> Salvar</button>
+    </div>
+    <div id="apikey-status" style="font-size:10px;margin-top:6px;color:var(--text3)"></div>
+  </div>
 
 <!-- ═══════════════════════════════════════
      NAV
 ═══════════════════════════════════════ -->
 <nav class="nav no-print">
   <div class="nav-inner">
-    <button class="tab active" onclick="showTab('dash')">
-      <i data-lucide="layout-dashboard"></i> Dashboard
-    </button>
-    <div class="nav-sep"></div>
     <button class="tab" onclick="showTab('pitches')">
       <i data-lucide="send"></i> Pitches
+    </button>
+    <div class="nav-sep"></div>
+    <button class="tab" onclick="showTab('busca')">
+      <i data-lucide="search"></i> Buscas
     </button>
     <div class="nav-sep"></div>
     <button class="tab" onclick="showTab('crm')">
@@ -614,16 +671,16 @@ body>*:not(.ambient){position:relative;z-index:1}
       <span class="tcount" id="crm-count">0</span>
     </button>
     <div class="nav-sep"></div>
-    <button class="tab" onclick="showTab('historico')">
-      <i data-lucide="clock"></i> Histórico
-    </button>
-    <div class="nav-sep"></div>
     <button class="tab" onclick="showTab('cv')">
       <i data-lucide="file-text"></i> CV com IA
     </button>
     <div class="nav-sep"></div>
-    <button class="tab" onclick="showTab('busca')">
-      <i data-lucide="search"></i> Buscas
+    <button class="tab" onclick="showTab('historico')">
+      <i data-lucide="clock"></i> Histórico
+    </button>
+    <div class="nav-sep"></div>
+    <button class="tab" onclick="showTab('dash')">
+      <i data-lucide="layout-dashboard"></i> Dashboard
     </button>
   </div>
 </nav>
@@ -631,7 +688,7 @@ body>*:not(.ambient){position:relative;z-index:1}
 <!-- ════════════════════════════════════════════════════════
      TAB 1 — DASHBOARD
 ════════════════════════════════════════════════════════ -->
-<section id="tab-dash" class="section active">
+<section id="tab-dash" class="section">
 
   <div id="followup-alerts"></div>
 
@@ -701,7 +758,7 @@ body>*:not(.ambient){position:relative;z-index:1}
 <!-- ════════════════════════════════════════════════════════
      TAB 2 — PITCHES
 ════════════════════════════════════════════════════════ -->
-<section id="tab-pitches" class="section">
+<section id="tab-pitches" class="section active">
 
   <div class="sec-header">
     <div>
@@ -713,6 +770,34 @@ body>*:not(.ambient){position:relative;z-index:1}
   <div class="pitch-layout">
     <!-- Controls -->
     <div>
+      <!-- Image Upload Card -->
+      <div class="card card-accent" style="margin-bottom:14px;border-color:rgba(124,58,237,0.25)">
+        <div class="card-title"><i data-lucide="scan-text"></i> Preencher pelo Print da Vaga
+          <span style="margin-left:auto;font-size:9px;font-weight:500;color:var(--text3);text-transform:none;letter-spacing:0">Ctrl+V também funciona</span>
+        </div>
+        <div id="upload-zone" tabindex="0"
+          style="border:2px dashed var(--border2);border-radius:var(--r-md);padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg2);position:relative;outline:none">
+          <i data-lucide="upload-cloud" style="width:30px;height:30px;color:var(--violet);margin-bottom:8px;display:block;margin-left:auto;margin-right:auto"></i>
+          <div style="font-size:12px;font-weight:600;color:var(--text2)">Clique, arraste ou cole (Ctrl+V)</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:5px">JPG · PNG · WebP · Print do LinkedIn/Glassdoor</div>
+          <div style="font-size:9px;color:var(--text4);margin-top:3px">A IA extrai cargo, empresa, recrutador e link</div>
+        </div>
+        <input type="file" id="vaga-img-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" onchange="handleVagaImage(event)">
+        <div id="vaga-img-preview" style="display:none;margin-top:10px">
+          <div style="position:relative">
+            <img id="vaga-img-thumb" style="width:100%;max-height:180px;object-fit:cover;border-radius:var(--r-md);border:1px solid var(--border);display:block">
+            <div id="vaga-extract-loading" style="display:none;position:absolute;inset:0;background:rgba(255,255,255,0.85);border-radius:var(--r-md);align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--text2)">
+              <div class="news-spinner"></div> Extraindo com IA...
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap">
+            <div id="vaga-img-status" style="font-size:11px;color:var(--text3);flex:1;min-width:0"></div>
+            <button class="btn btn-sm" onclick="clearVagaImage()"><i data-lucide="x"></i> Remover</button>
+            <button class="btn btn-sm btn-primary" id="btn-add-crm" style="display:none" onclick="addCurrentToCRM()"><i data-lucide="plus-circle"></i> Adicionar ao CRM</button>
+          </div>
+        </div>
+      </div>
+
       <div class="card card-accent">
         <div class="card-title"><i data-lucide="settings-2"></i> Configurar Pitch</div>
         <div style="display:flex;flex-direction:column;gap:12px">
@@ -742,6 +827,15 @@ body>*:not(.ambient){position:relative;z-index:1}
           <button class="send-btn" onclick="logSend('li')"><i data-lucide="linkedin" style="width:11px;height:11px"></i> LinkedIn</button>
           <button class="send-btn" onclick="logSend('wa')"><i data-lucide="message-circle" style="width:11px;height:11px"></i> WhatsApp</button>
           <button class="send-btn" onclick="logSend('em')"><i data-lucide="mail" style="width:11px;height:11px"></i> E-mail</button>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+            <label style="font-size:9px;color:var(--text3);white-space:nowrap">Follow-up em</label>
+            <select id="in-followup-days" class="crm-select" style="padding:4px 8px;font-size:11px">
+              <option value="3">3 dias</option>
+              <option value="5" selected>5 dias</option>
+              <option value="7">7 dias</option>
+              <option value="14">14 dias</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -968,6 +1062,28 @@ body>*:not(.ambient){position:relative;z-index:1}
   </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     CUSTOM DIALOG (substitui alert/confirm)
+════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="dialog-overlay" style="display:none" onclick="dialogCancel()">
+  <div class="modal" style="max-width:420px" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="dialog-title">Confirmar</div>
+      <button class="ibt" onclick="dialogCancel()"><i data-lucide="x"></i></button>
+    </div>
+    <div id="dialog-body" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px"></div>
+    <div class="modal-footer" style="gap:8px">
+      <button class="btn" id="dialog-cancel-btn" onclick="dialogCancel()">Cancelar</button>
+      <button class="btn btn-primary" id="dialog-ok-btn" onclick="dialogOk()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TOAST NOTIFICATION
+════════════════════════════════════════════════════════ -->
+<div id="toast-container" style="position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none"></div>
+
 <script>
 /* ╔═══════════════════════════════════════════════════════╗
    ║  CAREER OS — Flávio Guedes                           ║
@@ -1115,18 +1231,335 @@ function doCopy(id,enc,btn){
 function save(){ localStorage.setItem('cos_name',gv('in-name')); localStorage.setItem('cos_role',gv('in-role')); }
 function saveVaga(){ localStorage.setItem('cos_vagaurl',gv('in-vagaurl')); }
 
+/* ═══════════════════════════════════════════
+   TOAST & CUSTOM DIALOG
+═══════════════════════════════════════════ */
+function toast(msg, type='info', duration=3000){
+  const c = document.getElementById('toast-container');
+  const colors = {info:'var(--blue)',success:'var(--green)',warn:'var(--amber)',error:'var(--coral)'};
+  const t = document.createElement('div');
+  t.style.cssText = `pointer-events:auto;background:var(--surface);border:1px solid ${colors[type]||colors.info};border-left:3px solid ${colors[type]||colors.info};border-radius:var(--r-md);padding:10px 14px;font-size:12px;color:var(--text2);box-shadow:var(--sh-lg);max-width:320px;animation:fadeIn 0.2s ease;line-height:1.5`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, duration);
+}
+
+let _dialogResolve = null;
+function showDialog(title, body, okLabel='Confirmar', showCancel=true){
+  return new Promise(resolve=>{
+    _dialogResolve = resolve;
+    document.getElementById('dialog-title').textContent = title;
+    document.getElementById('dialog-body').innerHTML = body;
+    document.getElementById('dialog-ok-btn').textContent = okLabel;
+    document.getElementById('dialog-cancel-btn').style.display = showCancel ? '' : 'none';
+    document.getElementById('dialog-overlay').style.display = 'flex';
+    lucide.createIcons();
+  });
+}
+function dialogOk(){ document.getElementById('dialog-overlay').style.display='none'; if(_dialogResolve) _dialogResolve(true); }
+function dialogCancel(){ document.getElementById('dialog-overlay').style.display='none'; if(_dialogResolve) _dialogResolve(false); }
+
+/* ═══════════════════════════════════════════
+   API KEY — salva só no localStorage deste browser
+   Nunca vai para nenhum servidor além da Anthropic.
+═══════════════════════════════════════════ */
+function getApiKey(){ return localStorage.getItem('cos_apikey')||''; }
+
+function toggleApiKeyPanel(){
+  const panel = document.getElementById('apikey-panel');
+  const visible = panel.style.display !== 'none';
+  panel.style.display = visible ? 'none' : 'block';
+  if(!visible){
+    const k = getApiKey();
+    const inp = document.getElementById('in-apikey');
+    if(k) inp.value = k;
+    inp.focus();
+    updateApiKeyStatus();
+  }
+}
+
+function saveApiKey(){
+  const k = document.getElementById('in-apikey').value.trim();
+  if(!k.startsWith('sk-ant-')){ toast('Chave inválida — deve começar com sk-ant-','warn'); return; }
+  localStorage.setItem('cos_apikey', k);
+  updateApiKeyStatus();
+  document.getElementById('apikey-panel').style.display = 'none';
+  toast('API Key salva! As funções de IA estão ativas.','success');
+}
+
+function updateApiKeyStatus(){
+  const k = getApiKey();
+  const btn = document.getElementById('apikey-btn');
+  const status = document.getElementById('apikey-status');
+  if(k){
+    if(btn) btn.textContent = '🔑 Key ✓';
+    if(status) status.innerHTML = '<span style="color:var(--green)">✓ Chave configurada</span>';
+  } else {
+    if(btn) btn.textContent = '🔑 API Key';
+    if(status) status.textContent = 'Nenhuma chave configurada.';
+  }
+}
+
+// Fecha o painel ao clicar fora
+document.addEventListener('click', e=>{
+  const panel = document.getElementById('apikey-panel');
+  const btn   = document.getElementById('apikey-btn');
+  if(panel && !panel.contains(e.target) && e.target !== btn){
+    panel.style.display = 'none';
+  }
+});
+
+async function callClaude(messages, maxTokens=600){
+  const key = getApiKey();
+  if(!key){
+    // Abre o painel de configuração automaticamente
+    document.getElementById('apikey-panel').style.display = 'block';
+    document.getElementById('in-apikey').focus();
+    throw new Error('NO_KEY');
+  }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({ model:'claude-sonnet-4-5', max_tokens:maxTokens, messages })
+  });
+  if(res.status === 429) throw new Error('RATE_LIMIT');
+  if(res.status === 401) throw new Error('AUTH');
+  if(!res.ok){
+    // Tenta extrair a mensagem real de erro da Anthropic
+    try{
+      const errData = await res.json();
+      const detail = errData?.error?.message || '';
+      throw new Error('HTTP_' + res.status + (detail ? ': ' + detail : ''));
+    } catch(jsonErr){
+      if(jsonErr.message.startsWith('HTTP_')) throw jsonErr;
+      throw new Error('HTTP_' + res.status);
+    }
+  }
+  const data = await res.json();
+  return data.content?.find(b => b.type === 'text')?.text || '';
+}
+
+function apiErrorMsg(err){
+  if(err.message === 'NO_KEY')     return 'Configure sua API Key clicando em 🔑 API Key no topo da página.';
+  if(err.message === 'RATE_LIMIT') return 'Limite de requisições atingido. Aguarde 1 minuto e tente novamente.';
+  if(err.message === 'AUTH')       return 'API Key inválida ou expirada. Clique em 🔑 API Key e atualize.';
+  if(err.message?.startsWith('HTTP_')) return `Erro da API — ${err.message.replace('HTTP_','')}`;
+  if(err.name === 'SyntaxError')   return 'Resposta inesperada da IA. Tente novamente.';
+  return 'Erro de conexão. Verifique sua internet.';
+}
+
+/* ═══════════════════════════════════════════
+   THEME TOGGLE
+═══════════════════════════════════════════ */
+function toggleTheme(){
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  if(isDark){
+    document.documentElement.removeAttribute('data-theme');
+    document.getElementById('theme-toggle').textContent='☀ Claro';
+    localStorage.setItem('cos_theme','light');
+  } else {
+    document.documentElement.setAttribute('data-theme','dark');
+    document.getElementById('theme-toggle').textContent='🌙 Escuro';
+    localStorage.setItem('cos_theme','dark');
+  }
+}
+function loadTheme(){
+  const t = localStorage.getItem('cos_theme');
+  if(t==='dark'){
+    document.documentElement.setAttribute('data-theme','dark');
+    const btn = document.getElementById('theme-toggle');
+    if(btn) btn.textContent='🌙 Escuro';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   BACKUP / RESTORE JSON
+═══════════════════════════════════════════ */
+function exportBackup(){
+  const data = { version:2, ts:Date.now(), crm:crmDB, pitches:loadPitches() };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `career-os-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  toast('Backup exportado com sucesso!','success');
+}
+async function importBackup(evt){
+  const file = evt.target.files[0]; if(!file) return;
+  const text = await file.text();
+  try{
+    const data = JSON.parse(text);
+    if(!data.crm) throw new Error('Formato inválido');
+    const ok = await showDialog('Importar Backup','Esta ação <strong>substituirá</strong> todos os dados atuais pelos do arquivo. Deseja continuar?','Importar e substituir');
+    if(!ok){ evt.target.value=''; return; }
+    crmDB = data.crm||[];
+    if(data.pitches) savePitches(data.pitches);
+    saveDB(); updateCount(); renderCRM(); refreshDashboard();
+    toast(`Backup importado: ${crmDB.length} candidaturas restauradas`,'success');
+  } catch(e){ toast('Arquivo inválido ou corrompido.','error'); }
+  evt.target.value='';
+}
+
+/* ═══════════════════════════════════════════
+   IMAGE UPLOAD — EXTRAÇÃO DE DADOS DA VAGA
+═══════════════════════════════════════════ */
+let lastExtracted = null; // guarda dados extraídos para homologação
+
+function initUploadZone(){
+  const zone = document.getElementById('upload-zone');
+  if(!zone) return;
+
+  // Click to open
+  zone.addEventListener('click', ()=> document.getElementById('vaga-img-input').click());
+
+  // Keyboard (Enter/Space)
+  zone.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); document.getElementById('vaga-img-input').click(); }});
+
+  // Drag & Drop
+  zone.addEventListener('dragover',  e=>{ e.preventDefault(); zone.style.borderColor='var(--violet)'; zone.style.background='rgba(124,58,237,0.06)'; });
+  zone.addEventListener('dragleave', ()=>{ zone.style.borderColor=''; zone.style.background=''; });
+  zone.addEventListener('drop', e=>{
+    e.preventDefault(); zone.style.borderColor=''; zone.style.background='';
+    const file = e.dataTransfer.files[0];
+    if(file && file.type.startsWith('image/')) processVagaFile(file);
+    else toast('Somente imagens são aceitas (JPG, PNG, WebP)','warn');
+  });
+
+  // Paste global (Ctrl+V com imagem)
+  document.addEventListener('paste', e=>{
+    const items = Array.from(e.clipboardData?.items||[]);
+    const img = items.find(i=>i.type.startsWith('image/'));
+    if(img){
+      const file = img.getAsFile();
+      if(file) processVagaFile(file);
+    }
+  });
+}
+
+function handleVagaImage(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){
+    toast('Formato não suportado. Use JPG, PNG ou WebP.','warn'); return;
+  }
+  processVagaFile(file);
+}
+
+function processVagaFile(file){
+  const reader = new FileReader();
+  reader.onerror = ()=> toast('Erro ao ler o arquivo.','error');
+  reader.onload = async (e)=>{
+    const dataUrl = e.target.result;
+    const base64 = dataUrl.split(',')[1];
+    // Anthropic aceita: image/jpeg, image/png, image/gif, image/webp
+    const typeMap = { 'image/jpg':'image/jpeg', 'image/jpeg':'image/jpeg', 'image/png':'image/png', 'image/gif':'image/gif', 'image/webp':'image/webp' };
+    const mediaType = typeMap[file.type] || typeMap[dataUrl.split(';')[0].split(':')[1]] || 'image/png';
+
+    // Mostrar preview
+    document.getElementById('vaga-img-thumb').src = dataUrl;
+    document.getElementById('vaga-img-preview').style.display = 'block';
+    document.getElementById('upload-zone').style.display = 'none';
+    document.getElementById('vaga-img-status').textContent = '';
+    document.getElementById('btn-add-crm').style.display = 'none';
+    const loadEl = document.getElementById('vaga-extract-loading');
+    loadEl.style.display = 'flex';
+
+    try{
+      const raw = await callClaude([{
+        role:'user',
+        content:[
+          { type:'image', source:{ type:'base64', media_type:mediaType, data:base64 } },
+          { type:'text', text:`Analise esta imagem de uma vaga de emprego. Extraia os dados visíveis.
+Retorne APENAS JSON válido, sem markdown, sem explicação:
+{"recruiter_name":"nome do recrutador se visível, senão vazio","role":"título exato do cargo","company":"nome da empresa","url":"URL da vaga se visível, senão vazio","description":"resumo da vaga em 1-2 frases se disponível, senão vazio"}
+Se algum campo não estiver visível, use string vazia. Priorize precisão no título do cargo.` }
+        ]
+      }], 600);
+
+      const clean = raw.replace(/```json|```/g,'').trim();
+      const parsed = JSON.parse(clean);
+      lastExtracted = parsed;
+
+      // Preencher campos
+      if(parsed.recruiter_name) document.getElementById('in-name').value = parsed.recruiter_name;
+      if(parsed.role)           document.getElementById('in-role').value = parsed.role;
+      if(parsed.company)        document.getElementById('in-company').value = parsed.company;
+      if(parsed.url)            { document.getElementById('in-vagaurl').value = parsed.url; saveVaga(); }
+      render(); save();
+
+      const filled = [parsed.recruiter_name&&'recrutador',parsed.role&&'cargo',parsed.company&&'empresa',parsed.url&&'link'].filter(Boolean);
+      document.getElementById('vaga-img-status').innerHTML =
+        `<span style="color:var(--green)">✓ Extraído: ${filled.join(', ')||'nenhum campo identificado'}</span>`;
+      if(parsed.role||parsed.company)
+        document.getElementById('btn-add-crm').style.display = '';
+      toast(`Dados extraídos: ${filled.join(', ')||'verifique manualmente'}`, 'success');
+
+    } catch(err){
+      const msg = apiErrorMsg(err);
+      document.getElementById('vaga-img-status').innerHTML = `<span style="color:var(--coral)">✗ ${msg}</span>`;
+      toast(msg,'error',5000);
+    } finally {
+      loadEl.style.display = 'none';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearVagaImage(){
+  document.getElementById('vaga-img-preview').style.display = 'none';
+  document.getElementById('upload-zone').style.display = 'block';
+  document.getElementById('vaga-img-input').value = '';
+  document.getElementById('vaga-img-status').textContent = '';
+  document.getElementById('btn-add-crm').style.display = 'none';
+  lastExtracted = null;
+}
+
+function addCurrentToCRM(){
+  const role    = gv('in-role')    || (lastExtracted?.role||'');
+  const company = gv('in-company') || (lastExtracted?.company||'');
+  const url     = gv('in-vagaurl') || (lastExtracted?.url||'');
+  if(!role && !company){ toast('Preencha pelo menos cargo ou empresa antes de adicionar ao CRM.','warn'); return; }
+  const exists = crmDB.find(e=>e.role===role && e.company===company);
+  if(exists){ toast(`"${role}" em "${company}" já existe no CRM.`,'warn'); return; }
+  const followupDays = parseInt(document.getElementById('in-followup-days')?.value||'5');
+  const followupTs   = Date.now() + followupDays*24*60*60*1000;
+  crmDB.unshift({
+    id:Date.now(), company:company||'—', role:role||'—',
+    seg:activeSeg.id, segLabel:activeSeg.label, ch:'li',
+    status:'pendente', date:now(), ts:tsNow(),
+    vagaUrl:url, notes:lastExtracted?.description||'', salary:'',
+    followupTs, followupDays,
+    history:[{status:'pendente',date:now(),note:'Criado via print da vaga (extração por IA)'}]
+  });
+  saveDB(); updateCount();
+  document.getElementById('btn-add-crm').style.display='none';
+  document.getElementById('vaga-img-status').innerHTML += ' <span style="color:var(--green)">· Adicionado ao CRM ✓</span>';
+  toast(`"${role}" adicionado ao CRM com follow-up em ${followupDays} dias`,'success');
+}
+
 function logSend(ch){
   const name=gv('in-name'), role=gv('in-role'), vagaUrl=gv('in-vagaurl')||localStorage.getItem('cos_vagaurl')||'';
-  if(!name&&!role){ alert('Preencha pelo menos o nome ou cargo.'); return; }
+  if(!name&&!role){ toast('Preencha pelo menos o nome do recrutador ou cargo.','warn'); return; }
+  const followupDays = parseInt(document.getElementById('in-followup-days')?.value||'5');
+  const followupTs   = Date.now() + followupDays*24*60*60*1000;
   const pitches=loadPitches();
-  pitches.unshift({ id:Date.now(), name:name||'—', role:role||'—', seg:activeSeg.id, segLabel:activeSeg.label, ch, status:'enviado', date:now(), ts:tsNow(), vagaUrl });
+  pitches.unshift({ id:Date.now(), name:name||'—', role:role||'—', seg:activeSeg.id, segLabel:activeSeg.label, ch, status:'enviado', date:now(), ts:tsNow(), vagaUrl, followupDays });
   savePitches(pitches);
   updateCount();
-  // also create CRM entry if not exists
-  const exists = crmDB.find(e=>e.role===role&&e.company===(gv('in-company')||name));
+  // Auto-homologação no CRM
+  const company = gv('in-company')||name;
+  const exists = crmDB.find(e=>e.role===role&&e.company===company);
   if(!exists && role){
-    crmDB.unshift({ id:Date.now()+1, company:gv('in-company')||name||'—', role:role||'—', seg:activeSeg.id, segLabel:activeSeg.label, ch, status:'enviado', date:now(), ts:tsNow(), vagaUrl, notes:'', salary:'', history:[{status:'enviado',date:now(),note:'Pitch enviado via '+CH_LABELS[ch]}] });
+    crmDB.unshift({ id:Date.now()+1, company:company||'—', role:role||'—', seg:activeSeg.id, segLabel:activeSeg.label, ch, status:'enviado', date:now(), ts:tsNow(), vagaUrl, notes:'', salary:'', followupTs, followupDays, history:[{status:'enviado',date:now(),note:'Pitch enviado via '+CH_LABELS[ch]}] });
     saveDB();
+    toast(`Candidatura registrada no CRM · follow-up em ${followupDays}d`,'success');
+  } else {
+    toast(`Pitch registrado · ${CH_LABELS[ch]}`,'success');
   }
   updateCount();
   const btn=event.target.closest('button');
@@ -1176,7 +1609,7 @@ function closeModalOutside(e){ if(e.target===document.getElementById('modal')) c
 
 function saveEntry(){
   const company=gv('m-company'), role=gv('m-role');
-  if(!company&&!role){ alert('Preencha empresa ou cargo.'); return; }
+  if(!company&&!role){ toast('Preencha empresa ou cargo.','warn'); return; }
   if(editingId){
     const idx=crmDB.findIndex(e=>e.id===editingId);
     if(idx>-1){
@@ -1190,6 +1623,7 @@ function saveEntry(){
     crmDB.unshift({ id:Date.now(), company:company||'—', role:role||'—', seg:gv('m-seg'), segLabel:SEGS.find(s=>s.id===gv('m-seg'))?.label||'', ch:gv('m-ch')||'li', status:gv('m-status')||'pendente', date:now(), ts:tsNow(), vagaUrl:gv('m-url'), notes:gv('m-notes')||'', salary:gv('m-salary')||'', history:[{status:gv('m-status')||'pendente',date:now(),note:'Candidatura criada'}] });
   }
   saveDB(); updateCount(); renderCRM(); closeModal();
+  toast(editingId?'Candidatura atualizada.':'Candidatura adicionada ao CRM.','success');
 }
 
 function updateStatus(id,val){
@@ -1198,7 +1632,16 @@ function updateStatus(id,val){
     const hist=[...(crmDB[idx].history||[])];
     hist.push({status:val,date:now(),note:'Status atualizado'});
     crmDB[idx]={...crmDB[idx],status:val,history:hist};
-    saveDB(); renderCRM(); refreshDashboard();
+    saveDB();
+    // in-place: só atualiza a classe do badge sem re-render total
+    const stCls={enviado:'st-enviado',respondeu:'st-respondeu',entrevista:'st-entrevista',oferta:'st-oferta',negado:'st-negado',pendente:'st-pendente'};
+    const sel = document.querySelector(`select[data-crmid="${id}"]`);
+    if(sel){
+      sel.className = `st-sel badge ${stCls[val]||''}`;
+    } else {
+      renderCRM(); // fallback
+    }
+    refreshDashboard();
   }
 }
 
@@ -1207,8 +1650,11 @@ function deleteEntry(id){
   saveDB(); updateCount(); renderCRM();
 }
 
-function clearAll(){
-  if(confirm('Apagar todo o histórico do CRM?')){ crmDB=[]; saveDB(); updateCount(); renderCRM(); }
+async function clearAll(){
+  const ok = await showDialog('Apagar CRM','Isso vai <strong>apagar todas as candidaturas</strong> permanentemente. Esta ação não pode ser desfeita.','Apagar tudo');
+  if(!ok) return;
+  crmDB=[]; saveDB(); updateCount(); renderCRM();
+  toast('CRM apagado.','warn');
 }
 
 function exportCSV(){
@@ -1310,16 +1756,19 @@ function renderCRM(){
     const dot=`<span style="width:7px;height:7px;border-radius:50%;background:${seg?.color||'#888'};flex-shrink:0;display:inline-block"></span>`;
     const stOpts=ST_OPTS.map(o=>`<option value="${o}"${e.status===o?' selected':''}>${o.charAt(0).toUpperCase()+o.slice(1)}</option>`).join('');
     const daysAgo=daysBetween(e.ts||0);
-    const followupAlert=e.status==='enviado'&&daysAgo>=3?`<span class="badge b-amber" style="font-size:9px">${daysAgo}d sem resposta</span>`:'';
-    const vagaLink=e.vagaUrl?`<a href="${e.vagaUrl}" target="_blank" title="Ver vaga" style="color:var(--violet2)"><i data-lucide="external-link" style="width:11px;height:11px"></i></a>`:'';
+    const fuDays = e.followupDays||5;
+    const fuOverdue = e.status==='enviado' && daysAgo>=fuDays;
+    const followupAlert=fuOverdue?`<span class="badge b-amber" style="font-size:9px">${daysAgo}d · follow-up!</span>`:'';
+    const fuBadge = e.followupTs && e.status==='pendente' ? `<span class="badge b-cyan" style="font-size:9px" title="Follow-up agendado">⏰ ${new Date(e.followupTs).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</span>` : '';
+    const vagaLink=e.vagaUrl?`<a href="${e.vagaUrl}" target="_blank" title="Ver vaga" style="color:var(--violet)"><i data-lucide="external-link" style="width:11px;height:11px"></i></a>`:'';
     return `<div class="crm-row">
       <div class="crm-cell" style="flex-direction:column;align-items:flex-start;gap:2px">
         <div style="display:flex;align-items:center;gap:6px"><span class="crm-name">${e.company}</span>${vagaLink}</div>
-        <div class="crm-company">${e.role} ${followupAlert}</div>
+        <div class="crm-company">${e.role} ${followupAlert}${fuBadge}</div>
       </div>
       <div class="crm-cell">${dot} <span style="font-size:11px;color:var(--text2)">${e.segLabel||'—'}</span></div>
       <div class="crm-cell"><i data-lucide="${chIcon[e.ch]||'send'}" style="width:12px;height:12px;color:var(--text3)"></i> <span style="font-size:11px">${CH_LABELS[e.ch]||e.ch}</span></div>
-      <div class="crm-cell"><select class="st-sel badge ${stCls[e.status]||''}" onchange="updateStatus(${e.id},this.value)">${stOpts}</select></div>
+      <div class="crm-cell"><select class="st-sel badge ${stCls[e.status]||''}" data-crmid="${e.id}" onchange="updateStatus(${e.id},this.value)">${stOpts}</select></div>
       <div class="crm-cell" style="font-family:var(--mono);font-size:10px;color:var(--text3)">${e.date}</div>
       <div class="crm-cell" style="font-size:11px;color:var(--text3)">${e.salary?'R$'+Number(e.salary).toLocaleString('pt-BR'):'—'}</div>
       <div class="crm-cell" style="font-size:10px;color:var(--text3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.notes||'—'}</div>
@@ -1515,26 +1964,17 @@ const NEWS_SOURCES=[
 ];
 
 async function refreshNews(){
-  document.getElementById('news-feed').innerHTML='<div class="news-loading"><div class="news-spinner"></div> Buscando notícias relevantes com IA...</div>';
+  document.getElementById('news-feed').innerHTML='<div class="news-loading"><div class="news-spinner"></div> Buscando notícias com IA...</div>';
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:1000,
-        messages:[{role:'user',content:`Você é um curador de notícias para Flávio Guedes, profissional de Marketing/Criação/Produto em busca de emprego no Brasil.
+    const raw = await callClaude([{role:'user',content:`Você é um curador de notícias para Flávio Guedes, profissional de Marketing/Criação/Produto em busca de emprego no Brasil.
 
 Gere 8 manchetes realistas e relevantes do mercado brasileiro de hoje (${new Date().toLocaleDateString('pt-BR')}) sobre: Marketing Digital, IA aplicada ao marketing, UX/Produto, Growth, Criação de conteúdo, tendências do mercado de trabalho de marketing.
 
 Retorne APENAS JSON sem markdown:
 [{"headline":"manchete aqui","source":"veículo aqui","cat":"categoria","url":"#","insight":"frase curta de relevância para ele"}]
 
-Fontes realistas: Meio & Mensagem, Proxxima, Think with Google, MIT Technology Review, HubSpot, Product Hunt, Exame, InfoMoney, etc.`}]
-      })
-    });
-    const data=await res.json();
-    const raw=data.content?.find(b=>b.type==='text')?.text||'[]';
-    const clean=raw.replace(/```json|```/g,'').trim();
-    const news=JSON.parse(clean);
+Fontes realistas: Meio & Mensagem, Proxxima, Think with Google, MIT Technology Review, HubSpot, Product Hunt, Exame, InfoMoney, etc.`}], 1000);
+    const news = JSON.parse(raw.replace(/```json|```/g,'').trim());
     const colors={Marketing:'var(--blue)',Conteúdo:'var(--violet)','IA':'var(--cyan)',UX:'var(--green)',Growth:'var(--amber)',Criação:'var(--coral)'};
     document.getElementById('news-feed').innerHTML=news.map(n=>`
       <a class="news-item" href="${n.url||'#'}" target="_blank" rel="noopener">
@@ -1545,8 +1985,10 @@ Fontes realistas: Meio & Mensagem, Proxxima, Think with Google, MIT Technology R
           <div class="news-meta"><span>${n.insight}</span></div>
         </div>
       </a>`).join('');
-  }catch(e){
-    document.getElementById('news-feed').innerHTML=`<div style="padding:16px;font-size:12px;color:var(--text3)">Erro ao carregar notícias. <button class="btn btn-sm" onclick="refreshNews()">Tentar novamente</button></div>`;
+  } catch(e){
+    const msg = apiErrorMsg(e);
+    document.getElementById('news-feed').innerHTML=`<div style="padding:16px;font-size:12px;color:var(--text3)">${msg} <button class="btn btn-sm" style="margin-top:8px" onclick="refreshNews()"><i data-lucide="refresh-cw"></i> Tentar novamente</button></div>`;
+    lucide.createIcons();
   }
 }
 
@@ -1557,34 +1999,21 @@ async function refreshInsights(){
   const taxa=total?Math.round(((resp+entrev)/total)*100):0;
   const needFu=crmDB.filter(e=>e.status==='enviado'&&daysBetween(e.ts||0)>=3).length;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:800,
-        messages:[{role:'user',content:`Você é o consultor de carreira de Flávio Guedes (Marketing/Criação, +10 anos, Rio de Janeiro).
+    const raw = await callClaude([{role:'user',content:`Você é o consultor de carreira de Flávio Guedes (Marketing/Criação, +10 anos, Rio de Janeiro).
 
 Dados do pipeline atual:
-- ${total} candidaturas
-- ${resp} respostas, ${entrev} entrevistas
-- Taxa de resposta: ${taxa}%
-- ${needFu} follow-ups pendentes
+- ${total} candidaturas · ${resp} respostas · ${entrev} entrevistas · taxa ${taxa}% · ${needFu} follow-ups pendentes
 
-Contexto: Flávio está se candidatando a vagas de Head de Marketing, Creative Strategist, Head de Conteúdo, e está explorando pivô para Produto. Experiências em AstraZeneca, Colgate, BCW Brasil.
+Contexto: Flávio se candidata a Head de Marketing, Creative Strategist, Head de Conteúdo, e explora pivô para Produto. Experiências em AstraZeneca, Colgate, BCW Brasil.
 
 Gere 5 insights estratégicos práticos e personalizados. Retorne APENAS JSON sem markdown:
-[{"text":"insight aqui","type":"violet|blue|green|amber","emoji":"emoji"}]`}]
-      })
-    });
-    const data=await res.json();
-    const raw=data.content?.find(b=>b.type==='text')?.text||'[]';
-    const clean=raw.replace(/```json|```/g,'').trim();
-    const insights=JSON.parse(clean);
+[{"text":"insight aqui","type":"violet|blue|green|amber","emoji":"emoji"}]`}], 800);
+    const insights = JSON.parse(raw.replace(/```json|```/g,'').trim());
     document.getElementById('insights-list').innerHTML=insights.map(i=>`
-      <div class="insight-item ins-${i.type}">
-        ${i.emoji} ${i.text}
-      </div>`).join('');
-  }catch(e){
-    document.getElementById('insights-list').innerHTML=`<div style="padding:12px;font-size:12px;color:var(--text3)">Erro ao gerar insights.</div>`;
+      <div class="insight-item ins-${i.type}">${i.emoji} ${i.text}</div>`).join('');
+  } catch(e){
+    const msg = apiErrorMsg(e);
+    document.getElementById('insights-list').innerHTML=`<div style="padding:12px;font-size:12px;color:var(--text3)">${msg}</div>`;
   }
 }
 
@@ -1635,15 +2064,11 @@ function resetCV(){ cvData=JSON.parse(JSON.stringify(CV_BASE)); cvAdapted=false;
 
 async function generateCV(){
   const role=gv('cv-role'), company=gv('cv-company'), seg=gv('cv-seg'), kw=gv('cv-kw');
-  if(!role&&!seg){ alert('Preencha ao menos cargo-alvo ou segmento.'); return; }
+  if(!role&&!seg){ toast('Preencha ao menos cargo-alvo ou segmento.','warn'); return; }
   document.getElementById('cv-preview').innerHTML='<div class="ai-loading"><div class="ai-spinner"></div> Adaptando com IA...</div>';
   document.getElementById('cv-notes').innerHTML='<div class="ai-loading"><div class="ai-spinner"></div> Gerando análise...</div>';
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:1800,
-        messages:[{role:'user',content:`Adapte o CV abaixo para a vaga especificada. Retorne APENAS JSON válido sem markdown.
+    const raw = await callClaude([{role:'user',content:`Adapte o CV abaixo para a vaga especificada. Retorne APENAS JSON válido sem markdown.
 
 VAGA: ${role||'não especificado'}
 EMPRESA: ${company||'não especificada'}
@@ -1660,25 +2085,23 @@ INSTRUÇÕES:
 5. Não invente experiências
 6. Inclua campo "notes" explicando adaptações em português
 
-Retorne APENAS o JSON.`}]
-      })
-    });
-    const data=await res.json();
-    const raw=data.content?.find(b=>b.type==='text')?.text||'';
-    const clean=raw.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
+Retorne APENAS o JSON.`}], 1800);
+    const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
     cvData=parsed; cvAdapted=true;
-    renderCVPreview(cvData,role||(company||seg));
+    renderCVPreview(cvData, role||(company||seg));
     document.getElementById('cv-notes').innerHTML=parsed.notes||'CV adaptado com sucesso.';
-  }catch(e){
-    document.getElementById('cv-preview').innerHTML='<p style="color:var(--coral);padding:20px;font-size:12px">Erro ao gerar CV.</p>';
-    document.getElementById('cv-notes').innerHTML='Falha na chamada de IA.';
+    toast('CV adaptado com sucesso!','success');
+  } catch(e){
+    const msg = apiErrorMsg(e);
+    document.getElementById('cv-preview').innerHTML=`<p style="color:var(--coral);padding:20px;font-size:12px">${msg}</p>`;
+    document.getElementById('cv-notes').innerHTML=msg;
+    toast(msg,'error',5000);
   }
 }
 
 function copyCV(){
   const text=document.getElementById('cv-preview').innerText;
-  navigator.clipboard.writeText(text).then(()=>{ alert('CV copiado!'); });
+  navigator.clipboard.writeText(text).then(()=>{ toast('CV copiado para a área de transferência!','success'); });
 }
 function exportPDF(){
   const role=gv('cv-role')||'cv';
@@ -1834,9 +2257,18 @@ function renderBoolContent(){
     }));
     html+='</div>';
 
-    html+=boolGrp('Remoto — Brasil','cyan');
+    html+=boolGrp('Produto — Por Cidade · SP e Rio','prod');
     html+='<div class="bool-grid">';
-    ['Head de Marketing','Creative Strategist','Head de Conteúdo','Growth Marketing','Product Marketing Manager','AI Product Manager'].forEach(cargo=>{
+    [{n:'Product Manager',t:'bc-prod'},{n:'Product Marketing Manager',t:'bc-prod'},{n:'AI Product Manager',t:'bc-prod'},{n:'Head de Produto',t:'bc-prod'},{n:'Head de UX',t:'bc-prod'},{n:'Growth Product Manager',t:'bc-blue'}].forEach(cargo=>{
+      [{nome:'São Paulo',geoId:'100446943',loc:'São Paulo'},{nome:'Rio de Janeiro',geoId:'102676203',loc:'Rio de Janeiro'}].forEach(c=>{
+        html+=boolCard(`${cargo.n} · ${c.nome}`,cargo.n,jobUrl(cargo.n,c.geoId,c.loc,tpr,wt,jt),[cargo.n,c.nome],cargo.t);
+      });
+    });
+    html+='</div>';
+
+    html+=boolGrp('Remoto — Brasil · Marketing & Produto','cyan');
+    html+='<div class="bool-grid">';
+    ['Head de Marketing','Creative Strategist','Head de Conteúdo','Growth Marketing','Product Marketing Manager','AI Product Manager','Product Manager','Head de Produto'].forEach(cargo=>{
       html+=boolCard(`${cargo} · Remoto`,cargo,jobUrl(cargo,'106057199','Brasil',tpr,'2',jt),[cargo,'Remoto'],'bc-blue');
     });
     html+='</div>';
@@ -1908,11 +2340,11 @@ function initCanvas(){
     nodes.forEach(n=>{ n.x+=n.vx; n.y+=n.vy; if(n.x<0||n.x>W)n.vx*=-1; if(n.y<0||n.y>H)n.vy*=-1; });
     for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
       const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<120){ const a=(1-d/120)*.2,g=ctx.createLinearGradient(nodes[i].x,nodes[i].y,nodes[j].x,nodes[j].y);
-        g.addColorStop(0,`rgba(139,92,246,${a})`); g.addColorStop(1,`rgba(96,165,250,${a})`);
+      if(d<120){ const a=(1-d/120)*.15,g=ctx.createLinearGradient(nodes[i].x,nodes[i].y,nodes[j].x,nodes[j].y);
+        g.addColorStop(0,`rgba(124,58,237,${a})`); g.addColorStop(1,`rgba(37,99,235,${a})`);
         ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y); ctx.strokeStyle=g; ctx.lineWidth=1; ctx.stroke(); }
     }
-    nodes.forEach(n=>{ const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3); g.addColorStop(0,'rgba(148,163,184,.5)'); g.addColorStop(1,'rgba(148,163,184,0)'); ctx.beginPath(); ctx.arc(n.x,n.y,n.r*2.5,0,Math.PI*2); ctx.fillStyle=g; ctx.fill(); });
+    nodes.forEach(n=>{ const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3); g.addColorStop(0,'rgba(100,120,200,.3)'); g.addColorStop(1,'rgba(100,120,200,0)'); ctx.beginPath(); ctx.arc(n.x,n.y,n.r*2.5,0,Math.PI*2); ctx.fillStyle=g; ctx.fill(); });
     requestAnimationFrame(draw);
   }
   resize(); window.addEventListener('resize',resize); draw();
@@ -1923,6 +2355,7 @@ function initCanvas(){
 ═══════════════════════════════════════════ */
 function init(){
   loadDB();
+  loadTheme();
   // restore persisted values
   const n=localStorage.getItem('cos_name'),r=localStorage.getItem('cos_role'),sid=localStorage.getItem('cos_seg');
   if(n) document.getElementById('in-name').value=n;
@@ -1941,6 +2374,9 @@ function init(){
   refreshNews();
   setTimeout(refreshInsights, 800);
   initCanvas();
+  initUploadZone();
+  updateApiKeyStatus();
+  showTab('pitches');
   lucide.createIcons();
 }
 

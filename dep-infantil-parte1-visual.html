@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crianças IBMÉIER 2026 · v4 — Parte 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+/* ─────────── TOKENS ─────────── */
+:root{
+  --bg:#fffbf5;--bg2:#fff8ed;--bg3:#fff2dc;--bg4:#ffe8d6;
+  --card:#ffffff;
+  --sun:#ff8c00;--sun2:#ffa733;--sun3:#ffcb80;--sun4:#ffe5b4;
+  --lime:#5cb85c;--lime2:#7dce7d;--lime3:#c6f0c6;
+  --sky:#3b9de8;--sky2:#68b5f5;--sky3:#c5e3ff;
+  --grape:#8e4ec6;--grape2:#b07ee0;--grape3:#e5d3ff;
+  --coral:#e8485a;--coral2:#f07080;--coral3:#ffd5da;
+  --gold:#e6b800;--gold2:#ffd633;--gold3:#fff3b0;
+  --teal:#00a896;--teal2:#33c5b5;--teal3:#c0f0eb;
+  --pink:#e01a8c;--pink2:#f05cae;--pink3:#ffd6ef;
+  --text:#1e0e00;--text2:#4a3020;--muted:#8a6050;
+  --border:rgba(255,140,0,.16);--border2:rgba(255,140,0,.38);
+  --sh:0 4px 22px rgba(255,120,0,.10);
+  --sh2:0 8px 36px rgba(255,120,0,.18);
+  --f:'Nunito',sans-serif;--fd:'Fredoka One',cursive;
+  --r:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--f);overflow-x:hidden;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--sun3);border-radius:3px;}
+
+/* ─────────── CONFETTI BG ─────────── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(circle at 8% 20%,rgba(255,200,80,.09) 0,transparent 55%),
+    radial-gradient(circle at 92% 10%,rgba(92,184,92,.08) 0,transparent 50%),
+    radial-gradient(circle at 50% 85%,rgba(59,157,232,.07) 0,transparent 55%);
+}
+body>*{position:relative;z-index:1;}
+
+/* ─────────── HERO ─────────── */
+.hero{
+  position:relative;height:340px;overflow:hidden;
+  background:#1a0a00;
+}
+/* Main hero image */
+.hero-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 30%;
+  transition:transform 8s ease;
+}
+.hero:hover .hero-bg{transform:scale(1.04);}
+
+/* Gradient overlay – heavier at bottom so text is readable */
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(26,10,0,.10) 0%,
+    rgba(26,10,0,.28) 40%,
+    rgba(255,140,0,.45) 70%,
+    rgba(255,240,200,.97) 100%
+  );
+}
+
+/* Floating cloud shapes (pure CSS) */
+.hero-cloud{position:absolute;border-radius:50%;filter:blur(30px);pointer-events:none;}
+.hero-cloud.c1{width:260px;height:180px;background:rgba(255,203,80,.22);top:-40px;left:-30px;}
+.hero-cloud.c2{width:180px;height:130px;background:rgba(92,184,92,.15);top:20px;right:60px;}
+
+/* Logo + title block */
+.hero-content{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.2rem 2rem .9rem;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;
+}
+.hero-left{}
+.hero-badge-row{display:flex;gap:.45rem;margin-bottom:.55rem;flex-wrap:wrap;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.3rem;
+  border-radius:20px;padding:3px 11px;font-size:.64rem;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.hb-sun{background:var(--gold2);color:#5a3000;}
+.hb-lime{background:var(--lime3);color:#1e5a1e;border:1.5px solid var(--lime2);}
+
+.hero-title{
+  font-family:var(--fd);
+  font-size:clamp(1.8rem,5vw,2.6rem);
+  color:#fff;
+  line-height:1.05;
+  text-shadow:0 2px 12px rgba(0,0,0,.35);
+  letter-spacing:.01em;
+}
+.hero-title .hl{color:var(--gold2);}
+.hero-sub{
+  font-size:.75rem;font-weight:700;
+  color:rgba(255,255,255,.88);
+  margin-top:.3rem;
+  text-shadow:0 1px 6px rgba(0,0,0,.3);
+}
+
+/* Stats row in hero */
+.hero-stats{display:flex;gap:.65rem;flex-wrap:wrap;}
+.hstat{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(4px);
+  border-radius:12px;padding:.4rem .8rem;
+  box-shadow:var(--sh);text-align:center;
+}
+.hstat-n{font-family:var(--fd);font-size:1.35rem;color:var(--sun);line-height:1;}
+.hstat-l{font-size:.57rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+
+/* ─────────── PHOTO STRIP ─────────── */
+.strip-wrap{
+  background:var(--bg2);
+  border-top:3px solid var(--sun3);
+  border-bottom:3px solid var(--sun3);
+  padding:.7rem 0;
+  overflow:hidden;
+  position:relative;
+}
+/* Fade edges */
+.strip-wrap::before,.strip-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none;
+}
+.strip-wrap::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent);}
+.strip-wrap::after{right:0;background:linear-gradient(270deg,var(--bg2),transparent);}
+
+.strip-track{
+  display:flex;gap:.6rem;
+  width:max-content;
+  animation:scrollStrip 35s linear infinite;
+}
+.strip-track:hover{animation-play-state:paused;}
+@keyframes scrollStrip{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
+
+.strip-item{
+  position:relative;flex-shrink:0;
+  width:130px;height:90px;
+  border-radius:12px;overflow:hidden;
+  border:2px solid var(--border2);
+  box-shadow:0 3px 12px rgba(0,0,0,.12);
+  cursor:pointer;
+}
+.strip-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .35s ease;
+  display:block;
+}
+.strip-item:hover img{transform:scale(1.1);}
+
+/* Gradient overlay on strip items */
+.strip-item-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.6) 100%);
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:flex-end;padding:.4rem;
+}
+.strip-item:hover .strip-item-overlay{opacity:1;}
+.strip-item-label{font-size:.6rem;font-weight:800;color:#fff;line-height:1.2;}
+
+/* ─────────── GLOW LINE ─────────── */
+.glow-line{
+  height:4px;
+  background:linear-gradient(90deg,var(--lime2),var(--sun2),var(--sky2),var(--grape2),var(--coral2),var(--sun2),var(--lime2));
+  background-size:300% 100%;
+  animation:rainbowShift 5s linear infinite;
+}
+@keyframes rainbowShift{to{background-position:300% 0;}}
+
+/* ─────────── NAV ─────────── */
+.nav{
+  background:var(--card);
+  border-bottom:3px solid var(--sun3);
+  padding:0 1.2rem;
+  display:flex;align-items:stretch;
+  overflow-x:auto;scrollbar-width:none;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  position:sticky;top:0;z-index:100;
+}
+.nav::-webkit-scrollbar{display:none;}
+.ntab{
+  background:none;border:none;
+  border-bottom:3px solid transparent;
+  padding:.72rem .85rem;
+  font-family:var(--f);font-size:.7rem;font-weight:800;
+  letter-spacing:.02em;color:var(--muted);
+  cursor:pointer;
+  display:flex;align-items:center;gap:.3rem;
+  transition:color .2s,border-color .2s;
+  white-space:nowrap;
+  position:relative;top:3px;
+}
+.ntab:hover{color:var(--text2);}
+.ntab.active{color:var(--sun);border-bottom-color:var(--sun);}
+.tab-em{font-size:.85rem;}
+.tab-badge{
+  display:inline-block;background:var(--coral);color:#fff;
+  font-size:7px;font-weight:900;padding:1px 4px;
+  border-radius:8px;margin-left:2px;
+}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:.45rem;padding-left:.8rem;flex-shrink:0;}
+.date-pill{background:var(--bg3);border-radius:20px;padding:.28rem .8rem;font-size:.65rem;font-weight:800;color:var(--sun);}
+
+/* ─────────── PAGES ─────────── */
+.page{display:none;padding:1.5rem 1.8rem;max-width:1400px;margin:0 auto;animation:pIn .3s ease;}
+.page.active{display:block;}
+@keyframes pIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:700px){.page{padding:1rem .9rem;}}
+
+/* ─────────── CARDS ─────────── */
+.card{
+  background:var(--card);
+  border:2px solid var(--border);
+  border-radius:var(--r);
+  box-shadow:var(--sh);
+  transition:border-color .22s,box-shadow .22s,transform .18s;
+  overflow:hidden;
+}
+.card:hover{border-color:var(--border2);box-shadow:var(--sh2);transform:translateY(-2px);}
+
+/* Color-accent top bar on cards */
+.card-bar{height:5px;width:100%;flex-shrink:0;}
+
+/* ─────────── SECTION HEADERS ─────────── */
+.seh{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.4rem;gap:1rem;flex-wrap:wrap;}
+.sey{
+  font-size:.64rem;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sun);
+  margin-bottom:.2rem;display:flex;align-items:center;gap:.45rem;
+}
+.sey-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--sun),var(--gold2));flex-shrink:0;}
+.set{font-family:var(--fd);font-size:1.45rem;color:var(--text);line-height:1.1;}
+
+/* ─────────── BADGES ─────────── */
+.badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:.63rem;font-weight:900;padding:3px 9px;
+  border-radius:20px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+}
+.b-sun{background:#fff2d6;color:#9b5000;border:1.5px solid var(--sun3);}
+.b-lime{background:var(--lime3);color:#1a5c1a;border:1.5px solid var(--lime2);}
+.b-sky{background:var(--sky3);color:#174d8a;border:1.5px solid var(--sky2);}
+.b-grape{background:var(--grape3);color:#52207a;border:1.5px solid var(--grape2);}
+.b-coral{background:var(--coral3);color:#8a1020;border:1.5px solid var(--coral2);}
+.b-gold{background:var(--gold3);color:#6b4800;border:1.5px solid var(--gold2);}
+.b-teal{background:var(--teal3);color:#004d45;border:1.5px solid var(--teal2);}
+.b-pink{background:var(--pink3);color:#6a006a;border:1.5px solid var(--pink2);}
+.b-gray{background:#f3ede8;color:var(--muted);border:1.5px solid #ddd;}
+
+/* ─────────── KPIs ─────────── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
+.kpi{padding:1.3rem;text-align:center;position:relative;}
+.kpi .card-bar{position:absolute;top:0;left:0;right:0;border-radius:var(--r) var(--r) 0 0;}
+.kpi-icon{font-size:2rem;margin-bottom:.45rem;display:block;}
+.kpi-n{font-family:var(--fd);font-size:2.1rem;color:var(--sun);line-height:1;margin-bottom:.15rem;}
+.kpi-l{font-size:.68rem;color:var(--muted);font-weight:800;}
+
+/* ─────────── NEXT EVENT ─────────── */
+.next-ev{
+  padding:1.2rem;display:flex;gap:1rem;align-items:flex-start;
+  margin-bottom:1.5rem;
+  background:linear-gradient(135deg,#fffaf0,#fff5e0);
+}
+.nev-bar{width:5px;border-radius:3px;background:linear-gradient(to bottom,var(--sun),var(--gold2));align-self:stretch;flex-shrink:0;}
+.nev-tag{font-size:.62rem;font-weight:900;letter-spacing:.16em;color:var(--sun);text-transform:uppercase;display:flex;align-items:center;gap:.35rem;margin-bottom:.4rem;}
+.nev-pulse{width:7px;height:7px;border-radius:50%;background:var(--sun);animation:pulse 2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,140,0,.5);}70%{box-shadow:0 0 0 8px rgba(255,140,0,0);}100%{box-shadow:0 0 0 0 rgba(255,140,0,0);}}
+.nev-title{font-family:var(--fd);font-size:1.1rem;color:var(--text);margin-bottom:.22rem;}
+.nev-meta{font-size:.71rem;color:var(--text2);}
+.nev-date-box{text-align:center;flex-shrink:0;background:#fff;border-radius:14px;padding:.5rem .85rem;box-shadow:var(--sh);}
+.nev-day{font-family:var(--fd);font-size:2rem;color:var(--sun);line-height:1;}
+.nev-mo{font-size:.6rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;}
+
+/* ─────────── CAMPAIGN CARD ─────────── */
+.camp-card{
+  padding:1.5rem;
+  background:linear-gradient(135deg,#fffbf0,#fff6e0);
+  border-color:var(--border2);
+  margin-bottom:1.5rem;
+}
+.camp-title{font-family:var(--fd);font-size:1.25rem;color:var(--text);margin-bottom:.3rem;}
+.camp-verse{font-size:.75rem;color:var(--sun);font-style:italic;}
+
+/* Progress */
+.prog-wrap{width:190px;height:11px;background:var(--bg3);border-radius:6px;overflow:hidden;border:1.5px solid var(--border);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--lime2));border-radius:6px;transition:width .9s cubic-bezier(.34,1.56,.64,1);}
+
+/* Study grid */
+.studies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;}
+@media(max-width:700px){.studies-grid{grid-template-columns:1fr 1fr;}}
+.study-item{
+  background:var(--bg3);border:2px solid var(--border);
+  border-radius:14px;padding:.9rem;
+  cursor:pointer;transition:border-color .2s,background .2s,transform .18s;
+}
+.study-item:hover{border-color:var(--border2);background:#fff8ee;transform:translateY(-1px);}
+.study-item.done{border-color:var(--lime2);background:#edfaf1;}
+.si-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;}
+.si-num{font-size:.63rem;font-weight:900;letter-spacing:.14em;color:var(--sun);text-transform:uppercase;}
+.si-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:all .22s;}
+.si-check.on{background:var(--lime);border-color:var(--lime);box-shadow:0 0 8px rgba(92,184,92,.4);}
+.si-check svg{width:10px;height:10px;stroke-width:3;}
+.si-title{font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:.12rem;line-height:1.3;}
+.si-base{font-size:.64rem;color:var(--muted);}
+.si-songs{margin-top:.45rem;padding-top:.45rem;border-top:1.5px dashed var(--border2);display:flex;flex-direction:column;gap:.18rem;}
+.si-song-pill{font-size:.62rem;color:var(--text2);display:flex;align-items:center;gap:.3rem;}
+.si-song-pill::before{content:'♪';color:var(--sun);font-size:.7rem;}
+
+/* Cultos nos Lares mini cards */
+.lares-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem;}
+.lare-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:1rem;transition:border-color .2s,transform .18s;}
+.lare-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.lare-wk{font-size:.63rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem;}
+.lare-title{font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.12rem;}
+.lare-ref{font-size:.66rem;color:var(--muted);}
+.lare-song{font-size:.68rem;color:var(--text2);margin-top:.4rem;font-style:italic;}
+.lare-song::before{content:'🎵 ';}
+
+/* Photo gallery full page */
+.gallery-hero{
+  position:relative;border-radius:var(--r);overflow:hidden;
+  height:320px;margin-bottom:1.5rem;
+  background:#111;
+}
+.gallery-hero-img{width:100%;height:100%;object-fit:cover;transition:transform 6s ease;}
+.gallery-hero:hover .gallery-hero-img{transform:scale(1.04);}
+.gallery-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.6) 100%);
+}
+.gallery-hero-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.2rem 1.5rem;color:#fff;
+}
+.gallery-hero-caption h2{font-family:var(--fd);font-size:1.6rem;line-height:1.1;}
+.gallery-hero-caption p{font-size:.75rem;opacity:.85;margin-top:.25rem;}
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:.7rem;
+}
+.photo-thumb{
+  position:relative;border-radius:12px;overflow:hidden;
+  aspect-ratio:3/4;cursor:pointer;
+  border:2px solid var(--border);
+  box-shadow:var(--sh);
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.photo-thumb:hover{transform:translateY(-3px) scale(1.02);box-shadow:var(--sh2);border-color:var(--border2);}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;}
+.photo-thumb:hover img{transform:scale(1.08);}
+
+/* Text overlay on photos */
+.photo-thumb-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.72) 100%);
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:flex-end;
+  padding:.55rem;
+}
+.photo-thumb:hover .photo-thumb-overlay{opacity:1;}
+.photo-thumb-label{font-size:.62rem;font-weight:800;color:#fff;line-height:1.3;}
+
+/* ─────────── PLANEJAMENTO ─────────── */
+.plan-months{display:flex;flex-direction:column;gap:1.6rem;}
+.month-label{
+  font-family:var(--fd);font-size:1.1rem;color:var(--sun);
+  margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;
+}
+.month-label::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--border2),transparent);border-radius:1px;}
+.ev-row{
+  display:grid;grid-template-columns:56px 1fr auto;gap:.8rem;
+  align-items:center;padding:.7rem 1rem;
+  background:var(--card);border:2px solid var(--border);border-radius:12px;
+  transition:border-color .2s,background .2s;
+}
+.ev-row:hover{border-color:var(--border2);background:#fffaf0;}
+.ev-day{font-family:var(--fd);font-size:1.3rem;color:var(--sun);line-height:1;}
+.ev-wd{font-size:.62rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.ev-title{font-size:.8rem;font-weight:800;color:var(--text);}
+.ev-local{font-size:.66rem;color:var(--muted);margin-top:2px;}
+
+/* ─────────── CULTOS ─────────── */
+.culto-weeks{display:flex;flex-direction:column;gap:1rem;}
+.wk-h{
+  display:grid;grid-template-columns:80px 1fr 1fr;
+  background:var(--card);border:2px solid var(--border);border-radius:var(--r);overflow:hidden;
+}
+.wk-dc{
+  padding:.85rem .7rem;
+  border-right:2px solid var(--border);
+  background:linear-gradient(160deg,var(--sun3),var(--gold3));
+  text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.wk-dn{font-family:var(--fd);font-size:1.6rem;color:var(--text);line-height:1;}
+.wk-dm{font-size:.6rem;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;font-weight:700;}
+.wk-s{padding:.85rem;border-right:2px solid var(--border);}
+.wk-s:last-child{border-right:none;}
+.wk-sl{font-size:.62rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;}
+.wk-th{font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:.4rem;}
+.wk-vs{font-size:.67rem;color:var(--sun);font-style:italic;margin-bottom:.5rem;}
+.wk-songs{display:flex;flex-direction:column;gap:.3rem;}
+.sl{
+  display:flex;align-items:center;gap:.45rem;font-size:.69rem;
+  color:var(--text2);text-decoration:none;
+  padding:.3rem .55rem;border-radius:9px;
+  background:var(--bg3);border:1.5px solid var(--border);
+  transition:border-color .2s,background .2s,color .2s;
+}
+.sl:hover{border-color:var(--border2);background:#fff5e0;color:var(--sun);}
+.sl svg{width:10px;height:10px;stroke-width:2;flex-shrink:0;color:var(--sun);}
+.wk-em{font-size:.7rem;color:var(--muted);font-style:italic;padding:.4rem;}
+
+/* ─────────── REPERTÓRIO ─────────── */
+.rep-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.4rem;align-items:center;}
+.rf-lbl{font-size:.65rem;font-weight:900;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;}
+.rf{
+  padding:.3rem .8rem;border-radius:20px;font-size:.68rem;font-weight:800;
+  cursor:pointer;border:2px solid var(--border);background:var(--card);
+  color:var(--muted);transition:all .18s;
+}
+.rf:hover{border-color:var(--border2);color:var(--sun);}
+.rf.active{background:var(--sun);color:#fff;border-color:var(--sun);}
+.rep-sec-hd{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.95rem 1.2rem;background:var(--card);
+  border:2px solid var(--border);border-radius:12px;
+  cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:.5rem;
+}
+.rep-sec-hd:hover{border-color:var(--border2);background:#fffaf2;}
+.rep-sec-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px 0 currentColor;}
+.rep-sec-title{font-size:.85rem;font-weight:800;color:var(--text);flex:1;}
+.rep-sec-sub{font-size:.68rem;color:var(--muted);}
+.rep-sec-body{overflow:hidden;transition:max-height .38s ease;}
+.rep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem;padding:.2rem 0 .8rem;}
+.rc{padding:1.1rem;border-radius:14px;}
+.rc-top{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.7rem;}
+.rc-art{width:42px;height:42px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.rc-title{font-size:.83rem;font-weight:800;color:var(--text);line-height:1.25;}
+.rc-artist{font-size:.67rem;color:var(--text2);margin:.14rem 0;}
+.rc-start{
+  font-size:.69rem;color:var(--text2);line-height:1.55;
+  margin-bottom:.6rem;padding:.45rem .6rem;
+  background:var(--bg3);border-radius:9px;border-left:3px solid var(--sun3);
+}
+.rc-foot{display:flex;gap:.4rem;flex-wrap:wrap;}
+.rc-lnk{
+  display:flex;align-items:center;gap:.4rem;font-size:.67rem;
+  color:var(--sun);text-decoration:none;
+  padding:.25rem .6rem;border-radius:9px;border:1.5px solid var(--border2);
+  background:#fff8ee;transition:all .18s;
+}
+.rc-lnk:hover{background:var(--sun);color:#fff;}
+.rc-lnk svg{width:10px;height:10px;stroke-width:2;}
+
+/* ─────────── MÚSICAS POR TEMA ─────────── */
+.music-section{margin-bottom:2rem;}
+.music-sec-head{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
+.music-sec-icon{
+  width:40px;height:40px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;
+}
+.music-sec-title{font-family:var(--fd);font-size:1.1rem;color:var(--text);}
+.music-sec-sub{font-size:.69rem;color:var(--muted);}
+.age-tabs{display:flex;gap:.45rem;margin-bottom:1rem;flex-wrap:wrap;}
+.age-tab{
+  padding:.32rem .9rem;border-radius:20px;font-size:.68rem;font-weight:800;
+  cursor:pointer;border:2px solid var(--border);background:var(--card);
+  color:var(--muted);transition:all .18s;
+}
+.age-tab.active{background:var(--sun);color:#fff;border-color:var(--sun);}
+.music-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:.9rem;}
+.mc{padding:1.2rem;border-radius:14px;background:var(--card);border:2px solid var(--border);transition:border-color .22s,transform .18s;}
+.mc:hover{border-color:var(--border2);transform:translateY(-1px);}
+.mc-title{font-size:.88rem;font-weight:800;color:var(--text);line-height:1.2;}
+.mc-artist{font-size:.67rem;color:var(--text2);margin:.14rem 0 .5rem;}
+.mc-age{font-size:.62rem;font-weight:900;padding:3px 9px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;}
+.mc-age.menor{background:var(--pink3);color:#680054;border:1.5px solid var(--pink2);}
+.mc-age.maior{background:var(--sky3);color:#0e3d78;border:1.5px solid var(--sky2);}
+.mc-age.ambos{background:var(--lime3);color:#1b5c1b;border:1.5px solid var(--lime2);}
+.mc-reason{
+  font-size:.69rem;color:var(--text2);line-height:1.55;
+  margin-bottom:.6rem;padding:.5rem .6rem;
+  background:var(--bg3);border-radius:9px;border-left:3px solid var(--sun3);
+}
+.mc-why-label{font-size:.6rem;font-weight:900;color:var(--sun);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem;}
+.mc-link{
+  display:inline-flex;align-items:center;gap:.4rem;font-size:.67rem;
+  color:var(--sun);text-decoration:none;
+  padding:.25rem .6rem;border-radius:9px;border:1.5px solid var(--border2);background:#fff8ee;
+}
+.mc-link:hover{background:var(--sun);color:#fff;}
+.mc-link svg{width:10px;height:10px;stroke-width:2;}
+
+/* ─────────── ESCALA ─────────── */
+.esc-layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:900px){.esc-layout{grid-template-columns:1fr;}}
+.esc-ph{
+  padding:.9rem 1.2rem;border-bottom:2px solid var(--border);
+  display:flex;align-items:center;gap:.6rem;
+  background:linear-gradient(135deg,var(--sun3),var(--gold3));
+}
+.esc-pi{font-size:1.35rem;}
+.esc-pt{font-size:.84rem;font-weight:800;color:var(--text);}
+.esc-ps{font-size:.66rem;color:var(--text2);margin-left:auto;}
+.esc-wks{padding:.8rem;}
+.esc-wk{margin-bottom:.8rem;}
+.esc-wl{
+  font-size:.62rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--sun);margin-bottom:.5rem;padding:.25rem .65rem;
+  background:#fff5e0;border-radius:8px;display:inline-block;
+}
+.esc-ms{display:flex;flex-direction:column;gap:.32rem;}
+.esc-m{
+  display:flex;align-items:center;gap:.6rem;padding:.42rem .7rem;
+  background:var(--bg);border:2px solid var(--border);border-radius:10px;
+  transition:border-color .2s;cursor:pointer;
+}
+.esc-m:hover{border-color:var(--border2);}
+.esc-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;flex-shrink:0;}
+.esc-nm{font-size:.76rem;font-weight:700;flex:1;color:var(--text);}
+.esc-fn{font-size:.63rem;color:var(--muted);}
+.esc-ck{
+  width:19px;height:19px;border-radius:50%;border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .18s;
+}
+.esc-ck.on{background:var(--lime);border-color:var(--lime);box-shadow:0 0 7px rgba(92,184,92,.35);}
+.esc-ck svg{width:8px;height:8px;stroke-width:3;}
+
+/* Avatar colors */
+.av0{background:linear-gradient(135deg,#16a34a,#4ade80);}
+.av1{background:linear-gradient(135deg,#1d4ed8,#60a5fa);}
+.av2{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+.av3{background:linear-gradient(135deg,#b45309,#fbbf24);}
+.av4{background:linear-gradient(135deg,#0f766e,#34d399);}
+.av5{background:linear-gradient(135deg,#be123c,#fb7185);}
+.av6{background:linear-gradient(135deg,#4338ca,#818cf8);}
+.av7{background:linear-gradient(135deg,#a16207,#fcd34d);}
+.av8{background:linear-gradient(135deg,#166534,#86efac);}
+
+/* ─────────── PROFESSOR ─────────── */
+.prof-study-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);margin-bottom:1rem;overflow:hidden;}
+.prof-study-header{padding:1rem 1.2rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:background .2s;}
+.prof-study-header:hover{background:var(--bg3);}
+.prof-study-num{font-family:var(--fd);font-size:1.2rem;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+.prof-study-name{font-size:.88rem;font-weight:800;color:var(--text);}
+.prof-study-base{font-size:.68rem;color:var(--muted);}
+.prof-study-body{border-top:2px solid var(--border);overflow:hidden;transition:max-height .38s ease;max-height:0;}
+.prof-study-body.open{max-height:4500px;}
+.prof-tab-row{display:flex;gap:.3rem;padding:.7rem 1rem;border-bottom:2px solid var(--border);flex-wrap:wrap;background:var(--bg3);}
+.prof-tab{padding:.28rem .65rem;border-radius:20px;font-size:.66rem;font-weight:800;cursor:pointer;border:2px solid var(--border);background:var(--card);color:var(--muted);transition:all .15s;}
+.prof-tab.active{background:var(--sun);color:#fff;border-color:var(--sun);}
+.prof-content{padding:1.2rem;}
+.prof-block{margin-bottom:1.2rem;}
+.prof-block-title{font-size:.73rem;font-weight:900;color:var(--sun);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;}
+.prof-block-body{font-size:.76rem;color:var(--text2);line-height:1.65;}
+.prof-block-body b{color:var(--text);}
+.prof-block-body ul{margin:.4rem 0 .4rem 1.2rem;}
+.prof-block-body li{margin:.3rem 0;}
+.prof-dinamica{background:var(--bg3);border:2px solid var(--border);border-radius:12px;padding:.9rem;margin:.5rem 0;}
+.prof-dinamica-tag{font-size:.62rem;font-weight:900;color:var(--sun);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;}
+.prof-dinamica-text{font-size:.74rem;color:var(--text2);line-height:1.55;}
+.prof-verse{background:linear-gradient(135deg,#fffaf0,#fff5e0);border:2px solid var(--border2);border-radius:12px;padding:.9rem;font-style:italic;font-size:.79rem;color:var(--text2);}
+.edit-btn{display:flex;align-items:center;gap:.35rem;padding:.28rem .7rem;border-radius:20px;border:2px solid var(--border2);background:#fff5e0;color:var(--sun);font-size:.65rem;font-weight:900;cursor:pointer;transition:all .15s;}
+.edit-btn:hover{background:var(--sun);color:#fff;}
+.edit-field{width:100%;border:2px solid var(--border2);border-radius:11px;padding:.6rem .8rem;font-family:var(--f);font-size:.76rem;color:var(--text);background:var(--bg);resize:vertical;min-height:80px;line-height:1.55;}
+.edit-field:focus{outline:none;border-color:var(--sun);box-shadow:0 0 0 3px rgba(255,140,0,.12);}
+.save-edit-btn{padding:.38rem .9rem;border-radius:20px;border:none;background:var(--lime);color:#fff;font-size:.7rem;font-weight:900;cursor:pointer;transition:background .2s;}
+.save-edit-btn:hover{background:#3d9e3d;}
+
+/* ─────────── LÍDER ─────────── */
+.lider-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:900px){.lider-grid{grid-template-columns:1fr;}}
+.lider-card{padding:1.2rem;}
+.lider-card-title{font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:.45rem;}
+.musico-row{display:flex;align-items:center;gap:.6rem;padding:.44rem .7rem;border-radius:10px;background:var(--bg);border:2px solid var(--border);margin-bottom:.4rem;transition:border-color .2s;}
+.musico-row:hover{border-color:var(--border2);}
+.musico-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;flex-shrink:0;}
+.musico-name{font-size:.77rem;font-weight:700;flex:1;color:var(--text);}
+.musico-func{font-size:.62rem;color:var(--muted);}
+.musico-disps{display:flex;gap:.25rem;}
+.dom-pill{width:22px;height:22px;border-radius:7px;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--border);background:var(--bg);color:var(--muted);transition:all .15s;}
+.dom-pill.yes{background:#e8faf0;color:var(--lime);border-color:var(--lime2);}
+.dom-pill.no{background:var(--coral3);color:var(--coral);border-color:var(--coral2);}
+.lider-alert{padding:.8rem 1rem;border-radius:12px;background:var(--gold3);border:2px solid var(--gold2);margin-bottom:.9rem;font-size:.74rem;color:#6b4800;display:flex;align-items:flex-start;gap:.5rem;}
+.lider-alert svg{width:14px;height:14px;flex-shrink:0;margin-top:1px;}
+.eb-week{margin-bottom:1rem;}
+.eb-week-title{font-size:.62rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--sun);margin-bottom:.5rem;padding:.25rem .65rem;background:#fff5e0;border-radius:8px;display:inline-block;}
+.eb-slots{display:flex;flex-direction:column;gap:.3rem;}
+.eb-slot{display:flex;align-items:center;gap:.6rem;padding:.42rem .7rem;background:var(--bg);border:2px solid var(--border);border-radius:9px;}
+.eb-slot-func{font-size:.62rem;color:var(--muted);width:72px;flex-shrink:0;}
+.eb-slot-name{font-size:.74rem;font-weight:600;color:var(--text);flex:1;}
+.eb-slot-status{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.status-ok{background:var(--lime2);}
+.status-warn{background:var(--gold2);}
+.status-empty{background:var(--coral);}
+.print-btn{display:flex;align-items:center;gap:.4rem;padding:.38rem .9rem;border-radius:20px;border:2px solid var(--border2);background:#fff5e0;color:var(--sun);font-size:.68rem;font-weight:800;cursor:pointer;transition:all .15s;}
+.print-btn:hover{background:var(--sun);color:#fff;}
+.print-btn svg{width:13px;height:13px;stroke-width:2;}
+
+/* ─────────── COMUNICADOS ─────────── */
+.com-form{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:1.3rem;margin-bottom:1.5rem;}
+.com-form-title{font-size:.78rem;font-weight:800;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.com-input{width:100%;padding:.58rem .9rem;border:2px solid var(--border);border-radius:12px;font-family:var(--f);font-size:.77rem;color:var(--text);background:var(--bg);margin-bottom:.6rem;transition:border-color .2s;}
+.com-input:focus{outline:none;border-color:var(--border2);}
+.com-input-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;}
+.com-select{padding:.55rem .8rem;border:2px solid var(--border);border-radius:12px;font-family:var(--f);font-size:.74rem;background:var(--bg);color:var(--text);cursor:pointer;}
+.com-btn{padding:.55rem 1.2rem;border-radius:20px;border:none;background:var(--sun);color:#fff;font-family:var(--f);font-size:.74rem;font-weight:800;cursor:pointer;transition:background .2s;}
+.com-btn:hover{background:var(--sun2);}
+.com-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.7rem;transition:border-color .2s;}
+.com-card.urgente{border-color:var(--coral2);background:#fff8f8;}
+.com-card.aviso{border-color:var(--gold2);background:#fffdf0;}
+.com-card.ok{border-color:var(--lime2);background:#f4fdf7;}
+.com-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.35rem;}
+.com-title{font-size:.82rem;font-weight:800;color:var(--text);}
+.com-meta{font-size:.66rem;color:var(--muted);}
+.com-body{font-size:.74rem;color:var(--text2);line-height:1.52;padding:.5rem .6rem;background:var(--bg3);border-radius:8px;margin-top:.4rem;}
+.com-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:.28rem;border-radius:8px;transition:color .15s;}
+.com-del:hover{color:var(--coral);}
+.com-del svg{width:13px;height:13px;stroke-width:1.8;}
+
+/* ─────────── MÚSICO / CANTOR PANELS ─────────── */
+.mp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:900px){.mp-grid{grid-template-columns:1fr;}}
+.mp-widget{background:var(--card);border:2px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .22s,box-shadow .22s;}
+.mp-widget:hover{border-color:var(--border2);box-shadow:var(--sh2);}
+.mp-widget-head{padding:.9rem 1.1rem;display:flex;align-items:center;gap:.6rem;}
+.mp-widget-icon{font-size:1.4rem;}
+.mp-widget-title{font-family:var(--fd);font-size:1rem;color:var(--text);}
+.mp-widget-body{padding:.9rem 1.1rem;}
+.sug-form{display:flex;flex-direction:column;gap:.55rem;}
+.sug-form input,.sug-form textarea,.sug-form select{width:100%;padding:.52rem .8rem;border:2px solid var(--border);border-radius:10px;font-family:var(--f);font-size:.74rem;color:var(--text);background:var(--bg);transition:border-color .2s;}
+.sug-form input:focus,.sug-form textarea:focus,.sug-form select:focus{outline:none;border-color:var(--border2);}
+.sug-btn{padding:.5rem 1rem;border-radius:20px;border:none;background:var(--sun);color:#fff;font-size:.7rem;font-weight:800;cursor:pointer;transition:background .2s;}
+.sug-btn:hover{background:var(--sun2);}
+.song-li{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-radius:10px;background:var(--bg);border:2px solid var(--border);margin-bottom:.38rem;}
+.song-li-icon{font-size:1rem;flex-shrink:0;}
+.song-li-info{flex:1;}
+.song-li-title{font-size:.77rem;font-weight:800;color:var(--text);}
+.song-li-sub{font-size:.63rem;color:var(--muted);}
+
+/* Notif items */
+.notif-item{display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1rem;border-radius:12px;background:var(--card);border:2px solid var(--border);margin-bottom:.6rem;}
+.notif-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:.2rem;}
+.notif-title{font-size:.77rem;font-weight:800;color:var(--text);margin-bottom:.12rem;}
+.notif-text{font-size:.69rem;color:var(--text2);line-height:1.45;}
+.notif-time{font-size:.6rem;color:var(--muted);margin-top:.22rem;}
+
+/* ─────────── TOAST ─────────── */
+.save-toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  background:var(--lime);color:#fff;padding:.55rem 1.2rem;
+  border-radius:20px;font-size:.76rem;font-weight:800;
+  box-shadow:0 6px 20px rgba(92,184,92,.35);
+  opacity:0;transform:translateY(10px);transition:all .3s;
+  z-index:9999;pointer-events:none;
+}
+.save-toast.show{opacity:1;transform:translateY(0);}
+
+/* ─────────── SCROLL REVEAL ─────────── */
+.rev{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+.rev.vis{opacity:1;transform:translateY(0);}
+
+/* ─────────── LIGHTBOX ─────────── */
+.lb{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:1rem;}
+.lb.open{display:flex;}
+.lb-img{max-width:90vw;max-height:88vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6);object-fit:contain;}
+.lb-close{position:absolute;top:1rem;right:1.2rem;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;cursor:pointer;transition:background .2s;}
+.lb-close:hover{background:rgba(255,255,255,.32);}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;cursor:pointer;transition:background .2s;}
+.lb-nav:hover{background:rgba(255,255,255,.32);}
+.lb-prev{left:1rem;}
+.lb-next{right:1rem;}
+.lb-caption{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:.75rem;font-weight:700;padding:.35rem .9rem;border-radius:20px;white-space:nowrap;}
+
+/* ─────────── PRINT ─────────── */
+@media print{
+  #loginScreen,.app-bar,.nav,.strip-wrap,.glow-line{display:none!important;}
+  .page{display:block!important;padding:.5rem!important;}
+  body{background:#fff!important;}
+}
+
+/* ─────────── RESPONSIVE ─────────── */
+@media(max-width:700px){
+  .wk-h{grid-template-columns:1fr;}
+  .wk-dc{border-right:none;border-bottom:2px solid var(--border);}
+  .wk-s{border-right:none;border-bottom:2px solid var(--border);}
+  .wk-s:last-child{border-bottom:none;}
+  .hero-content{padding:.9rem 1rem .7rem;}
+  .photo-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LIGHTBOX ═══════════════ -->
+<div class="lb" id="lb" onclick="lbClose(event)">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-nav lb-prev" onclick="lbStep(-1);event.stopPropagation()">‹</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" onclick="lbStep(1);event.stopPropagation()">›</button>
+  <div class="lb-caption" id="lbCap"></div>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<div class="hero">
+  <div class="hero-cloud c1"></div>
+  <div class="hero-cloud c2"></div>
+  <!-- Imagem principal real do site -->
+  <img class="hero-bg" id="heroBg"
+    src="https://static.wixstatic.com/media/11062b_84aaae820d00415a93be206a7e4190cc~mv2.jpg/v1/fill/w_1200,h_600,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/11062b_84aaae820d00415a93be206a7e4190cc~mv2.jpg"
+    alt="Crianças IBMÉIER" crossorigin="anonymous">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-badge-row">
+        <span class="hero-badge hb-sun">⭐ IBMÉIER · Dep. Infantil</span>
+        <span class="hero-badge hb-lime">🌱 Campanha 2026</span>
+      </div>
+      <div class="hero-title">Crianças <span class="hl">IBMÉIER</span></div>
+      <div class="hero-sub">Porque o Filho Vive e Voltará · Missões Mundiais 2026</div>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hstat"><div class="hstat-n">6</div><div class="hstat-l">Estudos</div></div>
+      <div class="hstat"><div class="hstat-n">27+</div><div class="hstat-l">Músicas</div></div>
+      <div class="hstat"><div class="hstat-n">36</div><div class="hstat-l">Eventos</div></div>
+      <div class="hstat"><div class="hstat-n">17</div><div class="hstat-l">Músicos</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PHOTO STRIP ═══════════════ -->
+<div class="strip-wrap" title="Passe o mouse para pausar · Clique para ampliar">
+  <div class="strip-track" id="stripTrack">
+    <!-- Imagens reais do site — duplicadas para loop contínuo -->
+  </div>
+</div>
+
+<!-- ═══════════════ RAINBOW LINE ═══════════════ -->
+<div class="glow-line"></div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav" id="mainNav">
+  <button class="ntab active" onclick="sw('ov',this)" id="tab-ov"><span class="tab-em">🏠</span> Visão Geral</button>
+  <button class="ntab" onclick="sw('fotos',this)" id="tab-fotos"><span class="tab-em">📸</span> Fotos</button>
+  <button class="ntab" onclick="sw('pl',this)" id="tab-pl"><span class="tab-em">📅</span> Planejamento</button>
+  <button class="ntab" onclick="sw('cu',this)" id="tab-cu"><span class="tab-em">⛪</span> Cultos</button>
+  <button class="ntab" onclick="sw('rp',this)" id="tab-rp"><span class="tab-em">🎼</span> Repertório</button>
+  <button class="ntab" onclick="sw('mu',this)" id="tab-mu"><span class="tab-em">🎵</span> Músicas por Tema</button>
+  <button class="ntab" id="tab-prof" onclick="sw('prof',this)"><span class="tab-em">📝</span> Área do Professor</button>
+  <button class="ntab" id="tab-lider" onclick="sw('lider',this)"><span class="tab-em">👑</span> Painel do Líder</button>
+  <button class="ntab" id="tab-mp" onclick="sw('mp',this)"><span class="tab-em">🎸</span> Painel Músico</button>
+  <button class="ntab" id="tab-cp" onclick="sw('cp',this)"><span class="tab-em">🎤</span> Painel Cantor</button>
+  <button class="ntab" onclick="sw('es',this)" id="tab-es"><span class="tab-em">📋</span> Escala</button>
+  <button class="ntab" onclick="sw('com',this)" id="tab-com">
+    <span class="tab-em">📣</span> Comunicados
+    <span id="com-badge" class="tab-badge" style="display:none;">0</span>
+  </button>
+  <div class="nav-right"><div class="date-pill" id="dn"></div></div>
+</nav>
+
+<!-- ═══════════════ VISÃO GERAL ═══════════════ -->
+<div class="page active" id="page-ov">
+  <div class="kpi-row rev">
+    <div class="card kpi">
+      <div class="card-bar" style="background:linear-gradient(90deg,var(--lime),var(--lime2));"></div>
+      <span class="kpi-icon">⭐</span><div class="kpi-n">6</div><div class="kpi-l">Estudos da Campanha</div>
+      <div class="badge b-lime" style="margin-top:.5rem;">Missões Mundiais 2026</div>
+    </div>
+    <div class="card kpi">
+      <div class="card-bar" style="background:linear-gradient(90deg,var(--sky),var(--sky2));"></div>
+      <span class="kpi-icon">📅</span><div class="kpi-n">36</div><div class="kpi-l">Eventos Programados</div>
+      <div class="badge b-sky" style="margin-top:.5rem;">Jan — Dez 2026</div>
+    </div>
+    <div class="card kpi">
+      <div class="card-bar" style="background:linear-gradient(90deg,var(--grape),var(--grape2));"></div>
+      <span class="kpi-icon">🎶</span><div class="kpi-n">27+</div><div class="kpi-l">Músicas no Repertório</div>
+      <div class="badge b-grape" style="margin-top:.5rem;">Por estudo + acervo</div>
+    </div>
+    <div class="card kpi">
+      <div class="card-bar" style="background:linear-gradient(90deg,var(--sun),var(--sun2));"></div>
+      <span class="kpi-icon">🎸</span><div class="kpi-n">17</div><div class="kpi-l">Músicos na Escala</div>
+      <div class="badge b-sun" style="margin-top:.5rem;">Manhã + Noite</div>
+    </div>
+  </div>
+
+  <div class="card next-ev rev">
+    <div class="nev-bar"></div>
+    <div style="flex:1">
+      <div class="nev-tag"><div class="nev-pulse"></div>Próximo Evento</div>
+      <div class="nev-title">Treinamento Inclusão</div>
+      <div class="nev-meta">Sábado, 28 de março · 09h às 12h · Salão Térreo · com café ☕</div>
+      <div style="margin-top:.7rem;display:flex;gap:.4rem;flex-wrap:wrap;">
+        <span class="badge b-gold">🔊 Caixa de Som</span>
+        <span class="badge b-gold">🎤 Microfone</span>
+        <span class="badge b-gold">📽️ Projetor</span>
+      </div>
+    </div>
+    <div class="nev-date-box">
+      <div class="nev-day">28</div>
+      <div class="nev-mo">Mar</div>
+    </div>
+  </div>
+
+  <div class="card camp-card rev">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.8rem;">
+      <div>
+        <div style="font-size:.63rem;font-weight:900;letter-spacing:.18em;color:var(--sun);text-transform:uppercase;margin-bottom:.3rem;">🌍 Campanha 2026 · Missões Mundiais</div>
+        <div class="camp-title">Porque o Filho Vive e Voltará</div>
+        <div class="camp-verse">Vamos Completar a Missão · Apocalipse 22:20</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.4rem;">
+        <div style="font-size:.68rem;color:var(--muted);font-weight:700;">Progresso</div>
+        <div class="prog-wrap"><div id="cpf" class="prog-fill" style="width:0%;"></div></div>
+        <div id="cpt" style="font-family:var(--fd);font-size:.95rem;color:var(--sun);">0 / 6</div>
+      </div>
+    </div>
+    <div class="studies-grid" id="stGrid"></div>
+  </div>
+
+  <div class="seh rev" style="margin-top:1.5rem;">
+    <div><div class="sey"><div class="sey-dot"></div>Cultos nos Lares</div><div class="set">4 Semanas de Março</div></div>
+  </div>
+  <div class="lares-grid rev">
+    <div class="lare-card"><div class="lare-wk badge b-sun">Semana 1</div><div class="lare-title">A Alegria da Vida Nova</div><div class="lare-ref">Lucas 24.13–35 · Lucas 24:34</div><div class="lare-song">Porque Ele Vive — Aline Barros</div></div>
+    <div class="lare-card"><div class="lare-wk badge b-sky">Semana 2</div><div class="lare-title">Esperar com Esperança</div><div class="lare-ref">1 Tess. 4.13–18 · Apoc 22:12</div><div class="lare-song">Sim, Sim! Não, Não! — CDT</div></div>
+    <div class="lare-card"><div class="lare-wk badge b-lime">Semana 3</div><div class="lare-title">Brilhe a Sua Luz!</div><div class="lare-ref">Mateus 5.13–16 · Mateus 5:16</div><div class="lare-song">Missionariozinho — 3 Palavrinhas</div></div>
+    <div class="lare-card"><div class="lare-wk badge b-grape">Semana 4</div><div class="lare-title">Pequenos que Fazem Coisas Grandes</div><div class="lare-ref">João 6.1–13 · 1 Tim 4:12</div><div class="lare-song">Cinco Pães e Dois Peixinhos — Quatro por Um</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ FOTOS ═══════════════ -->
+<div class="page" id="page-fotos">
+  <div class="seh rev">
+    <div><div class="sey"><div class="sey-dot"></div>Departamento Infantil</div><div class="set">Galeria de Fotos 📸</div></div>
+  </div>
+
+  <!-- Foto destaque grande -->
+  <div class="gallery-hero rev">
+    <img class="gallery-hero-img" id="galleryHeroImg"
+      src="https://static.wixstatic.com/media/430a01_e2bb533c1e654f3aa29fb623998ed442~mv2.jpeg/v1/fill/w_1200,h_900,fp_0.43_0.21,q_90,enc_avif,quality_auto/430a01_e2bb533c1e654f3aa29fb623998ed442~mv2.jpeg"
+      alt="Crianças IBMÉIER">
+    <div class="gallery-hero-overlay"></div>
+    <div class="gallery-hero-caption">
+      <div style="font-size:.62rem;font-weight:900;color:var(--gold2);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.3rem;">📸 Crianças IBMÉIER</div>
+      <h2>Nosso Ministério em Fotos</h2>
+      <p>Momentos especiais do Departamento Infantil · Clique nas fotos para ampliar</p>
+    </div>
+  </div>
+
+  <!-- Grade de fotos reais -->
+  <div class="photo-grid rev" id="photoGrid"></div>
+</div>
+
+<!-- ═══════════════ PLANEJAMENTO ═══════════════ -->
+<div class="page" id="page-pl">
+  <div class="seh"><div><div class="sey"><div class="sey-dot"></div>Calendário Completo</div><div class="set">Planejamento 2026</div></div></div>
+  <div class="plan-months" id="plCont"></div>
+</div>
+
+<!-- ═══════════════ CULTOS ═══════════════ -->
+<div class="page" id="page-cu">
+  <div class="seh"><div><div class="sey"><div class="sey-dot"></div>Janeiro — Agosto</div><div class="set">Cultos &amp; Temas Semanais</div></div><span class="badge b-lime">🎵 Links diretos</span></div>
+  <div class="culto-weeks" id="cuCont"></div>
+</div>
+
+<!-- ═══════════════ REPERTÓRIO ═══════════════ -->
+<div class="page" id="page-rp">
+  <div class="seh"><div><div class="sey"><div class="sey-dot"></div>Revista 2026 + Acervo</div><div class="set">Repertório por Estudo</div></div></div>
+  <div class="rep-filters">
+    <span class="rf-lbl">Ver:</span>
+    <button class="rf active" onclick="rfilt(this,'all')">Todos</button>
+    <button class="rf" onclick="rfilt(this,'e1')">Estudo 1</button>
+    <button class="rf" onclick="rfilt(this,'e2')">Estudo 2</button>
+    <button class="rf" onclick="rfilt(this,'e3')">Estudo 3</button>
+    <button class="rf" onclick="rfilt(this,'e4')">Estudo 4</button>
+    <button class="rf" onclick="rfilt(this,'e5')">Estudo 5</button>
+    <button class="rf" onclick="rfilt(this,'e6')">Estudo 6</button>
+    <button class="rf" onclick="rfilt(this,'ac')">Acervo Geral</button>
+  </div>
+  <div id="rpCont"></div>
+</div>
+
+<!-- ═══════════════ MÚSICAS POR TEMA ═══════════════ -->
+<div class="page" id="page-mu">
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Por estudo · boa teologia</div><div class="set">Músicas por Tema &amp; Faixa Etária</div></div></div>
+  <div id="muCont"></div>
+</div>
+
+<!-- ═══════════════ PROFESSOR ═══════════════ -->
+<div class="page" id="page-prof">
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Conteúdo completo</div><div class="set">Área do Professor 📝</div></div></div>
+  <div class="card rev" style="padding:1.1rem;margin-bottom:1.5rem;background:linear-gradient(135deg,#fffaf0,#fff5e0);border-color:var(--border2);">
+    <div style="font-size:.77rem;color:var(--text2);line-height:1.6;">
+      <b style="color:var(--sun);">📖 Como usar:</b> Clique no estudo para expandir. Cada estudo contém: objetivo, dinâmica, abordagem bíblica, ilustração, orientações por faixa etária e tarefa de família.
+      <span id="profEditHint" style="display:none;color:var(--lime);font-weight:800;"> ✏️ Você pode editar qualquer campo — clique em "Editar".</span>
+    </div>
+  </div>
+  <div id="profCont"></div>
+</div>
+
+<!-- ═══════════════ LÍDER ═══════════════ -->
+<div class="page" id="page-lider">
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Gestão completa</div><div class="set">Painel do Líder 👑</div></div></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;" class="rev">
+    <div class="card kpi"><div class="card-bar" style="background:var(--coral);"></div><span class="kpi-icon">⚠️</span><div class="kpi-n" id="lAl" style="color:var(--coral);">0</div><div class="kpi-l">Alertas Escala</div></div>
+    <div class="card kpi"><div class="card-bar" style="background:var(--lime);"></div><span class="kpi-icon">✅</span><div class="kpi-n" id="lCo" style="color:var(--lime);">0</div><div class="kpi-l">Confirmados</div></div>
+    <div class="card kpi"><div class="card-bar" style="background:var(--sky);"></div><span class="kpi-icon">📣</span><div class="kpi-n" id="lCm">0</div><div class="kpi-l">Comunicados</div></div>
+    <div class="card kpi"><div class="card-bar" style="background:var(--grape);"></div><span class="kpi-icon">🎓</span><div class="kpi-n" id="lSp">0/6</div><div class="kpi-l">Estudos Concluídos</div></div>
+  </div>
+  <div class="lider-alert rev">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Marque as disponibilidades. O painel atualiza automaticamente mostrando conflitos (⚠️ vermelho) e sugestões.
+  </div>
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Recebidas da equipe</div><div class="set">Solicitações &amp; Sinalizações</div></div></div>
+  <div id="liderSolicBox" class="rev"></div>
+  <div class="seh rev" style="margin-top:1rem;"><div><div class="sey"><div class="sey-dot"></div>Disponibilidade</div><div class="set">Painel de Músicos</div></div></div>
+  <div class="lider-grid rev" id="liderDisp"></div>
+  <div class="seh rev" style="margin-top:.5rem;"><div><div class="sey"><div class="sey-dot"></div>Montagem visual</div><div class="set">Escala — Domingo a Domingo</div></div></div>
+  <div class="card rev" id="liderEscala" style="padding:0;overflow:hidden;"></div>
+</div>
+
+<!-- ═══════════════ PAINEL MÚSICO ═══════════════ -->
+<div class="page" id="page-mp">
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Área exclusiva</div><div class="set">Painel do Músico 🎸</div></div></div>
+  <div class="mp-grid rev">
+    <div class="mp-widget">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--sun3),var(--gold3));">
+        <span class="mp-widget-icon">📋</span><div class="mp-widget-title">Minha Escala</div>
+      </div>
+      <div class="mp-widget-body"><div id="mpEscala" style="font-size:.75rem;color:var(--muted);">Carregando...</div></div>
+    </div>
+    <div class="mp-widget">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--sky3),#d6eeff);">
+        <span class="mp-widget-icon">🎵</span><div class="mp-widget-title">Sugerir Música</div>
+      </div>
+      <div class="mp-widget-body">
+        <div class="sug-form">
+          <input id="mpSugT" placeholder="Nome da música..."/>
+          <input id="mpSugA" placeholder="Artista / versão..."/>
+          <input id="mpSugL" placeholder="Link do YouTube (opcional)..."/>
+          <select id="mpSugE">
+            <option value="">Para qual culto/estudo?</option>
+            <option>Estudo 1 — Jesus está vivo!</option>
+            <option>Estudo 2 — Ele prometeu voltar!</option>
+            <option>Estudo 3 — Um chamado para todos!</option>
+            <option>Estudo 4 — Crianças que fazem diferença!</option>
+            <option>Estudo 5 — A missão continua hoje!</option>
+            <option>Estudo 6 — Vamos completar a Missão!</option>
+            <option>Acervo Geral</option>
+          </select>
+          <textarea id="mpSugO" rows="2" placeholder="Observação (opcional)..."></textarea>
+          <button class="sug-btn" onclick="envSug('mp')">🎵 Enviar Sugestão</button>
+        </div>
+      </div>
+    </div>
+    <div class="mp-widget">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--coral3),#ffe8e8);">
+        <span class="mp-widget-icon">🚨</span><div class="mp-widget-title">Sinalizar ao Líder</div>
+      </div>
+      <div class="mp-widget-body">
+        <div class="sug-form">
+          <select id="mpSiT">
+            <option value="info">ℹ️ Informação</option>
+            <option value="indisponivel">📵 Indisponibilidade</option>
+            <option value="instrumento">🎸 Problema c/ instrumento</option>
+            <option value="solicitacao">📝 Solicitação</option>
+            <option value="urgente">🔴 Urgente</option>
+          </select>
+          <input id="mpSiTit" placeholder="Título..."/>
+          <textarea id="mpSiTxt" rows="3" placeholder="Descreva sua mensagem para o líder..."></textarea>
+          <button class="sug-btn" style="background:var(--coral);" onclick="envSin('mp')">📨 Enviar ao Líder</button>
+        </div>
+      </div>
+    </div>
+    <div class="mp-widget">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--lime3),#d0f5d0);">
+        <span class="mp-widget-icon">📬</span><div class="mp-widget-title">Minhas Sugestões</div>
+      </div>
+      <div class="mp-widget-body"><div id="mpSugList" style="font-size:.74rem;color:var(--muted);">Nenhuma sugestão enviada ainda.</div></div>
+    </div>
+  </div>
+  <div class="seh rev" style="margin-top:1rem;"><div><div class="sey"><div class="sey-dot"></div>Próximos cultos</div><div class="set">Set de Músicas — Março</div></div></div>
+  <div id="mpSetList" class="rev"></div>
+</div>
+
+<!-- ═══════════════ PAINEL CANTOR ═══════════════ -->
+<div class="page" id="page-cp">
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Área exclusiva</div><div class="set">Painel do Cantor 🎤</div></div></div>
+  <div class="mp-grid rev">
+    <div class="mp-widget" style="grid-column:1/-1;">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--grape3),#ead6ff);">
+        <span class="mp-widget-icon">🎶</span><div class="mp-widget-title">Músicas do Mês — Links &amp; Letras</div>
+      </div>
+      <div class="mp-widget-body"><div id="cpMusList"></div></div>
+    </div>
+    <div class="mp-widget">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--gold3),#fff5cc);">
+        <span class="mp-widget-icon">💡</span><div class="mp-widget-title">Sugerir Música</div>
+      </div>
+      <div class="mp-widget-body">
+        <div class="sug-form">
+          <input id="cpSugT" placeholder="Nome da música..."/>
+          <input id="cpSugA" placeholder="Artista / versão..."/>
+          <input id="cpSugL" placeholder="Link do YouTube..."/>
+          <select id="cpSugE">
+            <option value="">Para qual culto?</option>
+            <option>Estudo 1 — Jesus está vivo!</option>
+            <option>Estudo 2 — Ele prometeu voltar!</option>
+            <option>Estudo 3 — Um chamado para todos!</option>
+            <option>Estudo 4 — Crianças que fazem diferença!</option>
+            <option>Estudo 5 — A missão continua hoje!</option>
+            <option>Estudo 6 — Vamos completar a Missão!</option>
+          </select>
+          <button class="sug-btn" onclick="envSug('cp')">🎵 Enviar Sugestão</button>
+        </div>
+      </div>
+    </div>
+    <div class="mp-widget">
+      <div class="mp-widget-head" style="background:linear-gradient(135deg,var(--teal3),#b0ede8);">
+        <span class="mp-widget-icon">📢</span><div class="mp-widget-title">Sinalizar ao Líder</div>
+      </div>
+      <div class="mp-widget-body">
+        <div class="sug-form">
+          <select id="cpSiT">
+            <option value="info">ℹ️ Informação</option>
+            <option value="indisponivel">📵 Indisponibilidade</option>
+            <option value="feedback">💬 Feedback</option>
+            <option value="solicitacao">📝 Solicitação</option>
+            <option value="urgente">🔴 Urgente</option>
+          </select>
+          <input id="cpSiTit" placeholder="Título..."/>
+          <textarea id="cpSiTxt" rows="3" placeholder="Sua mensagem para o líder..."></textarea>
+          <button class="sug-btn" style="background:var(--teal);" onclick="envSin('cp')">📨 Enviar ao Líder</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ESCALA FIXA ═══════════════ -->
+<div class="page" id="page-es">
+  <div class="seh">
+    <div><div class="sey"><div class="sey-dot"></div>Escala permanente</div><div class="set">Times por Domingo</div></div>
+    <button class="print-btn" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Imprimir Escala</button>
+  </div>
+  <div class="esc-layout" id="esCont"></div>
+</div>
+
+<!-- ═══════════════ COMUNICADOS ═══════════════ -->
+<div class="page" id="page-com">
+  <div class="seh rev"><div><div class="sey"><div class="sey-dot"></div>Avisos internos</div><div class="set">Comunicados 📣</div></div></div>
+  <div class="com-form rev">
+    <div class="com-form-title">➕ Novo Comunicado</div>
+    <input class="com-input" id="comTitleInput" placeholder="Título do comunicado..."/>
+    <textarea class="com-input" id="comBodyInput" rows="2" placeholder="Texto do aviso ou recado..."></textarea>
+    <div class="com-input-row">
+      <select class="com-select" id="comTypeSelect">
+        <option value="info">ℹ️ Informação</option>
+        <option value="aviso">⚠️ Aviso</option>
+        <option value="urgente">🔴 Urgente</option>
+        <option value="ok">✅ Concluído</option>
+      </select>
+      <input class="com-input" id="comAuthorInput" placeholder="Autor (opcional)" style="margin-bottom:0;flex:1;"/>
+      <button class="com-btn" onclick="addCom()">Publicar</button>
+    </div>
+  </div>
+  <div id="comList" class="rev"></div>
+</div>
+
+<div class="save-toast" id="saveToast">✓ Salvo!</div>
+
+<!-- ══════════════════════════════════════════
+     SCRIPT PRINCIPAL
+══════════════════════════════════════════ -->
+<script>
+// ─── FOTOS REAIS do site batistadomeier.org.br/criancasibmeier ───
+const REAL_PHOTOS = [
+  {url:'https://static.wixstatic.com/media/430a01_931dfff032864a62bc0a3d17e718d5c1~mv2.png/v1/fill/w_720,h_842,fp_0.49_0.39,q_90,enc_avif,quality_auto/430a01_931dfff032864a62bc0a3d17e718d5c1~mv2.png', label:'Ministério Infantil'},
+  {url:'https://static.wixstatic.com/media/430a01_781d469111b84e9094ebccf67c38950f~mv2.jpg/v1/fill/w_720,h_958,fp_0.46_0.21,q_90,enc_avif,quality_auto/430a01_781d469111b84e9094ebccf67c38950f~mv2.jpg', label:'Culto das Crianças'},
+  {url:'https://static.wixstatic.com/media/430a01_f1997e0695154981a2da8c1e6b70b42a~mv2.jpg/v1/fill/w_720,h_960,fp_0.51_0.23,q_90,enc_avif,quality_auto/430a01_f1997e0695154981a2da8c1e6b70b42a~mv2.jpg', label:'Momento Especial'},
+  {url:'https://static.wixstatic.com/media/430a01_002a6e5fa4ee477e832fa87a0dc96ed9~mv2.png/v1/fill/w_720,h_958,fp_0.45_0.44,q_90,enc_avif,quality_auto/430a01_002a6e5fa4ee477e832fa87a0dc96ed9~mv2.png', label:'IBMÉIER Crianças'},
+  {url:'https://static.wixstatic.com/media/430a01_f0e2f1f332904755b2ce3c44dfd6597d~mv2.jpg/v1/fill/w_720,h_960,fp_0.63_0.51,q_90,enc_avif,quality_auto/430a01_f0e2f1f332904755b2ce3c44dfd6597d~mv2.jpg', label:'Louvor Infantil'},
+  {url:'https://static.wixstatic.com/media/430a01_ef9ef520101e454fb6dce265b02197f4~mv2.png/v1/fill/w_720,h_958,fp_0.42_0.36,q_90,enc_avif,quality_auto/430a01_ef9ef520101e454fb6dce265b02197f4~mv2.png', label:'EBD Infantil'},
+  {url:'https://static.wixstatic.com/media/430a01_bad99ddab6b741a3b2e29ee10b0dbfc0~mv2.jpg/v1/fill/w_720,h_960,fp_0.5_0.23,q_90,enc_avif,quality_auto/430a01_bad99ddab6b741a3b2e29ee10b0dbfc0~mv2.jpg', label:'Departamento Infantil'},
+  {url:'https://static.wixstatic.com/media/430a01_e00ed735641b41ff914682ce1d49e2a0~mv2.jpg/v1/fill/w_720,h_958,fp_0.5_0.41,q_90,enc_avif,quality_auto/430a01_e00ed735641b41ff914682ce1d49e2a0~mv2.jpg', label:'Crianças IBMÉIER'},
+  {url:'https://static.wixstatic.com/media/430a01_3218cfe4620840d58e54458b71071e30~mv2.jpg/v1/fill/w_720,h_960,fp_0.73_0.34,q_90,enc_avif,quality_auto/430a01_3218cfe4620840d58e54458b71071e30~mv2.jpg', label:'Atividade Bíblica'},
+  {url:'https://static.wixstatic.com/media/430a01_e2bb533c1e654f3aa29fb623998ed442~mv2.jpeg/v1/fill/w_720,h_960,fp_0.43_0.21,q_90,enc_avif,quality_auto/430a01_e2bb533c1e654f3aa29fb623998ed442~mv2.jpeg', label:'Culto Infantil'},
+  {url:'https://static.wixstatic.com/media/430a01_0836e6d808a9437c83004476d92bd55d~mv2.jpeg/v1/fill/w_720,h_960,fp_0.46_0.37,q_90,enc_avif,quality_auto/430a01_0836e6d808a9437c83004476d92bd55d~mv2.jpeg', label:'Momento em Família'},
+  {url:'https://static.wixstatic.com/media/430a01_f11795e33a1646e3957f9b698b1f4ac8~mv2.jpeg/v1/fill/w_720,h_958,q_90,enc_avif,quality_auto/430a01_f11795e33a1646e3957f9b698b1f4ac8~mv2.jpeg', label:'Crianças em Oração'},
+  {url:'https://static.wixstatic.com/media/430a01_d76a6a0fe9dd4809b317ebd483bec7aa~mv2.jpg/v1/fill/w_720,h_960,fp_0.49_0.5,q_90,enc_avif,quality_auto/430a01_d76a6a0fe9dd4809b317ebd483bec7aa~mv2.jpg', label:'Ministério em Ação'},
+  {url:'https://static.wixstatic.com/media/430a01_4d6b04c3e08d499784ccb59ff57c238a~mv2.jpeg/v1/fill/w_720,h_958,fp_0.53_0.35,q_90,enc_avif,quality_auto/430a01_4d6b04c3e08d499784ccb59ff57c238a~mv2.jpeg', label:'Escola Bíblica'},
+  {url:'https://static.wixstatic.com/media/430a01_904bd5628ebf4d4689dff0a14b452289~mv2.jpg/v1/fill/w_720,h_960,fp_0.49_0.18,q_90,enc_avif,quality_auto/430a01_904bd5628ebf4d4689dff0a14b452289~mv2.jpg', label:'Programação Especial'},
+  {url:'https://static.wixstatic.com/media/430a01_2fce9348a45c451da62b1d81d02ded2c~mv2.jpg/v1/fill/w_720,h_958,fp_0.37_0.4,q_90,enc_avif,quality_auto/430a01_2fce9348a45c451da62b1d81d02ded2c~mv2.jpg', label:'Encontro de Crianças'},
+  {url:'https://static.wixstatic.com/media/430a01_3059bf9c7783488d94192cca06ace969~mv2.jpg/v1/fill/w_720,h_960,fp_0.46_0.25,q_90,enc_avif,quality_auto/430a01_3059bf9c7783488d94192cca06ace969~mv2.jpg', label:'Adoração Infantil'},
+  {url:'https://static.wixstatic.com/media/430a01_e3262d0159124002a14ed53dd42fb9f4~mv2.jpg/v1/fill/w_720,h_958,fp_0.42_0.34,q_90,enc_avif,quality_auto/430a01_e3262d0159124002a14ed53dd42fb9f4~mv2.jpg', label:'Equipe IBMÉIER'},
+  {url:'https://static.wixstatic.com/media/430a01_8dde54b1bbed428c9e0221185cfe18c9~mv2.png/v1/fill/w_720,h_960,fp_0.57_0.38,q_90,enc_avif,quality_auto/430a01_8dde54b1bbed428c9e0221185cfe18c9~mv2.png', label:'Casa das Crianças'},
+  {url:'https://static.wixstatic.com/media/430a01_2a501d6ca4c04b9e8b85af538cd248e1~mv2.png/v1/fill/w_720,h_842,fp_0.53_0.3,q_90,enc_avif,quality_auto/430a01_2a501d6ca4c04b9e8b85af538cd248e1~mv2.png', label:'Crianças Louvando'},
+];
+
+// ─── LIGHTBOX ───
+let lbIdx = 0;
+function openLb(i){
+  lbIdx = i;
+  document.getElementById('lbImg').src = REAL_PHOTOS[i].url;
+  document.getElementById('lbCap').textContent = REAL_PHOTOS[i].label;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLb(){ document.getElementById('lb').classList.remove('open'); }
+function lbClose(e){ if(e.target===document.getElementById('lb')) closeLb(); }
+function lbStep(d){
+  lbIdx = (lbIdx + d + REAL_PHOTOS.length) % REAL_PHOTOS.length;
+  document.getElementById('lbImg').src = REAL_PHOTOS[lbIdx].url;
+  document.getElementById('lbCap').textContent = REAL_PHOTOS[lbIdx].label;
+}
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') closeLb();
+  if(e.key==='ArrowRight') lbStep(1);
+  if(e.key==='ArrowLeft') lbStep(-1);
+});
+
+// ─── BUILD STRIP ───
+function buildStrip(){
+  const t = document.getElementById('stripTrack');
+  // Double the array for seamless loop
+  const all = [...REAL_PHOTOS, ...REAL_PHOTOS];
+  t.innerHTML = all.map((p, i) => `
+    <div class="strip-item" onclick="openLb(${i % REAL_PHOTOS.length})">
+      <img src="${p.url}" alt="${p.label}" loading="lazy">
+      <div class="strip-item-overlay"><span class="strip-item-label">${p.label}</span></div>
+    </div>`).join('');
+}
+
+// ─── BUILD PHOTO GRID ───
+function buildPhotoGrid(){
+  const g = document.getElementById('photoGrid');
+  g.innerHTML = REAL_PHOTOS.map((p, i) => `
+    <div class="photo-thumb" onclick="openLb(${i})">
+      <img src="${p.url}" alt="${p.label}" loading="lazy">
+      <div class="photo-thumb-overlay"><span class="photo-thumb-label">${p.label}</span></div>
+    </div>`).join('');
+}
+
+// ─── DATA ───
+const ESTUDOS=[
+  {id:'e1',n:'Estudo 1',title:'Jesus está vivo!',base:'Lucas 24.1–12',dt:'01 mar',dot:'#5cb85c',bc:'b-lime',
+   songs:[{role:'Boas-Vindas',t:'Aleluia',art:'Três Palavrinhas',s:'Aleluia! Aleluia! Glória ao Senhor...',url:'https://www.youtube.com/results?search_query=Aleluia+Tres+Palavrinhas'},{role:'Louvor',t:'O Amor do Nosso Deus',art:'CDT',s:'O amor do nosso Deus é eterno...',url:'https://www.youtube.com/results?search_query=O+Amor+do+Nosso+Deus+Criancas+Diante+do+Trono'}]},
+  {id:'e2',n:'Estudo 2',title:'Ele prometeu voltar!',base:'Atos 1.9–11',dt:'08 mar',dot:'#3b9de8',bc:'b-sky',
+   songs:[{role:'Boas-Vindas',t:'Por Dentro, Fora, Alto e Baixo',art:'Três Palavrinhas',s:'Por dentro, fora, alto e baixo...',url:'https://www.youtube.com/results?search_query=Por+Dentro+Fora+Alto+e+Baixo+Tres+Palavrinhas'},{role:'Louvor',t:'Estamos de Pé',art:'Marcos Sales',s:'Estamos de pé, firmes na fé...',url:'https://www.youtube.com/results?search_query=Estamos+de+Pe+Marcos+Sales'},{role:'Louvor',t:'Ruja o Leão',art:'Nívea Soares',s:'Ruja o leão de Judá...',url:'https://www.youtube.com/results?search_query=Ruja+o+Leao+Nivea+Soares'}]},
+  {id:'e3',n:'Estudo 3',title:'Um chamado para todos!',base:'Mateus 28.19–20',dt:'15 mar',dot:'#8e4ec6',bc:'b-grape',
+   songs:[{role:'Boas-Vindas',t:'Eu Preciso de Você',art:'Três Palavrinhas',s:'Eu preciso de você a cada dia...',url:'https://www.youtube.com/results?search_query=Eu+Preciso+de+Voce+Tres+Palavrinhas'},{role:'Louvor',t:'Jesus é Bom',art:'Cristina Mel',s:'Jesus é bom, Jesus é bom...',url:'https://www.youtube.com/results?search_query=Jesus+e+Bom+Cristina+Mel'},{role:'Louvor',t:'Até que Ele Venha',art:'Alexandre Magnani',s:'Até que Ele venha...',url:'https://youtu.be/RkL-vgYYE4w'}]},
+  {id:'e4',n:'Estudo 4',title:'Crianças que fazem diferença!',base:'João 6.5–14',dt:'22 mar',dot:'#e6b800',bc:'b-gold',
+   songs:[{role:'Boas-Vindas',t:'Eu Preciso de Você',art:'Três Palavrinhas',s:'Eu preciso de você...',url:'https://www.youtube.com/results?search_query=Eu+Preciso+de+Voce+Tres+Palavrinhas'},{role:'Louvor',t:'Bênçãos que Não Têm Fim',art:'Isadora Pompeo',s:'Bênçãos que não têm fim...',url:'https://www.youtube.com/results?search_query=Bencaos+que+Nao+Tem+Fim+Isadora+Pompeo'},{role:'Louvor',t:'Bondade de Deus',art:'Isaias Saad',s:'Eu já vi dias bons...',url:'https://www.youtube.com/results?search_query=Bondade+de+Deus+Isaias+Saad'}]},
+  {id:'e5',n:'Estudo 5',title:'A missão continua hoje!',base:'Atos 16.9–10',dt:'22 mar',dot:'#00a896',bc:'b-teal',
+   songs:[{role:'Boas-Vindas',t:'Deus Está Aqui',art:'Três Palavrinhas',s:'Deus está aqui...',url:'https://www.youtube.com/results?search_query=Deus+Esta+Aqui+Tres+Palavrinhas'},{role:'Louvor',t:'Missionariozinho',art:'CDT',s:'Posso ser um missionariozinho...',url:'https://www.youtube.com/watch?v=MKPAkjY463I'},{role:'Louvor',t:'Cantarei Teu Amor pra Sempre',art:'Baruk',s:'Cantarei teu amor pra sempre...',url:'https://www.youtube.com/results?search_query=Cantarei+Teu+Amor+pra+Sempre+Baruk'}]},
+  {id:'e6',n:'Estudo 6',title:'Vamos completar a Missão!',base:'Apocalipse 7.9–10',dt:'29 mar',dot:'#ff8c00',bc:'b-sun',
+   songs:[{role:'Boas-Vindas',t:'Fico Feliz',art:'Aline Barros',s:'Fico feliz quando me dizem...',url:'https://www.youtube.com/results?search_query=Fico+Feliz+Aline+Barros'},{role:'Louvor',t:'Deus é Tão Bom',art:'Três Palavrinhas',s:'Deus é tão bom...',url:'https://youtu.be/kXws12qbRsQ'},{role:'Louvor',t:'Santo Pra Sempre',art:'Gabriel Guedes',s:'Santo, santo, santo...',url:'https://www.youtube.com/results?search_query=Santo+Pra+Sempre+Gabriel+Guedes'}]},
+];
+const ACERVO={id:'ac',n:'Acervo Geral',title:'Músicas do ministério',base:'Fora da campanha',dot:'#8a6050',bc:'b-gray',songs:[
+  {role:'Boas-Vindas',t:'A Cada Momento',art:'Aline Nascimento',s:'A cada momento, eu ando na presença...',url:'https://www.youtube.com/watch?v=ZM84f7i6fgk'},
+  {role:'Boas-Vindas',t:'Eu Vou Crescer',art:'3 Palavrinhas',s:'Eu vou crescer no Senhor...',url:'https://www.youtube.com/watch?v=EjRh084A2CE'},
+  {role:'Boas-Vindas',t:'Grande e Largo',art:'3 Palavrinhas',s:'Grande e largo é o amor do Senhor...',url:'https://www.youtube.com/watch?v=CPO_qsoXTrk'},
+  {role:'Missionário',t:'Ninguém É Igual a Jesus',art:'Adhermar de Campos',s:'Nobody is like Jesus...',url:'https://www.youtube.com/watch?v=MEC8k1PjrhY'},
+  {role:'Salvação',t:'Por Mim Morreu Jesus',art:'Keila Araújo',s:'Assim morreu Jesus...',url:'https://www.youtube.com/watch?v=E8tWQz2ah0A'},
+  {role:'Adoração',t:'Toda Sorte de Bênçãos',art:'Toque no Altar',s:'Por onde eu for, a Tua bênção...',url:'https://www.youtube.com/watch?v=9j1H8DQk4G0'},
+  {role:'Missionário',t:'Andando Com Cristo',art:'3 Palavrinhas',s:'Andando com Cristo...',url:'https://www.youtube.com/watch?v=TGzaN2wQF9c'},
+]};
+
+const PL=[
+  {m:'Janeiro',ev:[{d:12,wd:'Seg',t:'Início da pintura do Módulo',l:'',bc:'b-teal'}]},
+  {m:'Fevereiro',ev:[{d:1,wd:'Dom',t:'Início Summer Kids 2026',l:'Salão Térreo / 6º andar · 10h + 19h',bc:'b-sky'},{d:22,wd:'Dom',t:'Encerramento Summer Kids 2026',l:'',bc:'b-sky'},{d:28,wd:'Sáb',t:'Formatura Novos Juniores',l:'Salão Térreo · 9h · Café',bc:'b-grape'}]},
+  {m:'Março',ev:[{d:1,wd:'Dom',t:'Início EBD + Missões Mundiais',l:'',bc:'b-lime'},{d:28,wd:'Sáb',t:'Treinamento Inclusão',l:'Salão Térreo · 09h às 12h',bc:'b-grape'},{d:29,wd:'Dom',t:'Culto de Páscoa',l:'Salão Térreo / 6º andar · 10h',bc:'b-gold'}]},
+  {m:'Abril',ev:[{d:10,wd:'Sex',t:'Acampadentro Juniores — Dia 1',l:'',bc:'b-grape'},{d:11,wd:'Sáb',t:'Acampadentro Juniores — Dia 2',l:'',bc:'b-grape'}]},
+  {m:'Maio',ev:[{d:10,wd:'Dom',t:'Homenagem Dia das Mães',l:'',bc:'b-gold'},{d:17,wd:'Dom',t:'Programação Especial Maio Laranja',l:'',bc:'b-coral'}]},
+  {m:'Junho',ev:[{d:28,wd:'Dom',t:'Aniversariantes 1º Semestre',l:'Manhã (Crianças) + Noite (Juniores)',bc:'b-teal'}]},
+  {m:'Julho',ev:[{d:18,wd:'Sáb',t:'EBF — Dia 1',l:'',bc:'b-sky'},{d:26,wd:'Dom',t:'Dia dos Avós — EBD Especial',l:'',bc:'b-gold'}]},
+  {m:'Agosto',ev:[{d:9,wd:'Dom',t:'Dia dos Pais — Homenagem no Culto',l:'',bc:'b-gold'}]},
+  {m:'Setembro',ev:[{d:6,wd:'Dom',t:'Missões Nacionais',l:'',bc:'b-lime'},{d:27,wd:'Dom',t:'Jesus — Mais doce que o mel',l:'',bc:'b-gold'}]},
+  {m:'Outubro',ev:[{d:4,wd:'Dom',t:'Reforma Protestante',l:'',bc:'b-grape'},{d:11,wd:'Dom',t:'Reforma + Dia das Crianças + Professores',l:'',bc:'b-grape'}]},
+  {m:'Novembro',ev:[{d:20,wd:'Sex',t:'Acampamento Juniores — Dia 1',l:'',bc:'b-grape'},{d:29,wd:'Dom',t:'Culto de Ação de Graças',l:'',bc:'b-lime'}]},
+  {m:'Dezembro',ev:[{d:20,wd:'Dom',t:'Encerramento EBD + Culto de Natal',l:'',bc:'b-gold'}]},
+];
+const CLB={'b-lime':'Missões','b-gold':'Celebração','b-grape':'Especial','b-sky':'Summer/EBF','b-coral':'Awareness','b-teal':'Projeto','b-gray':'Geral','b-sun':'Campanha'};
+
+const CU=[
+  {d:'1',mo:'mar',mh:{t:'Campanha — Jesus está vivo!',v:'',s:[{t:'Deus é Tão Bom',u:'https://youtu.be/kXws12qbRsQ'},{t:'Ninguém é igual a Jesus',u:'https://www.youtube.com/watch?v=MEC8k1PjrhY'}]},no:{t:'Campanha — Jesus está vivo!',v:'',s:[{t:'Deus é Tão Bom',u:'https://youtu.be/kXws12qbRsQ'},{t:'Até que Ele venha',u:'https://youtu.be/RkL-vgYYE4w'}]}},
+  {d:'8',mo:'mar',mh:{t:'Campanha — Um chamado para todos',v:'',s:[{t:'Ninguém é igual a Jesus',u:'https://www.youtube.com/watch?v=MEC8k1PjrhY'},{t:'Andando Com Cristo',u:'https://www.youtube.com/watch?v=TGzaN2wQF9c'}]},no:{t:'Campanha — Ele prometeu voltar!',v:'',s:[{t:'Andando Com Cristo',u:'https://www.youtube.com/watch?v=TGzaN2wQF9c'},{t:'A Cada Momento',u:'https://www.youtube.com/watch?v=ZM84f7i6fgk'}]}},
+  {d:'15',mo:'mar',mh:{t:'Crianças que fazem diferença!',v:'João 6:9',s:[{t:'Deus é Tão Bom',u:'https://youtu.be/kXws12qbRsQ'},{t:'Grandes Coisas',u:'https://www.youtube.com/watch?v=Eb0-Az8hWmA'}]},no:{t:'Crianças que fazem diferença!',v:'',s:[]}},
+  {d:'22',mo:'mar',mh:{t:'Vamos completar a Missão',v:'Apoc 7:9-10',s:[]},no:{t:'Vamos completar a Missão',v:'',s:[]}},
+  {d:'29',mo:'mar',mh:{t:'Culto de Páscoa',v:'1 Cor 5:7',s:[]},no:{t:'Culto de Páscoa',v:'',s:[]}},
+  {d:'5',mo:'abr',mh:{t:'Uma família diferente',v:'',s:[]},no:{t:'Uma família diferente',v:'',s:[]}},
+  {d:'12',mo:'abr',mh:{t:'A cada momento',v:'',s:[]},no:{t:'A cada momento',v:'',s:[]}},
+  {d:'19',mo:'abr',mh:{t:'A resposta certa',v:'',s:[]},no:{t:'A resposta certa',v:'',s:[]}},
+  {d:'26',mo:'abr',mh:{t:'Quem mandou?',v:'',s:[]},no:{t:'Quem mandou?',v:'',s:[]}},
+];
+
+const EM=[
+  {wk:'1º Dom',mb:[{n:'Stephanie',f:'Violão'},{n:'Sophia',f:'Voz'},{n:'Isaac',f:'Cajón'},{n:'Carolina',f:'Voz'}]},
+  {wk:'2º Dom',mb:[{n:'Luiza',f:'Voz'},{n:'Pietra',f:'Voz'},{n:'Bernardo',f:'Violão'},{n:'Isaac',f:'Cajón'},{n:'Ana Vocal',f:'Voz'}]},
+  {wk:'3º Dom',mb:[{n:'Vitória',f:'Voz'},{n:'Nelson',f:'Percussão'},{n:'Gab',f:'Baixo'},{n:'Flávio',f:'Voz e Violão'}]},
+  {wk:'4º Dom',mb:[{n:'Pietra',f:'Voz'},{n:'Rodrigo',f:'Violão'}]},
+];
+const EN=[
+  {wk:'1º Dom',mb:[{n:'Rafael',f:'Cajón'},{n:'Raquel',f:'Voz e Violão'},{n:'Carolina',f:'Voz'}]},
+  {wk:'2º Dom',mb:[{n:'Ana Luiza',f:'Voz e Violão'},{n:'Anali',f:'Voz e Ukulelê'},{n:'Miqueias',f:'Violão/Teclado/Flauta'},{n:'Stephanie',f:'Voz'}]},
+  {wk:'3º Dom',mb:[{n:'Vitória',f:'Voz'},{n:'Rafael',f:'Cajón'},{n:'Bernardo',f:'Violão'}]},
+  {wk:'4º Dom',mb:[{n:'Anali',f:'Voz e Ukulelê'},{n:'Rodrigo',f:'Violão'},{n:'Miqueias',f:'Violão/Teclado'}]},
+];
+
+const MUSICOS_LIDER=[
+  {n:'Stephanie',f:'Violão/Voz',turno:'Manhã + Noite',disp:[true,false,true,true,false]},
+  {n:'Sophia',f:'Voz',turno:'Manhã',disp:[true,true,true,false,false]},
+  {n:'Isaac',f:'Cajón',turno:'Manhã',disp:[true,true,false,true,false]},
+  {n:'Carolina',f:'Voz',turno:'Manhã + Noite',disp:[true,false,true,true,false]},
+  {n:'Luiza',f:'Voz',turno:'Manhã',disp:[false,true,false,true,false]},
+  {n:'Pietra',f:'Voz',turno:'Manhã',disp:[false,true,true,true,false]},
+  {n:'Bernardo',f:'Violão',turno:'Manhã + Noite',disp:[false,true,false,false,false]},
+  {n:'Ana Vocal',f:'Voz',turno:'Manhã',disp:[false,true,false,false,false]},
+  {n:'Vitória',f:'Voz',turno:'Manhã + Noite',disp:[false,false,true,false,false]},
+  {n:'Nelson',f:'Percussão',turno:'Manhã',disp:[false,false,true,false,false]},
+  {n:'Gab',f:'Baixo',turno:'Manhã',disp:[false,false,true,false,false]},
+  {n:'Flávio',f:'Voz e Violão',turno:'Manhã',disp:[false,false,true,false,false]},
+  {n:'Rafael',f:'Cajón',turno:'Noite',disp:[true,false,true,false,false]},
+  {n:'Raquel',f:'Voz e Violão',turno:'Noite',disp:[true,false,false,false,false]},
+  {n:'Ana Luiza',f:'Voz e Violão',turno:'Noite',disp:[false,true,false,false,true]},
+  {n:'Anali',f:'Voz e Ukulelê',turno:'Noite',disp:[false,true,false,true,false]},
+  {n:'Miqueias',f:'Violão/Teclado/Flauta',turno:'Noite',disp:[false,true,false,true,false]},
+  {n:'Rodrigo',f:'Violão',turno:'Manhã + Noite',disp:[false,false,false,true,true]},
+];
+
+const MUSICAS_TEMA=[
+  {estudo:'Estudo 1 — Jesus está vivo!',cor:'#5cb85c',base:'Lucas 24.1–12',musicas:[
+    {t:'Ressuscitou',art:'Minha Vida é Uma Viagem',idade:'ambos',link:'https://www.youtube.com/results?search_query=Ressuscitou+Minha+Vida+e+Uma+Viagem',conexao:'Proclama diretamente a ressurreição — afirmação central do Estudo 1.'},
+    {t:'Aleluia',art:'Três Palavrinhas',idade:'menor',link:'https://www.youtube.com/results?search_query=Aleluia+Tres+Palavrinhas',conexao:'Estrutura simples e repetitiva, ideal para 3–5 anos.'},
+    {t:'O Amor do Nosso Deus',art:'CDT',idade:'ambos',link:'https://www.youtube.com/results?search_query=O+Amor+do+Nosso+Deus+Criancas+Diante+do+Trono',conexao:'Indicada pela revista como louvor oficial do Estudo 1.'},
+    {t:'Porque Ele Vive',art:'Aline Barros',idade:'maior',link:'https://www.youtube.com/results?search_query=Porque+Ele+Vive+Aline+Barros',conexao:'Música base dos Cultos nos Lares Semana 1, para 6–8 anos.'},
+  ]},
+  {estudo:'Estudo 2 — Ele prometeu voltar!',cor:'#3b9de8',base:'Atos 1.9–11',musicas:[
+    {t:'Estamos de Pé',art:'Marcos Sales',idade:'maior',link:'https://www.youtube.com/results?search_query=Estamos+de+Pe+Marcos+Sales',conexao:'Indicada pela revista. Permanecer firme aguardando o Senhor.'},
+    {t:'Ruja o Leão',art:'Nívea Soares',idade:'maior',link:'https://www.youtube.com/results?search_query=Ruja+o+Leao+Nivea+Soares',conexao:'Soberania de Cristo ao subir ao céu. Para 6–8 anos.'},
+    {t:'Por Dentro, Fora, Alto e Baixo',art:'Três Palavrinhas',idade:'menor',link:'https://www.youtube.com/results?search_query=Por+Dentro+Fora+Alto+e+Baixo+Tres+Palavrinhas',conexao:'Boas-vindas do Estudo 2, ideal para 3–5 anos.'},
+    {t:'Sim, Sim! Não, Não!',art:'CDT',idade:'ambos',link:'https://www.youtube.com/results?search_query=Sim+Sim+Nao+Nao+Criancas+Diante+do+Trono',conexao:'Cultos nos Lares Semana 2. As promessas de Deus.'},
+  ]},
+  {estudo:'Estudo 3 — Um chamado para todos!',cor:'#8e4ec6',base:'Mateus 28.19–20',musicas:[
+    {t:'Jesus é Bom',art:'Cristina Mel',idade:'menor',link:'https://www.youtube.com/results?search_query=Jesus+e+Bom+Cristina+Mel',conexao:'Indicada. Simples e repetitiva para 3–5 anos.'},
+    {t:'Até que Ele Venha',art:'Alexandre Magnani',idade:'maior',link:'https://youtu.be/RkL-vgYYE4w',conexao:'Entrelaça missão e escatologia. Para 6–8 anos.'},
+    {t:'Missionariozinho',art:'CDT',idade:'ambos',link:'https://www.youtube.com/watch?v=MKPAkjY463I',conexao:'Clássico missionário — crianças podem ser missionárias.'},
+  ]},
+  {estudo:'Estudo 4 — Crianças que fazem diferença!',cor:'#e6b800',base:'João 6.5–14',musicas:[
+    {t:'Bênçãos que Não Têm Fim',art:'Isadora Pompeo',idade:'maior',link:'https://www.youtube.com/results?search_query=Bencaos+que+Nao+Tem+Fim+Isadora+Pompeo',conexao:'Multiplicação dos pães — para 6–8 anos.'},
+    {t:'Bondade de Deus',art:'Isaias Saad',idade:'maior',link:'https://www.youtube.com/results?search_query=Bondade+de+Deus+Isaias+Saad',conexao:'Providência divina — para 6–8 anos.'},
+    {t:'Deus é Tão Bom',art:'Três Palavrinhas',idade:'menor',link:'https://youtu.be/kXws12qbRsQ',conexao:'Versão simples do mesmo tema para 3–5 anos.'},
+  ]},
+  {estudo:'Estudo 5 — A missão continua hoje!',cor:'#00a896',base:'Atos 16.9–10',musicas:[
+    {t:'Missionariozinho',art:'CDT',idade:'ambos',link:'https://www.youtube.com/watch?v=MKPAkjY463I',conexao:'Indicada. Todas as idades podem ser missionárias.'},
+    {t:'Cantarei Teu Amor pra Sempre',art:'Baruk',idade:'maior',link:'https://www.youtube.com/results?search_query=Cantarei+Teu+Amor+pra+Sempre+Baruk',conexao:'Comprometimento eterno com a missão. Para 6–8 anos.'},
+    {t:'Deus Está Aqui',art:'Três Palavrinhas',idade:'menor',link:'https://www.youtube.com/results?search_query=Deus+Esta+Aqui+Tres+Palavrinhas',conexao:'Presença de Deus — como guiou Paulo, guia cada criança.'},
+  ]},
+  {estudo:'Estudo 6 — Vamos completar a Missão!',cor:'#ff8c00',base:'Apocalipse 7.9–10',musicas:[
+    {t:'Santo Pra Sempre',art:'Gabriel Guedes',idade:'maior',link:'https://www.youtube.com/results?search_query=Santo+Pra+Sempre+Gabriel+Guedes',conexao:'Antecipa adoração eterna de Apocalipse 7. Para 6–8 anos.'},
+    {t:'Deus é Tão Bom',art:'Três Palavrinhas',idade:'menor',link:'https://youtu.be/kXws12qbRsQ',conexao:'Encerramento proclamando bondade de Deus. Para 3–5 anos.'},
+    {t:'Fico Feliz',art:'Aline Barros',idade:'ambos',link:'https://www.youtube.com/results?search_query=Fico+Feliz+Aline+Barros',conexao:'Boas-vindas indicada pela revista. Todas as idades.'},
+  ]},
+];
+
+const PROF_DATA=[
+  {n:'Estudo 1',title:'Jesus está vivo!',base:'Lucas 24.1–12',cor:'#5cb85c',
+   verso:'"Porque vocês procuram entre os mortos aquele que vive? Ele não está aqui; ressuscitou!" — Lucas 24.5-6',
+   objetivo:'Levar a criança a compreender que Jesus ressuscitou de verdade, e que por isso temos a missão de anunciar essa notícia para todos.',
+   intro:{tag:'Dinâmica de Introdução',text:'Leve uma caixa bem bonita, mas vazia. Mostre e pergunte o que acham que tem dentro. Quando abrirem: nada! Diga: "Hoje vamos conhecer uma história onde as pessoas foram procurar algo, e quando chegaram lá estava vazio — mas isso foi a melhor notícia de todas!"'},
+   biblica:{tag:'Abordagem Bíblica',text:'<b>Texto:</b> Lucas 24.1-12. Escolha duas meninas (as mulheres), um menino para ser o anjo com lanterna, outro para a pedra. Narrada com expressão vocal: susto, pedra removida, túmulo vazio, anjos, corrida das mulheres. Conclua: "Assim como elas saíram para contar, nós temos essa missão!"'},
+   ilust:{tag:'Ilustração',text:'"Caça ao Tesouro" — esconda tiras: A Cruz, A Tumba, A Pedra, O Anjo, Um coração alegre, Jesus Vive. Cada pista leva à próxima. A última está colada na sola do sapato do professor!'},
+   menor:{tag:'Menores (3–5 anos)',text:'<ul><li>Cole papel picado na tumba desenhada.</li><li>"Jesus ficou ali por três dias, mas Ele venceu! A tumba ficou vazia!"</li><li>🎵 Aleluia (Três Palavrinhas) — com palmas.</li></ul>'},
+   maior:{tag:'Maiores (6–8 anos)',text:'<ul><li>Desvende enigma de símbolos: "Jesus está vivo, Ele ressuscitou!"</li><li>Caça-palavras: MULHERES, TUMBA, ANJOS, VIVO, RESSUSCITOU.</li><li>🎵 Porque Ele Vive (Fernandinho/Aline Barros).</li></ul>'},
+   familia:'Ouçam juntos "Porque Ele Vive". Orem agradecendo a Deus pela vitória de Jesus.',
+   lembranca:'Certificado de Portador de Boas Notícias.'},
+  {n:'Estudo 2',title:'Ele prometeu voltar!',base:'Atos 1.9–11',cor:'#3b9de8',
+   verso:'"Este mesmo Jesus, que dentre vocês foi levado ao céu, voltará da mesma forma." — Atos 1.11',
+   objetivo:'Que a criança entenda que Jesus subiu ao céu e prometeu voltar — e essa promessa move nossa missão.',
+   intro:{tag:'Dinâmica de Introdução',text:'Entre com uma mala de viagem. Peça sugestões das crianças para um bilhete de despedida. Depois abra a Bíblia: "Vou contar um momento de despedida registrado na Palavra de Deus — era Jesus!"'},
+   biblica:{tag:'Abordagem Bíblica',text:'<b>Texto:</b> Atos 1.9-11. Fio de nylon com balão preso no teto. À medida que narra, puxe o fio: o balão sobe! Dois ajudantes de branco entram: "Por que olhando para o céu?"'},
+   ilust:{tag:'Ilustração',text:'"Verdade ou Mentira" — se verdade: saltam com mãos para cima. Se mentira: giram com braços cruzados. 11 frases sobre Atos 1.'},
+   menor:{tag:'Menores (3–5 anos)',text:'<ul><li>Cole algodão nas nuvens. Recorte Jesus num canudo e demonstre a subida.</li><li>🎵 Por Dentro, Fora, Alto e Baixo (Três Palavrinhas).</li></ul>'},
+   maior:{tag:'Maiores (6–8 anos)',text:'<ul><li>Labirinto: o caminho de Jesus ao subir ao céu.</li><li>Escreva: "Sou testemunha do Evangelho até que Ele venha! Eu posso..."</li><li>Versículo: apague palavras progressivamente.</li></ul>'},
+   familia:'Abram 1 Tessalonicenses 4.16-17. Orem pela certeza da vida eterna.',
+   lembranca:'Menores: pomba no canudo. Maiores: origami de pomba.'},
+  {n:'Estudo 3',title:'Um chamado para todos!',base:'Mateus 28.19–20',cor:'#8e4ec6',
+   verso:'"Portanto, ide e fazei discípulos de todas as nações..." — Mateus 28.19',
+   objetivo:'Mostrar que a Grande Comissão é para todos — inclusive crianças.',
+   intro:{tag:'Dinâmica de Introdução',text:'Entre com roupa de "Agente da Missão" (blazer, óculos escuro). "Recebi uma missão especial — não é impossível, é a mais importante: fazer discípulos!"'},
+   biblica:{tag:'Abordagem Bíblica',text:'<b>Texto:</b> Mateus 28.19-20. A missão é na escola, com amigos, na padaria. Plano da Salvação com 5 cores: Céu (João 14.2), Pecado (Rom 3.23), Salvação (João 3.16), Purificação (1 João 1.9), Crescimento (2 Pedro 3.18).'},
+   ilust:{tag:'Ilustração',text:'"A Missão" — sussurre no ouvido de uma criança: "Jesus quer que você fale do Seu amor." Repassa ao próximo até completar o círculo. "Assim espalhamos o Evangelho!"'},
+   menor:{tag:'Menores (3–5 anos)',text:'<ul><li>Ligue a criança ao mapa-múndi. Aprenda "Jesus te ama" em inglês e Libras.</li><li>🎵 Jesus é Bom (Cristina Mel).</li></ul>'},
+   maior:{tag:'Maiores (6–8 anos)',text:'<ul><li>Cruzadinha: MUNDO, CAMPO, JESUS, MISSÃO, NAÇÕES, DISCÍPULOS.</li><li>🎵 Até que Ele Venha (Alexandre Magnani).</li></ul>'},
+   familia:'Façam um cartaz "JESUS AMA VOCÊ" e coloquem em lugar visível.',
+   lembranca:'A Maleta da Missão — cartão com as 5 cores.'},
+  {n:'Estudo 4',title:'Crianças que fazem diferença!',base:'João 6.5–14',cor:'#e6b800',
+   verso:'"Está aqui um rapaz que tem cinco pães de cevada e dois peixinhos..." — João 6.9',
+   objetivo:'Deus usa o que parece pequeno — quando entregamos com fé, Ele multiplica.',
+   intro:{tag:'Dinâmica de Introdução',text:'Repórter vestido entra com microfone: "Estamos ao vivo próximos ao Mar da Galiléia onde algo extraordinário aconteceu!" A história é narrada em formato de entrevista.'},
+   biblica:{tag:'Abordagem Bíblica',text:'<b>Texto:</b> João 6.5-14. Entrevista com Felipe, André, o menino, e Jesus. "O que parece pouco nas suas mãos se torna muito nas mãos de Jesus."'},
+   ilust:{tag:'Ilustração',text:'Postites — cada criança escreve o que tem para oferecer a Jesus. Fixam no cartaz: "Jesus pode usar tudo que somos!"'},
+   menor:{tag:'Menores (3–5 anos)',text:'<ul><li>Contorne as mãos na folha e faça pintinhas de guache (a multidão).</li><li>🎵 Deus é Tão Bom (Três Palavrinhas).</li></ul>'},
+   maior:{tag:'Maiores (6–8 anos)',text:'<ul><li>Diário Missionário — 4 balões de pensamento sobre dons e missão.</li><li>🎵 Bondade de Deus (Isaias Saad).</li></ul>'},
+   familia:'Façam um cartão de fé e entreguem para alguém durante a semana.',
+   lembranca:'Elástico — "Eu sou pequeno, mas meu Deus é grande!"'},
+  {n:'Estudo 5',title:'A missão continua hoje!',base:'Atos 16.9–10',cor:'#00a896',
+   verso:'"Durante a noite, Paulo teve uma visão: Vem até a Macedônia e ajuda-nos!" — Atos 16.9',
+   objetivo:'A missão continua hoje, guiada pelo Espírito Santo, através de pessoas disponíveis.',
+   intro:{tag:'Dinâmica de Introdução',text:'Mostre uma bandeira SOS. "Há pessoas que não conseguem gritar por socorro, mas Deus ouve seus corações e envia alguém — como Paulo, como você."'},
+   biblica:{tag:'Abordagem Bíblica',text:'<b>Texto:</b> Atos 16.9-10. Paulo ia para Bitínia mas foi impedido. À noite: visão da Macedônia. Obedeceu imediatamente! "Você está pronto para obedecer, mesmo que seja diferente do seu plano?"'},
+   ilust:{tag:'Ilustração',text:'"Dinâmica das Bandeiras" — Verde: andar. Vermelho: parar. Amarelo: abraçar alguém. "Assim como Paulo, somos chamados a ir em direção ao outro."'},
+   menor:{tag:'Menores (3–5 anos)',text:'<ul><li>Pontilhado no coração com colagem criativa. "Você pode ser usado por Deus!"</li><li>🎵 Deus Está Aqui (Três Palavrinhas).</li></ul>'},
+   maior:{tag:'Maiores (6–8 anos)',text:'<ul><li>Bússola com Salmo 25.4-5. Escreva 4 nomes para orar.</li><li>🎵 Cantarei Teu Amor pra Sempre (Baruk).</li></ul>'},
+   familia:'Lista de nomes para orar. Comprometam-se a falar de Jesus para eles.',
+   lembranca:'Bússola numa fita para a maçaneta do quarto.'},
+  {n:'Estudo 6',title:'Vamos completar a Missão!',base:'Apocalipse 7.9–10',cor:'#ff8c00',
+   verso:'"Vi uma grande multidão de todas as nações clamando: A salvação pertence ao nosso Deus!" — Apoc 7.9-10',
+   objetivo:'Completar a missão é convidar mais pessoas para a grande festa da eternidade.',
+   intro:{tag:'Dinâmica de Introdução',text:'Chegue com envelope dourado: "Recebi um convite especial — a maior festa de todos os tempos, com gente do mundo inteiro!"'},
+   biblica:{tag:'Abordagem Bíblica',text:'<b>Texto:</b> Apoc 7.9-10. João viu o céu: uma festa enorme! Ofereça um espelho dentro de uma caixa: "Seu nome já está escrito no Livro da Vida?"'},
+   ilust:{tag:'Ilustração',text:'"Dança da Cadeira Invertida" — quando a música para, a criança escolhe mais uma para vir ao centro. A roda cresce até todos estarem juntos. "No céu há lugar para todos!"'},
+   menor:{tag:'Menores (3–5 anos)',text:'<ul><li>Ligue adereços de países às crianças. "Jesus ama as crianças do mundo inteiro!"</li><li>🎵 Deus é Tão Bom (Três Palavrinhas).</li></ul>'},
+   maior:{tag:'Maiores (6–8 anos)',text:'<ul><li>Cruzadinha: NAÇÕES, MISSÃO, JESUS, FESTA, CÉU.</li><li>"Mural Eu na Missão" — convite para alguém especial.</li><li>🎵 Santo Pra Sempre (Gabriel Guedes).</li></ul>'},
+   familia:'Ouçam "Além do Rio Azul" enquanto escrevem quem querem encontrar no céu.',
+   lembranca:'Menores: Jogo da Memória. Maiores: Marca Página.'},
+];
+
+// ─── AVATARES ───
+const AVC=['av0','av1','av2','av3','av4','av5','av6','av7','av8'];
+const AVM={};let ami=0;
+function gc(n){if(!AVM[n]){AVM[n]=AVC[ami%AVC.length];ami++;}return AVM[n];}
+function ini(n){return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();}
+
+// ─── STUDY PROGRESS ───
+let SD=new Set();
+function loadSP(){try{JSON.parse(localStorage.getItem('sp')||'[]').forEach(i=>SD.add(i));}catch(e){}}
+function buildSt(){
+  const g=document.getElementById('stGrid');
+  ESTUDOS.forEach((e,i)=>{
+    const d=document.createElement('div');
+    d.className='study-item'+(SD.has(i)?' done':'');d.id='si'+i;d.onclick=()=>ts2(i);
+    d.innerHTML=`<div class="si-head"><span class="si-num">${e.n}</span><div class="si-check ${SD.has(i)?'on':''}" id="sc${i}"><svg viewBox="0 0 24 24" fill="none" stroke="white"><polyline points="20 6 9 17 4 12"/></svg></div></div><div class="si-title">${e.title}</div><div class="si-base">${e.base} · ${e.dt}</div><div class="si-songs">${e.songs.slice(0,2).map(s=>`<div class="si-song-pill">${s.role}: ${s.t}</div>`).join('')}</div>`;
+    g.appendChild(d);
+  });
+  updProg();
+}
+function ts2(i){
+  const item=document.getElementById('si'+i),chk=document.getElementById('sc'+i);
+  if(SD.has(i)){SD.delete(i);item.classList.remove('done');chk.classList.remove('on');}
+  else{SD.add(i);item.classList.add('done');chk.classList.add('on');}
+  updProg();
+  try{localStorage.setItem('sp',JSON.stringify([...SD]));}catch(e){}
+}
+function updProg(){
+  document.getElementById('cpf').style.width=(SD.size/6*100)+'%';
+  document.getElementById('cpt').textContent=SD.size+' / 6';
+}
+
+// ─── PLANEJAMENTO ───
+function buildPl(){
+  const c=document.getElementById('plCont');
+  PL.forEach(m=>{
+    const mb=document.createElement('div');mb.className='rev';
+    let h=`<div class="month-label">📅 ${m.m}</div><div style="display:flex;flex-direction:column;gap:.5rem;">`;
+    m.ev.forEach(e=>{h+=`<div class="ev-row"><div><div class="ev-day">${e.d}</div><div class="ev-wd">${e.wd}</div></div><div><div class="ev-title">${e.t}</div><div class="ev-local">${e.l||'&nbsp;'}</div></div><div style="display:flex;gap:.3rem;flex-wrap:wrap;justify-content:flex-end;"><span class="badge ${e.bc}">${CLB[e.bc]||'Geral'}</span></div></div>`;});
+    h+='</div>';mb.innerHTML=h;c.appendChild(mb);
+  });
+}
+
+// ─── CULTOS ───
+function buildCu(){
+  const c=document.getElementById('cuCont');
+  CU.forEach(w=>{
+    const d=document.createElement('div');d.className='rev';
+    const ss=sess=>sess.s.length?sess.s.map(s=>`<a class="sl" href="${s.u}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>${s.t}</a>`).join(''):`<div class="wk-em">Músicas a definir</div>`;
+    d.innerHTML=`<div class="wk-h"><div class="wk-dc"><div class="wk-dn">${w.d}</div><div class="wk-dm">${w.mo}</div></div><div class="wk-s"><div class="wk-sl">☀️ Manhã</div><div class="wk-th">${w.mh.t}</div>${w.mh.v?`<div class="wk-vs">${w.mh.v}</div>`:''}<div class="wk-songs">${ss(w.mh)}</div></div><div class="wk-s"><div class="wk-sl">🌙 Noite</div><div class="wk-th">${w.no.t}</div>${w.no.v?`<div class="wk-vs">${w.no.v}</div>`:''}<div class="wk-songs">${ss(w.no)}</div></div></div>`;
+    c.appendChild(d);
+  });
+}
+
+// ─── REPERTÓRIO ───
+const RB={'Boas-Vindas':'b-sky','Louvor':'b-lime','Missionário':'b-teal','Salvação':'b-coral','Adoração':'b-grape'};
+const GC=['#ff8c00,#ffcb80','#1d4ed8,#60a5fa','#7c3aed,#a78bfa','#b45309,#fbbf24','#0f766e,#34d399','#be123c,#fb7185','#5cb85c,#86efac'];
+function songCard(s,i){
+  const ci=i%GC.length;
+  return `<div class="card rc"><div class="rc-top"><div class="rc-art" style="background:linear-gradient(135deg,${GC[ci]});">🎵</div><div style="flex:1"><div class="rc-title">${s.t}</div><div class="rc-artist">${s.art}</div><div style="margin-top:.2rem;"><span class="badge ${RB[s.role]||'b-gray'}">${s.role}</span></div></div></div><div class="rc-start">${s.s}</div><div class="rc-foot"><a class="rc-lnk" href="${s.url}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>YouTube</a></div></div>`;
+}
+function makeSec(est,open=true){
+  const div=document.createElement('div');div.className='rep-section rev';
+  const bH=`<div class="rep-grid">${est.songs.map((s,i)=>songCard(s,i)).join('')}</div>`;
+  const mH=open?'2200px':'0';
+  div.innerHTML=`<div class="rep-sec-hd${open?'':' closed'}" onclick="tsSec(this)"><div class="rep-sec-dot" style="background:${est.dot};box-shadow:0 0 5px ${est.dot};"></div><div class="rep-sec-title">${est.n} — ${est.title}</div><div class="rep-sec-sub">${est.base}${est.dt?' · '+est.dt:''}</div><span class="badge ${est.bc}">${est.songs.length} músicas</span><span style="color:var(--muted);margin-left:.3rem;">${open?'▲':'▼'}</span></div><div class="rep-sec-body" style="max-height:${mH};">${bH}</div>`;
+  return div;
+}
+function rfilt(btn,f){
+  document.querySelectorAll('.rf').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  const c=document.getElementById('rpCont');c.innerHTML='';
+  if(f==='all'){ESTUDOS.forEach(e=>c.appendChild(makeSec(e,true)));c.appendChild(makeSec(ACERVO,false));}
+  else if(f==='ac'){c.appendChild(makeSec(ACERVO,true));}
+  else{const e=ESTUDOS.find(e=>e.id===f);if(e)c.appendChild(makeSec(e,true));}
+  rev();
+}
+function tsSec(hd){
+  const body=hd.nextElementSibling,open=body.style.maxHeight!=='0px'&&body.style.maxHeight!=='';
+  body.style.maxHeight=open?'0':'2200px';
+  hd.querySelector('span:last-child').textContent=open?'▼':'▲';
+}
+
+// ─── MÚSICAS POR TEMA ───
+let muF='ambos';
+function buildMu(){
+  const c=document.getElementById('muCont');c.innerHTML='';
+  c.innerHTML=`<div class="age-tabs rev">
+    <button class="age-tab ${muF==='ambos'?'active':''}" onclick="setMuF('ambos',this)">🎵 Todas as idades</button>
+    <button class="age-tab ${muF==='menor'?'active':''}" onclick="setMuF('menor',this)">🌸 Menores (3–5 anos)</button>
+    <button class="age-tab ${muF==='maior'?'active':''}" onclick="setMuF('maior',this)">📘 Maiores (6–8 anos)</button>
+  </div>`;
+  MUSICAS_TEMA.forEach(s=>{
+    const vis=s.musicas.filter(m=>muF==='ambos'||m.idade===muF||m.idade==='ambos');
+    if(!vis.length)return;
+    const sec=document.createElement('div');sec.className='music-section rev';
+    let h=`<div class="music-sec-head"><div class="music-sec-icon" style="background:${s.cor}22;border:2px solid ${s.cor}44;">🎶</div><div><div class="music-sec-title">${s.estudo}</div><div class="music-sec-sub">${s.base}</div></div></div><div class="music-cards">`;
+    vis.forEach(m=>{
+      const lbl=m.idade==='menor'?'Menores (3–5)':m.idade==='maior'?'Maiores (6–8)':'Todas as idades';
+      h+=`<div class="mc"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.5rem;"><div><div class="mc-title">${m.t}</div><div class="mc-artist">${m.art}</div></div><span class="mc-age ${m.idade}">${lbl}</span></div><div class="mc-reason"><div class="mc-why-label">🔗 Conexão com a aula</div>${m.conexao}</div><a class="mc-link" href="${m.link}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>YouTube</a></div>`;
+    });
+    h+='</div>';sec.innerHTML=h;c.appendChild(sec);
+  });
+  rev();
+}
+function setMuF(f,btn){muF=f;buildMu();}
+
+// ─── PROFESSOR ───
+let canEdit=false;
+function buildProf(){
+  const c=document.getElementById('profCont');
+  PROF_DATA.forEach((p,i)=>{
+    const card=document.createElement('div');card.className='prof-study-card rev';
+    card.innerHTML=`<div class="prof-study-header" onclick="togProf(${i})"><div class="prof-study-num" style="background:${p.cor};">${i+1}</div><div style="flex:1"><div class="prof-study-name">${p.n} — ${p.title}</div><div class="prof-study-base">${p.base}</div></div><span class="badge b-sun" style="margin-left:auto;">Ver conteúdo</span><span id="pchev${i}" style="color:var(--muted);margin-left:.5rem;transition:transform .25s;">▼</span></div><div class="prof-study-body" id="pbody${i}"><div class="prof-tab-row"><button class="prof-tab active" onclick="showPT(${i},'verso',this)">📖 Versículo</button><button class="prof-tab" onclick="showPT(${i},'obj',this)">🎯 Objetivo</button><button class="prof-tab" onclick="showPT(${i},'intro',this)">🚀 Introdução</button><button class="prof-tab" onclick="showPT(${i},'bib',this)">📜 Bíblia</button><button class="prof-tab" onclick="showPT(${i},'ilust',this)">🎭 Ilustração</button><button class="prof-tab" onclick="showPT(${i},'menor',this)">🌸 Menores</button><button class="prof-tab" onclick="showPT(${i},'maior',this)">📘 Maiores</button><button class="prof-tab" onclick="showPT(${i},'fam',this)">🏠 Família</button><button class="prof-tab" onclick="showPT(${i},'lemb',this)">🎁 Lembrança</button></div><div class="prof-content" id="pcont${i}"><div class="prof-verse">${p.verso}</div></div></div>`;
+    c.appendChild(card);
+  });
+}
+function togProf(i){
+  const b=document.getElementById('pbody'+i),ch=document.getElementById('pchev'+i),op=b.classList.contains('open');
+  document.querySelectorAll('.prof-study-body').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('[id^=pchev]').forEach(x=>x.textContent='▼');
+  if(!op){b.classList.add('open');ch.textContent='▲';showPT(i,'verso',document.querySelector('#pbody'+i+' .prof-tab'));}
+}
+function showPT(i,tab,btn){
+  const p=PROF_DATA[i];
+  document.querySelectorAll('#pbody'+i+' .prof-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const eBtn=canEdit?`<button class="edit-btn" onclick="startEdit(${i},'${tab}')">✏️ Editar</button>`:'';
+  const cm={
+    verso:`<div style="display:flex;gap:.5rem;"><div class="prof-verse" style="flex:1;">${p.verso}</div>${eBtn}</div>`,
+    obj:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">🎯 Objetivo ${eBtn}</div><div class="prof-block-body">${p.objetivo}</div></div>`,
+    intro:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">🚀 ${p.intro.tag} ${eBtn}</div><div class="prof-dinamica"><div class="prof-dinamica-tag">⚡ Dinâmica</div><div class="prof-dinamica-text">${p.intro.text}</div></div></div>`,
+    bib:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">📜 ${p.biblica.tag} ${eBtn}</div><div class="prof-dinamica"><div class="prof-dinamica-tag">📖 Desenvolvimento</div><div class="prof-dinamica-text">${p.biblica.text}</div></div></div>`,
+    ilust:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">🎭 ${p.ilust.tag} ${eBtn}</div><div class="prof-dinamica"><div class="prof-dinamica-tag">🎭 Ação</div><div class="prof-dinamica-text">${p.ilust.text}</div></div></div>`,
+    menor:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">🌸 ${p.menor.tag} ${eBtn}</div><div class="prof-block-body">${p.menor.text}</div></div>`,
+    maior:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">📘 ${p.maior.tag} ${eBtn}</div><div class="prof-block-body">${p.maior.text}</div></div>`,
+    fam:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">🏠 Tarefa em Família ${eBtn}</div><div class="prof-block-body">${p.familia}</div></div>`,
+    lemb:`<div class="prof-block"><div class="prof-block-title" style="justify-content:space-between;">🎁 Lembrança ${eBtn}</div><div class="prof-block-body">${p.lembranca}</div></div>`,
+  };
+  document.getElementById('pcont'+i).innerHTML=cm[tab]||'';
+}
+function startEdit(si,field){
+  const p=PROF_DATA[si];
+  const map={verso:p.verso,obj:p.objetivo,intro:p.intro.text,bib:p.biblica.text,ilust:p.ilust.text,menor:p.menor.text,maior:p.maior.text,fam:p.familia,lemb:p.lembranca};
+  const cur=(map[field]||'').replace(/<[^>]+>/g,'');
+  document.getElementById('pcont'+si).innerHTML=`<div class="prof-block"><div class="prof-block-title">✏️ Editando: ${field}</div><textarea class="edit-field" id="ea${si}">${cur}</textarea><div style="display:flex;gap:.5rem;margin-top:.5rem;"><button class="save-edit-btn" onclick="saveEdit(${si},'${field}')">💾 Salvar</button><button onclick="showPT(${si},'${field}',document.querySelector('#pbody${si} .prof-tab.active'))" style="padding:.35rem .8rem;border-radius:20px;border:2px solid var(--border);background:var(--bg);color:var(--muted);font-size:.7rem;font-weight:800;cursor:pointer;">✕ Cancelar</button></div></div>`;
+}
+function saveEdit(si,field){
+  const val=document.getElementById('ea'+si).value;
+  const p=PROF_DATA[si];
+  if(field==='verso')p.verso=val;else if(field==='obj')p.objetivo=val;else if(field==='intro')p.intro.text=val;else if(field==='bib')p.biblica.text=val;else if(field==='ilust')p.ilust.text=val;else if(field==='menor')p.menor.text=val;else if(field==='maior')p.maior.text=val;else if(field==='fam')p.familia=val;else if(field==='lemb')p.lembranca=val;
+  try{localStorage.setItem('pedit_'+si+'_'+field,val);}catch(e){}
+  toast();
+  showPT(si,field,document.querySelector('#pbody'+si+' .prof-tab.active'));
+}
+
+// ─── DISP STATE ───
+const DS={};
+function loadDS(){
+  MUSICOS_LIDER.forEach((m,mi)=>{
+    try{const s=localStorage.getItem('ds'+mi);DS[mi]=s?JSON.parse(s):[...m.disp];}catch(e){DS[mi]=[...m.disp];}
+  });
+}
+function buildLider(){
+  const gc2=document.getElementById('liderDisp');gc2.innerHTML='';
+  ['Manhã','Noite'].forEach(turno=>{
+    const mus=MUSICOS_LIDER.filter(m=>m.turno.includes(turno));
+    const card=document.createElement('div');card.className='card lider-card';
+    let h=`<div class="lider-card-title">🎵 Músicos — Culto ${turno}</div>`;
+    mus.forEach(m=>{
+      const mi=MUSICOS_LIDER.indexOf(m);
+      h+=`<div class="musico-row"><div class="musico-av ${gc(m.n)}">${ini(m.n)}</div><div style="flex:1"><div class="musico-name">${m.n}</div><div class="musico-func">${m.f}</div></div><div class="musico-disps">`;
+      for(let d=0;d<5;d++){const s=DS[mi][d];const cl=s===true?'yes':s===false?'no':'';h+=`<div class="dom-pill ${cl}" onclick="togDisp(${mi},${d},this)">${d+1}</div>`;}
+      h+=`</div></div>`;
+    });
+    card.innerHTML=h;gc2.appendChild(card);
+  });
+  buildEL();buildLS();
+}
+function togDisp(mi,d,el){
+  DS[mi][d]=DS[mi][d]===false?true:false;
+  el.className='dom-pill '+(DS[mi][d]?'yes':'no');
+  try{localStorage.setItem('ds'+mi,JSON.stringify(DS[mi]));}catch(e){}
+  buildEL();buildLS();
+}
+function buildEL(){
+  const c=document.getElementById('liderEscala');
+  const wks=['1º Dom','2º Dom','3º Dom','4º Dom','5º Dom'];
+  let h='<div style="padding:1.1rem;">';
+  wks.forEach((wk,wi)=>{
+    h+=`<div class="eb-week"><div class="eb-week-title">📅 ${wk}</div><div class="eb-slots">`;
+    ['Manhã','Noite'].forEach(turno=>{
+      const disp=MUSICOS_LIDER.filter((m,mi)=>m.turno.includes(turno)&&DS[mi][wi]===true);
+      const st=disp.length===0?'status-empty':disp.length<2?'status-warn':'status-ok';
+      const nm=disp.length?disp.map(m=>`<span style="font-size:.68rem;background:var(--bg3);border:1.5px solid var(--border);border-radius:6px;padding:1px 6px;margin:1px;">${m.n} <span style="font-size:.58rem;color:var(--muted);">${m.f.split('/')[0].trim()}</span></span>`).join(''):`<span style="font-size:.72rem;color:var(--coral);">🔴 Ninguém disponível</span>`;
+      h+=`<div class="eb-slot"><div class="eb-slot-func">${turno==='Manhã'?'☀️':'🌙'} ${turno}</div><div style="flex:1;display:flex;flex-wrap:wrap;gap:2px;">${nm}</div><div class="eb-slot-status ${st}"></div></div>`;
+    });
+    h+=`</div></div>`;
+  });
+  h+='</div>';c.innerHTML=h;
+}
+function buildLS(){
+  let al=0,co=0;
+  MUSICOS_LIDER.forEach((m,mi)=>{DS[mi].forEach(d=>{if(d===true)co++;});});
+  for(let wi=0;wi<5;wi++)['Manhã','Noite'].forEach(t=>{if(MUSICOS_LIDER.filter((m,mi)=>m.turno.includes(t)&&DS[mi][wi]===true).length<2)al++;});
+  ['lAl','lCo','lCm','lSp'].forEach(id=>{const el=document.getElementById(id);if(el){if(id==='lAl')el.textContent=al;if(id==='lCo')el.textContent=co;if(id==='lCm')el.textContent=loadComs().length;if(id==='lSp')el.textContent=SD.size+'/6';}});
+  buildSolicBox();
+}
+function buildSolicBox(){
+  const box=document.getElementById('liderSolicBox');if(!box)return;
+  const all=[...loadSugs(),...loadSins()];
+  if(!all.length){box.innerHTML=`<div style="padding:1rem;color:var(--muted);font-size:.77rem;background:var(--card);border:2px dashed var(--border);border-radius:14px;text-align:center;">📭 Nenhuma solicitação recebida ainda.</div>`;return;}
+  const tipoC={urgente:'var(--coral)',info:'var(--sky)',indisponivel:'var(--gold)',feedback:'var(--grape)',solicitacao:'var(--teal)',instrumento:'var(--sun)'};
+  box.innerHTML=all.map(it=>`<div class="notif-item"><div class="notif-dot" style="background:${tipoC[it.tipo]||'var(--sky)'};"></div><div><div class="notif-title">${it.tipo_label||it.tipo} — ${it.titulo||it.musica||'(sem título)'}</div><div class="notif-text">${it.obs||it.texto||''}</div><div class="notif-time">De: ${it.origem||'equipe'} · ${it.date||''}</div></div></div>`).join('');
+}
+
+// ─── SUGESTÕES E SINALIZAÇÕES ───
+function loadSugs(){try{return JSON.parse(localStorage.getItem('sugs')||'[]');}catch(e){return[];}}
+function saveSugs(l){try{localStorage.setItem('sugs',JSON.stringify(l));}catch(e){}}
+function loadSins(){try{return JSON.parse(localStorage.getItem('sins')||'[]');}catch(e){return[];}}
+function saveSins(l){try{localStorage.setItem('sins',JSON.stringify(l));}catch(e){}}
+
+function envSug(pre){
+  const t=document.getElementById(pre+'SugT').value.trim();
+  if(!t)return;
+  const l=loadSugs();
+  l.unshift({id:Date.now(),musica:t,artista:document.getElementById(pre+'SugA').value.trim(),link:document.getElementById(pre+'SugL').value.trim(),estudo:document.getElementById(pre+'SugE').value,obs:pre==='mp'?document.getElementById('mpSugO').value.trim():'',origem:pre==='mp'?'Músico':'Cantor',date:new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short'})});
+  saveSugs(l);
+  ['SugT','SugA','SugL','SugE'].forEach(f=>{const el=document.getElementById(pre+f);if(el)el.value='';});
+  if(pre==='mp'&&document.getElementById('mpSugO'))document.getElementById('mpSugO').value='';
+  renderSugList();buildLS();toast();
+}
+function envSin(pre){
+  const tit=document.getElementById(pre+'SiTit').value.trim();
+  const txt=document.getElementById(pre+'SiTxt').value.trim();
+  if(!tit&&!txt)return;
+  const tipo=document.getElementById(pre+'SiT').value;
+  const tipoL={info:'ℹ️ Informação',indisponivel:'📵 Indisponibilidade',instrumento:'🎸 Instrumento',solicitacao:'📝 Solicitação',urgente:'🔴 Urgente',feedback:'💬 Feedback'};
+  const l=loadSins();
+  l.unshift({id:Date.now(),tipo,tipo_label:tipoL[tipo]||tipo,titulo:tit,texto:txt,origem:pre==='mp'?'Músico':'Cantor',date:new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short'})});
+  saveSins(l);
+  document.getElementById(pre+'SiTit').value='';document.getElementById(pre+'SiTxt').value='';
+  buildLS();toast();
+}
+function renderSugList(){
+  const box=document.getElementById('mpSugList');if(!box)return;
+  const l=loadSugs();
+  if(!l.length){box.textContent='Nenhuma sugestão enviada ainda.';return;}
+  box.innerHTML=l.slice(0,5).map(s=>`<div class="song-li"><span class="song-li-icon">🎵</span><div class="song-li-info"><div class="song-li-title">${s.musica}</div><div class="song-li-sub">${s.artista||''} ${s.estudo?'· '+s.estudo:''}</div></div><span class="badge b-lime">Enviado</span></div>`).join('');
+}
+
+// ─── PAINEL MÚSICO ───
+function buildMpPanel(){
+  const eBox=document.getElementById('mpEscala');
+  if(eBox){
+    let h='';
+    [{lb:'☀️ Manhã',dt:EM},{lb:'🌙 Noite',dt:EN}].forEach(p=>{
+      h+=`<div style="font-size:.65rem;font-weight:900;color:var(--sun);text-transform:uppercase;letter-spacing:.1em;margin:0 0 .4rem;">${p.lb}</div>`;
+      p.dt.forEach(wk=>{h+=`<div class="song-li" style="margin-bottom:.3rem;"><span style="font-size:.8rem;">📅</span><div class="song-li-info"><div class="song-li-title">${wk.wk}</div><div class="song-li-sub">${wk.mb.map(m=>`${m.n} (${m.f})`).join(', ')}</div></div></div>`;});
+    });
+    eBox.innerHTML=h;
+  }
+  const sBox=document.getElementById('mpSetList');
+  if(sBox){
+    let h='<div style="display:flex;flex-direction:column;gap:.6rem;">';
+    CU.slice(0,4).forEach(w=>{
+      const songs=[...w.mh.s,...w.no.s];
+      h+=`<div class="card" style="padding:.9rem;"><div style="font-size:.7rem;font-weight:900;color:var(--sun);margin-bottom:.4rem;">📅 ${w.d} de ${w.mo} — ${w.mh.t}</div>`;
+      if(songs.length){songs.forEach(s=>{h+=`<a class="sl" href="${s.u}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>${s.t}</a>`;});}
+      else h+=`<div style="font-size:.68rem;color:var(--muted);font-style:italic;">Músicas a definir</div>`;
+      h+='</div>';
+    });
+    h+='</div>';sBox.innerHTML=h;
+  }
+  renderSugList();
+}
+
+// ─── PAINEL CANTOR ───
+function buildCpPanel(){
+  const box=document.getElementById('cpMusList');if(!box)return;
+  let h='<div style="display:flex;flex-direction:column;gap:.8rem;">';
+  ESTUDOS.forEach(e=>{
+    h+=`<div style="border-left:4px solid ${e.dot};padding-left:.9rem;"><div style="font-size:.75rem;font-weight:800;color:var(--text);margin-bottom:.4rem;">${e.n} — ${e.title}</div><div style="display:flex;flex-direction:column;gap:.25rem;">`;
+    e.songs.forEach(s=>{h+=`<div style="display:flex;align-items:center;gap:.6rem;padding:.35rem .6rem;background:var(--bg3);border-radius:9px;border:1.5px solid var(--border);"><span style="font-size:.9rem;">🎵</span><div style="flex:1;"><div style="font-size:.75rem;font-weight:800;color:var(--text);">${s.t}</div><div style="font-size:.63rem;color:var(--muted);">${s.art} · ${s.role}</div></div><a href="${s.url}" target="_blank" style="font-size:.63rem;color:var(--sun);text-decoration:none;background:#fff8e0;border:1.5px solid var(--border2);border-radius:8px;padding:2px 7px;font-weight:800;white-space:nowrap;">▶ YT</a></div>`;});
+    h+='</div></div>';
+  });
+  h+='</div>';box.innerHTML=h;
+}
+
+// ─── ESCALA FIXA ───
+function buildEs(){
+  const c=document.getElementById('esCont');
+  [{lb:'Manhã',ic:'☀️',dt:EM},{lb:'Noite',ic:'🌙',dt:EN}].forEach(p=>{
+    const d=document.createElement('div');d.className='card rev';
+    let h=`<div class="esc-ph"><div class="esc-pi">${p.ic}</div><div class="esc-pt">Culto ${p.lb}</div><div class="esc-ps">${p.dt.reduce((a,w)=>a+w.mb.length,0)} músicos</div></div><div class="esc-wks">`;
+    p.dt.forEach(wk=>{
+      h+=`<div class="esc-wk"><div class="esc-wl">${wk.wk}</div><div class="esc-ms">`;
+      wk.mb.forEach(m=>{h+=`<div class="esc-m"><div class="esc-av ${gc(m.n)}">${ini(m.n)}</div><div class="esc-nm">${m.n}</div><div class="esc-fn">${m.f}</div><div class="esc-ck" onclick="this.classList.toggle('on');saveEC()" id="ec_${p.lb}_${wk.wk.replace(/\s/g,'_')}_${m.n.replace(/\s/g,'_')}"><svg viewBox="0 0 24 24" fill="none" stroke="white"><polyline points="20 6 9 17 4 12"/></svg></div></div>`;});
+      h+=`</div></div>`;
+    });
+    h+='</div>';d.innerHTML=h;c.appendChild(d);
+  });
+  try{const s=JSON.parse(localStorage.getItem('ec')||'[]');s.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('on');});}catch(e){}
+}
+function saveEC(){
+  try{const on=[...document.querySelectorAll('.esc-ck.on')].map(el=>el.id).filter(Boolean);localStorage.setItem('ec',JSON.stringify(on));toast();}catch(e){}
+}
+
+// ─── COMUNICADOS ───
+function loadComs(){try{return JSON.parse(localStorage.getItem('coms')||'[]');}catch(e){return[];}}
+function saveComs(l){try{localStorage.setItem('coms',JSON.stringify(l));toast();}catch(e){}}
+function addCom(){
+  const t=document.getElementById('comTitleInput').value.trim();
+  const b=document.getElementById('comBodyInput').value.trim();
+  const tp=document.getElementById('comTypeSelect').value;
+  const au=document.getElementById('comAuthorInput').value.trim();
+  if(!t&&!b)return;
+  const l=loadComs();
+  l.unshift({id:Date.now(),title:t||'(sem título)',body:b,type:tp,author:au||'Liderança',date:new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short'})});
+  saveComs(l);
+  ['comTitleInput','comBodyInput','comAuthorInput'].forEach(id=>document.getElementById(id).value='');
+  renderComs();buildLS();
+}
+function deleteCom(id){saveComs(loadComs().filter(c=>c.id!==id));renderComs();}
+function renderComs(){
+  const l=loadComs();const cont=document.getElementById('comList');
+  const badge=document.getElementById('com-badge');
+  const urg=l.filter(c=>c.type==='urgente').length;
+  if(urg>0){badge.textContent=urg;badge.style.display='inline';}else badge.style.display='none';
+  if(!l.length){cont.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;background:var(--card);border:2px dashed var(--border);border-radius:14px;">📭 Nenhum comunicado ainda.</div>`;return;}
+  const tl={urgente:'🔴 Urgente',info:'ℹ️ Informação',aviso:'⚠️ Aviso',ok:'✅ Concluído'};
+  cont.innerHTML=l.map(c=>`<div class="com-card ${c.type}"><div class="com-top"><div><div class="com-title">${c.title}</div><div class="com-meta">${tl[c.type]||''} · ${c.author} · ${c.date}</div></div><button class="com-del" onclick="deleteCom(${c.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div>${c.body?`<div class="com-body">${c.body}</div>`:''}</div>`).join('');
+}
+
+// ─── NAVIGATION ───
+function sw(id, btn){
+  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('page-'+id).classList.add('active');
+  if(id==='mp'){buildMpPanel();}
+  if(id==='cp'){buildCpPanel();}
+  if(id==='lider'){buildLS();}
+  rev();
+}
+
+// ─── TOAST ───
+function toast(){const t=document.getElementById('saveToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+
+// ─── SCROLL REVEAL ───
+function rev(){
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.05});
+  document.querySelectorAll('.rev:not(.vis)').forEach(el=>obs.observe(el));
+}
+
+// ─── INIT ───
+document.getElementById('dn').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
+loadSP();
+loadDS();
+buildStrip();
+buildPhotoGrid();
+buildSt();
+buildPl();
+buildCu();
+buildMu();
+buildProf();
+buildLider();
+buildEs();
+renderComs();
+(()=>{const c=document.getElementById('rpCont');c.innerHTML='';ESTUDOS.forEach(e=>c.appendChild(makeSec(e,true)));c.appendChild(makeSec(ACERVO,false));})();
+rev();
+</script>
+</body>
+</html>

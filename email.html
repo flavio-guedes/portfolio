@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Email — Flávio Guedes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0b0b14; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  p { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: 860px; margin: 0 auto; }
+  .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px 18px; }
+  .card h2 { font-size: 16px; margin-bottom: 4px; }
+  .meta { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+  .score { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+  .score-high { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .score-mid { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .score-low { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .prio { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; background: rgba(16,185,129,0.15); color: #34d399; margin-left: 8px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  a.btn { text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; }
+  a.btn:hover { background: #1e293b; }
+  .msg { margin-top: 10px; padding: 10px; background: #0b1220; border: 1px dashed #334155; border-radius: 8px; font-size: 12px; color: #cbd5e1; white-space: pre-wrap; }
+  .pager { max-width: 860px; margin: 18px auto 0; display: flex; gap: 10px; justify-content: space-between; align-items: center; }
+  .pill { padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #111827; border: 1px solid #334155; }
+  button.nav { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; cursor: pointer; }
+  button.nav:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <h1>Pipeline Email</h1>
+  <p>Rolagem vertical clean. Clique em Mensagem para abrir o email do lead.</p>
+  <div class="grid" id="cards"></div>
+  <div class="pager">
+    <button class="nav" id="prev" onclick="changePage(-1)">Anterior</button>
+    <div class="pill" id="pageInfo">Página 1</div>
+    <button class="nav" id="next" onclick="changePage(1)">Próxima</button>
+  </div>
+
+<script>
+  const data = [
+    {name:"camilafriedrich@vyntha.com",company:"vyntha.com",score:27,prio:"Alta",temp:"MORNO",subject:"Re: Analista de Marketing _ Designer",status:"Pendente",next:"Agradecer a proposta, confirmar interesse na faixa salarial discutida e perguntar sobre detalhes do escopo, benefícios e próximos passos.",email:"mailto:camilafriedrich@vyntha.com?subject=Re:%20Analista%20de%20Marketing%20_%20Designer&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"accenture.application@outlook.com",company:"outlook.com",score:32,prio:"Alta",temp:"MORNO",subject:"Content Manager Partner",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:accenture.application@outlook.com?subject=Content%20Manager%20Partner&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"roberthalf.screeningdesk@outlook.com",company:"outlook.com",score:28,prio:"Alta",temp:"MORNO",subject:"Content Manager Partner",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:roberthalf.screeningdesk@outlook.com?subject=Content%20Manager%20Partner&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"flavia_guima@yahoo.com.br",company:"yahoo.com.br",score:21,prio:"Alta",temp:"MORNO",subject:"Re: Freelancer Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:flavia_guima@yahoo.com.br?subject=Re:%20Freelancer%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"jessica.ramirez@sthreeco.com",company:"sthreeco.com",score:21,prio:"Alta",temp:"MORNO",subject:"Re: Candidate Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:jessica.ramirez@sthreeco.com?subject=Re:%20Candidate%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"cbre.careerjobs@usa.com",company:"usa.com",score:28,prio:"Alta",temp:"MORNO",subject:"Re: Flavio Guedes - candidate",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:cbre.careerjobs@usa.com?subject=Re:%20Flavio%20Guedes%20-%20candidate&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"hr-europe-teamb@gaotek.com",company:"gaotek.com",score:24,prio:"Alta",temp:"MORNO",subject:"Re: Candidate Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:hr-europe-teamb@gaotek.com?subject=Re:%20Candidate%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"yang.li108@gientech.com",company:"gientech.com",score:26,prio:"Alta",temp:"MORNO",subject:"Re: Job Application Feedback- GienTech",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:yang.li108@gientech.com?subject=Re:%20Job%20Application%20Feedback-%20GienTech&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"onyekweluchidieberevictor20@gmail.com",company:"gmail.com",score:24,prio:"Alta",temp:"MORNO",subject:"Re: Creative Designer / Content Manager - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:onyekweluchidieberevictor20@gmail.com?subject=Re:%20Creative%20Designer%20/%20Content%20Manager%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"katelynhalstead94@gmail.com",company:"gmail.com",score:35,prio:"Alta",temp:"MORNO",subject:"Re: Social Media Manager - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:katelynhalstead94@gmail.com?subject=Re:%20Social%20Media%20Manager%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"alex.plunkett.hr@gmail.com",company:"gmail.com",score:35,prio:"Alta",temp:"MORNO",subject:"Re: Content Manager - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:alex.plunkett.hr@gmail.com?subject=Re:%20Content%20Manager%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"paula.wiezel@deloitterecruit.com",company:"deloitterecruit.com",score:33,prio:"Alta",temp:"MORNO",subject:"Re: Content Manager - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:paula.wiezel@deloitterecruit.com?subject=Re:%20Content%20Manager%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"welcome@studydestination.com.au",company:"studydestination.com.au",score:31,prio:"Alta",temp:"MORNO",subject:"Marketing Manager",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:welcome@studydestination.com.au?subject=Marketing%20Manager&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"melissa.chapman@jobalert.creativecircle.com",company:"jobalert.creativecircle.com",score:26,prio:"Alta",temp:"MORNO",subject:"Creative Director - Creative Circle Opportunity",status:"Pendente",next:"Agradecer a proposta, confirmar interesse na faixa salarial discutida e perguntar sobre detalhes do escopo, benefícios e próximos passos.",email:"mailto:melissa.chapman@jobalert.creativecircle.com?subject=Creative%20Director%20-%20Creative%20Circle%20Opportunity&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"hr-myn-teama@gaostaff.com",company:"gaostaff.com",score:23,prio:"Alta",temp:"MORNO",subject:"Re: Graphic Designer Application – Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:hr-myn-teama@gaostaff.com?subject=Re:%20Graphic%20Designer%20Application%20%E2%80%93%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"microsoftexperttalent@gmail.com",company:"gmail.com",score:30,prio:"Alta",temp:"MORNO",subject:"Re: Inbound Marketing Specialist - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:microsoftexperttalent@gmail.com?subject=Re:%20Inbound%20Marketing%20Specialist%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"jul.rosclement@gmail.com",company:"gmail.com",score:32,prio:"Alta",temp:"MORNO",subject:"Senior Graphic Designer - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:jul.rosclement@gmail.com?subject=Senior%20Graphic%20Designer%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"victoriareynolds699@gmail.com",company:"gmail.com",score:25,prio:"Alta",temp:"MORNO",subject:"Re: Graphic Designer",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:victoriareynolds699@gmail.com?subject=Re:%20Graphic%20Designer&body=Ol%C3%A1%2C%20tudo%20bem%3F"},
+    {name:"undisclosed-recipients:;",company:"desconhecido",score:21,prio:"Alta",temp:"MORNO",subject:"Art Director - Flávio Guedes",status:"Pendente",next:"Responder imediatamente confirmando disponibilidade para a reunião. Enviar portfólio atualizado. Reforçar alinhamento salarial e perguntar sobre próximos passos do processo seletivo.",email:"mailto:?subject=Art%20Director%20-%20Fl%C3%A1vio%20Guedes&body=Ol%C3%A1%2C%20tudo%20bem%3F"}
+  ];
+
+  const pageSize = 10;
+  let page = 0;
+  function render() {
+    const container = document.getElementById('cards');
+    container.innerHTML = '';
+    const start = page * pageSize;
+    const slice = data.slice(start, start + pageSize);
+    slice.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const scoreClass = item.temp === 'QUENTE' ? 'score-high' : (item.temp === 'MORNO' ? 'score-mid' : 'score-low');
+      const msgId = 'msg-' + item.email.replace(/[^a-zA-Z0-9]/g,'');
+      card.innerHTML = `
+        <h2>${item.name}</h2>
+        <div class="meta">${item.company} · Score ${item.score} · <span class="score ${scoreClass}">${item.temp}</span> <span class="prio">${item.prio}</span></div>
+        <div class="meta">Assunto: ${item.subject} · Status: ${item.status}</div>
+        <div class="actions">
+          <a class="btn" href="${item.email}" target="_blank" rel="noopener">Mensagem</a>
+          <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('${msgId}').innerText);this.innerText='Copiado'">Copiar texto</button>
+        </div>
+        <div class="msg" id="${msgId}">${item.next}</div>
+      `;
+      container.appendChild(card);
+    });
+    document.getElementById('pageInfo').innerText = `Página ${page + 1} · ${start + 1}-${Math.min(start + pageSize, data.length)}/${data.length}`;
+    document.getElementById('prev').disabled = page === 0;
+    document.getElementById('next').disabled = start + pageSize >= data.length;
+  }
+  function changePage(delta) {
+    page += delta;
+    render();
+  }
+  render();
+</script>
+</body>
+</html>

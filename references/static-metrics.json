@@ -1,0 +1,60 @@
+{
+  "status_code": 200,
+  "url": "https://flavio-guedes.github.io/portfolio/parceria.html",
+  "html_len": 1034876,
+  "title": "Flávio Guedes — Parceiro de Marketing",
+  "h1_count": 1,
+  "h1": [
+    "Flávio Guedes"
+  ],
+  "h2_count": 11,
+  "h2_top": [
+    "O marketing cresceu. A operação também precisa crescer.",
+    "Eu construo uma operação de marketing que trabalha junto com o negócio.",
+    "Marketing como parceiro de crescimento.",
+    "De ferramentas de IA para uma operação de IA.",
+    "O que isso pode significar na prática.",
+    "Dados que mostram o que é possível alcançar.",
+    "Mais capacidade.  Mais inteligência.  Menos operação manual.",
+    "Como parceiro de marketing.",
+    "Não é sobre contratar mais um fornecedor.",
+    "Resultados que mostram experiência em diferentes frentes de marketing.",
+    "Vamos construir o próximo estágio do seu marketing?"
+  ],
+  "links": 13,
+  "imgs": 7,
+  "stylesheets": 1,
+  "scripts": 1,
+  "forms": 0,
+  "data_imgs": 7,
+  "webp": 0,
+  "jpeg": 0,
+  "charset": "UTF-8",
+  "viewport": "width=device-width, initial-scale=1.0",
+  "robots": null,
+  "canonical": null,
+  "og_title": null,
+  "og_desc": null,
+  "og_image": null,
+  "lang": "pt-BR",
+  "anchor_ids": [
+    "abordagem",
+    "aplicacoes",
+    "cases",
+    "contato",
+    "desafio",
+    "hero",
+    "ia",
+    "marketing",
+    "navMobileToggle",
+    "parceiro",
+    "performance",
+    "resultado"
+  ],
+  "cta_links": [
+    "#contato",
+    "#contato",
+    "mailto:flavioguedesmkt@gmail.com",
+    "mailto:flavioguedesmkt@gmail.com"
+  ]
+}

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐴 v1 · Boulevard de Oportunidades</title>
+<style>
+  :root {
+    --bg:#0b1220;
+    --panel:#0f172a;
+    --line:#1f2d42;
+    --text:#e6e9ef;
+    --muted:#8a93a6;
+    --blue:#3b82f6;
+    --green:#10b981;
+    --amber:#f59e0b;
+    --red:#ef4444;
+    --purple:#7c3aed;
+    --radius:14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+    background:
+      radial-gradient(1200px 800px at 20% -10%, rgba(59,130,246,.18), transparent),
+      radial-gradient(1000px 700px at 80% 10%, rgba(124,58,237,.15), transparent),
+      var(--bg);
+    color: var(--text);
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  header {
+    padding: 18px 18px 14px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(15,23,42,.7), rgba(15,23,42,.4));
+    backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 50;
+  }
+  header h1 { font-size: 18px; margin: 0; letter-spacing: .2px; }
+  header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+  .section { margin-top: 18px; }
+  .section h2 { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 10px; }
+  .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: transform .08s ease, border-color .2s ease, box-shadow .2s ease;
+    background: linear-gradient(180deg, #2563eb, #1d4ed8); color: #fff; border-color: rgba(96,165,250,.5); box-shadow: 0 10px 30px rgba(37,99,235,.18);
+  }
+  .btn:hover { transform: translateY(-2px); border-color: #60a5fa; box-shadow: 0 14px 36px rgba(37,99,235,.25); }
+  .btn.primary { background: linear-gradient(90deg, var(--blue), var(--purple)); color: #fff; border-color: transparent; }
+  .btn.primary:hover { background: linear-gradient(90deg, #4f8ef7, #8b5cf6); }
+  .btn.random { background: linear-gradient(90deg, var(--green), var(--blue)); color: #fff; border-color: transparent; }
+  .btn.random:hover { background: linear-gradient(90deg, #10b981, #3b82f6); }
+  .query {
+    margin-top: 10px; padding: 12px; border-radius: 10px; background: rgba(15,23,42,.6); border: 1px solid var(--line); color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; line-height: 1.5;
+  }
+  .actions { margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .link {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid transparent;
+  }
+  .link.primary { background: rgba(59,130,246,.14); color: #e8f1ff; border-color: rgba(59,130,246,.35); }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-chip {
+    padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); color: var(--text); font-size: 12px; cursor: pointer; transition: all .15s ease;
+  }
+  .filter-chip.active, .filter-chip[aria-pressed="true"] { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.6); color: #fff; box-shadow: 0 0 0 1px rgba(245,158,11,.25); }
+  .filter-chip:hover { border-color: rgba(245,158,11,.45); }
+  .summary { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .board a.btn { display: inline-flex; }
+
+  .radar { margin-top: 22px; padding: 16px; border-radius: 16px; background: rgba(15,23,42,.55); border: 1px solid var(--line); }
+  .radar h2 { margin: 0 0 10px; color: var(--amber); }
+  .radar-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radar-stat { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: 12px; color: var(--text); }
+  .radar-stat strong { color: var(--amber); }
+
+  .radar-results { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .radar-card {
+    padding: 14px; border-radius: 14px; background: rgba(15,23,42,.6); border: 1px solid var(--line); color: var(--text);
+  }
+  .radar-card .tag { display: inline-block; margin-top: 8px; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(59,130,246,.18); border: 1px solid rgba(59,130,246,.25); color: #e8f1ff; }
+  .radar-card .tag.remote { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35); color: #d1fae5; }
+  .radar-card .tag.hybrid { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.35); color: #fef3c7; }
+  .radar-card .tag.onsite { background: rgba(239,68,68,.14); border-color: rgba(239,68,68,.25); color: #fecaca; }
+  .radar-card .tag.new { background: rgba(239,68,68,.22); border-color: rgba(239,68,68,.5); color: #fff; }
+  .radar-card h3 { margin: 0 0 6px; font-size: 14px; }
+  .radar-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .radar-card a { color: var(--blue); text-decoration: none; font-size: 12px; }
+  .radar-card a:hover { text-decoration: underline; }
+  .radar-empty { padding: 12px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px dashed var(--line); color: var(--muted); font-size: 12px; }
+
+  @media (max-width: 860px) {
+    .board { grid-template-columns: 1fr; }
+    .filter-bar { gap: 6px; }
+    .filter-chip { padding: 5px 8px; font-size: 11px; }
+    .radar-results { grid-template-columns: 1fr; }
+  }
+</style>
+<style class="darkreader darkreader--fallback" media="screen">html, body, body :not(iframe) {
+    background-color: #181a1b !important;
+    border-color: #776e62 !important;
+    color: #e8e6e3 !important;
+}
+html, body {
+    opacity: 1 !important;
+    transition: none !important;
+}
+div[style*="background-color: rgb(135, 135, 135)"] {
+    background-color: #878787 !important;
+}</style></head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>v1 · Boulevard de Oportunidades</h1>
+        <p>Clique no cargo para buscar vagas com contato direto no LinkedIn.</p>
+      </div>
+    </header>
+
+    <div class="section">
+      <h2>Filtros</h2>
+      <div class="filter-bar" id="filters">
+        <button class="filter-chip active" data-range="all">Todos</button>
+        <button class="filter-chip" data-range="10m">10 min</button>
+        <button class="filter-chip" data-range="30m">30 min</button>
+        <button class="filter-chip" data-range="1h">1 hora</button>
+        <button class="filter-chip" data-range="2h">2 horas</button>
+        <button class="filter-chip" data-range="3h">3 horas</button>
+        <button class="filter-chip" data-range="5h">5 horas</button>
+        <button class="filter-chip" data-range="1d">1 dia</button>
+        <button class="filter-chip" data-range="2d">2 dias</button>
+      </div>
+      <div class="summary" id="summary">Mostrando todos os cargos.</div>
+    </div>
+
+    <div class="section">
+      <h2>Buscar por cargo</h2>
+      <div class="board" id="board"></div>
+    </div>
+
+    <div class="section radar" id="radar">
+      <h2>⚡ Radar de Vagas</h2>
+      <div class="radar-stats" id="radar-stats">
+        <div class="radar-stat">ATUALIZADO: <strong id="radar-age">—</strong></div>
+        <div class="radar-stat">VAGAS ENCONTRADAS: <strong id="radar-total">0</strong></div>
+        <div class="radar-stat">REMOTAS: <strong id="radar-remote">0</strong></div>
+        <div class="radar-stat">HÍBRIDAS: <strong id="radar-hybrid">0</strong></div>
+        <div class="radar-stat">PRESENCIAIS: <strong id="radar-onsite">0</strong></div>
+      </div>
+      <div class="radar-results" id="radar-results">
+        <div class="radar-empty">Nenhuma vaga elegível no momento.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Query base</h2>
+      <div class="query" id="query-base">("vaga" OR "oportunidade") AND ("design" OR "produto" OR "marketing")</div>
+      <p style="color:var(--muted);font-size:12px;margin-top:8px;">Cada botão abre a busca diretamente no LinkedIn, ordenada por data de publicação.</p>
+    </div>
+
+    <div class="actions">
+      <a class="link primary" href="https://github.com/flavio-guedes/sistema-prospeccao" target="_blank" rel="noopener">Abrir repositório</a>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'painel_oportunidades_v1';
+    const baseUrl = 'https://www.linkedin.com/search/results/content/?keywords=';
+    const suffix = '&origin=FACETED_SEARCH&sortBy=%5B%22date_posted%22%5D';
+
+    const queries = [
+      { id: 'todas', label: 'TODAS AS VAGAS', category: 'geral', mode: 'all', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522design%2522%20OR%20%2522produto%2522%20OR%20%2522marketing%2522%20OR%20%2522conte%25C3%25BAdo%2522%20OR%20%2522gest%25C3%25A3o%20de%20projetos%2522%20OR%20%2522agilidade%2522%20%2529' },
+      { id: 'designer', label: 'DESIGNER', category: 'design', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522designer%2522%20OR%20%2522designer%20gr%25C3%25A1fico%2522%20OR%20%2522visual%20designer%2522%20OR%20%2522ux%20designer%2522%20OR%20%2522ui%20designer%2522%20OR%20%2522product%20designer%2522%20OR%20%2522product%20design%2522%20OR%20%2522product%20design%20jr%2522%20OR%20%2522motion%20designer%2522%20OR%20%2522art%20director%2522%20OR%20%2522diretor%20de%20arte%2522%20OR%20%2522diretor%20criativo%2522%20OR%20%2522design%20lead%2522%20OR%20%2522head%20de%20design%2522%20%2529' },
+      { id: 'product-design', label: 'PRODUCT DESIGN', category: 'design', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522product%20designer%2522%20OR%20%2522product%20design%2522%20OR%20%2522product%20design%20jr%2522%20OR%20%2522ux%2Fui%20designer%2522%20OR%20%2522ui%2Fux%20designer%2522%20%2529' },
+      { id: 'product-manager', label: 'PRODUCT MANAGER', category: 'produto', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522product%20manager%20jr%2522%20OR%20%2522product%20manager%20pleno%2522%20OR%20%2522product%20manager%2522%20OR%20%2522product%20owner%2522%20OR%20%2522project%20owner%2522%20OR%20%2522associate%20product%20manager%2522%20OR%20%2522apm%2522%20OR%20%2522analista%20de%20produto%2522%20OR%20%2522product%20analyst%2522%20%2529' },
+      { id: 'product-owner', label: 'PRODUCT OWNER', category: 'produto', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522product%20owner%2522%20OR%20%2522project%20owner%2522%20OR%20%2522product%20manager%2522%20OR%20%2522po%2522%20%2529' },
+      { id: 'project-owner', label: 'PROJECT OWNER', category: 'produto', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522project%20owner%2522%20OR%20%2522product%20owner%2522%20OR%20%2522project%20manager%2522%20OR%20%2522product%20manager%2522%20%2529' },
+      { id: 'agilista', label: 'AGILISTA', category: 'agilidade', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522agilista%20jr%2522%20OR%20%2522agilista%20pleno%2522%20OR%20%2522agile%20analyst%2522%20OR%20%2522agile%20specialist%2522%20OR%20%2522scrum%20master%2522%20OR%20%2522agile%2522%20OR%20%2522product%20owner%2522%20%2529' },
+      { id: 'gestao-projetos', label: 'GESTÃO DE PROJETOS', category: 'gestao', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522project%20manager%2522%20OR%20%2522project%20owner%2522%20OR%20%2522gestor%20de%20projetos%2522%20OR%20%2522gest%25C3%25A3o%20de%20projetos%2522%20OR%20%2522gerente%20de%20projetos%2522%20OR%20%2522pm%2522%20%2529' },
+      { id: 'marketing', label: 'MARKETING', category: 'marketing', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522head%20de%20marketing%2522%20OR%20%2522marketing%20manager%2522%20OR%20%2522coordenador%20de%20marketing%2522%20OR%20%2522analista%20de%20marketing%2522%20OR%20%2522gestor%20de%20tr%25C3%25A1fego%2522%20%2529' },
+      { id: 'head-marketing', label: 'HEAD DE MARKETING', category: 'marketing', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522head%20de%20marketing%2522%20OR%20%2522head%20de%20comunica%25C3%25A7%25C3%25A3o%2522%20OR%20%2522head%20de%20conte%25C3%25BAdo%2522%20OR%20%2522marketing%20manager%2522%20%2529' },
+      { id: 'conteudo', label: 'CONTEÚDO', category: 'conteudo', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522head%20de%20conte%25C3%25BAdo%2522%20OR%20%2522content%20manager%2522%20OR%20%2522content%20lead%2522%20OR%20%2522redator%2522%20OR%20%2522copywriter%2522%20%2529' },
+      { id: 'social-media', label: 'SOCIAL MEDIA', category: 'conteudo', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522social%20media%2522%20OR%20%2522social%20media%20manager%2522%20OR%20%2522community%20management%2522%20OR%20%2522planejamento%2522%20%2529' },
+      { id: 'art-director', label: 'ART DIRECTOR', category: 'design', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522art%20director%2522%20OR%20%2522motion%20designer%2522%20OR%20%2522diretor%20de%20arte%2522%20OR%20%2522designer%20gr%25C3%25A1fico%2522%20%2529' },
+      { id: 'diretor-criativo', label: 'DIRETOR CRIATIVO', category: 'design', mode: 'category', keywords: '%2528%2520%2522vaga%2522%20OR%20%2522oportunidade%2522%20OR%20%2522contratando%2522%20%2529%20and%20%28%20%2522diretor%20criativo%2522%20OR%20%2522creative%20director%2522%20OR%20%2522ux%20designer%2522%20OR%20%2522ui%20designer%2522%20OR%20%2522design%20lead%2522%20OR%20%2522head%20de%20design%2522%20%2529' }
+    ];
+
+    const config = {
+      maxResults: 10,
+      minResults: 5,
+      recentWindowMinutes: 10,
+      scoring: {
+        recent10: 40,
+        remote: 30,
+        priorityArea: 15,
+        levelMatch: 10,
+        highFit: 10,
+        clearApply: 5,
+        onsite: -30,
+        lowFit: -20,
+        levelMismatch: -20,
+        timeUncertain: -20
+      },
+      priorityOrder: ['remote', 'hybrid', 'onsite']
+    };
+
+    const priorityCategories = ['design', 'produto', 'agilidade', 'gestao', 'marketing', 'conteudo'];
+    const preferredLevels = {
+      design: ['JR', 'Júnior', 'Pleno', 'Sênior', 'Lead', 'Head', 'Diretor'],
+      produto: ['JR', 'Júnior', 'Pleno'],
+      agilidade: ['JR', 'Júnior', 'Pleno'],
+      gestao: ['Pleno', 'Sênior', 'Lead', 'Head', 'Coordenador', 'Diretor']
+    };
+
+    function loadClicks() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch { return {}; }
+    }
+
+    function saveClick(label) {
+      const clicks = loadClicks();
+      clicks[label] = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(clicks));
+    }
+
+    function within(ts, minutes) {
+      return (Date.now() - ts) <= minutes * 60 * 1000;
+    }
+
+    function formatTimeAgo(ts) {
+      if (!ts) return 'não clicado';
+      const diff = Date.now() - ts;
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 1) return 'agora';
+      if (minutes < 60) return `há ${minutes} min`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `há ${hours}h`;
+      const days = Math.floor(hours / 24);
+      return `há ${days}d`;
+    }
+
+    function renderBoard(range) {
+      const board = document.getElementById('board');
+      const summary = document.getElementById('summary');
+      const clicks = loadClicks();
+      const map = { '10m': 10, '30m': 30, '1h': 60, '2h': 120, '3h': 180, '5h': 300, '1d': 1440, '2d': 2880 };
+      const minutes = map[range];
+
+      let filtered = queries;
+      if (range && range !== 'all') {
+        filtered = queries.filter(q => {
+          const ts = clicks[q.label];
+          return ts && within(ts, minutes);
+        });
+      }
+
+      summary.textContent = range === 'all'
+        ? `Mostrando todos os cargos.`
+        : `Mostrando ${filtered.length} cargo(s) nos últimos ${range === '10m' ? '10 minutos' : range === '30m' ? '30 minutos' : range}.`;
+
+      board.innerHTML = filtered.map(q => {
+        const url = baseUrl + q.keywords + suffix;
+        return `<a class="btn" href="${url}" target="_blank" rel="noopener" onclick="saveClick('${q.label}')">${q.label}</a>`;
+      }).join('');
+    }
+
+    function applyTimeFilter(range) {
+      const chips = document.querySelectorAll('#filters .filter-chip');
+      chips.forEach(b => {
+        const active = b.dataset.range === range;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      renderBoard(range);
+    }
+
+    document.getElementById('filters').addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+      const range = chip.dataset.range;
+      if (range) applyTimeFilter(range);
+    });
+
+    function dedupe(results) {
+      const seen = new Set();
+      return results.filter(item => {
+        const key = [item.company, item.title, item.link].join(' | ');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function scoreJob(job) {
+      let score = 0;
+      const ageMin = job.ageMinutes;
+
+      if (ageMin <= config.recentWindowMinutes) score += config.scoring.recent10;
+      if (job.modality === 'remote') score += config.scoring.remote;
+      if (job.modality === 'hybrid') score += 8;
+      if (job.modality === 'onsite') score += config.scoring.onsite;
+
+      if (priorityCategories.includes(job.category)) score += config.scoring.priorityArea;
+      if ((preferredLevels[job.category] || []).some(level => (job.title || '').includes(level))) score += config.scoring.levelMatch;
+      if (job.highFit) score += config.scoring.highFit;
+      if (job.clearApply) score += config.scoring.clearApply;
+      if (job.timeUncertain) score += config.scoring.timeUncertain;
+
+      return score;
+    }
+
+    function sortJobs(jobs) {
+      return jobs
+        .slice()
+        .sort((a, b) => {
+          const scoreA = scoreJob(a);
+          const scoreB = scoreJob(b);
+
+          if (scoreA !== scoreB) return scoreB - scoreA;
+
+          const order = { remote: 0, hybrid: 1, onsite: 2 };
+          const modA = order[a.modality] ?? 9;
+          const modB = order[b.modality] ?? 9;
+          if (modA !== modB) return modA - modB;
+
+          const ageA = a.ageMinutes ?? 9999;
+          const ageB = b.ageMinutes ?? 9999;
+          if (ageA !== ageB) return ageA - ageB;
+
+          return a.title.localeCompare(b.title);
+        });
+    }
+
+    function applyFallback(jobs) {
+      if (jobs.length >= config.minResults) return jobs;
+
+      const augmented = jobs.slice();
+
+      const remote = augmented.filter(j => j.modality === 'remote');
+      if (remote.length >= config.minResults) return sortJobs(remote.slice(0, config.maxResults));
+
+      const hybrid = augmented.filter(j => j.modality === 'hybrid');
+      const preferred = sortJobs([...remote, ...hybrid]);
+
+      if (preferred.length >= config.minResults) return preferred.slice(0, config.maxResults);
+
+      return augmented.slice(0, config.maxResults);
+    }
+
+    function trimToLimit(jobs) {
+      if (jobs.length > config.maxResults) {
+        const nonPriority = jobs.filter(j => !priorityCategories.includes(j.category));
+        if (nonPriority.length > 0) {
+          const prioritized = jobs.filter(j => priorityCategories.includes(j.category));
+          if (prioritized.length >= config.minResults) {
+            return sortJobs(prioritized).slice(0, config.maxResults);
+          }
+        }
+        return sortJobs(jobs).slice(0, config.maxResults);
+      }
+      return jobs;
+    }
+
+    function renderRadar(jobs) {
+      const totalEl = document.getElementById('radar-total');
+      const remoteEl = document.getElementById('radar-remote');
+      const hybridEl = document.getElementById('radar-hybrid');
+      const onsiteEl = document.getElementById('radar-onsite');
+      const ageEl = document.getElementById('radar-age');
+      const resultsEl = document.getElementById('radar-results');
+
+      const unique = dedupe(jobs);
+      const withFallback = applyFallback(unique);
+      const sorted = trimToLimit(withFallback);
+
+      const remoteCount = unique.filter(j => j.modality === 'remote').length;
+      const hybridCount = unique.filter(j => j.modality === 'hybrid').length;
+      const onsiteCount = unique.filter(j => j.modality === 'onsite').length;
+      const newestAge = unique.reduce((min, j) => Math.min(min, j.ageMinutes ?? 9999), 9999);
+
+      totalEl.textContent = String(unique.length);
+      remoteEl.textContent = String(remoteCount);
+      hybridEl.textContent = String(hybridCount);
+      onsiteEl.textContent = String(onsiteCount);
+      ageEl.textContent = Number.isFinite(newestAge) ? `há ${newestAge} min` : '—';
+
+      if (sorted.length === 0) {
+        resultsEl.innerHTML = '<div class="radar-empty">Nenhuma vaga elegível no momento.</div>';
+        return;
+      }
+
+      resultsEl.innerHTML = sorted.map(job => {
+        const modalityClass = job.modality === 'remote' ? 'remote' : job.modality === 'hybrid' ? 'hybrid' : 'onsite';
+        const isNew = job.ageMinutes != null && job.ageMinutes <= config.recentWindowMinutes;
+        return `
+          <div class="radar-card">
+            <h3>${job.title || 'Vaga'}</h3>
+            <p>${[job.company, job.location].filter(Boolean).join(' • ')}</p>
+            <p>${[job.modality ? job.modality.toUpperCase() : null, job.level, job.area, isNew ? '🔥 NOVA — publicada há ' + job.ageMinutes + ' min' : null].filter(Boolean).join(' • ')}</p>
+            ${job.link ? '<a href="' + job.link + '" target="_blank" rel="noopener">Abrir vaga</a>' : ''}
+            <span class="tag ${modalityClass}">${job.modality ? job.modality.toUpperCase() : 'MODALIDADE'}</span>
+            ${isNew ? '<span class="tag new">NOVA</span>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Inicialização
+    renderBoard('all');
+    renderRadar([]);
+
+    // Placeholder para integração futura:
+    // window.updateRadar = (jobs) => renderRadar(jobs);
+  </script>
+</body></html>

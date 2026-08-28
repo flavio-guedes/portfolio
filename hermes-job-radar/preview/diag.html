@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Diagnóstico</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #0b1117; color: #f3f4f6; }
+    .pass { color: #22c55e; }
+    .fail { color: #ef4444; }
+    .info { color: #3b82f6; }
+    .result { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Diagnóstico HERMES JOB RADAR</h1>
+  <div id="results"></div>
+
+  <script type="module">
+    const results = document.getElementById('results');
+    function log(text, className = '') {
+      const div = document.createElement('div');
+      div.className = 'result ' + className;
+      div.textContent = text;
+      results.appendChild(div);
+    }
+
+    async function runDiagnostics() {
+      log('=== INÍCIO DO DIAGNÓSTICO ===', 'info');
+
+      try {
+        const res = await fetch('/bundle-app.js');
+        const text = await res.text();
+        log('Bundle acessível: ' + res.status, res.ok ? 'pass' : 'fail');
+      } catch (e) {
+        log('Erro ao acessar bundle: ' + e.message, 'fail');
+      }
+
+      try {
+        const mod = await import('./src/services/app.js');
+        log('Módulo app.js carregado: ' + Object.keys(mod).slice(0, 5).join(', '), 'pass');
+      } catch (e) {
+        log('Falha app.js: ' + e.message, 'fail');
+      }
+
+      log('=== FIM DO DIAGNÓSTICO ===', 'info');
+    }
+
+    runDiagnostics();
+  </script>
+</body>
+</html>

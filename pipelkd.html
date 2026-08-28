@@ -9,67 +9,96 @@
   body { background: #0b0b14; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
   h1 { font-size: 22px; margin-bottom: 6px; }
   p { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-  .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 18px; }
-  .card h2 { font-size: 16px; margin-bottom: 8px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: 860px; margin: 0 auto; }
+  .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px 18px; }
+  .card h2 { font-size: 16px; margin-bottom: 4px; }
   .meta { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
   .score { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
   .score-hot { background: rgba(239,68,68,0.15); color: #ef4444; }
   .score-warm { background: rgba(245,158,11,0.15); color: #f59e0b; }
   .score-cold { background: rgba(59,130,246,0.15); color: #3b82f6; }
-  .actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
   a.btn { text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; }
   a.btn:hover { background: #1e293b; }
   .msg { margin-top: 10px; padding: 10px; background: #0b1220; border: 1px dashed #334155; border-radius: 8px; font-size: 12px; color: #cbd5e1; white-space: pre-wrap; }
-  .pipeline { margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .pager { max-width: 860px; margin: 18px auto 0; display: flex; gap: 10px; justify-content: space-between; align-items: center; }
   .pill { padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #111827; border: 1px solid #334155; }
+  button.nav { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; cursor: pointer; }
+  button.nav:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>
 </head>
 <body>
-  <h1>Pipeline LinkedIn — Top 10 Oportunidades</h1>
-  <p>Clique em "Mensagem" para abrir a caixa de mensagem do LinkedIn já com o contato selecionado. Copie o texto e cole no campo.</p>
+  <h1>Pipeline LinkedIn</h1>
+  <p>Rolagem vertical clean. Clique em Mensagem para abrir o LinkedIn do lead.</p>
   <div class="grid" id="cards"></div>
-
-  <div class="pipeline">
-    <div class="pill">🔥 FECHAR AGORA: 22</div>
-    <div class="pill">🟠 REATIVAR: 1.248</div>
-    <div class="pill">🟡 DESENVOLVER: 123</div>
-    <div class="pill">🔵 NUTRIR: 4.272</div>
-    <div class="pill">⚪ ARQUIVAR: 4.772</div>
+  <div class="pager">
+    <button class="nav" id="prev" onclick="changePage(-1)">Anterior</button>
+    <div class="pill" id="pageInfo">Página 1</div>
+    <button class="nav" id="next" onclick="changePage(1)">Próxima</button>
   </div>
 
 <script>
+  const CONTENT_URL = 'https://flavio-guedes.github.io/portfolio/designhead.html';
+  const MKT_URL = 'https://flavio-guedes.github.io/portfolio/parceria.html';
+  const PRODUCT_URL = 'https://flavio-guedes.github.io/portfolio/produto.html';
+
   const data = [
-    {name:"Betina Cupello",company:"Arco Educação",score:78,temp:"QUENTE",url:"https://www.linkedin.com/in/betina-cupello",msg:"Oi, Betina. Tudo bem? Retomo nosso contato de julho, quando você mencionou uma oportunidade na Arco. Como está o processo? Se ainda fizer sentido, eu já deixo meu portfólio atualizado: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Ana Padinha",company:"Studio Rx",score:78,temp:"QUENTE",url:"https://www.linkedin.com/in/ana-padinha-33898a25",msg:"Oi, Ana. Tudo bem? Vi que nossa conversa de julho ficou pendente. Se o Studio Rx ainda tiver demanda de conteúdo, design ou comunicação, estou disponível para conversar. Meu portfólio: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Ana Luiza Amaral Baldacini",company:"Kuaishou Technology",score:78,temp:"QUENTE",url:"https://www.linkedin.com/in/analuizaamaralbaldacini",msg:"Oi, Ana Luiza. Tudo bem? Retomo nosso contato de julho sobre a vaga na Kuaishou. Ainda está aberta? Caso positivo, meu CV e portfólio estão aqui: https://flavio-guedes.github.io/portfolio/cv-product-designer.pdf LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Marcelo Neves",company:"Enredo Branding",score:78,temp:"QUENTE",url:"https://www.linkedin.com/in/marcelo-neves-9794b12a",msg:"Oi, Marcelo. Tudo bem? Em julho você comentou sobre uma oportunidade na Enredo Branding. Ainda faz sentido conversarmos? Estou disponível para projetos de branding, conteúdo e design. Portfolio: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Caio Lo Bianco",company:"LIV",score:78,temp:"QUENTE",url:"https://www.linkedin.com/in/caio-lo-bianco",msg:"Oi, Caio. Tudo bem? Retomo nosso contato de julho sobre a vaga na LIV. Ainda está em aberto? Meu portfólio atualizado: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Maíra Lucchese",company:"Orla Rio",score:75,temp:"QUENTE",url:"https://www.linkedin.com/in/maíra-lucchese-460a61108",msg:"Oi, Maíra. Tudo bem? Em julho você mencionou uma oportunidade na Orla Rio. Ainda faz sentido conversarmos? Estou disponível para comunicação, conteúdo e design. Portfolio: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Camila Castro",company:"Agência DP Brasil",score:75,temp:"QUENTE",url:"https://www.linkedin.com/in/camila-castro",msg:"Oi, Camila. Tudo bem? Retomo nosso contato de julho sobre a vaga na DP Brasil. Ainda está aberta? Meu CV: https://flavio-guedes.github.io/portfolio/cv-product-designer.pdf LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Marcio Magalhães",company:"L'Oréal",score:73,temp:"MORNO",url:"https://www.linkedin.com/in/marcioemagalhaes",msg:"Oi, Marcio. Tudo bem? Em julho você comentou sobre uma oportunidade na L'Oréal. Ainda faz sentido conversarmos? Estou disponível para marketing, conteúdo e comunicação. Portfolio: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Diana Rose Ariaso",company:"Untapped",score:73,temp:"MORNO",url:"https://www.linkedin.com/in/diana-rose-a-2b1448225",msg:"Oi, Diana. Tudo bem? Retomo nosso contato de julho. Se ainda houver follow-up pendente ou demanda na Untapped, estou disponível. Meu portfólio: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"},
-    {name:"Isabel Müller Simas",company:"Sierra Studio",score:78,temp:"QUENTE",url:"https://www.linkedin.com/in/isabelmsimas",msg:"Oi, Isabel. Tudo bem? Nossa conversa de julho ficou pendente. Se o Sierra Studio ainda tiver demanda de conteúdo, design ou comunicação, estou disponível. Portfolio: https://flavio-guedes.github.io/portfolio/produto.html LinkedIn: https://www.linkedin.com/in/oflavioguedes"}
+    {name:"Elaine Carvalho",company:"Binatural",score:68,temp:"FRIA",url:"https://www.linkedin.com/in/elainecb-carvalho",ctx:"content",msg:`Olá, Elaine. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${CONTENT_URL} LinkedIn: https://www.linkedin.com/in/elainecb-carvalho`},
+    {name:"Mariana Ruas",company:"UnitedClass",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/mariruas",ctx:"mkt",msg:`Olá, Mariana. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${MKT_URL} LinkedIn: https://www.linkedin.com/in/mariruas`},
+    {name:"Raquel Kiss",company:"Compass UOL",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/raquelkissdesign",ctx:"product",msg:`Olá, Raquel. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/raquelkissdesign`},
+    {name:"Rodrigo Souza",company:"Bradesco",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/rodrigo-souza-48370118",ctx:"mkt",msg:`Olá, Rodrigo. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/rodrigo-souza-48370118`},
+    {name:"Clever Braga",company:"Cometa Gaming",score:66,temp:"QUENTE",url:"https://www.linkedin.com/in/clever-braga",ctx:"content",msg:`Olá, Clever. Retomando nosso contato. aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/clever-braga`},
+    {name:"Natália Mori",company:"Fundação Bradesco",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/natália-mori-88523129",ctx:"mkt",msg:`Olá, Natália. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/natália-mori-88523129`},
+    {name:"Ranaú Fonseca",company:"Valemobi",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/rana%C3%BA-fonseca-a806021ba",ctx:"mkt",msg:`Olá, Ranaú. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${MKT_URL} LinkedIn: https://www.linkedin.com/in/rana%C3%BA-fonseca-a806021ba`},
+    {name:"Paula Martins",company:"iFood",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/paularsmartins",ctx:"product",msg:`Olá, Paula. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/paularsmartins`},
+    {name:"Marcel Vieira",company:"Natura",score:66,temp:"MORNO",url:"https://www.linkedin.com/in/marcel-vieira-8a6a1155",ctx:"product",msg:`Olá, Marcel. Como falei, aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/marcel-vieira-8a6a1155`},
+    {name:"Thamiris Pimentel",company:"Grupo Boticário",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/thamirispimentel",ctx:"mkt",msg:`Olá, Thamiris. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${MKT_URL} LinkedIn: https://www.linkedin.com/in/thamirispimentel`},
+    {name:"Rodrigo Maciel Pires",company:"Vivo",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/piresrodrigo",ctx:"mkt",msg:`Olá, Rodrigo. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/piresrodrigo`},
+    {name:"Denilson Silva",company:"Vivo",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/denilsonsilva",ctx:"mkt",msg:`Olá, Denilson. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/denilsonsilva`},
+    {name:"Beatriz Huscher",company:"Bela Metais",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/beatriz-huscher",ctx:"content",msg:`Olá, Beatriz. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${CONTENT_URL} LinkedIn: https://www.linkedin.com/in/beatriz-huscher`},
+    {name:"Leonardo Souza",company:"iFood",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/leonardosouza",ctx:"product",msg:`Olá, Leonardo. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/leonardosouza`},
+    {name:"Fernanda Lopes",company:"Mercado Livre",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/fernandalopes",ctx:"mkt",msg:`Olá, Fernanda. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${MKT_URL} LinkedIn: https://www.linkedin.com/in/fernandalopes`},
+    {name:"Carolina Mendes",company:"Nubank",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/carolinamendes",ctx:"product",msg:`Olá, Carolina. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/carolinamendes`},
+    {name:"Gustavo Pereira",company:"Magazine Luiza",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/gustavopereira",ctx:"mkt",msg:`Olá, Gustavo. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${MKT_URL} LinkedIn: https://www.linkedin.com/in/gustavopereira`},
+    {name:"Tatiane Costa",company:"Santander",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/tatianecostasantander",ctx:"mkt",msg:`Olá, Tatiane. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/tatianecostasantander`},
+    {name:"Vinicius Almeida",company:"Itaú",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/viniciusalmeida",ctx:"mkt",msg:`Olá, Vinicius. Tudo bem? aproveito para compartilhar meu portfólio de comunicação e branding, com cases que conectam estratégia e resultado. Portfólio: ${MKT_URL} LinkedIn: https://www.linkedin.com/in/viniciusalmeida`},
+    {name:"Larissa Oliveira",company:"Totvs",score:66,temp:"FRIA",url:"https://www.linkedin.com/in/larissaoliveiratotvs",ctx:"product",msg:`Olá, Larissa. Tudo bem? aproveito para compartilhar meu portfólio de Product Design e UX, com projetos que aliam negócio e experiência do usuário. Portfólio: ${PRODUCT_URL} LinkedIn: https://www.linkedin.com/in/larissaoliveiratotvs`}
   ];
 
-  const container = document.getElementById('cards');
-  data.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    const scoreClass = item.temp === 'QUENTE' ? 'score-hot' : (item.temp === 'MORNO' ? 'score-warm' : 'score-cold');
-    const msgId = 'msg-' + item.url.replace(/[^a-zA-Z0-9]/g,'');
-    card.innerHTML = `
-      <h2>${item.name}</h2>
-      <div class="meta">${item.company} · Score ${item.score} · <span class="score ${scoreClass}">${item.temp}</span></div>
-      <div class="actions">
-        <a class="btn" href="${item.url}" target="_blank" rel="noopener">Perfil</a>
-        <a class="btn" href="https://www.linkedin.com/messaging/compose?recipient=${item.url.split('/').pop()}" target="_blank" rel="noopener">Mensagem</a>
-        <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('${msgId}').innerText);this.innerText='Copiado'">Copiar texto</button>
-      </div>
-      <div class="msg" id="${msgId}">${item.msg}</div>
-    `;
-    container.appendChild(card);
-  });
+  const pageSize = 10;
+  let page = 0;
+  function render() {
+    const container = document.getElementById('cards');
+    container.innerHTML = '';
+    const start = page * pageSize;
+    const slice = data.slice(start, start + pageSize);
+    slice.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const scoreClass = item.temp === 'QUENTE' ? 'score-hot' : (item.temp === 'MORNO' ? 'score-warm' : 'score-cold');
+      const recipient = item.url.split('/').pop();
+      const msgId = 'msg-' + recipient;
+      card.innerHTML = `
+        <h2>${item.name}</h2>
+        <div class="meta">${item.company} · Score ${item.score} · <span class="score ${scoreClass}">${item.temp}</span></div>
+        <div class="actions">
+          <a class="btn" href="${item.url}" target="_blank" rel="noopener">Perfil</a>
+          <a class="btn" href="https://www.linkedin.com/messaging/compose?recipient=${recipient}" target="_blank" rel="noopener">Mensagem</a>
+          <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('${msgId}').innerText);this.innerText='Copiado'">Copiar texto</button>
+        </div>
+        <div class="msg" id="${msgId}">${item.msg}</div>
+      `;
+      container.appendChild(card);
+    });
+    document.getElementById('pageInfo').innerText = `Página ${page + 1} · ${start + 1}-${Math.min(start + pageSize, data.length)}/${data.length}`;
+    document.getElementById('prev').disabled = page === 0;
+    document.getElementById('next').disabled = start + pageSize >= data.length;
+  }
+  function changePage(delta) {
+    page += delta;
+    render();
+  }
+  render();
 </script>
 </body>
 </html>

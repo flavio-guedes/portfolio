@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Planos de segurança para empresas médias por faixa de faturamento: 100K a 200K, 200K a 600K e 600K a 1 milhão. Proteção, gestão e continuidade com Carlos Augusto." />
+  <meta name="keywords" content="segurança de redes, segurança de sistemas, planos de segurança, empresas médias, faturamento, consultoria de TI, gestão de infraestrutura" />
+  <title>Planos de Segurança para Empresas Médias — Carlos Augusto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep:      #040C1B;
+      --bg-mid:       #071325;
+      --bg-card:      #0A1A30;
+      --blue-primary: #0066CC;
+      --blue-neon:    #00A3FF;
+      --blue-glow:    #00C8FF;
+      --accent-line:  #1B4F8A;
+      --text-bright:  #E8F4FF;
+      --text-mid:     #94B8D8;
+      --text-muted:   #4A6B8A;
+      --border-glass: rgba(0, 163, 255, 0.18);
+      --border-subtle: rgba(0, 163, 255, 0.08);
+      --glass-bg:     rgba(10, 26, 48, 0.7);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-bright);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-primary); border-radius: 2px; }
+
+    /* ─── GRID OVERLAY ───────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,163,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,163,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── FLOATING WHATSAPP ──────────────────────────────────── */
+    .float-wa {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 0 24px rgba(37,211,102,0.45), 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .float-wa:hover { transform: scale(1.1); box-shadow: 0 0 36px rgba(37,211,102,0.65), 0 6px 18px rgba(0,0,0,0.5); }
+    .float-wa svg { width: 28px; height: 28px; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(4,12,27,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s ease;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+    }
+    .nav-logo span { color: var(--blue-neon); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border: 1px solid var(--blue-neon);
+      border-radius: 4px;
+      color: var(--blue-neon);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .nav-cta:hover {
+      background: var(--blue-neon);
+      color: var(--bg-deep);
+      box-shadow: 0 0 20px rgba(0,163,255,0.4);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABrUAAAOUCAIAAACDnC+zAABVQGNhQlgAAFVAanVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAAVRpqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOjdjMDc2MzA3LTczZGItNDg5MS1hN2RkLThlZWYwOTQ5ZmQxNAAAAAxDanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAJ0Wp1bWIAAAA7anVtZEDLDDK7ikidpwsq1vR/Q2kTYzJwYS5pY29uAAAAABhjMnNoBR97J04hjjSMtXbgOrj6vwAAABdiZmRiAGltYWdlL3N2Zyt4bWwAAAAJd2JpZGI8c3ZnIHdpZHRoPSI3MTYiIGhlaWdodD0iNzE2IiB2aWV3Qm94PSIwIDAgNzE2IDcxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUwOC43NDkgMzE3LjM5OUM1MTYuNzc3IDI4Ny4zMTQgNTA4Ljk5MSAyNTMuODg0IDQ4NS4zODkgMjMwLjI4MkM0NjEuNzg4IDIwNi42ODEgNDI4LjM2IDE5OC44OTUgMzk4LjI3MyAyMDYuOTIzQzM3Ni4yMzEgMTg0LjkyOCAzNDMuMzkgMTc0Ljk1NiAzMTEuMTQ4IDE4My41OTZDMjc4LjkwNiAxOTIuMjM0IDI1NS40NSAyMTcuMjkyIDI0Ny4zNiAyNDcuMzYxQzIxNy4yOTEgMjU1LjQ1MSAxOTIuMjMzIDI3OC45MSAxODMuNTk1IDMxMS4xNDlDMTc0Ljk1NyAzNDMuMzkxIDE4NC45MjcgMzc2LjIzMiAyMDYuOTI0IDM5OC4yNzRDMTk4Ljg5NiA0MjguMzU5IDIwNi42ODMgNDYxLjc4OSAyMzAuMjg0IDQ4NS4zOTFDMjUzLjg4NSA1MDguOTkyIDI4Ny4zMTMgNTE2Ljc3OSAzMTcuNDAxIDUwOC43NUMzMzkuNDQyIDUzMC43NDUgMzcyLjI4NiA1NDAuNzE3IDQwNC41MjUgNTMyLjA3OUM0MzYuNzY3IDUyMy40NDEgNDYwLjIyMyA0OTguMzg0IDQ2OC4zMTMgNDY4LjMxNUM0OTguMzgzIDQ2MC4yMjQgNTIzLjQ0IDQzNi43NjYgNTMyLjA3OCA0MDQuNTI2QzU0MC43MTYgMzcyLjI4NSA1MzAuNzQ3IDMzOS40NDMgNTA4Ljc0OSAzMTcuNDAyVjMxNy4zOTlaTTQ3MC44OTkgMjQ0Ljc3NkM0ODYuODkyIDI2MC43NyA0OTMuNDg4IDI4Mi42MDEgNDkwLjY4NyAzMDMuNDEyTDQxNS41NzcgMjYwLjA0NkM0MTIuNDExIDI1OC4yMTggNDA4LjUwOSAyNTguMjE4IDQwNS4zNDUgMjYwLjA0NkwzMTcuNDAxIDMxMC44MlYyNzcuNTI2QzMxNy40MDEgMjc1LjE5MSAzMTguNjUyIDI3My4wMDUgMzIwLjY3NiAyNzEuODM3TDM4Ny42NDQgMjMzLjE3NEM0MTQuMTc4IDIxOC4zNTMgNDQ4LjM0NiAyMjIuMjIzIDQ3MC45MDEgMjQ0Ljc3Nkg0NzAuODk5Wk0zNTcuODM3IDMxMS4xNDRMMzk4LjI3NSAzMzQuNDkxVjM4MS4xODVMMzU3LjgzNyA0MDQuNTMyTDMxNy4zOTggMzgxLjE4NVYzMzQuNDkxTDM1Ny44MzcgMzExLjE0NFpNMjY0Ljc3NiAyNjkuNjkzQzI2NS4yMDcgMjM5LjMwNSAyODUuNjQ0IDIxMS42NDkgMzE2LjQ1MyAyMDMuMzkzQzMzOC4zIDE5Ny41NCAzNjAuNTA1I");
+      background-size: cover;
+      background-position: right center;
+      background-repeat: no-repeat;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(4,12,27,0.97) 0%,
+        rgba(4,12,27,0.85) 45%,
+        rgba(4,12,27,0.35) 70%,
+        rgba(4,12,27,0.15) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      padding: 80px 40px 80px 80px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue-neon);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--blue-neon);
+      box-shadow: 0 0 8px var(--blue-neon);
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.2vw, 1.4rem);
+      font-weight: 300;
+      color: var(--blue-neon);
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+      line-height: 1.4;
+    }
+    .hero-divider {
+      width: 56px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue-neon), transparent);
+      margin-bottom: 28px;
+      box-shadow: 0 0 12px var(--blue-neon);
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text-mid);
+      line-height: 1.75;
+      margin-bottom: 48px;
+      max-width: 520px;
+      border-left: 2px solid var(--border-glass);
+      padding-left: 20px;
+    }
+    .hero-desc em {
+      font-style: normal;
+      color: var(--text-bright);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-neon));
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      box-shadow: 0 0 32px rgba(0,163,255,0.35), 0 4px 16px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 48px rgba(0,163,255,0.55), 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      border: 1px solid var(--border-glass);
+      color: var(--text-mid);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--blue-neon);
+      color: var(--text-bright);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: bounce 2.2s infinite;
+      z-index: 2;
+    }
+    .hero-badge::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--blue-neon), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* ─── SECTIONS COMMON ────────────────────────────────────── */
+    section { position: relative; z-index: 1; }
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .section-pad { padding: 100px 0; }
+    .section-pad-sm { padding: 72px 0; }
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blue-neon);
+      margin-bottom: 20px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--blue-neon);
+    }
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-bright);
+      margin-bottom: 20px;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-mid);
+      max-width: 600px;
+      line-height: 1.75;
+    }
+
+    /* ─── PLANS SECTION ──────────────────────────────────────── */
+    #plans {
+      background: var(--bg-mid);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .plans-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .plan-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 36px 28px;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue-neon), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .plan-card:hover {
+      border-color: var(--border-glass);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,100,180,0.2);
+    }
+    .plan-card:hover::before { opacity: 1; }
+    .plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: rgba(0,163,255,0.08);
+      border: 1px solid var(--border-glass);
+      padding: 8px 14px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+    }
+    .plan-badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue-neon);
+      box-shadow: 0 0 12px var(--blue-neon);
+    }
+    .plan-revenue {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .plan-revenue span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .plan-desc {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+    .plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .plan-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .plan-list-check {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--blue-neon);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--blue-neon);
+    }
+    .plan-list-check svg { width: 10px; height: 10px; }
+    .plan-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border: 1px solid var(--border-glass);
+      border-radius: 4px;
+      color: var(--text-bright);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .plan-cta:hover {
+      border-color: var(--blue-neon);
+      color: var(--blue-neon);
+    }
+
+    /* ─── DIFFERENTIALS ──────────────────────────────────────── */
+    #differentials {}
+    .diff-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-bottom: 72px;
+    }
+    .diff-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .diff-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 24px;
+      border-left: 2px solid var(--border-glass);
+      transition: border-color 0.2s ease;
+    }
+    .diff-item:hover { border-left-color: var(--blue-neon); }
+    .diff-check {
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid var(--blue-neon);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .diff-check svg { width: 11px; height: 11px; color: var(--blue-neon); }
+    .diff-text {
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .diff-text strong { color: var(--text-bright); font-weight: 600; }
+
+    /* ─── CONTACT SECTION ────────────────────────────────────── */
+    #contact {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-deep);
+    }
+    .contact-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,163,255,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .contact-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .contact-inner .section-eyebrow { justify-content: center; }
+    .contact-inner .section-sub {
+      max-width: 540px;
+      margin: 0 auto 48px;
+    }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 48px;
+      background: linear-gradient(135deg, #128C7E, #25D366);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 6px;
+      box-shadow: 0 0 40px rgba(37,211,102,0.3), 0 6px 20px rgba(0,0,0,0.4);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn-wa:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(37,211,102,0.5), 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .contact-footnote {
+      margin-top: 24px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-deep);
+    }
+    .footer-name {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .footer-name span { color: var(--blue-neon); }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── SCAN LINE EFFECT ───────────────────────────────────── */
+    .scan-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--border-subtle) 15%,
+        var(--blue-neon) 50%,
+        var(--border-subtle) 85%,
+        transparent 100%
+      );
+      box-shadow: 0 0 12px rgba(0,163,255,0.15);
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,163,255,0.3); }
+      50%       { box-shadow: 0 0 40px rgba(0,163,255,0.6); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero-eyebrow { animation: fadeInUp 0.6s ease both; }
+    .hero-name    { animation: fadeInUp 0.7s 0.1s ease both; }
+    .hero-title   { animation: fadeInUp 0.7s 0.2s ease both; }
+    .hero-divider { animation: fadeInUp 0.7s 0.3s ease both; }
+    .hero-desc    { animation: fadeInUp 0.7s 0.35s ease both; }
+    .hero-actions { animation: fadeInUp 0.7s 0.45s ease both; }
+
+    /* ─── MOBILE ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      .nav-logo { font-size: 0.9rem; }
+
+      .hero-content { padding: 80px 24px 80px 24px; }
+      .hero-bg::after {
+        background: linear-gradient(
+          180deg,
+          rgba(4,12,27,0.97) 0%,
+          rgba(4,12,27,0.92) 50%,
+          rgba(4,12,27,0.7) 100%
+        );
+      }
+      .hero-badge { display: none; }
+
+      .container { padding: 0 20px; }
+      .section-pad { padding: 72px 0; }
+
+      .plans-grid { grid-template-columns: 1fr; gap: 24px; }
+
+      .diff-header { grid-template-columns: 1fr; gap: 40px; }
+
+      footer { flex-direction: column; gap: 12px; text-align: center; padding: 28px 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-name { font-size: 2.4rem; }
+      .float-wa { bottom: 20px; right: 20px; width: 52px; height: 52px; }
+      .btn-wa { padding: 16px 28px; font-size: 0.88rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="float-wa" aria-label="Contato via WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L0 24l6.335-1.617A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.812 9.812 0 01-5.013-1.374l-.36-.213-3.732.954.995-3.638-.235-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+  </a>
+
+  <!-- NAV -->
+  <nav role="navigation" aria-label="Navegação principal">
+    <div class="nav-logo">Carlos <span>Augusto</span></div>
+    <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="nav-cta" aria-label="Entrar em contato via WhatsApp">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L0 24l6.335-1.617A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.812 9.812 0 01-5.013-1.374l-.36-.213-3.732.954.995-3.638-.235-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      Contato
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" aria-label="Apresentação">
+    <div class="hero-bg" role="img" aria-label="Ambiente tecnológico de segurança de redes"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Modelo por faturamento</p>
+      <h1 class="hero-name">Planos de Segurança<br/>para Empresas Médias</h1>
+      <p class="hero-title">Carlos Augusto — Gestão de Segurança de Redes e Sistemas</p>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">
+        «Modelos de atuação adaptados à realidade de empresas médias, com escopo proporcional ao faturamento e à maturidade tecnológica do negócio.»
+      </p>
+      <div class="hero-actions">
+        <a href="#plans" class="btn-secondary">
+          Ver planos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="btn-primary" aria-label="Entrar em contato via WhatsApp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L0 24l6.335-1.617A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.812 9.812 0 01-5.013-1.374l-.36-.213-3.732.954.995-3.638-.235-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+          Falar com especialista
+        </a>
+      </div>
+    </div>
+    <div class="hero-badge" aria-hidden="true">Role</div>
+  </section>
+
+  <div class="scan-divider"></div>
+
+  <!-- PLANS -->
+  <section id="plans" class="section-pad" aria-labelledby="plans-heading">
+    <div class="container">
+      <div class="plans-header fade-in">
+        <p class="section-eyebrow">Faixas de atuação</p>
+        <h2 class="section-heading" id="plans-heading">Planos por faturamento</h2>
+        <p class="section-sub">Cada faixa considera maturidade tecnológica, risco operacional e nível de controle necessário. O escopo cresce junto com o negócio.</p>
+      </div>
+      <div class="plans-grid">
+        <div class="plan-card fade-in">
+          <div class="plan-badge">
+            <span class="plan-badge-dot"></span>
+            Faixa 1
+          </div>
+          <div class="plan-revenue">R$ 100K <span>a R$ 200K</span></div>
+          <p class="plan-desc">Modelo essencial para empresas em fase de estruturação de controles básicos de segurança e governança.</p>
+          <ul class="plan-list">
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Diagnóstico básico</strong> de redes e sistemas</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Controles de acesso</strong> e segmentação inicial</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Políticas e procedimentos</strong> enxutos</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Monitoramento contínuo</strong> simplificado</span>
+            </li>
+          </ul>
+          <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="plan-cta">Solicitar proposta</a>
+        </div>
+
+        <div class="plan-card fade-in">
+          <div class="plan-badge">
+            <span class="plan-badge-dot"></span>
+            Faixa 2
+          </div>
+          <div class="plan-revenue">R$ 200K <span>a R$ 600K</span></div>
+          <p class="plan-desc">Modelo intermediário com gestão mais estruturada, controles reforçados e resposta a incidentes.</p>
+          <ul class="plan-list">
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Revisão e hardening</strong> de ambientes</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Gestão de vulnerabilidades</strong> contínua</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Resposta a incidentes</strong> com SLA</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Relatórios gerenciais</strong> periódicos</span>
+            </li>
+          </ul>
+          <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="plan-cta">Solicitar proposta</a>
+        </div>
+
+        <div class="plan-card fade-in">
+          <div class="plan-badge">
+            <span class="plan-badge-dot"></span>
+            Faixa 3
+          </div>
+          <div class="plan-revenue">R$ 600K <span>a R$ 1M</span></div>
+          <p class="plan-desc">Modelo avançado para operações que exigem maturidade, governança e continuidade operacional.</p>
+          <ul class="plan-list">
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Programa de segurança</strong> estruturado</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Governança e métricas</strong> executivas</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Resposta a incidentes</strong> prioritária</span>
+            </li>
+            <li>
+              <span class="plan-list-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span><strong>Continuidade operacional</strong> orientada a negócio</span>
+            </li>
+          </ul>
+          <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="plan-cta">Solicitar proposta</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="scan-divider"></div>
+
+  <!-- DIFFERENTIALS -->
+  <section id="differentials" class="section-pad" aria-labelledby="diff-heading">
+    <div class="container">
+      <div class="diff-header">
+        <div class="fade-in">
+          <p class="section-eyebrow">Por que contratar</p>
+          <h2 class="section-heading" id="diff-heading">Segurança proporcional ao tamanho e risco do negócio</h2>
+          <p class="section-sub">Atuação direta, sem burocracia desnecessária, com foco em proteção, estabilidade e decisões técnicas claras.</p>
+        </div>
+        <div class="diff-highlight fade-in" aria-label="Destaques do perfil">
+          <div class="diff-highlight-card">
+            <div class="diff-highlight-label">Nível</div>
+            <div class="diff-highlight-val">Sênior</div>
+          </div>
+          <div class="diff-highlight-card">
+            <div class="diff-highlight-label">Ambiente</div>
+            <div class="diff-highlight-val">Alta Criticidade</div>
+          </div>
+          <div class="diff-highlight-card">
+            <div class="diff-highlight-label">Visão</div>
+            <div class="diff-highlight-val">Técnica + Gestão</div>
+          </div>
+          <div class="diff-highlight-card">
+            <div class="diff-highlight-label">Modelo</div>
+            <div class="diff-highlight-val">Por faturamento</div>
+          </div>
+        </div>
+      </div>
+      <div class="diff-list fade-in" role="list">
+        <div class="diff-item" role="listitem">
+          <div class="diff-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="diff-text"><strong>Escala por faturamento</strong> — Planos ajustados à realidade financeira e operacional da empresa.</div>
+        </div>
+        <div class="diff-item" role="listitem">
+          <div class="diff-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="diff-text"><strong>Perfil Sênior</strong> — Maturidade técnica e de gestão para decisões rápidas e eficazes.</div>
+        </div>
+        <div class="diff-item" role="listitem">
+          <div class="diff-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="diff-text"><strong>Atuação em ambientes críticos</strong> — Experiência onde falhas não são opção.</div>
+        </div>
+        <div class="diff-item" role="listitem">
+          <div class="diff-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="diff-text"><strong>Visão estratégica e operacional</strong> — Resultado técnico e acompanhamento gerencial.</div>
+        </div>
+        <div class="diff-item" role="listitem">
+          <div class="diff-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="diff-text"><strong>Responsabilidade sobre continuidade</strong> — Foco em disponibilidade e resposta.</div>
+        </div>
+        <div class="diff-item" role="listitem">
+          <div class="diff-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="diff-text"><strong>Comunicação direta</strong> — Linguagem clara para decisão e acompanhamento.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="scan-divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section-pad" aria-labelledby="contact-heading">
+    <div class="contact-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="contact-inner fade-in">
+        <p class="section-eyebrow">Vamos conversar</p>
+        <h2 class="section-heading" id="contact-heading">
+          Escolha o plano adequado para sua operação.
+        </h2>
+        <p class="section-sub">
+          Para avaliação personalizada, demonstração de aplicação ou dúvidas sobre as faixas, entre em contato.
+        </p>
+        <a href="https://wa.me/5521999719474" target="_blank" rel="noopener" class="btn-wa" aria-label="Falar com Carlos Augusto pelo WhatsApp">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L0 24l6.335-1.617A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.812 9.812 0 01-5.013-1.374l-.36-.213-3.732.954.995-3.638-.235-.373A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+          Falar pelo WhatsApp
+        </a>
+        <p class="contact-footnote">(21) 99971-9474 &nbsp;·&nbsp; Rio de Janeiro, RJ</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="footer-name">Carlos <span>Augusto</span> — Planos de Segurança</div>
+    <div class="footer-copy">Rio de Janeiro, RJ · (21) 99971-9474</div>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const siblings = entry.target.parentElement.querySelectorAll('.fade-in');
+          siblings.forEach((el, i) => {
+            el.style.transitionDelay = (i * 0.1) + 's';
+          });
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Nav scroll effect
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        nav.style.background = 'rgba(4,12,27,0.97)';
+      } else {
+        nav.style.background = 'rgba(4,12,27,0.82)';
+      }
+    }, { passive: true });
+
+    // Smooth anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

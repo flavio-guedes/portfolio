@@ -82,7 +82,7 @@
           <h2>${item.name}</h2>
           <div class="meta">${item.company} · <span class="score ${scoreClass}">${item.temp}</span></div>
         </div>
-        <a class="btn" href="https://www.linkedin.com/messaging/compose?recipient=${recipient}" target="_blank" rel="noopener">Mensagem</a>
+        <a class="btn" href="${item.url}" target="_blank" rel="noopener">Perfil</a>
       `;
       container.appendChild(card);
     });

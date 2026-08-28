@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ // Planejamento de Conteúdo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --epq-white: #ffffff;
+  --epq-bg: #f4f7fa;
+  --epq-gray-50: #f8fafc; --epq-gray-100: #eef2f5; --epq-gray-200: #e4eaf0;
+  --epq-gray-300: #d8e0e7; --epq-gray-400: #adb9c5; --epq-gray-500: #8a97a5;
+  --epq-gray-600: #687582; --epq-gray-700: #4a5660; --epq-gray-800: #2e3840; --epq-gray-900: #17212b;
+  --epq-blue-300: #9bc5ef; --epq-blue-400: #6aaae4; --epq-blue-500: #3d8bd9;
+  --epq-blue-600: #2572be; --epq-blue-700: #175a96; --epq-blue-800: #0f3f6e; --epq-blue-900: #0b3155;
+  --epq-positive: #2a8a5e; --epq-attention: #b07218; --epq-alert: #9b4a1a;
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+  --shadow-md: 0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);
+  --shadow-lg: 0 20px 60px rgba(15,40,65,.09), 0 8px 24px rgba(15,40,65,.06);
+  --font-display: 'Space Grotesk', sans-serif; --font-body: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+  --sidebar-w: 84px;
+  --motion-fast: 0.2s; --motion-med: 0.5s; --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--epq-bg); color: var(--epq-gray-900); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--epq-blue-500); outline-offset: 2px; }
+
+.sidebar { position: fixed; left: 0; top: 0; height: 100vh; width: var(--sidebar-w); background: var(--epq-gray-900); border-right: 1px solid rgba(61,139,217,.15); z-index: 100; display: flex; flex-direction: column; padding: 24px 0; transition: width var(--motion-med) var(--ease-out); overflow: hidden; }
+.sidebar:hover { width: 240px; }
+.sidebar-logo { width: 36px; height: 36px; margin: 0 0 28px 23px; flex-shrink: 0; background: var(--epq-blue-700); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 12px; color: #fff; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 3px; padding: 0 12px; overflow-y: auto; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 11px; border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap; text-decoration: none; color: var(--epq-gray-500); transition: background var(--motion-fast), color var(--motion-fast); }
+.nav-item:hover, .nav-item.active { background: rgba(61,139,217,.12); color: var(--epq-blue-300); }
+.nav-item.active { color: var(--epq-blue-400); }
+.nav-num { font-family: var(--font-mono); font-size: 9px; flex-shrink: 0; width: 16px; }
+.nav-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; opacity: 0; transition: opacity var(--motion-fast); }
+.sidebar:hover .nav-label { opacity: 1; }
+.sidebar-status { margin-top: auto; padding: 14px 12px 0; display: flex; align-items: center; gap: 8px; }
+.status-dot-live { width: 6px; height: 6px; background: var(--epq-blue-400); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; flex-shrink: 0; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
+
+.main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+.command-header { position: relative; min-height: 320px; background: var(--epq-gray-900); background-image: linear-gradient(100deg, rgba(11,20,32,.92) 0%, rgba(11,20,32,.78) 38%, rgba(11,49,85,.45) 65%, rgba(11,49,85,.18) 100%), url('https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&w=1600&q=80'); background-size: cover; background-position: center; overflow: hidden; display: flex; align-items: flex-end; padding-bottom: 44px; }
+.grid-overlay { position: absolute; inset: 0; pointer-events: none; opacity: .35; background-image: linear-gradient(rgba(61,139,217,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(61,139,217,.07) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(ellipse 70% 90% at 30% 40%, black 30%, transparent 75%); }
+.corner-brackets span { position: absolute; width: 20px; height: 20px; border: 1px solid rgba(61,139,217,.35); }
+.cb-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.cb-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.header-content { position: relative; z-index: 10; padding: 0 56px; width: 100%; max-width: 900px; }
+.header-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--epq-blue-300); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 16px; }
+.header-title { font-family: var(--font-display); font-size: clamp(28px, 4.4vw, 48px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.04; margin-bottom: 14px; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+.header-title em { color: var(--epq-blue-400); font-style: normal; }
+.header-subtitle { font-size: 14px; font-weight: 400; color: var(--epq-gray-200); line-height: 1.6; max-width: 560px; margin-bottom: 24px; }
+.header-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.status-badge { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--epq-blue-400); letter-spacing: .12em; text-transform: uppercase; }
+.status-badge-dot { width: 6px; height: 6px; background: var(--epq-blue-400); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+.period-badge { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-300); letter-spacing: .08em; border-left: 1px solid rgba(255,255,255,.18); padding-left: 20px; }
+
+.page-body { padding: 36px 56px 100px; }
+
+.kpi-strip { background: var(--epq-white); border: 1px solid rgba(61,139,217,.18); border-radius: var(--radius-lg); display: flex; overflow-x: auto; margin-bottom: 24px; box-shadow: var(--shadow-md); }
+.kpi-item { flex: 1; min-width: 130px; padding: 18px 20px; border-right: 1px solid var(--epq-gray-200); display: flex; flex-direction: column; gap: 5px; }
+.kpi-item:last-child { border-right: none; }
+.kpi-label { font-family: var(--font-mono); font-size: 9px; font-weight: 500; color: var(--epq-blue-600); letter-spacing: .13em; text-transform: uppercase; }
+.kpi-value { font-family: var(--font-mono); font-size: 24px; font-weight: 500; color: var(--epq-gray-900); letter-spacing: -.03em; }
+.kpi-value.featured { color: var(--epq-blue-700); }
+
+.filters { background: var(--epq-white); border: 1px solid rgba(61,139,217,.18); border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.filter { display: flex; flex-direction: column; gap: 6px; }
+.filter-label { font-family: var(--font-mono); font-size: 9px; font-weight: 600; color: var(--epq-gray-500); letter-spacing: .12em; text-transform: uppercase; }
+.filter input, .filter select { height: 36px; padding: 0 10px; border-radius: var(--radius-sm); border: 1px solid var(--epq-gray-200); background: var(--epq-gray-50); color: var(--epq-gray-900); font-family: var(--font-body); font-size: 13px; min-width: 180px; }
+.filter input:focus, .filter select:focus { outline: 2px solid var(--epq-blue-500); outline-offset: 2px; }
+
+.actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.btn { height: 36px; padding: 0 14px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; cursor: pointer; border: 1px solid rgba(61,139,217,.18); background: var(--epq-white); color: var(--epq-gray-800); transition: all var(--motion-fast); }
+.btn:hover { border-color: var(--epq-blue-400); color: var(--epq-blue-700); }
+.btn-primary { background: var(--epq-blue-700); color: #fff; border-color: transparent; }
+.btn-primary:hover { background: var(--epq-blue-600); }
+
+.table-wrap { background: var(--epq-white); border: 1px solid rgba(61,139,217,.18); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { position: sticky; top: 0; z-index: 2; }
+th { background: var(--epq-gray-50); color: var(--epq-gray-500); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 11px 14px; border-bottom: 1px solid var(--epq-gray-200); cursor: pointer; user-select: none; text-align: left; white-space: nowrap; }
+th:hover { color: var(--epq-blue-700); }
+td { padding: 11px 14px; border-bottom: 1px solid rgba(61,139,217,.12); color: var(--epq-gray-900); vertical-align: top; }
+tr:hover td { background: rgba(61,139,217,.04); }
+tr.is-past td { color: var(--epq-gray-500); }
+.mono { font-family: var(--font-mono); font-size: 11px; color: var(--epq-gray-500); }
+.status-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 100px; width: fit-content; }
+.st-a-fazer { background: var(--epq-gray-100); color: var(--epq-gray-700); border: 1px solid var(--epq-gray-200); }
+.st-fazendo { background: rgba(61,139,217,.08); color: var(--epq-blue-700); border: 1px solid rgba(61,139,217,.2); }
+.st-revisao { background: rgba(176,114,24,.08); color: var(--epq-attention); border: 1px solid rgba(176,114,24,.22); }
+.st-aprovado { background: rgba(42,138,94,.08); color: var(--epq-positive); border: 1px solid rgba(42,138,94,.22); }
+.st-publicado { background: rgba(15,40,65,.08); color: var(--epq-gray-900); border: 1px solid rgba(15,40,65,.15); }
+.st-concluido { background: rgba(42,138,94,.08); color: var(--epq-positive); border: 1px solid rgba(42,138,94,.22); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.synclog { margin-top: 16px; background: var(--epq-white); border: 1px solid rgba(61,139,217,.18); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
+.synclog-head { padding: 12px 16px; border-bottom: 1px solid var(--epq-gray-200); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--epq-gray-500); letter-spacing: .12em; text-transform: uppercase; }
+.synclog table { font-size: 12px; }
+.synclog td, .synclog th { padding: 9px 12px; }
+
+.page-footer { padding: 32px 56px; border-top: 1px solid var(--epq-gray-200); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.footer-brand, .footer-timestamp { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-400); letter-spacing: .12em; text-transform: uppercase; }
+
+@media (max-width: 1100px) {
+  .board { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px) {
+  .page-body { padding: 28px 24px 80px; }
+  .header-content { padding: 0 24px; }
+}
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .main-content { margin-left: 0; }
+  .header-title { font-size: 26px; }
+  .filters { flex-direction: column; align-items: stretch; }
+  .filter input, .filter select { min-width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo">EQ</div>
+  <div class="sidebar-nav">
+    <a class="nav-item" href="EPQ_Cronograma_Editorial_2026.html"><span class="nav-num">00</span><span class="nav-label">Cronograma</span></a>
+    <a class="nav-item active" href="#"><span class="nav-num">01</span><span class="nav-label">Planejamento</span></a>
+    <a class="nav-item" href="EPQ_Painel_Tarefas.html"><span class="nav-num">02</span><span class="nav-label">Tarefas</span></a>
+    <a class="nav-item" href="EPQ_Painel_Conteudo_v2.html"><span class="nav-num">03</span><span class="nav-label">Painel</span></a>
+  </div>
+  <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--epq-gray-500)">v1.0</span></div>
+</nav>
+
+<div class="main-content">
+  <header class="command-header">
+    <div class="grid-overlay"></div>
+    <div class="corner-brackets"><span class="cb-tl"></span><span class="cb-tr"></span></div>
+    <div class="header-content">
+      <div class="header-eyebrow">EPQ // Operations</div>
+      <h1 class="header-title">Planejamento de <em>Conteúdo</em></h1>
+      <p class="header-subtitle">Camada de planejamento integrada ao Painel de Tarefas. Alterar STATUS movimenta automaticamente a tarefa correspondente.</p>
+      <div class="header-meta">
+        <div class="status-badge"><div class="status-badge-dot"></div>Sincronização Ativa</div>
+        <div class="period-badge">Agosto → Dezembro 2026</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <div class="kpi-strip" id="kpi">
+      <div class="kpi-item"><div class="kpi-label">Total</div><div class="kpi-value featured" id="k-total">0</div></div>
+      <div class="kpi-item"><div class="kpi-label">A Fazer</div><div class="kpi-value" id="k-afazer">0</div></div>
+      <div class="kpi-item"><div class="kpi-label">Fazendo</div><div class="kpi-value" id="k-fazendo">0</div></div>
+      <div class="kpi-item"><div class="kpi-label">Em Revisão</div><div class="kpi-value" id="k-revisao">0</div></div>
+      <div class="kpi-item"><div class="kpi-label">Aprovados</div><div class="kpi-value" id="k-aprovados">0</div></div>
+      <div class="kpi-item"><div class="kpi-label">Publicados</div><div class="kpi-value" id="k-publicados">0</div></div>
+      <div class="kpi-item"><div class="kpi-label">Atrasados</div><div class="kpi-value" id="k-atrasados">0</div></div>
+    </div>
+
+    <div class="filters">
+      <div class="filter"><div class="filter-label">Busca</div><input id="f-search" placeholder="título, tema, ID..."></div>
+      <div class="filter"><div class="filter-label">Status</div><select id="f-status"><option value="">Todos</option><option>A Fazer</option><option>Fazendo</option><option>Revisão</option><option>Aprovado</option><option>Publicado</option><option>Concluído</option></select></div>
+      <div class="filter"><div class="filter-label">Responsável</div><select id="f-responsavel"><option value="">Todos</option></select></div>
+      <div class="filter"><div class="filter-label">Formato</div><select id="f-formato"><option value="">Todos</option></select></div>
+      <div class="filter"><div class="filter-label">Pilar</div><select id="f-pilar"><option value="">Todos</option></select></div>
+      <div class="actions">
+        <button class="btn" id="btn-reset">Limpar</button>
+        <button class="btn btn-primary" id="btn-sync">Sincronizar → Painel</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table id="plan-table">
+        <thead>
+          <tr>
+            <th data-key="ID">ID</th>
+            <th data-key="DATA">Data</th>
+            <th data-key="DIA">Dia</th>
+            <th data-key="SEMANA">Semana</th>
+            <th data-key="TEMA">Tema</th>
+            <th data-key="TITULO">Título</th>
+            <th data-key="PILAR">Pilar</th>
+            <th data-key="FORMATO">Formato</th>
+            <th data-key="OBJETIVO">Objetivo</th>
+            <th data-key="CTA">CTA</th>
+            <th data-key="RESPONSAVEL">Responsável</th>
+            <th data-key="STATUS">Status</th>
+            <th data-key="PRIORIDADE">Prioridade</th>
+            <th data-key="LINK">Link</th>
+            <th data-key="OBSERVACOES">Observações</th>
+            <th data-key="TASK_ID">TASK_ID</th>
+          </tr>
+        </thead>
+        <tbody id="plan-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="synclog">
+      <div class="synclog-head">Log de Sincronização</div>
+      <table>
+        <thead><tr><th>Data/Hora</th><th>TASK_ID</th><th>Conteúdo</th><th>Status Anterior</th><th>Novo Status</th><th>Ação</th><th>Resultado</th><th>Erro</th></tr></thead>
+        <tbody id="synclog-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="page-footer">
+  <div class="footer-brand">EPQ // Planejamento de Conteúdo</div>
+  <div class="footer-timestamp">v1.0 · integração com EPQ_Painel_Tarefas.html</div>
+</footer>
+
+<script src="PLANEJAMENTO_DE_CONTEUDO.js"></script>
+<script>
+const LS_KEY = 'epq_planejamento_v1';
+const LS_LOG = 'epq_sync_log_v1';
+
+const COL_STATUS = 'STATUS';
+const SORT_KEY = 'DATA';
+const SORT_DIR = 'asc';
+
+let filtered = PLAN.slice();
+let currentSort = { key: SORT_KEY, dir: SORT_DIR };
+
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function statusClass(s){
+  const v = String(s ?? '').toLowerCase();
+  if(v.includes('publicado')) return 'st-publicado';
+  if(v.includes('aprovado')) return 'st-aprovado';
+  if(v.includes('revisão') || v.includes('revisao')) return 'st-revisao';
+  if(v.includes('fazendo')) return 'st-fazendo';
+  if(v.includes('concluído') || v.includes('concluido')) return 'st-concluido';
+  return 'st-a-fazer';
+}
+
+function normStatus(v){ return String(v ?? '').trim(); }
+
+function isPast(ddMM){
+  if(!ddMM) return false;
+  const [d,m] = ddMM.split('/').map(Number);
+  if(!d || !m) return false;
+  const now = new Date();
+  const y = now.getFullYear();
+  const dt = new Date(y, m-1, d);
+  return dt < new Date(y, now.getMonth(), now.getDate());
+}
+
+function counts(arr){
+  const c = { 'A Fazer': 0, 'Fazendo': 0, 'Revisão': 0, 'Aprovado': 0, 'Publicado': 0, 'Concluído': 0, 'Atrasados': 0 };
+  arr.forEach(x => {
+    const s = normStatus(x[COL_STATUS]);
+    if(c[s] !== undefined) c[s] += 1;
+  });
+  c['Atrasados'] = arr.filter(x => isPast(x.DATA) && !['Publicado','Concluído'].includes(normStatus(x[COL_STATUS]))).length;
+  return c;
+}
+
+function kpi(arr){
+  const c = counts(arr);
+  document.getElementById('k-total').textContent = String(arr.length);
+  document.getElementById('k-afazer').textContent = String(c['A Fazer']);
+  document.getElementById('k-fazendo').textContent = String(c['Fazendo']);
+  document.getElementById('k-revisao').textContent = String(c['Revisão']);
+  document.getElementById('k-aprovados').textContent = String(c['Aprovado']);
+  document.getElementById('k-publicados').textContent = String(c['Publicado']);
+  document.getElementById('k-atrasados').textContent = String(c['Atrasados']);
+}
+
+function applyFilters(){
+  const q = document.getElementById('f-search').value.toLowerCase();
+  const s = document.getElementById('f-status').value;
+  const r = document.getElementById('f-responsavel').value;
+  const f = document.getElementById('f-formato').value;
+  const p = document.getElementById('f-pilar').value;
+  filtered = PLAN.filter(x => {
+    const text = [x.ID, x.TEMA, x.TITULO, x.TASK_ID].join(' ').toLowerCase();
+    if(q && !text.includes(q)) return false;
+    if(s && normStatus(x[COL_STATUS]) !== s) return false;
+    if(r && x.RESPONSAVEL !== r) return false;
+    if(f && x.FORMATO !== f) return false;
+    if(p && x.PILAR !== p) return false;
+    return true;
+  });
+  applySort();
+  kpi(filtered);
+}
+
+function applySort(){
+  const key = currentSort.key;
+  const dir = currentSort.dir;
+  filtered.sort((a,b) => {
+    let av = a[key] ?? '', bv = b[key] ?? '';
+    if(key === 'DATA'){
+      const pad = v => String(v).padStart(5,'0');
+      av = pad(av); bv = pad(bv);
+    }
+    if(av < bv) return dir === 'asc' ? -1 : 1;
+    if(av > bv) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  render();
+}
+
+function render(){
+  const tbody = document.getElementById('plan-tbody');
+  tbody.innerHTML = '';
+  filtered.forEach(row => {
+    const tr = document.createElement('tr');
+    if(isPast(row.DATA) && !['Publicado','Concluído'].includes(normStatus(row[COL_STATUS]))) tr.classList.add('is-past');
+    tr.innerHTML = `
+      <td class="mono">${esc(row.ID)}</td>
+      <td class="mono">${esc(row.DATA)}</td>
+      <td>${esc(row.DIA)}</td>
+      <td>${esc(row.SEMANA)}</td>
+      <td>${esc(row.TEMA)}</td>
+      <td>${esc(row.TITULO)}</td>
+      <td>${esc(row.PILAR)}</td>
+      <td>${esc(row.FORMATO)}</td>
+      <td>${esc(row.OBJETIVO)}</td>
+      <td>${esc(row.CTA)}</td>
+      <td>${esc(row.RESPONSAVEL)}</td>
+      <td>
+        <select class="status-sel" data-id="${esc(row.ID)}">
+          <option ${normStatus(row[COL_STATUS])==='A Fazer'?'selected':''}>A Fazer</option>
+          <option ${normStatus(row[COL_STATUS])==='Fazendo'?'selected':''}>Fazendo</option>
+          <option ${normStatus(row[COL_STATUS])==='Revisão'?'selected':''}>Revisão</option>
+          <option ${normStatus(row[COL_STATUS])==='Aprovado'?'selected':''}>Aprovado</option>
+          <option ${normStatus(row[COL_STATUS])==='Publicado'?'selected':''}>Publicado</option>
+          <option ${normStatus(row[COL_STATUS])==='Concluído'?'selected':''}>Concluído</option>
+        </select>
+      </td>
+      <td>${esc(row.PRIORIDADE)}</td>
+      <td class="mono">${esc(row.LINK)}</td>
+      <td>${esc(row.OBSERVACOES)}</td>
+      <td class="mono">${esc(row.TASK_ID)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.querySelectorAll('.status-sel').forEach(sel => {
+    sel.addEventListener('change', e => onStatusChange(sel, e.target.value));
+  });
+}
+
+function now(){
+  const d = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+function logSync(taskId, content, prev, next, action, result, error){
+  const tbody = document.getElementById('synclog-tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="mono">${now()}</td><td class="mono">${esc(taskId)}</td><td>${esc(content)}</td><td>${esc(prev)}</td><td>${esc(next)}</td><td>${esc(action)}</td><td>${esc(result)}</td><td>${esc(error)}</td>`;
+  tbody.insertBefore(tr, tbody.firstChild);
+  try {
+    const logs = JSON.parse(localStorage.getItem(LS_LOG) || '[]');
+    logs.unshift({time:now(), taskId, content, prev, next, action, result, error});
+    localStorage.setItem(LS_LOG, JSON.stringify(logs.slice(0,200)));
+  } catch {}
+}
+
+function onStatusChange(sel, next){
+  const id = sel.dataset.id;
+  const row = PLAN.find(x => x.ID === id);
+  if(!row) return;
+  const prev = normStatus(row[COL_STATUS]);
+  if(prev === next){ sel.value = prev; return; }
+  row[COL_STATUS] = next;
+  sel.value = next;
+  kpi(filtered);
+  logSync(row.TASK_ID, row.TITULO, prev, next, 'PLAN -> PAINEL', 'pending', '');
+  // attempt syncing painel tasks via localStorage shared key if available
+  syncToPainel(row);
+}
+
+function syncToPainel(row){
+  try {
+    const raw = localStorage.getItem('epq_tarefas_v1');
+    if(!raw) { logSync(row.TASK_ID, row.TITULO, row[COL_STATUS], row[COL_STATUS], 'sync', 'skipped', 'Painel localStorage não encontrado'); return; }
+    const state = JSON.parse(raw);
+    const idx = state.findIndex(x => x.id === row.TASK_ID);
+    if(idx < 0){ logSync(row.TASK_ID, row.TITULO, row[COL_STATUS], row[COL_STATUS], 'sync', 'not_found', 'TASK_ID não existe no Painel'); return; }
+    const prev = state[idx].status;
+    if(prev === row[COL_STATUS]){ logSync(row.TASK_ID, row.TITULO, prev, row[COL_STATUS], 'sync', 'noop', 'Já estava na coluna'); return; }
+    const validCols = ['A Fazer','Fazendo','Revisão','Concluído'];
+    if(!validCols.includes(row[COL_STATUS])){ logSync(row.TASK_ID, row.TITULO, prev, row[COL_STATUS], 'sync', 'error', 'Coluna inválida'); return; }
+    state[idx].status = row[COL_STATUS];
+    localStorage.setItem('epq_tarefas_v1', JSON.stringify(state));
+    logSync(row.TASK_ID, row.TITULO, prev, row[COL_STATUS], 'sync', 'moved', '');
+  } catch (e){
+    logSync(row.TASK_ID, row.TITULO, row[COL_STATUS], row[COL_STATUS], 'sync', 'error', String(e));
+  }
+}
+
+function buildFilters(){
+  const resp = [...new Set(PLAN.map(x => x.RESPONSAVEL).filter(Boolean))].sort();
+  const fmt = [...new Set(PLAN.map(x => x.FORMATO).filter(Boolean))].sort();
+  const pil = [...new Set(PLAN.map(x => x.PILAR).filter(Boolean))].sort();
+  const setOptions = (sel, arr) => { arr.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); }); };
+  setOptions(document.getElementById('f-responsavel'), resp);
+  setOptions(document.getElementById('f-formato'), fmt);
+  setOptions(document.getElementById('f-pilar'), pil);
+}
+
+document.getElementById('f-search').addEventListener('input', applyFilters);
+document.getElementById('f-status').addEventListener('change', applyFilters);
+document.getElementById('f-responsavel').addEventListener('change', applyFilters);
+document.getElementById('f-formato').addEventListener('change', applyFilters);
+document.getElementById('f-pilar').addEventListener('change', applyFilters);
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  ['f-search','f-status','f-responsavel','f-formato','f-pilar'].forEach(id => document.getElementById(id).value = '');
+  applyFilters();
+});
+
+document.getElementById('btn-sync').addEventListener('click', () => {
+  let count = 0;
+  PLAN.forEach(row => syncToPainel(row));
+  alert('Sincronização concluída. Verifique o log.');
+});
+
+document.querySelectorAll('th[data-key]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if(currentSort.key === key) currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+    else { currentSort.key = key; currentSort.dir = 'asc'; }
+    applyFilters();
+  });
+});
+
+buildFilters();
+applyFilters();
+try {
+  const logs = JSON.parse(localStorage.getItem(LS_LOG) || '[]');
+  const tbody = document.getElementById('synclog-tbody');
+  logs.slice(0,50).forEach(l => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="mono">${esc(l.time)}</td><td class="mono">${esc(l.taskId)}</td><td>${esc(l.content)}</td><td>${esc(l.prev)}</td><td>${esc(l.next)}</td><td>${esc(l.action)}</td><td>${esc(l.result)}</td><td>${esc(l.error)}</td>`;
+    tbody.appendChild(tr);
+  });
+} catch {}
+</script>
+</body>
+</html>

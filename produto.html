@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flávio Guedes — Product Design & Growth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ─── RESET & BASE ─── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg: #f8f9fb;
+            --surface: #ffffff;
+            --surface-alt: #f3f5f9;
+            --border: #e1e4ea;
+            --text: #0f1419;
+            --text-secondary: #4a5568;
+            --text-muted: #7a8194;
+            --accent-1: #2563eb;
+            --accent-2: #7c3aed;
+            --accent-3: #06b6d4;
+            --accent-4: #ec4899;
+            --success: #10b981;
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans: 'Inter', system-ui, sans-serif;
+            --radius: 14px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ─── BACKGROUND EFFECTS ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(248, 249, 251, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 5vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-logo {
+            font-family: var(--serif);
+            font-size: 22px;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-1);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 90vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 100px 5vw 80px;
+            gap: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -100px;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: 10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-1);
+            margin-bottom: 24px;
+            padding: 8px 16px;
+            background: rgba(37, 99, 235, 0.08);
+            border-radius: 100px;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: 56px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: var(--text);
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 520px;
+            margin-bottom: 40px;
+        }
+
+        .hero-desc strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            background: var(--surface);
+            color: var(--text);
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-1);
+            color: var(--accent-1);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Hero right */
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-1);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.15);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.08));
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-num {
+            font-family: var(--serif);
+            font-size: 32px;
+            line-height: 1;
+            color: var(--accent-1);
+            font-weight: 700;
+        }
+
+        .stat-lbl {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ─── SECTION COMMON ─── */
+        section {
+            padding: 100px 5vw;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .section-num {
+            font-family: var(--serif);
+            font-size: 14px;
+            color: var(--accent-1);
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: 44px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        .section-title .highlight {
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-2) 50%, transparent 100%);
+            margin-left: 20px;
+        }
+
+        /* ─── CASES GRID ─── */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 1024px) {
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .case-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            group: case;
+        }
+
+        .case-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(124, 58, 237, 0.03));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-1);
+            box-shadow: 0 20px 48px rgba(37, 99, 235, 0.18);
+        }
+
+        .case-card:hover::before {
+            opacity: 1;
+        }
+
+        .case-header {
+            padding: 32px 32px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .case-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-1);
+            margin-bottom: 12px;
+            padding: 6px 12px;
+            background: rgba(37, 99, 235, 0.08);
+            border-radius: 6px;
+            display: inline-block;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+
+        .case-title {
+            font-family: var(--serif);
+            font-size: 26px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .case-content {
+            padding: 0 32px 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .case-section {
+            margin-bottom: 24px;
+        }
+
+        .case-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .case-section-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-1);
+            margin-bottom: 10px;
+        }
+
+        .case-section-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+        }
+
+        .case-section-text strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .case-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .metric-item::before {
+            content: '✓';
+            font-size: 18px;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .metric-num {
+            font-family: var(--serif);
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .metric-lbl {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ─── SKILLS SECTION ─── */
+        .skills-section {
+            background: linear-gradient(135deg, var(--text) 0%, #1a1f3a 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skills-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .skills-section .section-title {
+            color: white;
+        }
+
+        .skills-section .section-line {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
+        }
+
+        .skill-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-title {
+            font-family: var(--serif);
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-list li {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 24px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .skill-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            padding: 80px 5vw;
+            border-top: 1px solid var(--border);
+            background: var(--surface-alt);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .footer-col h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .footer-col p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            font-size: 14px;
+            color: var(--accent-1);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 80px 5vw 60px;
+                gap: 50px;
+            }
+
+            .hero::before,
+            .hero::after {
+                display: none;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="nav-logo">Flávio <span>Guedes</span></a>
+        <ul class="nav-links">
+            <li><a href="#cases">Cases</a></li>
+            <li><a href="#skills">Competências</a></li>
+            <li><a href="#contact">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-eyebrow">Product Design & Growth</div>
+            <h1>Transformando <span class="highlight">Problemas Complexos</span> em Soluções de Produto</h1>
+            <p class="hero-desc">
+                Especialista em <strong>Product Design, Design Ops e Growth Design</strong>. Trabalho com foco em racional <strong>Problema → Solução → Métrica</strong>, criando interfaces que resolvem desafios técnicos reais e geram impacto mensurável.
+            </p>
+            <div class="hero-actions">
+                <a href="#cases" class="btn btn-primary">Ver Cases</a>
+                <a href="#contact" class="btn btn-outline">Entrar em Contato</a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line" style="color: var(--accent-1);"></i>
+                </div>
+                <div>
+                    <div class="stat-num">4+</div>
+                    <div class="stat-lbl">Cases de Produto</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-rocket" style="color: var(--accent-2);"></i>
+                </div>
+                <div>
+                    <div class="stat-num">3+</div>
+                    <div class="stat-lbl">Produtos em Produção</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-bullseye" style="color: var(--accent-3);"></i>
+                </div>
+                <div>
+                    <div class="stat-num">100%</div>
+                    <div class="stat-lbl">Foco em Métricas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASES -->
+    <section id="cases">
+        <div class="section-header">
+            <span class="section-num">01</span>
+            <h2 class="section-title">Cases de <span class="highlight">Alta Complexidade</span></h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="cases-grid">
+            <!-- Case 1: Multi-Agent Marketing -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-tag">IA & Automação</div>
+                    <h3 class="case-title">Multi-Agent Marketing System</h3>
+                </div>
+                <div class="case-content">
+                    <div class="case-section">
+                        <div class="case-section-label">Problema</div>
+                        <div class="case-section-text">
+                            Complexidade exponencial na criação de estratégias de marketing multicanal e execução de tarefas repetitivas. Equipes gastando <strong>60%+ do tempo</strong> em atividades manuais sem escalabilidade.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Solução</div>
+                        <div class="case-section-text">
+                            Sistema de <strong>agentes de IA autônomos</strong> que colaboram em um pipeline estruturado. Interface focada em visualização de processos, controle humano sobre automação e checkpoints de aprovação.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Resultado</div>
+                        <div class="case-metrics">
+                            <div class="metric-item">
+                                <div class="metric-num">60%</div>
+                                <div class="metric-lbl">Redução de Tempo</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-num">3x</div>
+                                <div class="metric-lbl">Consistência</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 2: RH Dashboard -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-tag">SaaS / Internal Tool</div>
+                    <h3 class="case-title">Painel de Rotina RH</h3>
+                </div>
+                <div class="case-content">
+                    <div class="case-section">
+                        <div class="case-section-label">Problema</div>
+                        <div class="case-section-text">
+                            Desorganização em rotinas críticas de RH (onboarding, gestão de vagas, documentos). <strong>Atrito operacional</strong> gerando perda de talentos e ineficiência administrativa.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Solução</div>
+                        <div class="case-section-text">
+                            Dashboard centralizado focado em <strong>Job-to-be-Done</strong> para assistentes de RH. Design com clareza visual, priorização de tarefas e visibilidade de status em tempo real.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Resultado</div>
+                        <div class="case-metrics">
+                            <div class="metric-item">
+                                <div class="metric-num">45%</div>
+                                <div class="metric-lbl">Onboarding Rápido</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-num">0</div>
+                                <div class="metric-lbl">Erros Manuais</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 3: Trae × Claude -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-tag">Growth Design</div>
+                    <h3 class="case-title">Trae × Claude — Guia Visual</h3>
+                </div>
+                <div class="case-content">
+                    <div class="case-section">
+                        <div class="case-section-label">Problema</div>
+                        <div class="case-section-text">
+                            Dificuldade de usuários em entender valor e funcionalidades de <strong>ferramentas complexas de IA</strong> durante onboarding. Curva de aprendizado acentuada causando churn precoce.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Solução</div>
+                        <div class="case-section-text">
+                            Dashboard interativo e <strong>guia visual intuitiva</strong> que simplifica curva de aprendizado. Analogias visuais e micro-interações para demonstrar capacidades técnicas.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Resultado</div>
+                        <div class="case-metrics">
+                            <div class="metric-item">
+                                <div class="metric-num">35%</div>
+                                <div class="metric-lbl">Taxa de Ativação</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-num">28%</div>
+                                <div class="metric-lbl">Redução Churn</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 4: Parameter Lab -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-tag">SaaS / Ferramenta Técnica</div>
+                    <h3 class="case-title">Parameter Lab</h3>
+                </div>
+                <div class="case-content">
+                    <div class="case-section">
+                        <div class="case-section-label">Problema</div>
+                        <div class="case-section-text">
+                            Barreira de entrada técnica para manipulação de <strong>bibliotecas de código criativo</strong> (Manim, Remotion, p5.js). Designers não-programadores impedidos de usar ferramentas poderosas.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Solução</div>
+                        <div class="case-section-text">
+                            Interface de <strong>Laboratório de Parâmetros</strong> com sliders interativos e preview ao vivo. Foco total em usabilidade técnica, feedback imediato e experimentação sem código.
+                        </div>
+                    </div>
+
+                    <div class="case-section">
+                        <div class="case-section-label">Resultado</div>
+                        <div class="case-metrics">
+                            <div class="metric-item">
+                                <div class="metric-num">10x</div>
+                                <div class="metric-lbl">Acessibilidade</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-num">50%</div>
+                                <div class="metric-lbl">Workflow Rápido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="skills-section">
+        <div class="section-header">
+            <span class="section-num">02</span>
+            <h2 class="section-title">Competências</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <i class="fas fa-compass"></i>
+                </div>
+                <h3 class="skill-title">Product Design</h3>
+                <ul class="skill-list">
+                    <li>User Research & Testing</li>
+                    <li>Wireframing & Prototyping</li>
+                    <li>Design Systems</li>
+                    <li>Usabilidade Técnica</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="skill-title">Growth Design</h3>
+                <ul class="skill-list">
+                    <li>Onboarding & Activation</li>
+                    <li>Funnel Optimization</li>
+                    <li>A/B Testing & Metrics</li>
+                    <li>Retention Strategy</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <h3 class="skill-title">Design Ops</h3>
+                <ul class="skill-list">
+                    <li>Design Systems</li>
+                    <li>Process Optimization</li>
+                    <li>Handoff & Documentation</li>
+                    <li>Team Collaboration</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="skill-title">IA & Automação</h3>
+                <ul class="skill-list">
+                    <li>AI/ML Interfaces</li>
+                    <li>Prompt Engineering</li>
+                    <li>Agent Design</li>
+                    <li>Human-in-the-Loop</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="skill-title">Análise & Métricas</h3>
+                <ul class="skill-list">
+                    <li>KPI Definition</li>
+                    <li>Data Visualization</li>
+                    <li>Qualitative Research</li>
+                    <li>Impact Measurement</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="skill-title">Ferramentas & Tech</h3>
+                <ul class="skill-list">
+                    <li>Figma & Design Tools</li>
+                    <li>HTML/CSS/JavaScript</li>
+                    <li>Analytics Platforms</li>
+                    <li>Prototyping Tools</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Flávio Guedes</h3>
+                <p>
+                    Especialista em <strong>Product Design, Design Ops e Growth Design</strong>. Focado em resolver problemas complexos através de design estratégico e centrado em métricas.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>Conecte-se</h3>
+                <div class="footer-links">
+                    <a href="https://linkedin.com" class="footer-link">LinkedIn</a>
+                    <a href="https://github.com" class="footer-link">GitHub</a>
+                    <a href="https://twitter.com" class="footer-link">Twitter</a>
+                    <a href="mailto:contato@flavioguedes.com" class="footer-link">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

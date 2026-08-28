@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://flavio-guedes.github.io/portfolio/sitemap.xml

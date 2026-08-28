@@ -16,5 +16,4 @@ Product Designer — UX, design systems, conteúdo e tráfego.
 - `portfolio/archive/` — versões antigas
 
 ## Contato
-- WhatsApp: +5521999719474
-- LinkedIn: https://www.linkedin.com/in/flavioguedes/
+- WhatsApp: +552****9474

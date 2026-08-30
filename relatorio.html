@@ -22,16 +22,15 @@
   .kpi .value.green { color: #15803d; }
   .kpi .value.amber { color: #b45309; }
 
-  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  @media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
-
   details { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
   summary { font-size: 15px; font-weight: 700; color: #0f172a; cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
   summary::after { content: '+'; font-size: 18px; color: #4169E1; }
   details[open] summary::after { content: '-'; }
   .details-body { margin-top: 12px; }
+  .details-body h4 { font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 10px; margin-bottom: 4px; }
+  .details-body p, .details-body li { font-size: 13.5px; color: #334155; line-height: 1.45; }
   .details-body ul { margin-left: 18px; }
-  .details-body li { margin-bottom: 7px; font-size: 13.5px; color: #334155; line-height: 1.45; }
+  .details-body li { margin-bottom: 6px; }
   code { background: #f1f5f9; padding: 2px 7px; border-radius: 7px; font-size: 12px; color: #0f172a; border: 1px solid #e5e7eb; }
 
   .front { background: #f8fafc; border-left: 3px solid #4169E1; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
@@ -43,6 +42,11 @@
   .risk { background: #fff1f2; border-left: 3px solid #e11d48; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px 16px; margin-top: 4px; }
   .risk h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #881337; }
   .risk div { font-size: 13px; color: #4b5563; }
+
+  .suggestion-box { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .suggestion-box h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #0f172a; }
+  .suggestion-box ul { margin-left: 18px; }
+  .suggestion-box li { margin-bottom: 6px; font-size: 13.5px; color: #334155; line-height: 1.45; }
 </style>
 </head>
 <body>
@@ -59,77 +63,208 @@
       <div class="item"><div class="label">Risco principal</div><div class="value amber">1</div></div>
     </div>
 
-    <div class="grid">
-      <details open>
-        <summary>Concluído</summary>
-        <div class="details-body">
-          <ul>
-            <li>Portfolio: ajustes em <code>produto.html</code>, <code>parceria.html</code>, <code>designhead.html</code>, remoção do LinkedIn do Flávio, cases do EPQ inseridos e motores de busca LinkedIn mantidos.</li>
-            <li><code>pipelkd.html</code>: painel de prospecção LinkedIn com rolagem vertical clean, paginação 10 em 10, temperatura por lead e link direto para o perfil.</li>
-            <li><code>email.html</code>: painel de prospecção Email com paginação 10 em 10.</li>
-            <li><code>forecast.html</code>: painel didático Forecast & Growth publicado.</li>
-            <li>Proposta comercial: <code>proposta_v3.html</code> e <code>proposta_padrao.html</code> atualizadas.</li>
-            <li>CV Product Designer: <code>cv-product-designer.html</code> e PDF gerados.</li>
-            <li>Lembretes: cronjobs para amanhã 12h e domingo 12h.</li>
-            <li>Top 30 prospecção LinkedIn estruturada.</li>
-          </ul>
-        </div>
-      </details>
+    <!-- Tarefas detalhadas -->
+    <details open>
+      <summary>Portfolio</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p>Ajustes em <code>produto.html</code>, <code>parceria.html</code>, <code>designhead.html</code>. Remoção do LinkedIn do Flávio, inserção de cases do EPQ em <code>produto.html</code> e manutenção dos motores de busca LinkedIn.</p>
+        <h4>Problemas</h4>
+        <p>Nenhum bloqueio técnico relevante. Apenas validação visual final de <code>designhead.html</code> pendente.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>HTML/CSS avançado</li>
+          <li>Git/Web publishing</li>
+          <li>UI/UX Design</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>MASTER + agente de revisão visual.</p>
+        <h4>Resumo</h4>
+        <p>Portfolio alinhado às frentes definidas. Páginas foco prontas para uso.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Validar <code>designhead.html</code> em diferentes dispositivos.</li>
+          <li>Adicionar cases recentes para reforçar atualidade.</li>
+        </ul>
+      </div>
+    </details>
 
-      <details open>
-        <summary>Pendente / Não concluído</summary>
-        <div class="details-body">
-          <ul>
-            <li>Painel de email não sincronizado com a planilha Google Sheets enviada.</li>
-            <li>Acesso ao Google Drive bloqueado para leitura direta via script.</li>
-            <li>Geração de áudios do Benício bloqueada por quota da ElevenLabs.</li>
-            <li><code>crm_acao_v2_unificado.html</code> sem ajustes mobile/MVP.</li>
-            <li>LinkedIn/Gmail sem autenticação operacional.</li>
-            <li>Vídeo de automação/histórico LinkedIn não inserido por falta de arquivo acessível.</li>
-          </ul>
-        </div>
-      </details>
+    <details>
+      <summary>LinkedIn Prospecção</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p><code>pipelkd.html</code> criado e publicado com rolagem vertical clean, paginação 10 em 10, temperatura por lead e link direto para o perfil. Top 30 leads estruturada.</p>
+        <h4>Problemas</h4>
+        <p>Alguns contatos não abriam corretamente em versão anterior; ajustado após retroação.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>Análise de dados CSV</li>
+          <li>JavaScript/HTML</li>
+          <li>Inteligência comercial</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>MASTER para análise de dados + agente de produto para o painel.</p>
+        <h4>Resumo</h4>
+        <p>Painel estável e publicado. Leads priorizados por score e temperatura.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Adicionar filtros por temperatura e score.</li>
+          <li>Criar modo offline para acesso rápido.</li>
+        </ul>
+      </div>
+    </details>
 
-      <details open>
-        <summary>Por frentes</summary>
-        <div class="details-body">
-          <div class="front">
-            <h3>Portfolio</h3>
-            <div>70%</div>
-            <div class="bar"><span style="width:70%"></span></div>
-          </div>
-          <div class="front">
-            <h3>LinkedIn</h3>
-            <div>60%</div>
-            <div class="bar"><span style="width:60%"></span></div>
-          </div>
-          <div class="front">
-            <h3>Email</h3>
-            <div>40%</div>
-            <div class="bar"><span style="width:40%"></span></div>
-          </div>
-          <div class="front">
-            <h3>CRM/Drive</h3>
-            <div>30%</div>
-            <div class="bar"><span style="width:30%"></span></div>
-          </div>
-          <div class="front">
-            <h3>Beni/áudios</h3>
-            <div>0%</div>
-            <div class="bar"><span style="width:0%"></span></div>
-          </div>
-          <div class="front">
-            <h3>EPQ/Forecast</h3>
-            <div>90%</div>
-            <div class="bar"><span style="width:90%"></span></div>
-          </div>
-          <div class="front">
-            <h3>Proposta/CV</h3>
-            <div>100%</div>
-            <div class="bar"><span style="width:100%"></span></div>
-          </div>
-        </div>
-      </details>
+    <details>
+      <summary>Email Prospecção</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p><code>email.html</code> criado com base em <code>leads_filtrados_2026-08-04.csv</code>, paginação 10 em 10.</p>
+        <h4>Problemas</h4>
+        <p>Dados iniciais limitados; planilha Google Sheets ainda não integrada.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>CSV/JSON parsing</li>
+          <li>Frontend</li>
+          <li>Gestão de leads</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>MASTER para estruturação + agente de produto.</p>
+        <h4>Resumo</h4>
+        <p>Painel funcional; dados parciais. Integração com Sheets pendente.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Conectar com Google Sheets via API.</li>
+          <li>Adicionar status de follow-up automático.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>EPQ/Forecast</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p><code>forecast.html</code> criado e publicado com explicação didática da planilha, gráficos interativos e explorador por mês.</p>
+        <h4>Problemas</h4>
+        <p>Ajustes mobile pendentes para melhor experiência em telas pequenas.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>Análise financeira</li>
+          <li>Visualização de dados</li>
+          <li>Educação/Didática</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>MASTER para análise + agente de frontend.</p>
+        <h4>Resumo</h4>
+        <p>Conteúdo didático completo publicado. Experiência mobile pode melhorar.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Refinar CSS para mobile.</li>
+          <li>Adicionar suporte a offline.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Proposta/CV</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p><code>proposta_v3.html</code>, <code>proposta_padrao.html</code>, <code>cv-product-designer.html</code> e PDF gerados.</p>
+        <h4>Problemas</h4>
+        <p>Nenhum.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>Copywriting comercial</li>
+          <li>Design editorial</li>
+          <li>PDF automation</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>MASTER + agente de conteúdo.</p>
+        <h4>Resumo</h4>
+        <p>Materiais prontos para envio e publicação.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Criar versões por nicho.</li>
+          <li>Adicionar depoimentos/cases.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>CRM/Drive</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p>Base local criada com dados do Drive. Acesso direto bloqueado por restrições do macOS.</p>
+        <h4>Problemas</h4>
+        <p>Leitura automatizada do Drive indisponível. Dados precisam ser copiados para pasta local.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>Integração Google Drive</li>
+          <li>Python</li>
+          <li>Automação</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>MASTER para estruturação.</p>
+        <h4>Resumo</h4>
+        <p>Estrutura iniciada; acesso automatizado pendente.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Usar API Google Drive com OAuth.</li>
+          <li>Agendar sincronização local periódica.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Beni/Áudios</summary>
+      <div class="details-body">
+        <h4>Evolução</h4>
+        <p>Textos preparados. Geração bloqueada por quota da ElevenLabs.</p>
+        <h4>Problemas</h4>
+        <p>Créditos insuficientes no provedor TTS.</p>
+        <h4>Skills envolvidas</h4>
+        <ul>
+          <li>TTS/Áudio</li>
+          <li>Conteúdo infantil</li>
+          <li>Storytelling</li>
+        </ul>
+        <h4>Agentes recrutados</h4>
+        <p>Nenhum agente adicional.</p>
+        <h4>Resumo</h4>
+        <p>Aguardando liberação de quota ou provedor alternativo.</p>
+        <h4>Sugestões</h4>
+        <ul>
+          <li>Usar provedor gratuito como fallback.</li>
+          <li>Comprar créditos adicionais.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Sugestões globais por frente -->
+    <div class="suggestion-box">
+      <h2>Sugestões globais por frente</h2>
+      <ul>
+        <li><strong>Portfolio:</strong> Padronizar tom e CTA em todas as páginas. Criar template reutilizável para novos cases.</li>
+        <li><strong>LinkedIn:</strong> Automatizar atualização da lista de leads. Integrar com CRM para follow-up.</li>
+        <li><strong>Email:</strong> Conectar com Google Sheets para atualização automática. Adicionar filtros e status.</li>
+        <li><strong>CRM/Drive:</strong> Implementar sincronização automática com API. Criar alertas para novos arquivos.</li>
+        <li><strong>Beni/áudios:</strong> Definir provedor TTS padrão com fallback. Criar biblioteca de áudios por tema.</li>
+        <li><strong>EPQ/Forecast:</strong> Finalizar mobile e adicionar modo offline. Criar versão white-label para clientes.</li>
+        <li><strong>Proposta/CV:</strong> Criar versões por segmento e idioma. Automatizar geração de PDF.</li>
+      </ul>
+    </div>
+
+    <!-- Sugestões globais para o ecossistema -->
+    <div class="suggestion-box">
+      <h2>Sugestões globais para o ecossistema</h2>
+      <ul>
+        <li>Criar um <strong>Integration Hub central</strong> para conectar todos os painéis e fontes de dados.</li>
+        <li>Adotar um <strong>layout unificado</strong> para todos os painéis do portfolio, garantindo consistência visual.</li>
+        <li>Implementar <strong>autenticação unificada</strong> para LinkedIn/Gmail, reduzindo bloqueios.</li>
+        <li>Criar um <strong>modo offline</strong> para painéis críticos, permitindo acesso sem internet.</li>
+        <li>Adicionar <strong>monitoramento automatizado</strong> de saúde dos painéis e fontes de dados.</li>
+        <li>Estabelecer <strong>convenções de nomenclatura</strong> e versionamento para todos os arquivos.</li>
+        <li>Criar <strong>playbooks de manutenção</strong> para cada frente, reduzindo dependência de memória.</li>
+      </ul>
     </div>
 
     <div class="risk">

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Márcio Lopes de Mello — Técnico de Elevadores</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue-deep: #0a1628;
+    --blue-mid: #0d2444;
+    --blue-accent: #1a6fc4;
+    --blue-glow: #3a9fff;
+    --cyan: #00c8ff;
+    --white: #ffffff;
+    --white-70: rgba(255,255,255,0.70);
+    --white-40: rgba(255,255,255,0.40);
+    --white-15: rgba(255,255,255,0.08);
+    --gold: #f59e0b;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--blue-deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ──────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=2000&q=80");
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+
+  .hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(100deg, rgba(10,22,40,0.98) 0%, rgba(10,22,40,0.88) 28%, rgba(10,22,40,0.72) 50%, rgba(10,22,40,0.30) 72%, rgba(10,22,40,0.05) 90%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    padding: 0 5vw;
+    padding-top: 7rem;
+    padding-bottom: 5rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 2px;
+    background: var(--cyan);
+    border-radius: 2px;
+  }
+
+  .hero-name {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 400;
+    color: var(--cyan);
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--white-70);
+    margin-bottom: 2.5rem;
+    max-width: 520px;
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2.8rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white-15);
+    border: 1px solid rgba(58,159,255,0.25);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white-70);
+    backdrop-filter: blur(6px);
+  }
+
+  .badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    flex-shrink: 0;
+  }
+
+  .badge.gold .dot { background: var(--gold); }
+  .badge.gold { color: #fcd34d; border-color: rgba(245,158,11,0.3); }
+
+  .cta-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue-accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 0 20px rgba(26,111,196,0.4);
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 0 32px rgba(58,159,255,0.55);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--white-70);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.18);
+    transition: color 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .btn-secondary:hover {
+    color: #fff;
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+  }
+
+  /* ── STATS STRIP ────────────────────────────────────────── */
+  .stats-strip {
+    background: rgba(13,36,68,0.9);
+    border-top: 1px solid rgba(58,159,255,0.15);
+    border-bottom: 1px solid rgba(58,159,255,0.15);
+    backdrop-filter: blur(12px);
+    padding: 2.5rem 5vw;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stat-item {}
+  .stat-num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--cyan);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white-70);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── SECTIONS ────────────────────────────────────────────── */
+  section {
+    padding: 5rem 5vw;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 3rem;
+    line-height: 1.2;
+  }
+
+  /* competências */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .skill-card {
+    background: var(--white-15);
+    border: 1px solid rgba(58,159,255,0.12);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .skill-card:hover {
+    border-color: rgba(58,159,255,0.4);
+    transform: translateY(-3px);
+  }
+
+  .skill-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .skill-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--white-70);
+    line-height: 1.4;
+  }
+
+  /* experiência */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue-accent), rgba(26,111,196,0.1));
+    border-radius: 2px;
+  }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 0 20px;
+    padding-bottom: 2.5rem;
+  }
+
+  .tl-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--blue-deep);
+    border: 2px solid var(--blue-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(26,111,196,0.4);
+  }
+
+  .tl-dot svg { width: 13px; height: 13px; fill: var(--cyan); }
+
+  .tl-body {}
+  .tl-period {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .tl-company {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+
+  .tl-role {
+    font-size: 13px;
+    color: var(--white-70);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .tl-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .tl-bullets li {
+    font-size: 13.5px;
+    color: var(--white-70);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .tl-bullets li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--blue-glow);
+    font-weight: 700;
+  }
+
+  .tl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #fcd34d;
+    margin-top: 10px;
+  }
+
+  /* certificações */
+  .certs-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cert-card {
+    background: var(--white-15);
+    border: 1px solid rgba(58,159,255,0.15);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1 1 260px;
+  }
+
+  .cert-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+
+  .cert-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .cert-desc {
+    font-size: 12px;
+    color: var(--white-70);
+  }
+
+  /* ── CTA SECTION ─────────────────────────────────────────── */
+  .cta-section {
+    background: linear-gradient(135deg, #0d2444 0%, #0a1628 60%, #071020 100%);
+    border-top: 1px solid rgba(58,159,255,0.12);
+    padding: 5rem 5vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(0,200,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .cta-section .eyebrow {
+    justify-content: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta-sub {
+    font-size: 1rem;
+    color: var(--white-70);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  /* contatos */
+  .contacts-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--white-15);
+    border: 1px solid rgba(58,159,255,0.2);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--white-70);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s, transform 0.15s;
+    backdrop-filter: blur(6px);
+  }
+
+  .contact-item:hover {
+    color: #fff;
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+  }
+
+  .contact-item svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--cyan);
+    flex-shrink: 0;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(58,159,255,0.2), transparent);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* footer */
+  footer {
+    text-align: center;
+    padding: 1.5rem 5vw;
+    font-size: 11px;
+    color: var(--white-40);
+    letter-spacing: 0.05em;
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 600px) {
+    .hero-content { padding-top: 7rem; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="eyebrow">Técnico de Elevadores</p>
+    <h1 class="hero-name">Márcio<br>Lopes de Mello</h1>
+    <p class="hero-title">Currículo</p>
+    <p class="hero-desc">
+      15 anos dominando cada geração tecnológica de elevadores — sistemas a relé,
+      eletrônicos e automação. Diagnóstico preciso, segurança em primeiro lugar
+      e experiência comprovada na formação de novos técnicos.
+    </p>
+    <div class="badge-row">
+      <span class="badge"><span class="dot"></span>15 anos de experiência</span>
+      <span class="badge"><span class="dot"></span>NR-10 &amp; NR-35 atualizadas</span>
+      <span class="badge gold"><span class="dot"></span>Mestre CPSI 1Y · 2021</span>
+      <span class="badge"><span class="dot"></span>Rio de Janeiro – RJ</span>
+    </div>
+    <div class="cta-row">
+      <a href="#experiencia" class="btn-primary">Ver experiência ↓</a>
+      <a href="#contato" class="btn-secondary">Contato</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────────────────────── -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num">15+</div>
+    <div class="stat-label">Anos de experiência</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Gerações tecnológicas</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">8,5</div>
+    <div class="stat-label">Avaliação de desempenho</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2021</div>
+    <div class="stat-label">Mestre CPSI 1Y</div>
+  </div>
+</div>
+
+<!-- ── COMPETÊNCIAS ───────────────────────────────────────────────────── -->
+<section class="reveal">
+  <p class="section-label">O que eu faço</p>
+  <h2 class="section-title">Competências Técnicas</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <span class="skill-icon">⚙️</span>
+      <span class="skill-text">Manutenção preventiva e corretiva de elevadores</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🔌</span>
+      <span class="skill-text">Sistemas a relé, eletrônicos e automação</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🔍</span>
+      <span class="skill-text">Diagnóstico e correção de falhas (elétrica, eletrônica, mecânica)</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">📐</span>
+      <span class="skill-text">Leitura e interpretação de diagramas técnicos</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🛡️</span>
+      <span class="skill-text">Avaliação de segurança e condições dos equipamentos</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">📡</span>
+      <span class="skill-text">Manutenção de sistemas GPS e eletrônicos</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">👨‍🏫</span>
+      <span class="skill-text">Preparação e desenvolvimento de novos técnicos</span>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">📋</span>
+      <span class="skill-text">Atendimento técnico em campo e gestão de procedimentos</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── EXPERIÊNCIA ────────────────────────────────────────────────────── -->
+<section id="experiencia" class="reveal">
+  <p class="section-label">Trajetória profissional</p>
+  <h2 class="section-title">Experiência</h2>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div>
+        <div class="tl-dot">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1 14l-4-4 1.4-1.4 2.6 2.6 6.6-6.6L19 8l-8 8z"/></svg>
+        </div>
+      </div>
+      <div class="tl-body">
+        <p class="tl-period">2017 – Atual · 8 anos</p>
+        <p class="tl-company">Atlas Schindler Elevadores</p>
+        <p class="tl-role">Técnico de Serviços · Rio de Janeiro</p>
+        <ul class="tl-bullets">
+          <li>Manutenção preventiva e corretiva em elevadores com diferentes gerações tecnológicas — relé, eletrônicos e automação.</li>
+          <li>Diagnóstico e correção de falhas elétricas, eletrônicas e mecânicas com leitura de diagramas técnicos.</li>
+          <li>Avaliação contínua das condições de segurança dos equipamentos e cumprimento de procedimentos técnicos.</li>
+          <li>Participação no <strong>Projeto Voo Solo</strong> — referência técnica na preparação de novos profissionais.</li>
+        </ul>
+        <span class="tl-badge">🏆 Mestre em CPSI 1Y — 2021</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div>
+        <div class="tl-dot">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+        </div>
+      </div>
+      <div class="tl-body">
+        <p class="tl-period">2015 – 2016</p>
+        <p class="tl-company">MCPM</p>
+        <p class="tl-role">Técnico de Manutenção — GPS e Eletrônicos</p>
+        <ul class="tl-bullets">
+          <li>Manutenção de equipamentos eletrônicos e sistemas GPS, com diagnóstico e correção de falhas em campo.</li>
+          <li>Identificação e resolução de problemas técnicos em componentes eletrônicos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div>
+        <div class="tl-dot">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+        </div>
+      </div>
+      <div class="tl-body">
+        <p class="tl-period">2011 – 2015</p>
+        <p class="tl-company">Braslev Elevadores</p>
+        <p class="tl-role">Técnico de Manutenção Pleno</p>
+        <ul class="tl-bullets">
+          <li>Manutenção preventiva e corretiva de elevadores, com diagnóstico de falhas elétricas, eletrônicas e mecânicas.</li>
+          <li>Leitura de diagramas, identificação de anomalias, ajustes técnicos e atendimento em campo.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CERTIFICAÇÕES ──────────────────────────────────────────────────── -->
+<section class="reveal">
+  <p class="section-label">Qualificações</p>
+  <h2 class="section-title">Formação &amp; Certificações</h2>
+  <div class="certs-row">
+    <div class="cert-card">
+      <span class="cert-icon">⚡</span>
+      <div>
+        <p class="cert-title">NR-10</p>
+        <p class="cert-desc">Segurança em Instalações e Serviços em Eletricidade — Atualizada</p>
+      </div>
+    </div>
+    <div class="cert-card">
+      <span class="cert-icon">🦺</span>
+      <div>
+        <p class="cert-title">NR-35</p>
+        <p class="cert-desc">Trabalho em Altura — Atualizada</p>
+      </div>
+    </div>
+    <div class="cert-card">
+      <span class="cert-icon">🎓</span>
+      <div>
+        <p class="cert-title">Técnico em Eletrônica</p>
+        <p class="cert-desc">Formação técnica concluída · Ensino Médio Completo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA + CONTATOS ─────────────────────────────────────────────────── -->
+<div id="contato" class="cta-section">
+  <div class="cta-inner">
+    <p class="eyebrow">Contato</p>
+    <h2 class="cta-title">Pronto para o<br>próximo desafio</h2>
+    <p class="cta-sub">
+      15 anos de experiência em manutenção de elevadores, disponível para posições de
+      especialização técnica, liderança ou supervisão. Entre em contato e vamos conversar.
+    </p>
+
+    <div class="contacts-grid">
+      <a href="mailto:lopesmello2012@bol.com.br" class="contact-item">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        lopesmello2012@bol.com.br
+      </a>
+      <a href="https://www.linkedin.com/in/marcio-lopes-108861129" target="_blank" class="contact-item">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <span class="contact-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5-2.5z"/></svg>
+        Rio de Janeiro – RJ · CNH A/B
+      </span>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="mailto:lopesmello2012@bol.com.br" class="btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Enviar e-mail
+      </a>
+      <a href="https://www.linkedin.com/in/marcio-lopes-108861129" target="_blank" class="btn-secondary">
+        Ver LinkedIn →
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Márcio Lopes de Mello &nbsp;·&nbsp; Rio de Janeiro, Brasil
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

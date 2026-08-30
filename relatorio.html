@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Semanal — Flávio Guedes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0b0b14; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  p { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
+  .section { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+  .section h2 { font-size: 16px; margin-bottom: 10px; color: #e2e8f0; }
+  ul { margin-left: 18px; margin-bottom: 10px; }
+  li { margin-bottom: 6px; font-size: 14px; color: #cbd5e1; }
+  .front { background: #111827; border-left: 3px solid #3b82f6; padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; }
+  .front h3 { font-size: 15px; margin-bottom: 6px; color: #e2e8f0; }
+  .risk { background: #2a1a1a; border-left: 3px solid #ef4444; padding: 14px 16px; border-radius: 10px; margin-top: 4px; }
+  .risk h3 { font-size: 15px; margin-bottom: 6px; color: #fca5a5; }
+</style>
+</head>
+<body>
+  <h1>Relatório Semanal</h1>
+  <p>Modo ATLAS/MASTER — status consolidado da semana.</p>
+
+  <div class="section">
+    <h2>Concluído</h2>
+    <ul>
+      <li>Portfolio: ajustes em <code>produto.html</code>, <code>parceria.html</code>, <code>designhead.html</code>, remoção do LinkedIn do Flávio, cases do EPQ inseridos em <code>produto.html</code> e motores de busca LinkedIn mantidos.</li>
+      <li><code>pipelkd.html</code>: painel de prospecção LinkedIn criado, com rolagem vertical clean, paginação 10 em 10, temperatura por lead e link direto para o perfil.</li>
+      <li><code>email.html</code>: painel de prospecção Email criado, baseado em <code>leads_filtrados_2026-08-04.csv</code>, com paginação 10 em 10.</li>
+      <li><code>forecast.html</code>: painel didático Forecast & Growth publicado no portfolio.</li>
+      <li>Proposta comercial: <code>proposta_v3.html</code> e <code>proposta_padrao.html</code> atualizadas para R$ 8.500 + tráfego opcional.</li>
+      <li>CV Product Designer: <code>cv-product-designer.html</code> e PDF gerados.</li>
+      <li>Lembretes: cronjobs criados para amanhã 12h e domingo 12h.</li>
+      <li>Top 30 prospecção LinkedIn gerada e estruturada.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Pendente / Não concluído</h2>
+    <ul>
+      <li>Painel de email ainda não sincronizado com a planilha Google Sheets enviada.</li>
+      <li>Acesso ao Google Drive continua bloqueado para leitura direta via script.</li>
+      <li>Geração de áudios do Benício bloqueada por quota da ElevenLabs.</li>
+      <li><code>crm_acao_v2_unificado.html</code> copiado para teste mobile, mas ainda sem ajustes mobile/MVP.</li>
+      <li>LinkedIn/Gmail sem autenticação operacional.</li>
+      <li>Vídeo de automação/histórico LinkedIn não inserido em <code>produto.html</code> por falta de link/arquivo acessível.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Por frentes</h2>
+    <div class="front"><h3>Portfolio</h3><div>70% concluído — páginas foco ajustadas; <code>designhead.html</code> ainda precisa de validação visual final.</div></div>
+    <div class="front"><h3>LinkedIn</h3><div>60% concluído — <code>pipelkd.html</code> estável e publicado; top 30 pronta; falta integração dinâmica e autenticação.</div></div>
+    <div class="front"><h3>Email</h3><div>40% concluído — painel criado com CSV inicial; falta integrar a planilha Google Sheets oficial.</div></div>
+    <div class="front"><h3>CRM/Drive</h3><div>30% concluído — base local criada; acesso e automação pendentes por bloqueio de quota/permissoes.</div></div>
+    <div class="front"><h3>Benni/áudios</h3><div>0% nesta rodada — bloqueado por quota do provedor TTS.</div></div>
+    <div class="front"><h3>EPQ/Forecast</h3><div>90% concluído — <code>forecast.html</code> publicado e validado; ajustes mobile pendentes.</div></div>
+    <div class="front"><h3>Proposta/CV</h3><div>100% concluído — versões publicadas e commitadas.</div></div>
+  </div>
+
+  <div class="risk">
+    <h3>Risco principal</h3>
+    <div>Bloqueios externos de quota/autenticação podem atrasar integrações de dados em tempo real.</div>
+  </div>
+</body>
+</html>

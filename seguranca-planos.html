@@ -667,104 +667,27 @@
       * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
     }
 
-    /* ─── PLAN BACKDROP / MODAL ──────────────────────────────── */
-    .plan-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(4, 12, 27, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .plan-backdrop.is-open { display: flex; }
-    .plan-modal {
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: 12px;
-      max-width: 900px;
-      width: 100%;
-      max-height: 85vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,163,255,0.08);
-    }
-    .plan-modal-head {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 20px 24px;
-      background: rgba(10, 26, 48, 0.9);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .plan-modal-title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      letter-spacing: -0.01em;
-    }
-    .plan-modal-close {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      border: 1px solid var(--border-glass);
-      background: rgba(0,163,255,0.06);
-      color: var(--text-bright);
+    .plan-details { margin-top: 18px; }
+    .plan-details[hidden] { display: none; }
+    .plan-toggle {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color .2s ease, color .2s ease;
-    }
-    .plan-modal-close:hover { border-color: var(--blue-neon); color: var(--blue-neon); }
-    .plan-modal-body {
-      overflow: auto;
-      padding: 24px;
-      display: grid;
-      gap: 18px;
-    }
-    .plan-section-title {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 8px;
-    }
-    .plan-section-text {
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      line-height: 1.7;
-      margin-bottom: 14px;
-    }
-    .plan-section-list {
-      list-style: none;
-      display: grid;
       gap: 10px;
+      padding: 12px 20px;
+      border: 1px solid var(--border-glass);
+      border-radius: 4px;
+      color: var(--text-bright);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s ease, color 0.2s ease;
+      background: transparent;
+      cursor: pointer;
     }
-    .plan-section-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.88rem;
-      color: var(--text-mid);
-      line-height: 1.6;
-    }
-    .plan-section-list .plan-list-check { margin-top: 2px; }
-    .plan-divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-glass), transparent);
-    }
+    .plan-toggle:hover { border-color: var(--blue-neon); color: var(--blue-neon); }
   </style>
 </head>
 <body>
@@ -852,60 +775,7 @@
               <span><strong>Monitoramento contínuo</strong> simplificado</span>
             </li>
           </ul>
-          <div class="plan-details" data-plan="plan1" style="display:none">
-            <div class="plan-section-title">1. Diagnóstico e inventário tecnológico</div>
-            <div class="plan-section-text">A organização passa a saber o que precisa proteger e onde estão suas principais exposições.</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Inventário de servidores, estações, dispositivos de rede e sistemas</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Identificação de ativos críticos e mapeamento básico da infraestrutura</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Levantamento de sistemas e serviços expostos</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Análise preliminar da arquitetura de rede e dependências tecnológicas</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">2. Arquitetura e segurança de redes</div>
-            <div class="plan-section-text">Reduzimos a possibilidade de que um problema se espalhe para outros ambientes.</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Análise da topologia, VLANs e segmentação</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Revisão de firewalls e regras de acesso</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Identificação de serviços desnecessariamente expostos</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">3. Gestão de identidades e acessos</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Revisão de usuários, grupos e contas administrativas</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Princípio do menor privilégio e recomendações de MFA</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">4. Políticas e procedimentos</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Política de segurança, controle de acesso e senhas</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Procedimentos de abertura/encerramento de acessos e resposta básica</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">5. Vulnerabilidades e configuração</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Identificação de vulnerabilidades conhecidas e sistemas desatualizados</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Priorização de correções e plano inicial de tratamento</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">6. Monitoramento básico</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Definição de eventos críticos, disponibilidade e alertas</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Identificação de comportamentos anômalos</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">7. Backup e recuperação</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Avaliação de periodicidade, retenção e processos de restauração</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Recomendações para proteção contra perda ou indisponibilidade</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">8. Relatório executivo</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Diagnóstico consolidado com riscos, vulnerabilidades, gaps e plano de ação priorizado</span></li>
-            </ul>
-          </div>
-          <a href="#contact" class="plan-cta" data-open="plan1">Ver entregáveis</a>
+          <button class="plan-toggle" data-toggle="plan1" aria-expanded="false" type="button">Ver entregáveis</button>
         </div>
 
         <div class="plan-card fade-in">
@@ -941,7 +811,7 @@
               <span><strong>Relatórios gerenciais</strong> periódicos</span>
             </li>
           </ul>
-          <div class="plan-details" data-plan="plan2" style="display:none">
+          <div class="plan-details" data-plan="plan2" hidden>
             <div class="plan-section-title">1. Hardening de infraestrutura</div>
             <div class="plan-section-text">Diminuímos o número de caminhos que um invasor poderia utilizar para comprometer o ambiente.</div>
             <ul class="plan-section-list">
@@ -949,190 +819,93 @@
               <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Restrição de portas, protocolos e desativação de serviços desnecessários</span></li>
               <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Padronização de configurações e aplicação de boas práticas</span></li>
             </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">2. Gestão contínua de vulnerabilidades</div>
-            <div class="plan-section-text">A empresa passa a gerenciar preventivamente sua exposição.</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Scans periódicos, classificação por criticidade e priorização por risco</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Acompanhamento de correções, validação de remediação e relatórios de evolução</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">3. Segurança de endpoints</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Avaliação de estações e servidores, EDR/antimalware e controle de aplicações</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Políticas de dispositivos, gestão de atualizações e monitoramento de comportamentos suspeitos</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">4. Monitoramento e detecção</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Coleta e centralização de logs com correlação de eventos</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Alertas, monitoramento de autenticações e indicadores de comprometimento</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">5. Gestão de incidentes e SLA</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Plano de resposta, classificação, severidade e fluxo de escalonamento</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Tempos de atendimento por criticidade com procedimentos de contenção e erradicação</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">6. Segurança de acesso remoto, aplicações e dados</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Avaliação de VPN, MFA, controle de sessões e monitoramento de acessos remotos</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Revisão de autenticação, autorização, proteção de APIs e exposição de aplicações</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Classificação de dados, controles de acesso e recomendações de criptografia</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">7. Relatórios técnicos e executivos</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Indicadores de vulnerabilidades, incidentes, tempo de resposta e evolução dos controles</span></li>
-            </ul>
-          </div>
-          <a href="#contact" class="plan-cta" data-open="plan2">Ver entregáveis</a>
-        </div>
+            <button class="plan-toggle" data-open="plan1" aria-expanded="false" type="button">Ver entregáveis</button>
+            </div>
 
-        <div class="plan-card fade-in">
-          <div class="plan-badge">
-            <span class="plan-badge-dot"></span>
-            Faixa 3
-          </div>
-          <div class="plan-revenue">R$ 600K <span>a R$ 1M</span></div>
-          <p class="plan-desc">Modelo avançado para operações que exigem maturidade, governança e continuidade operacional.</p>
-          <ul class="plan-list">
-            <li>
-              <span class="plan-list-check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span><strong>Programa de segurança</strong> estruturado</span>
-            </li>
-            <li>
-              <span class="plan-list-check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span><strong>Governança e métricas</strong> executivas</span>
-            </li>
-            <li>
-              <span class="plan-list-check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span><strong>Resposta a incidentes</strong> prioritária</span>
-            </li>
-            <li>
-              <span class="plan-list-check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span><strong>Continuidade operacional</strong> orientada a negócio</span>
-            </li>
-          </ul>
-          <div class="plan-details" data-plan="plan3" style="display:none">
-            <div class="plan-section-title">1. Programa corporativo de Segurança da Informação</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Estratégia, roadmap plurianual, modelo de governança e arquitetura de controles</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Gestão de riscos, terceiros, exceções e melhoria contínua</span></li>
+            <div class="plan-card fade-in">
+            <div class="plan-badge">
+              <span class="plan-badge-dot"></span>
+              Faixa 2
+            </div>
+            <div class="plan-revenue">R$ 200K <span>a R$ 600K</span></div>
+            <p class="plan-desc">Modelo intermediário com gestão mais estruturada, controles reforçados e resposta a incidentes.</p>
+            <ul class="plan-list">
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Revisão e hardening</strong> de ambientes</span>
+              </li>
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Gestão de vulnerabilidades</strong> contínua</span>
+              </li>
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Resposta a incidentes</strong> com SLA</span>
+              </li>
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Relatórios gerenciais</strong> periódicos</span>
+              </li>
             </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">2. GRC — Governança, Riscos e Compliance</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Matriz de riscos, planos de tratamento, evidências de controles e relatórios para a alta administração</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">3. SOC / operação de segurança</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Monitoramento contínuo, SIEM, correlação, triagem, investigação e threat intelligence</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">4. Threat Intelligence e Threat Hunting</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Monitoramento de ameaças relevantes e priorização baseada em risco real</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Busca proativa por sinais de comprometimento e validação de indicadores</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">5. Gestão de crises cibernéticas</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Plano de crise, matriz de comunicação, responsabilidades executivas e coordenação de recuperação</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">6. Continuidade de negócios</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>BIA, definição de RTO e RPO, dependências críticas e planos de continuidade</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Estratégias de contingência e testes de recuperação</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">7. Disaster Recovery</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Estratégia de recuperação, replicação, ambientes de contingência e validação de RTO/RPO</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">8. Testes de segurança e gestão de terceiros</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Vulnerability Assessment, Penetration Testing e testes controlados quando autorizado</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Avaliação de fornecedores críticos, controles contratuais e monitoramento de terceiros</span></li>
-            </ul>
-            <div class="plan-divider"></div>
-            <div class="plan-section-title">9. Métricas executivas e melhoria contínua</div>
-            <ul class="plan-section-list">
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>KPIs/KRIs: exposição, vulnerabilidades críticas, MTTD, MTTR, incidentes, disponibilidade</span></li>
-              <li><span class="plan-list-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span>Auditorias internas, lições aprendidas e evolução do roadmap</span></li>
-            </ul>
-          </div>
-          <a href="#contact" class="plan-cta" data-open="plan3">Ver entregáveis</a>
-        </div>
-      </div>
-    </div>
-  </section>
+            <button class="plan-toggle" data-open="plan2" aria-expanded="false" type="button">Ver entregáveis</button>
+            </div>
 
-  <div class="scan-divider"></div>
+            <div class="plan-card fade-in">
+            <div class="plan-badge">
+              <span class="plan-badge-dot"></span>
+              Faixa 3
+            </div>
+            <div class="plan-revenue">R$ 600K <span>a R$ 1M</span></div>
+            <p class="plan-desc">Modelo avançado para operações que exigem maturidade, governança e continuidade operacional.</p>
+            <ul class="plan-list">
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Programa de segurança</strong> estruturado</span>
+              </li>
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Governança e métricas</strong> executivas</span>
+              </li>
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Resposta a incidentes</strong> prioritária</span>
+              </li>
+              <li>
+                <span class="plan-list-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Continuidade operacional</strong> orientada a negócio</span>
+              </li>
+            </ul>
+            <button class="plan-toggle" data-open="plan3" aria-expanded="false" type="button">Ver entregáveis</button>
+            </div>
+            </div>
+            </div>
+            </section>
 
-  <!-- DIFFERENTIALS -->
-  <section id="differentials" class="section-pad" aria-labelledby="diff-heading">
-    <div class="container">
-      <div class="diff-header">
-        <div class="fade-in">
-          <p class="section-eyebrow">Por que contratar</p>
-          <h2 class="section-heading" id="diff-heading">Segurança proporcional ao tamanho e risco do negócio</h2>
-          <p class="section-sub">Atuação direta, sem burocracia desnecessária, com foco em proteção, estabilidade e decisões técnicas claras.</p>
-        </div>
-        <div class="diff-highlight fade-in" aria-label="Destaques do perfil">
-          <div class="diff-highlight-card">
-            <div class="diff-highlight-label">Nível</div>
-            <div class="diff-highlight-val">Sênior</div>
-          </div>
-          <div class="diff-highlight-card">
-            <div class="diff-highlight-label">Ambiente</div>
-            <div class="diff-highlight-val">Alta Criticidade</div>
-          </div>
-          <div class="diff-highlight-card">
-            <div class="diff-highlight-label">Visão</div>
-            <div class="diff-highlight-val">Técnica + Gestão</div>
-          </div>
-          <div class="diff-highlight-card">
-            <div class="diff-highlight-label">Modelo</div>
-            <div class="diff-highlight-val">Por faturamento</div>
-          </div>
-        </div>
-      </div>
-      <div class="diff-list fade-in" role="list">
-        <div class="diff-item" role="listitem">
-          <div class="diff-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="diff-text"><strong>Escala por faturamento</strong> — Planos ajustados à realidade financeira e operacional da empresa.</div>
-        </div>
-        <div class="diff-item" role="listitem">
-          <div class="diff-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="diff-text"><strong>Perfil Sênior</strong> — Maturidade técnica e de gestão para decisões rápidas e eficazes.</div>
-        </div>
-        <div class="diff-item" role="listitem">
-          <div class="diff-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="diff-text"><strong>Atuação em ambientes críticos</strong> — Experiência onde falhas não são opção.</div>
-        </div>
-        <div class="diff-item" role="listitem">
-          <div class="diff-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
+            <div class="plan-backdrop" id="planBackdrop" role="dialog" aria-modal="true" hidden>
+            <div class="plan-modal">
+            <div class="plan-modal-head">
+            <div class="plan-modal-title">Entregáveis</div>
+            <button class="plan-modal-close" id="planModalClose" aria-label="Fechar">Fechar</button>
+            </div>
+            <div class="plan-modal-body" id="planModalBody"></div>
+            </div>
+            </div>
           <div class="diff-text"><strong>Visão estratégica e operacional</strong> — Resultado técnico e acompanhamento gerencial.</div>
         </div>
         <div class="diff-item" role="listitem">
@@ -1217,44 +990,22 @@
       });
     });
 
-    // Plan details modal/backdrop
-    const modalRoot = document.createElement('div');
-    modalRoot.className = 'plan-backdrop';
-    modalRoot.setAttribute('role', 'dialog');
-    modalRoot.setAttribute('aria-modal', 'true');
-    modalRoot.innerHTML = '<div class="plan-modal"><div class="plan-modal-head"><div class="plan-modal-title">Entregáveis</div><button class="plan-modal-close" aria-label="Fechar">Fechar</button></div><div class="plan-modal-body"></div></div>';
-    document.body.appendChild(modalRoot);
-
-    const modalBody = modalRoot.querySelector('.plan-modal-body');
-    const modalTitle = modalRoot.querySelector('.plan-modal-title');
-    const modalClose = modalRoot.querySelector('.plan-modal-close');
-
-    function openModal(planId, title) {
-      const source = document.querySelector('.plan-details[data-plan="' + planId + '"]');
-      if (!source) return;
-      modalTitle.textContent = title || 'Entregáveis';
-      modalBody.innerHTML = source.innerHTML;
-      modalRoot.classList.add('is-open');
-      modalClose.focus();
-    }
-    function closeModal() {
-      modalRoot.classList.remove('is-open');
-      modalBody.innerHTML = '';
-    }
-
-    document.querySelectorAll('[data-open]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const planId = btn.getAttribute('data-open');
-        const card = btn.closest('.plan-card');
-        const title = card ? card.querySelector('.plan-revenue')?.textContent?.trim() || 'Entregáveis' : 'Entregáveis';
-        openModal(planId, title);
+    // Plan inline details toggle
+    document.querySelectorAll('[data-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const planId = btn.getAttribute('data-toggle');
+        const details = document.querySelector('.plan-details[data-plan="' + planId + '"]');
+        if (!details) return;
+        const isHidden = details.hasAttribute('hidden');
+        document.querySelectorAll('.plan-details[data-plan]').forEach(el => el.setAttribute('hidden', ''));
+        document.querySelectorAll('.plan-toggle').forEach(el => el.setAttribute('aria-expanded', 'false'));
+        if (isHidden) {
+          details.removeAttribute('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+          details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       });
     });
-
-    modalClose.addEventListener('click', closeModal);
-    modalRoot.addEventListener('click', (e) => { if (e.target === modalRoot) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
   </script>
 </body>
 </html>

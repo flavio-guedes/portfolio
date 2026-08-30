@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Semanal — Flávio Guedes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f6f7fb; color: #111827; font-family: 'Inter', system-ui, sans-serif; padding: 0; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 28px 22px 60px; }
+  header { margin-bottom: 22px; }
+  header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; }
+  header p { color: #475569; font-size: 14px; margin-top: 6px; }
+
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+  @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  .day { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .day h2 { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+  .day .meta { font-size: 12px; color: #64748b; margin-bottom: 12px; }
+  .day .goal { background: #f8fafc; border-left: 3px solid #4169E1; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; }
+  .day .goal strong { font-size: 12px; font-weight: 700; color: #0f172a; display: block; margin-bottom: 2px; }
+  .day .goal p { font-size: 12px; color: #334155; line-height: 1.4; }
+  .day ul { margin-left: 18px; }
+  .day li { font-size: 13px; color: #334155; margin-bottom: 8px; line-height: 1.4; }
+  .day a { color: #4169E1; text-decoration: none; font-size: 12px; }
+  .day a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Agenda Semanal</h1>
+      <p>Metas e tarefas por dia.</p>
+    </header>
+
+    <div class="grid">
+      <div class="day">
+        <h2>Segunda</h2>
+        <div class="meta">Foco: Produto</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Concluir ajustes de produto.html e validar mobile</p>
+        </div>
+        <ul>
+          <li>Revisar cases do EPQ em <a href="https://flavio-guedes.github.io/portfolio/produto.html" target="_blank">produto.html</a></li>
+          <li>Validar responsividade mobile</li>
+          <li>Atualizar <a href="https://flavio-guedes.github.io/portfolio/forecast.html" target="_blank">forecast.html</a></li>
+          <li>Documentar alterações</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <h2>Terça</h2>
+        <div class="meta">Foco: LinkedIn</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Ampliar prospecção e atualizar painel</p>
+        </div>
+        <ul>
+          <li>Enviar 10 mensagens do Top 30</li>
+          <li>Atualizar <a href="https://flavio-guedes.github.io/portfolio/pipelkd.html" target="_blank">pipelkd.html</a></li>
+          <li>Registrar respostas e follow-ups</li>
+          <li>Atualizar score de leads</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <h2>Quarta</h2>
+        <div class="meta">Foco: Email</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Sincronizar leads e melhorar painel</p>
+        </div>
+        <ul>
+          <li>Integrar Google Sheets</li>
+          <li>Atualizar <a href="https://flavio-guedes.github.io/portfolio/email.html" target="_blank">email.html</a></li>
+          <li>Criar follow-up automático</li>
+          <li>Validar botões de mensagem</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <h2>Quinta</h2>
+        <div class="meta">Foco: Portfolio</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Publicar versão revisada do portfolio</p>
+        </div>
+        <ul>
+          <li>Ajustar <a href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank">designhead.html</a></li>
+          <li>Validar <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank">parceria.html</a></li>
+          <li>Remover links quebrados</li>
+          <li>Atualizar relatório</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <h2>Sexta</h2>
+        <div class="meta">Foco: CRM/Drive</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Automatizar acesso e sincronização</p>
+        </div>
+        <ul>
+          <li>Implementar OAuth</li>
+          <li>Sincronizar pasta local</li>
+          <li>Testar leitura do Drive</li>
+          <li>Documentar processo</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <h2>Sábado</h2>
+        <div class="meta">Foco: EPQ</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Melhorar mobile e criar white-label</p>
+        </div>
+        <ul>
+          <li>Ajustar CSS responsivo</li>
+          <li>Testar modo offline</li>
+          <li>Criar versão white-label</li>
+          <li>Validar com usuário</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <h2>Domingo</h2>
+        <div class="meta">Foco: Revisão</div>
+        <div class="goal">
+          <strong>Meta</strong>
+          <p>Revisão semanal e planejamento</p>
+        </div>
+        <ul>
+          <li>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a></li>
+          <li>Planejar próxima semana</li>
+          <li>Backup dos arquivos</li>
+          <li>Atualizar lembretes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

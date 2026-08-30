@@ -58,11 +58,9 @@
     width: 100%;
     align-items: center;
   }
-
   .hero-copy {
-    max-width: 640px;
+    max-width: 720px;
   }
-
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -74,31 +72,27 @@
     text-transform: uppercase;
     margin-bottom: 14px;
   }
-
   .hero h1 {
-    font-size: 46px;
+    font-size: 50px;
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.02em;
-    margin: 0 0 16px;
+    margin: 0 0 18px;
     text-shadow: 0 2px 20px rgba(0,0,0,.45);
   }
-
   .hero p {
-    font-size: 16px;
+    font-size: 17px;
     color: #dbe6ff;
-    line-height: 1.6;
-    margin: 0 0 20px;
-    max-width: 560px;
+    line-height: 1.7;
+    margin: 0 0 22px;
+    max-width: 640px;
     text-shadow: 0 1px 10px rgba(0,0,0,.45);
   }
-
   .hero-actions {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
   }
-
   .cta {
     display: inline-flex;
     align-items: center;
@@ -125,7 +119,7 @@
     display: flex;
     align-items: center;
     gap: 18px;
-    margin-bottom: 22px;
+    margin-bottom: 28px;
   }
   .section-header h2 {
     margin: 0;
@@ -138,44 +132,32 @@
     background: linear-gradient(90deg, var(--accent), transparent);
   }
 
+  .lead {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 760px;
+    line-height: 1.7;
+    margin: 0 0 22px;
+  }
+
   .product {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 16px;
   }
-
   .card {
-    position: relative;
     padding: 22px;
     border: 1px solid var(--line);
     border-radius: 16px;
     background: var(--panel);
     color: var(--text);
     text-decoration: none;
-    overflow: hidden;
     transition: transform .08s ease, border-color .2s ease;
   }
   .card:hover {
     transform: translateY(-1px);
     border-color: var(--accent);
   }
-
-  .card-banner {
-    position: relative;
-    height: 140px;
-    margin: -22px -22px 14px -22px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 16px 16px 0 0;
-  }
-  .card-banner::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(17,27,46,.2) 0%, rgba(17,27,46,.75) 100%);
-    border-radius: 16px 16px 0 0;
-  }
-
   .card h3 {
     margin: 0 0 6px;
     font-size: 16px;
@@ -194,38 +176,87 @@
     font-size: 14px;
   }
 
-  .banner-strip {
+  .section-band {
     position: relative;
     border-radius: 16px;
-    padding: 28px 28px;
-    margin-top: 18px;
+    padding: 56px 28px;
+    margin-top: 28px;
     color: #e6f0ff;
     overflow: hidden;
     background-size: cover;
     background-position: center;
     isolation: isolate;
   }
-  .banner-strip::before {
+  .section-band::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(11,18,32,.72);
     z-index: 0;
   }
-  .banner-strip > * {
+  .section-band > * {
     position: relative;
     z-index: 1;
   }
-  .banner-strip h3 {
-    margin: 0 0 6px;
-    font-size: 18px;
+  .section-band h2, .section-band h3 {
+    margin: 0 0 8px;
+    font-size: 22px;
     font-weight: 700;
   }
-  .banner-strip p {
+  .section-band p {
     margin: 0;
     color: #dbe6ff;
     font-size: 14px;
     line-height: 1.55;
+    max-width: 760px;
+  }
+
+  .case-card {
+    position: relative;
+    border-radius: 16px;
+    padding: 0;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform .08s ease, border-color .2s ease;
+  }
+  .case-card:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+  }
+  .case-banner {
+    position: relative;
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+  }
+  .case-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(17,27,46,.1) 0%, rgba(17,27,46,.7) 100%);
+  }
+  .case-body {
+    padding: 18px 20px 20px;
+  }
+  .case-body h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .case-body p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .case-metric {
+    margin-top: 14px;
+    font-weight: 700;
+    color: #93c5fd;
+    font-size: 14px;
   }
 
   footer {
@@ -238,7 +269,6 @@
   @media (max-width: 720px){
     .hero h1 { font-size: 30px; }
     .hero-inner { padding: 56px 20px; }
-    .cases-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -251,9 +281,10 @@
     <div class="hero-copy">
       <div class="eyebrow">Produto</div>
       <h1>Design, produto e experiência com foco em resultado.</h1>
-      <p>Atuo na convergência de UX, design systems e métricas de produto, transformando decisões de produto em interfaces claras e negócios mais previsíveis.</p>
+      <p>Atuo na convergência de UX, design systems e métricas de produto, transformando decisões em interfaces claras e negócios mais previsíveis. Abaixo, serviços e casos que mostram como isso acontece na prática.</p>
       <div class="hero-actions">
-        <a class="cta" href="#servicos">Ver serviços</a>
+        <a class="cta" href="#servicos">Serviços</a>
+        <a class="cta" href="#cases" style="background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); box-shadow: none;">Cases</a>
       </div>
     </div>
   </div>
@@ -264,82 +295,83 @@
     <h2>Serviços</h2>
     <div class="line"></div>
   </div>
+  <p class="lead">Cada entrega começa por entendimento de negócio, não por tela. Depois vem estrutura, priorização e execução com métricas claras.</p>
 
   <section class="product">
     <a class="card" href="#ux-design">
-      <div class="card-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');"></div>
       <h3>UX Design</h3>
-      <p>Pesquisa, wireframes, prototipação e testes de usabilidade.</p>
+      <p>Pesquisa, wireframes, prototipação e testes de usabilidade para reduzir risco antes do build.</p>
       <div class="price">A partir de US$ 2 mil</div>
     </a>
 
     <a class="card" href="#design-system">
-      <div class="card-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');"></div>
       <h3>Design System</h3>
-      <p>Componentes, tokens e governança visual para escala.</p>
+      <p>Componentes, tokens e governança visual para escala, consistência e velocidade do time.</p>
       <div class="price">A partir de US$ 3 mil</div>
     </a>
 
     <a class="card" href="#mvp">
-      <div class="card-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/04%20-%20Banner.png');"></div>
       <h3>MVP de Produto</h3>
-      <p>Do problema ao primeiro lançamento com foco em aprendizado.</p>
+      <p>Do problema ao primeiro lançamento com foco em aprendizado e iteração rápida.</p>
       <div class="price">A partir de US$ 4 mil</div>
     </a>
 
     <a class="card" href="#consultoria">
       <h3>Consultoria</h3>
-      <p>Orientação executiva em produto, métricas e priorização.</p>
+      <p>Orientação executiva em produto, métricas e priorização para decisões melhores.</p>
       <div class="price">A combinar</div>
     </a>
   </section>
+</div>
 
-  <div class="banner-strip" style="margin-top: 24px; background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');">
-    <h3>Entrega com ritmo e clareza</h3>
-    <p>Processo enxuto, documentação objetiva e mão na massa para reduzir ruído entre design, produto e desenvolvimento.</p>
-  </div>
+<div class="section-band" style="margin: 28px 24px 0; background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');">
+  <h2>Cases</h2>
+  <p>Não entrego apenas telas: entrego resultados mensuráveis. Os cases abaixo mostram como produto, operação e decisão podem caminhar juntos.</p>
+</div>
 
+<div class="container" id="cases" style="padding-top: 40px;">
+  <section class="product">
+    <a class="case-card" href="#painel-conteudo">
+      <div class="case-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');"></div>
+      <div class="case-body">
+        <h3>EPQ — Painel de Conteúdo e Tarefas</h3>
+        <p><strong>Problema:</strong> Falta de visibilidade unificada entre planejamento, produção e execução de conteúdo, com informações espalhadas e retrabalho.</p>
+        <p style="margin-top:8px"><strong>Solução:</strong> Painel unificado com abas de Planejamento, Acompanhamento e Planilha, integrado ao fluxo real da equipe.</p>
+        <div class="case-metric">-40% retrabalho · +25% previsibilidade</div>
+      </div>
+    </a>
+
+    <a class="case-card" href="#aulao">
+      <div class="case-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/04%20-%20Banner.png');"></div>
+      <div class="case-body">
+        <h3>EPQ — Sistema de Divulgação do Aulão</h3>
+        <p><strong>Problema:</strong> Divulgação completa do evento sem cronograma, criativos e follow-up integrados.</p>
+        <p style="margin-top:8px"><strong>Solução:</strong> Planejamento de conteúdo, Meta Ads, follow-up e orçamentação em uma página operacional.</p>
+        <div class="case-metric">100% cobertura operacional · 50 matrículas meta</div>
+      </div>
+    </a>
+
+    <a class="case-card" href="#governanca">
+      <div class="case-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');"></div>
+      <div class="case-body">
+        <h3>EPQ — Governança Escalável</h3>
+        <p><strong>Problema:</strong> Múltiplos projetos, responsáveis e prazos sem rastreabilidade, gerando risco de esquecimento.</p>
+        <p style="margin-top:8px"><strong>Solução:</strong> Sistema com 48 tarefas canônicas validadas, painel de status e ciclos de auditoria.</p>
+        <div class="case-metric">48 tarefas controladas · -30% onboarding</div>
+      </div>
+    </a>
+  </section>
+</div>
+
+<div class="section-band" style="margin: 28px 24px 0; background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');">
+  <h3>Produto como alinhamento</h3>
+  <p>Design, dados e decisão andando juntos: menos ruído, mais entrega.</p>
+</div>
+
+<div class="container">
   <footer>
     <p>Interesse? <a href="mailto:contato@flavio-guedes.dev">contato@flavio-guedes.dev</a></p>
   </footer>
-</div>
-
-<div class="container" id="cases">
-  <div class="section-header">
-    <h2>Cases</h2>
-    <div class="line"></div>
-  </div>
-
-  <section class="product">
-    <a class="card" href="#painel-conteudo">
-      <div class="card-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');"></div>
-      <h3>EPQ — Painel de Conteúdo e Tarefas</h3>
-      <p><strong>Problema:</strong> Falta de visibilidade unificada entre planejamento, produção e execução de conteúdo.</p>
-      <p><strong>Solução:</strong> Painel unificado com abas de Planejamento, Acompanhamento e Planilha.</p>
-      <div class="price">-40% retrabalho · +25% previsibilidade</div>
-    </a>
-
-    <a class="card" href="#aulao">
-      <div class="card-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');"></div>
-      <h3>EPQ — Sistema de Divulgação do Aulão</h3>
-      <p><strong>Problema:</strong> Divulgação completa do evento sem cronograma, criativos e follow-up integrados.</p>
-      <p><strong>Solução:</strong> Planejamento de conteúdo, Meta Ads, follow-up e orçamentação em uma página.</p>
-      <div class="price">100% cobertura operacional · 50 matrículas meta</div>
-    </a>
-
-    <a class="card" href="#governanca">
-      <div class="card-banner" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/04%20-%20Banner.png');"></div>
-      <h3>EPQ — Governança Escalável</h3>
-      <p><strong>Problema:</strong> Múltiplos projetos e prazos sem rastreabilidade, gerando retrabalho.</p>
-      <p><strong>Solução:</strong> Sistema com 48 tarefas canônicas validadas, painel de status e auditoria.</p>
-      <div class="price">48 tarefas controladas · -30% onboarding</div>
-    </a>
-  </section>
-
-  <div class="banner-strip" style="margin-top: 24px; background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');">
-    <h3>Produto como alinhamento</h3>
-    <p>Design, dados e decisão andando juntos: menos ruído, mais entrega.</p>
-  </div>
 </div>
 
 </body>

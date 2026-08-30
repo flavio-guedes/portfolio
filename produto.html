@@ -29,14 +29,24 @@
   .hero {
     position: relative;
     min-height: 92vh;
-    display: grid;
-    grid-template-columns: 1fr;
     overflow: hidden;
-    background:
-      linear-gradient(100deg, rgba(11,18,32,.92) 0%, rgba(11,18,32,.72) 48%, rgba(11,18,32,.18) 100%),
-      url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/Capa%20Produc%20Manager.png') center/cover no-repeat);
   }
-
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(100deg, rgba(11,18,32,.92) 0%, rgba(11,18,32,.72) 48%, rgba(11,18,32,.18) 100%);
+    z-index: 1;
+  }
   .hero-inner {
     position: relative;
     z-index: 2;
@@ -235,6 +245,8 @@
 <body>
 
 <div class="hero">
+  <img class="hero-bg" src="https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/Capa%20Produc%20Manager.png" alt="">
+  <div class="hero-overlay"></div>
   <div class="hero-inner">
     <div class="hero-copy">
       <div class="eyebrow">Produto</div>
@@ -242,7 +254,6 @@
       <p>Atuo na convergência de UX, design systems e métricas de produto, transformando decisões de produto em interfaces claras e negócios mais previsíveis.</p>
       <div class="hero-actions">
         <a class="cta" href="#servicos">Ver serviços</a>
-        <a class="cta" href="https://flavio-guedes.github.io/portfolio/designhead.html" style="background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); box-shadow: none;">Portfolio completo</a>
       </div>
     </div>
   </div>

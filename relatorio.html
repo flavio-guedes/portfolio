@@ -32,6 +32,7 @@
   .details-body ul { margin-left: 18px; }
   .details-body li { margin-bottom: 6px; }
   code { background: #f1f5f9; padding: 2px 7px; border-radius: 7px; font-size: 12px; color: #0f172a; border: 1px solid #e5e7eb; }
+  a.link { color: #4169E1; text-decoration: underline; }
 
   .front { background: #f8fafc; border-left: 3px solid #4169E1; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
   .front h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #0f172a; }
@@ -52,9 +53,14 @@
   .suggestion-box ul { margin-left: 18px; }
   .suggestion-box li { margin-bottom: 6px; font-size: 13.5px; color: #334155; line-height: 1.45; }
 
-  .download-bar { display: flex; gap: 10px; margin-bottom: 14px; }
+  .download-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .download-bar button { padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; cursor: pointer; }
   .download-bar button:hover { background: #1e293b; }
+
+  .cycle { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .cycle h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #0f172a; }
+  .cycle ul { margin-left: 18px; }
+  .cycle li { margin-bottom: 6px; font-size: 13.5px; color: #334155; }
 </style>
 </head>
 <body>
@@ -85,7 +91,7 @@
             <h4>Evolução</h4><p>Ajustes em <code>produto.html</code>, <code>parceria.html</code>, <code>designhead.html</code>. Remoção do LinkedIn do Flávio, cases do EPQ inseridos em <code>produto.html</code>.</p>
             <h4>Problemas</h4><p>Apenas validação visual final de <code>designhead.html</code> pendente.</p>
             <h4>Skills</h4><p>HTML/CSS avançado, Git/Web publishing, UI/UX Design.</p>
-            <h4>Agentes</h4><p>MASTER + agente de revisão visual.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de revisão visual executa.</p>
             <h4>Resumo</h4><p>Portfolio alinhado às frentes definidas. Páginas foco prontas para uso.</p>
             <h4>Sugestões</h4><ul><li>Validar <code>designhead.html</code> em diferentes dispositivos.</li><li>Adicionar cases recentes.</li></ul>
           </div>
@@ -97,7 +103,7 @@
             <h4>Evolução</h4><p><code>proposta_v3.html</code>, <code>proposta_padrao.html</code>, <code>cv-product-designer.html</code> e PDF gerados.</p>
             <h4>Problemas</h4><p>Nenhum.</p>
             <h4>Skills</h4><p>Copywriting comercial, Design editorial, PDF automation.</p>
-            <h4>Agentes</h4><p>MASTER + agente de conteúdo.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de conteúdo executa.</p>
             <h4>Resumo</h4><p>Materiais prontos para envio e publicação.</p>
             <h4>Sugestões</h4><ul><li>Criar versões por nicho.</li><li>Adicionar depoimentos/cases.</li></ul>
           </div>
@@ -119,7 +125,7 @@
             <h4>Evolução</h4><p><code>pipelkd.html</code> criado e publicado com rolagem vertical clean, paginação 10 em 10, temperatura por lead e link direto para o perfil.</p>
             <h4>Problemas</h4><p>Alguns contatos não abriam corretamente em versão anterior; ajustado após retroação.</p>
             <h4>Skills</h4><p>Análise de dados CSV, JavaScript/HTML, Inteligência comercial.</p>
-            <h4>Agentes</h4><p>MASTER para análise de dados + agente de produto.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de dados + agente de produto executam.</p>
             <h4>Resumo</h4><p>Painel estável e publicado. Leads priorizados por score e temperatura.</p>
             <h4>Sugestões</h4><ul><li>Adicionar filtros por temperatura e score.</li><li>Criar modo offline.</li></ul>
           </div>
@@ -131,7 +137,7 @@
             <h4>Evolução</h4><p>Top 30 prospecção LinkedIn gerada e estruturada.</p>
             <h4>Problemas</h4><p>Nenhum.</p>
             <h4>Skills</h4><p>Análise de relacionamento, classificação de oportunidades.</p>
-            <h4>Agentes</h4><p>MASTER.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de análise executa.</p>
             <h4>Resumo</h4><p>Lista pronta para ação.</p>
             <h4>Sugestões</h4><ul><li>Atualizar lista semanalmente.</li><li>Adicionar notas de follow-up.</li></ul>
           </div>
@@ -153,9 +159,31 @@
             <h4>Evolução</h4><p><code>email.html</code> criado com base em <code>leads_filtrados_2026-08-04.csv</code>, paginação 10 em 10.</p>
             <h4>Problemas</h4><p>Dados iniciais limitados; planilha Google Sheets ainda não integrada.</p>
             <h4>Skills</h4><p>CSV/JSON parsing, Frontend, Gestão de leads.</p>
-            <h4>Agentes</h4><p>MASTER para estruturação + agente de produto.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de dados + agente de produto executam.</p>
             <h4>Resumo</h4><p>Painel funcional; dados parciais. Integração com Sheets pendente.</p>
             <h4>Sugestões</h4><ul><li>Conectar com Google Sheets via API.</li><li>Adicionar status de follow-up automático.</li></ul>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <!-- Frente: Gmail/CRM -->
+    <details>
+      <summary>Gmail/CRM</summary>
+      <div class="details-body">
+        <div class="download-bar">
+          <button onclick="downloadTasks('gmail')">Download tarefas — Gmail/CRM</button>
+        </div>
+
+        <details class="project">
+          <summary>CRM do Gmail</summary>
+          <div class="details-body">
+            <h4>Evolução</h4><p>Estrutura iniciada. Acesso ao Gmail ainda não integrado ao painel.</p>
+            <h4>Problemas</h4><p>Autenticação e leitura automatizada pendentes.</p>
+            <h4>Skills</h4><p>Gmail API, Python, Automação.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de integração executa.</p>
+            <h4>Resumo</h4><p>Pendente de conexão segura.</p>
+            <h4>Sugestões</h4><ul><li>Implementar OAuth com fallback.</li><li>Sincronizar leads com painel.</li></ul>
           </div>
         </details>
       </div>
@@ -175,7 +203,7 @@
             <h4>Evolução</h4><p>Base local criada com dados do Drive.</p>
             <h4>Problemas</h4><p>Leitura automatizada do Drive indisponível. Dados precisam ser copiados para pasta local.</p>
             <h4>Skills</h4><p>Integração Google Drive, Python, Automação.</p>
-            <h4>Agentes</h4><p>MASTER para estruturação.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de integração executa.</p>
             <h4>Resumo</h4><p>Estrutura iniciada; acesso automatizado pendente.</p>
             <h4>Sugestões</h4><ul><li>Usar API Google Drive com OAuth.</li><li>Agendar sincronização local periódica.</li></ul>
           </div>
@@ -197,7 +225,7 @@
             <h4>Evolução</h4><p><code>forecast.html</code> criado e publicado com explicação didática da planilha, gráficos interativos e explorador por mês.</p>
             <h4>Problemas</h4><p>Ajustes mobile pendentes para melhor experiência em telas pequenas.</p>
             <h4>Skills</h4><p>Análise financeira, Visualização de dados, Educação/Didática.</p>
-            <h4>Agentes</h4><p>MASTER para análise + agente de frontend.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de análise + agente de frontend executam.</p>
             <h4>Resumo</h4><p>Conteúdo didático completo publicado. Experiência mobile pode melhorar.</p>
             <h4>Sugestões</h4><ul><li>Refinar CSS para mobile.</li><li>Adicionar suporte a offline.</li></ul>
           </div>
@@ -219,13 +247,25 @@
             <h4>Evolução</h4><p>Textos preparados. Geração bloqueada por quota da ElevenLabs.</p>
             <h4>Problemas</h4><p>Créditos insuficientes no provedor TTS.</p>
             <h4>Skills</h4><p>TTS/Áudio, Conteúdo infantil, Storytelling.</p>
-            <h4>Agentes</h4><p>Nenhum agente adicional.</p>
+            <h4>Agentes</h4><p>MASTER orquestra; agente de conteúdo executa.</p>
             <h4>Resumo</h4><p>Aguardando liberação de quota ou provedor alternativo.</p>
             <h4>Sugestões</h4><ul><li>Usar provedor gratuito como fallback.</li><li>Comprar créditos adicionais.</li></ul>
           </div>
         </details>
       </div>
     </details>
+
+    <!-- Ciclos de aprimoramento -->
+    <div class="cycle">
+      <h2>Ciclos de aprimoramento</h2>
+      <ul>
+        <li><strong>Framework:</strong> SCAN → PRIORIZAÇÃO → DELEGAÇÃO → EXECUÇÃO → VALIDAÇÃO → DESTRAVAMENTO → REPORT.</li>
+        <li><strong>Papel do MASTER:</strong> orquestrador — define prioridades, delega para agentes especializados e valida entregas. O MASTER não executa tarefas operacionais.</li>
+        <li><strong>Status:</strong> ciclos ativos nas frentes Portfolio, LinkedIn, Email, CRM/Drive, EPQ/Forecast e Gmail/CRM.</li>
+        <li><strong>Ecossistema:</strong> 7 frentes, 10 projetos, 8 tarefas concluídas, 6 pendentes.</li>
+        <li><strong>Melhoria contínua:</strong> ajustes baseados em feedback, retrabalho reduzido e rituais de validação.</li>
+      </ul>
+    </div>
 
     <!-- Sugestões globais por frente -->
     <div class="suggestion-box">
@@ -238,6 +278,7 @@
         <li><strong>Beni/áudios:</strong> Definir provedor TTS padrão com fallback. Criar biblioteca de áudios por tema.</li>
         <li><strong>EPQ/Forecast:</strong> Finalizar mobile e adicionar modo offline. Criar versão white-label para clientes.</li>
         <li><strong>Proposta/CV:</strong> Criar versões por segmento e idioma. Automatizar geração de PDF.</li>
+        <li><strong>Gmail/CRM:</strong> Finalizar autenticação e sincronização de leads com o painel.</li>
       </ul>
     </div>
 
@@ -268,7 +309,8 @@
         email: ['Painel email.html'],
         crm: ['Base local'],
         epq: ['forecast.html'],
-        beni: ['Áudios do Benício']
+        beni: ['Áudios do Benício'],
+        gmail: ['CRM do Gmail']
       };
       const projects = map[front] || [];
       let text = `Tarefas - ${front}\n\n`;

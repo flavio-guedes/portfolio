@@ -24,6 +24,7 @@
     --accent: #a855f7;
     --accent-2: #6366f1;
     --glow: rgba(168,85,247,0.25);
+    --surface: #0f0d15;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -227,6 +228,32 @@
     color: var(--muted);
     font-size: 14px;
     line-height: 1.65;
+  }
+
+  .services-band {
+    position: relative;
+    border-radius: 18px;
+    padding: 56px 28px;
+    margin: 28px 0;
+    color: #f2ecff;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(7,6,10,.85), rgba(14,12,20,.92)),
+      radial-gradient(600px 400px at 10% -10%, rgba(168,85,247,0.18), transparent 60%),
+      radial-gradient(500px 350px at 110% 10%, rgba(99,102,241,0.14), transparent 55%);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .services-band h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .services-band p {
+    margin: 0;
+    color: #e4d9ff;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 760px;
   }
 
   .product {
@@ -501,10 +528,10 @@
     <div class="hero-copy">
       <div class="eyebrow">Produto</div>
       <h1>Decisões de produto com base em problema, não em opinião.</h1>
-      <p>UX, design systems, métricas e execução enxuta para transformar incerteza em resultado mensurável. Abaixo, serviços, cases e formas de seguir.</p>
+      <p>UX, design systems, métricas e execução enxuta para transformar incerteza em resultado mensurável. Abaixo, serviços, trajetória e formas de seguir.</p>
       <div class="hero-actions">
         <a class="cta" href="#servicos">Serviços</a>
-        <a class="cta secondary" href="#cases">Cases</a>
+        <a class="cta secondary" href="#trajetoria">Trajetória</a>
         <a class="cta secondary" href="https://wa.me/5521999719474" target="_blank" rel="noopener">Contato</a>
       </div>
     </div>
@@ -533,14 +560,13 @@
   </div>
 </div>
 
-<div class="container" id="servicos">
-  <div class="section-header anim-in">
-    <h2>Serviços</h2>
-    <div class="line"></div>
-  </div>
-  <p class="lead anim-in anim-delay-1">Cada entrega começa pelo problema real, não por tela. Depois definimos estrutura, priorização e métrica para o time executar com clareza.</p>
+<div class="services-band anim-in" id="servicos">
+  <h2>Serviços</h2>
+  <p>Cada entrega começa pelo problema real, não por tela. Depois definimos estrutura, priorização e métrica para o time executar com clareza.</p>
+</div>
 
-  <section class="product anim-in anim-delay-2">
+<div class="container" style="padding-top: 40px;">
+  <section class="product anim-in anim-delay-1">
     <a class="card" href="#ux-design">
       <h3>UX Design</h3>
       <p>Pesquisa, wireframes, prototipação e testes de usabilidade para reduzir risco antes do build.</p>
@@ -571,19 +597,19 @@
 </div>
 
 <div class="section-band" style="margin: 28px 24px 0; background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');">
-  <h3>Cases</h3>
-  <p>Não entrego telas: entrego resultados. Abaixo, problemas reais, solução estruturada e impacto mensurável.</p>
+  <h3>Resultados que mostram como produto, operação e decisão caminham juntos</h3>
+  <p>Abaixo, problemas reais, solução estruturada e impacto mensurável.</p>
 </div>
 
 <div class="container" id="cases" style="padding-top: 40px;">
   <div class="section-header anim-in">
-    <h2>Cases</h2>
+    <h2>Projetos</h2>
     <div class="line"></div>
   </div>
 
   <section class="product anim-in anim-delay-1">
     <a class="case-card" href="#painel-conteudo">
-      <div class="case-thumb" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');" role="img" aria-label="Thumbnail do case EPQ Painel de Conteúdo e Tarefas"></div>
+      <div class="case-thumb" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');" role="img" aria-label="Thumbnail do projeto EPQ Painel de Conteúdo e Tarefas"></div>
       <div class="case-body">
         <div class="label">Produto & Operações</div>
         <h3>EPQ — Painel de Conteúdo e Tarefas</h3>
@@ -594,7 +620,7 @@
     </a>
 
     <a class="case-card" href="#aulao">
-      <div class="case-thumb" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/04%20-%20Banner.png');" role="img" aria-label="Thumbnail do case EPQ Sistema de Divulgação do Aulão"></div>
+      <div class="case-thumb" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/04%20-%20Banner.png');" role="img" aria-label="Thumbnail do projeto EPQ Sistema de Divulgação do Aulão"></div>
       <div class="case-body">
         <div class="label">Growth & Operações</div>
         <h3>EPQ — Sistema de Divulgação do Aulão</h3>
@@ -605,7 +631,7 @@
     </a>
 
     <a class="case-card" href="#governanca">
-      <div class="case-thumb" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');" role="img" aria-label="Thumbnail do case EPQ Governança Escalável"></div>
+      <div class="case-thumb" style="background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png');" role="img" aria-label="Thumbnail do projeto EPQ Governança Escalável"></div>
       <div class="case-body">
         <div class="label">Gestão de Projetos</div>
         <h3>EPQ — Governança Escalável</h3>
@@ -618,8 +644,8 @@
 
   <div class="section-band anim-in anim-delay-2" style="margin-top: 24px; background-image: url('https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png');">
     <h3>Mais exemplos práticos</h3>
-    <p>Para detalhamento complementar, você também pode visitar a página unificada de cases com entregas operacionais prontas.</p>
-    <p style="margin-top:10px"><a class="cta secondary" href="https://flavio-guedes.github.io/epq-central/case_educacao.html" target="_blank" rel="noopener">Abrir página de cases</a></p>
+    <p>Para detalhamento complementar, você também pode visitar a página unificada de projetos com entregas operacionais prontas.</p>
+    <p style="margin-top:10px"><a class="cta secondary" href="https://flavio-guedes.github.io/epq-central/case_educacao.html" target="_blank" rel="noopener">Abrir página de projetos</a></p>
   </div>
 
   <div class="proof anim-in anim-delay-3" style="margin-top: 18px;">

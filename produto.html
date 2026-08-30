@@ -277,6 +277,20 @@
   .card > * + * {
     margin-top: 10px;
   }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% -10%, rgba(168,85,247,0.12), transparent 55%);
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(168,85,247,.45);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(168,85,247,.25);
+  }
+  .card:hover::before { opacity: 1; }
   .card h3 {
     margin: 0;
     font-size: 16px;

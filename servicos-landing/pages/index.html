@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serviços — Flávio Guedes</title>
+<meta name="description" content="Estratégia, criação e tecnologia para transformar problemas em soluções.">
+<meta property="og:title" content="Serviços — Flávio Guedes">
+<meta property="og:description" content="Estratégia, criação e tecnologia para transformar problemas em soluções.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://flavio-guedes.github.io/portfolio/servicos-landing/pages/index.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/master-design-tokens.css">
+<link rel="stylesheet" href="../assets/master.css">
+<style>
+  .hub-hero {
+    padding: var(--space-3xl) 0 var(--space-2xl);
+  }
+  .hub-hero h1 {
+    max-width: 900px;
+  }
+  .hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--grid-gap);
+  }
+  .hub-card {
+    background: var(--color-white);
+    border: 2px solid var(--color-black);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    text-decoration: none;
+    color: var(--color-black);
+    transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+  }
+  .hub-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .hub-card h3 {
+    margin: 0 0 8px;
+  }
+  .hub-card p {
+    color: var(--color-gray-600);
+    margin: 0 0 14px;
+    line-height: 1.55;
+    font-size: 0.95rem;
+  }
+  .hub-meta {
+    font-size: 0.82rem;
+    color: var(--color-gray-500);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<section class="hub-hero section">
+  <div class="container fade-in">
+    <div class="eyebrow">Serviços</div>
+    <h1>Estratégia, criação e tecnologia para transformar problemas em soluções.</h1>
+    <p class="lead">Cada serviço é uma porta de entrada para o mesmo posicionamento: resolver problemas reais com execução prática.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="hub-grid" id="hub-grid"></div>
+  </div>
+</section>
+
+<script>
+  const services = [
+    {
+      slug: 'produto-ux-design',
+      title: 'Produto & UX Design',
+      description: 'Decisões com base em problema, não em opinião.',
+      problem: 'Reduz risco e retrabalho antes do build.',
+      link: 'produto-ux-design.html'
+    },
+    {
+      slug: 'design-system',
+      title: 'Design System',
+      description: 'Tokens, componentes e governança para escala.',
+      problem: 'Consistência, velocidade e evolução sem perda de qualidade.',
+      link: 'design-system.html'
+    },
+    {
+      slug: 'direcao-criativa',
+      title: 'Direção Criativa',
+      description: 'Branding, campanhas e conteúdo com opinião.',
+      problem: 'Marcas com comunicação sem densidade.',
+      link: 'direcao-criativa.html'
+    },
+    {
+      slug: 'estrategia-conteudo',
+      title: 'Estratégia de Conteúdo',
+      description: 'Do planejamento à execução, com copy e formato.',
+      problem: 'Conteúdo sem conexão com negócio.',
+      link: 'estrategia-conteudo.html'
+    },
+    {
+      slug: 'trafego-pago',
+      title: 'Tráfego Pago & Growth',
+      description: 'Campanhas com métrica, funil e otimização.',
+      problem: 'Gasto sem retorno claro.',
+      link: 'trafego-pago.html'
+    },
+    {
+      slug: 'consultoria',
+      title: 'Consultoria Executiva',
+      description: 'Sessões, diagnósticos e planos de ação.',
+      problem: 'Time sem priorização ou métrica.',
+      link: 'consultoria.html'
+    }
+  ];
+
+  const grid = document.getElementById('hub-grid');
+  services.forEach(s => {
+    const card = document.createElement('a');
+    card.className = 'hub-card';
+    card.href = s.link;
+    card.innerHTML = `<h3>${s.title}</h3><p>${s.description}</p><div class="hub-meta">Resolve: ${s.problem}</div><span class="cta">Ver página →</span>`;
+    grid.appendChild(card);
+  });
+</script>
+</body>
+</html>

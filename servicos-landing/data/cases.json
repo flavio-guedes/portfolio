@@ -1,0 +1,103 @@
+{
+  "cases": [
+    {
+      "id": "epq-painel-conteudo",
+      "title": "EPQ — Painel de Conteúdo e Tarefas",
+      "label": "Produto & Operações",
+      "context": "Ecossistema educacional com múltiplos fluxos de conteúdo e execução.",
+      "problem": "Falta de visibilidade unificada entre planejamento, produção e execução.",
+      "solution": "Painel unificado com abas de Planejamento, Acompanhamento e Planilha.",
+      "result": "-40% retrabalho · +25% previsibilidade",
+      "image": "https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/03%20-%20Banner.png",
+      "link": "https://flavio-guedes.github.io/portfolio/painel-conteudo.html"
+    },
+    {
+      "id": "epq-governanca",
+      "title": "EPQ — Governança Escalável",
+      "label": "Gestão de Projetos",
+      "context": "Múltiplos projetos, responsáveis e prazos.",
+      "problem": "Falta de rastreabilidade e controle de status.",
+      "solution": "Sistema com tarefas canônicas, painel de status e auditoria.",
+      "result": "48 tarefas controladas · -30% onboarding",
+      "image": "https://flavio-guedes.github.io/portfolio/01%20-%20Apoio/02%20-%20Banner.png",
+      "link": "https://flavio-guedes.github.io/portfolio/cronograma.html"
+    },
+    {
+      "id": "epq-ads",
+      "title": "EPQ — Cronograma de Ads",
+      "label": "Growth & Performance",
+      "context": "Campanha com investimento definido e funil estruturado.",
+      "problem": "Execução de anúncios sem clareza de semana e objetivo.",
+      "solution": "Cronograma semanal com criativos, copy, checklist e status.",
+      "result": "4 semanas planejadas · R$800 investimento",
+      "image": "https://flavio-guedes.github.io/portfolio/planoads.html",
+      "link": "https://flavio-guedes.github.io/portfolio/planoads.html"
+    },
+    {
+      "id": "epq-relatorio-ago",
+      "title": "EPQ — Relatório de Performance",
+      "label": "Performance",
+      "context": "Acompanhamento mensal de resultados.",
+      "problem": "Dados dispersos sem leitura executiva.",
+      "solution": "Relatório visual com métricas e dashboards.",
+      "result": "Visibilidade clara de resultados",
+      "image": "https://flavio-guedes.github.io/portfolio/relatorio-ads-ago.html",
+      "link": "https://flavio-guedes.github.io/portfolio/relatorio-ads-ago.html"
+    },
+    {
+      "id": "epq-conteudo",
+      "title": "EPQ — Estratégia de Conteúdo",
+      "label": "Conteúdo & Planejamento",
+      "context": "Planejamento editorial e territórios de conteúdo.",
+      "problem": "Conteúdo sem conexão com funil e posicionamento.",
+      "solution": "Planejamento editorial com pillars e cronograma.",
+      "result": "Estrutura pronta para execução",
+      "image": "https://flavio-guedes.github.io/portfolio/plano-conteudo-trafego.html",
+      "link": "https://flavio-guedes.github.io/portfolio/plano-conteudo-trafego.html"
+    },
+    {
+      "id": "epq-planejamento",
+      "title": "EPQ — Plano de Conteúdo & Tráfego",
+      "label": "Conteúdo & Growth",
+      "context": "Integração entre conteúdo e distribuição paga.",
+      "problem": "Canais separados sem estratégia comum.",
+      "solution": "Plano unificado de conteúdo e tráfego.",
+      "result": "Alinhamento entre orgânico e pago",
+      "image": "https://flavio-guedes.github.io/portfolio/plano-conteudo-trafego.html",
+      "link": "https://flavio-guedes.github.io/portfolio/plano-conteudo-trafego.html"
+    },
+    {
+      "id": "hershey",
+      "title": "Hershey's",
+      "label": "Branding & Conteúdo",
+      "context": "Marca global com necessidades de conexão local.",
+      "problem": "Conteúdo sem personalidade e proximidade.",
+      "solution": "Direção criativa e peças editoriais.",
+      "result": "Presença de marca consistente",
+      "image": "https://flavio-guedes.github.io/portfolio/hershey.html",
+      "link": "https://flavio-guedes.github.io/portfolio/hershey.html"
+    },
+    {
+      "id": "colgate",
+      "title": "Colgate",
+      "label": "Direção de Arte & Regulatório",
+      "context": "Campanhas multiformato com rigor regulatório.",
+      "problem": "Criatividade sem comprometer compliance.",
+      "solution": "4 frentes criativas com aprovação regulatória.",
+      "result": "100% aprovação ANVISA",
+      "image": "https://flavio-guedes.github.io/portfolio/designhead.html",
+      "link": "https://www.behance.net/gallery/159761159/Colgate"
+    },
+    {
+      "id": "my-dream-foods",
+      "title": "My Dream Foods",
+      "label": "Social Media & Growth",
+      "context": "Marca de alimentos com presença digital.",
+      "problem": "Baixo engajamento e crescimento orgânico.",
+      "solution": "Estratégia de conteúdo e calendário editorial.",
+      "result": "+178% engajamento · +337% seguidores",
+      "image": "https://flavio-guedes.github.io/portfolio/designhead.html",
+      "link": "https://www.behance.net/gallery/174077429/My-Dream-Foods"
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08080c">
+<title>Produto & UX Design — Captura</title>
+<meta name="description" content="Decisões de produto com base em problema, não em opinião. Do diagnóstico ao primeiro lançamento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black-950:#08080c;
+    --black-900:#0e0e14;
+    --black-800:#17161f;
+    --black-700:#201f2b;
+    --purple-600:#6d28d9;
+    --purple-500:#7c3aed;
+    --purple-400:#8b5cf6;
+    --purple-300:#a78bfa;
+    --amber-400:#fbbf24;
+    --amber-300:#fcd34d;
+    --text-primary:#f8fafc;
+    --text-secondary:#cbd5e1;
+    --text-muted:#94a3b8;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:Manrope,system-ui,-apple-system,sans-serif;
+    background:var(--black-950);
+    color:var(--text-primary);
+    -webkit-font-smoothing:antialiased;
+  }
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:100px 24px 140px;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .bg-layer{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(1200px 600px at 50% 40%, rgba(124,58,237,.25), transparent 60%),
+      radial-gradient(800px 400px at 30% 60%, rgba(251,191,36,.15), transparent 55%),
+      linear-gradient(180deg, rgba(8,8,12,.2), rgba(8,8,12,.85));
+    filter:saturate(1.1) contrast(1.05);
+    z-index:0;
+  }
+  .bg-fade{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse at center, transparent 30%, rgba(8,8,12,.6) 100%),
+      linear-gradient(to top, var(--black-950), transparent 35%);
+    z-index:1;
+    pointer-events:none;
+  }
+  .bg-mark{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.35;
+    mix-blend-mode:screen;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(167,139,250,.25), transparent 25%),
+      radial-gradient(circle at 20% 70%, rgba(251,191,36,.2), transparent 25%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:2;
+    max-width:1100px;
+    width:100%;
+    animation: fadeIn .9s ease-out both;
+  }
+  .tag-row{
+    list-style:none;
+    display:inline-flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:22px;
+    padding:0;
+  }
+  .tag-row li{
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--text-secondary);
+    border:1px solid rgba(255,255,255,.08);
+    padding:6px 12px;
+    border-radius:999px;
+    backdrop-filter: blur(6px);
+    background:rgba(255,255,255,.03);
+  }
+  h1{
+    font-family:Fraunces,Georgia,serif;
+    font-size:clamp(34px, 5.6vw, 80px);
+    line-height:.98;
+    letter-spacing:-.02em;
+    font-weight:600;
+  }
+  .line-2{
+    display:block;
+    background:linear-gradient(90deg, var(--purple-400), var(--amber-400));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .lede{
+    margin-top:18px;
+    font-size:clamp(16px, 1.6vw, 20px);
+    color:var(--text-secondary);
+    line-height:1.55;
+    max-width:760px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .form-card{
+    position:relative;
+    z-index:2;
+    max-width:560px;
+    margin:-70px auto 40px;
+    padding:28px 28px 24px;
+    border-radius:var(--radius);
+    background:rgba(20,20,30,.55);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(18px) saturate(1.2);
+    box-shadow: var(--shadow);
+  }
+  .form-card h2{
+    font-family:Fraunces,Georgia,serif;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .form-sub{
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:18px;
+  }
+  .field{
+    display:grid;
+    gap:6px;
+    margin-bottom:14px;
+  }
+  .field-label{
+    font-size:13px;
+    color:var(--text-secondary);
+  }
+  .field-input,
+  .field-select{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.03);
+    color:var(--text-primary);
+    font:inherit;
+    outline:none;
+    transition:border-color .2s, background .2s;
+  }
+  .field-input:focus,
+  .field-select:focus{
+    border-color:rgba(124,58,237,.6);
+    background:rgba(255,255,255,.05);
+  }
+  .field-select option{
+    background:#0f0f16;
+    color:#e5e7eb;
+  }
+  .required-star{color:#f87171}
+  .submit-btn{
+    width:100%;
+    padding:14px 16px;
+    border-radius:10px;
+    border:0;
+    background:linear-gradient(135deg, var(--purple-600), var(--purple-500));
+    color:#fff;
+    font-weight:700;
+    letter-spacing:.02em;
+    cursor:pointer;
+    transition: transform .15s, filter .2s;
+  }
+  .submit-btn:hover{filter:brightness(1.1)}
+  .submit-btn:active{transform:translateY(1px)}
+  .success-view{
+    display:none;
+    padding:12px 0;
+    text-align:center;
+  }
+  .success-view.active{
+    display:block;
+    animation: fadeIn .4s ease-out;
+  }
+  .success-next{
+    margin-top:10px;
+    text-align:left;
+    display:inline-block;
+    padding-left:18px;
+    color:var(--text-secondary);
+  }
+  .success-next li{margin-top:6px}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="bg-layer"></div>
+    <div class="bg-fade"></div>
+    <div class="bg-mark"></div>
+
+    <div class="hero-content">
+      <ul class="tag-row">
+        <li>Cadastro</li>
+        <li>Serviço</li>
+        <li>Produto & UX Design</li>
+      </ul>
+
+      <h1>
+        Decisões de produto com base em problema, não em opinião.
+        <span class="line-2">Do diagnóstico ao primeiro lançamento.</span>
+      </h1>
+
+      <p class="lede">Preencha o formulário abaixo para iniciar o contato sobre este serviço.</p>
+    </div>
+  </section>
+
+  <div class="form-card">
+    <h2>Quero conversar sobre meu projeto</h2>
+    <p class="form-sub">Um especialista retorna após avaliar seu caso.</p>
+
+    <form id="lp-form" novalidate data-lead-fields='{"nome":"nome","whatsapp":"whatsapp","email":"email","empresa":"empresa","area":"area"}'>
+      <div class="field">
+        <label class="field-label" for="nome">Nome completo <span class="required-star" aria-hidden="true">*</span></label>
+        <input class="field-input" type="text" id="nome" name="nome" autocomplete="name" placeholder="Nome completo" required>
+        <span class="field-error" id="err-nome"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="whatsapp">WhatsApp <span class="required-star" aria-hidden="true">*</span></label>
+        <input class="field-input" type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" placeholder="(21) 99999-9999" required>
+        <span class="field-error" id="err-whatsapp"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">E-mail <span class="required-star" aria-hidden="true">*</span></label>
+        <input class="field-input" type="email" id="email" name="email" autocomplete="email" placeholder="seu@email.com" required>
+        <span class="field-error" id="err-email"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="empresa">Empresa / Projeto</label>
+        <input class="field-input" type="text" id="empresa" name="empresa" autocomplete="organization" placeholder="Nome da empresa">
+        <span class="field-error" id="err-empresa"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="area">Área de interesse <span class="required-star" aria-hidden="true">*</span></label>
+        <select class="field-input field-select" id="area" name="area" required>
+          <option value="" disabled selected>Selecione…</option>
+          <option value="UX Research">UX Research</option>
+          <option value="UI Design">UI Design</option>
+          <option value="Design System">Design System</option>
+          <option value="MVP">MVP</option>
+          <option value="Consultoria">Consultoria</option>
+          <option value="Outro">Outro</option>
+        </select>
+        <span class="field-error" id="err-area"></span>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span class="btn-text">Quero conversar sobre meu projeto</span>
+      </button>
+
+      <div class="success-view" id="success-view">
+        <h2>Solicitação recebida!</h2>
+        <p>Recebemos seus dados. Um especialista vai avaliar seu caso e retornar em breve pelo WhatsApp ou e-mail informado.</p>
+        <ul class="success-next">
+          <li>Próximo passo: <strong>análise do seu caso</strong></li>
+          <li>Retorno por: <strong>WhatsApp ou e-mail</strong></li>
+        </ul>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer" style="text-align:center;padding:40px 24px;color:var(--text-muted);font-size:13px">
+  © 2026 · Todos os direitos reservados
+</footer>
+
+<script src="../lead-hub.js" data-origem="cadastro-produto-ux-design" data-projeto="portfolio"></script>
+</body>
+</html>

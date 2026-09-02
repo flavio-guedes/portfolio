@@ -1,0 +1,19 @@
+{
+  "testimonials": [
+    {
+      "quote": "Clareza de processo e métricas. Em semanas já tínhamos priorização visível e menos retrabalho.",
+      "author": "Cliente",
+      "role": "Produto & Operações"
+    },
+    {
+      "quote": "Entregue um plano executável, não um documento bonito.",
+      "author": "Cliente",
+      "role": "Growth"
+    },
+    {
+      "quote": "Experiência de agência, cabeça de negócio e olhar de diretor criativo.",
+      "author": "Cliente",
+      "role": "Direção Criativa"
+    }
+  ]
+}

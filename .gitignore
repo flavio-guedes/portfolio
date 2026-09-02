@@ -1,0 +1,6 @@
+.DS_Store
+.lead-hub/
+node_modules/
+.next/
+out/
+tsconfig.tsbuildinfo

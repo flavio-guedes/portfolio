@@ -1,0 +1,20 @@
+{
+  "faq": [
+    {
+      "question": "Como funciona o primeiro contato?",
+      "answer": "Você preenche o formulário ou chama no WhatsApp. Faço um diagnóstico rápido e apresento uma proposta enxuta."
+    },
+    {
+      "question": "Você trabalha com contratos pontuais?",
+      "answer": "Sim. Sessões avulsas, sprints ou acompanhamento mensal."
+    },
+    {
+      "question": "Como são medidos os resultados?",
+      "answer": "Cada projeto define métricas claras antes de começar: retrabalho, previsibilidade, engajamento, aprovação."
+    },
+    {
+      "question": "Você atua sozinho ou com time?",
+      "answer": "Dependendo do escopo, trabalho com parceiros especializados. Você sempre tem um dono do problema."
+    }
+  ]
+}

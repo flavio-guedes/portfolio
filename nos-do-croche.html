@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proposta Comercial — Nós do Crochê | Flávio Guedes</title>
+  <meta name="description" content="Proposta de marketing, crescimento e B2B para a Nós do Crochê: diagnóstico, estratégia de 90 dias e dois planos de trabalho com investimento e próximos passos." />
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #78716c;
+      --bg: #fff;
+      --panel: #fafaf9;
+      --rule: #e7e5e4;
+      --accent: #059669;
+      --accent-2: #b45309;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 28px 20px; }
+    header, footer, section { padding: 36px 0; border-bottom: 1px solid var(--rule); }
+    footer { border-bottom: none; }
+
+    h1 { font-size: clamp(26px, 3.2vw, 42px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 8px; }
+    h2 { font-size: clamp(20px, 2.2vw, 28px); letter-spacing: -0.01em; margin: 0 0 14px; }
+    h3 { font-size: 18px; margin: 0 0 10px; }
+    p { margin: 0 0 14px; }
+    ul, ol { margin: 0 0 14px; padding-left: 22px; }
+    li + li { margin-top: 6px; }
+    small { color: var(--muted); }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--rule);
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 12px;
+      margin: 0 4px 6px 0;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--rule);
+      background: var(--panel);
+      margin: 0 6px 10px 0;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%);
+      border: 1px solid #d1fae5;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .hero h1 { margin-bottom: 10px; }
+    .meta { color: var(--muted); }
+
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columnos: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 720px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .card h3 { margin-top: 0; }
+    .card .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; background: var(--panel); }
+    tr:last-child td { border-bottom: none; }
+
+    .plan {
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .plan h3 { margin: 0 0 6px; }
+    .plan .price { font-size: 22px; font-weight: 600; margin: 6px 0 10px; }
+    .plan .note { color: var(--muted); font-size: 13px; }
+
+    .cta {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-weight: 500;
+      margin-top: 6px;
+    }
+    .cta.secondary { background: #0f172a; }
+
+    .summary {
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 22px;
+    }
+    .summary h2 { color: #ffffff; }
+    .summary p { color: #e2e8f0; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .kpi {
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+    .kpi strong { display: block; font-size: 22px; color: var(--accent); }
+    .kpi small { color: var(--muted); }
+    @media (max-width: 720px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="hero">
+        <p class="meta">Proposta Comercial <span style="margin:0 8px">·</span> <span>Versão 1</span></p>
+        <h1>Proposta: Marketing, Crescimento e B2B para a <span style="color:#059669">Nós do Crochê</span></h1>
+        <p class="meta">Cliente: Nós do Crochê — Associação sem fins lucrativos · CNPJ 51.486.757/0001-78 · Site oficial: <a href="https://nosdocroche.com.br/" target="_blank" rel="noopener">nosdocroche.com.br</a></p>
+        <p>Responsável pela proposta: Flávio Guedes · Marketing, Comunicação, Growth e Performance · Contato: <a href="mailto:flavio@exemplo.com">flavio@exemplo.com</a></p>
+        <p class="meta">Data: 03/09/2026</p>
+      </div>
+    </header>
+
+    <section>
+      <h2>1. Sobre a Nós do Crochê</h2>
+      <p>A <strong>Nós do Crochê</strong> é um projeto social e marca de economia criativa com sede na Rocinha, RJ, que transforma capacitação artesanal em geração de renda para mulheres. Desde 2019, já capacitou mais de 400 mulheres, conta com 45 artesãs ativas por período, mais de 50 crocheteiras parceiras e 250 mulheres na lista de espera. O modelo une loja física, e-commerce e serviço social com atendimentos gratuitos de saúde e acolhimento.</p>
+      <ul>
+        <li>Missão: transformar vidas por meio do crochê, bordado, costura criativa e suporte integral.</li>
+        <li>Propósito comercial: cada peça vendida sustenta diretamente a operação do projeto.</li>
+        <li>Ativo estratégico: história real, marca emocional, propósito social e comunidade ativa.</li>
+        <li>Oportunidade: o negócio já tem produto e propósito; falta estrutura de crescimento, conversão e expansão B2B.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. O que identificamos</h2>
+      <p>O diagnóstico sugere que a Nós do Crochê tem uma base comercial sólida porém subdimensionada. O site funciona como catálogo básico de produtos, sem jornada de compra estruturada para conversão máxima. A presença social existe no contato, mas não há canal explícito de WhatsApp comercial, remarketing ou CRM público. Há também uma frente B2B quase invisível, apesar de a marca já listar “Brindes Corporativos” no menu.</p>
+      <ul>
+        <li><strong>Vantagem:</strong> propósito inequívoco, produto físico, identidade forte e estoque vivo.</li>
+        <li><strong>Risco:</strong> crescimento lento por ausência de aquisição sistemática e funil estruturado.</li>
+        <li><strong>Oportunidade:</strong> transformar a história do projeto em vantagem comercial mensurável.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Diagnóstico executivo</h2>
+      <div class="kpi-grid">
+        <div class="kpi"><strong>2019</strong><small>Início do projeto</small></div>
+        <div class="kpi"><strong>400+</strong><small>Mulheres capacitadas</small></div>
+        <div class="kpi"><strong>45</strong><small>Artesãs ativas por período</small></div>
+        <div class="kpi"><strong>250+</strong><small>Na lista de espera</small></div>
+      </div>
+      <p style="margin-top:14px"><strong>Posicionamento:</strong> marca social de luxo acessível, com produto artesanal e causa clara. O tom atual é emocional e institucional; falta traduzir isso em ofertas comerciais mais diretas.</p>
+      <p><strong>E-commerce:</strong> navegação segmentada, promoção explícita, formas de pagamento e frete já informados. Não há evidência de captura sistemática de leads, upsell/cross-sell ou automação pós-compra.</p>
+      <p><strong>Conteúdo e SEO:</strong> copy institucional bem construída, mas falta estrutura de conteúdo orientado por intenção de compra e busca local.</p>
+      <p><strong>B2B:</strong> categoria “Brindes Corporativos” já existe, mas sem página de conversão, proposta institucional ou fluxo de orçamento.</p>
+      <p><strong>Gargalos prováveis:</strong> baixa taxa de conversão por falta de provas sociais próximas ao CTA; baixa recorrência por ausência de CRM; baixa captação porque a oferta não aparece como solução para presente ou evento corporativo.</p>
+    </section>
+
+    <section>
+      <h2>4. Principais oportunidades</h2>
+      <p>Classificadas por impacto potencial, velocidade de resultado, investimento e prioridade.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Oportunidade</th>
+            <th>Impacto</th>
+            <th>Esforço</th>
+            <th>Velocidade</th>
+            <th>Investimento</th>
+            <th>Prioridade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Estruturar funil B2C com CRM e automações</td>
+            <td>Alto</td>
+            <td>Médio</td>
+            <td>30-60 dias</td>
+            <td>Médio</td>
+            <td>Alta</td>
+          </tr>
+          <tr>
+            <td>Lançar página de Brindes Corporativos</td>
+            <td>Alto</td>
+            <td>Baixo</td>
+            <td>15-30 dias</td>
+            <td>Baixo</td>
+            <td>Alta</td>
+          </tr>
+          <tr>
+            <td>Meta Ads com criativos baseados na história real</td>
+            <td>Alto</td>
+            <td>Médio</td>
+            <td>15-45 dias</td>
+            <td>Médio</td>
+            <td>Alta</td>
+          </tr>
+          <tr>
+            <td>Remarketing e recuperação de carrinho</td>
+            <td>Médio</td>
+            <td>Baixo</td>
+            <td>15 dias</td>
+            <td>Baixo</td>
+            <td>Alta</td>
+          </tr>
+          <tr>
+            <td>Kits e combos para aumento de ticket</td>
+            <td>Médio</td>
+            <td>Baixo</td>
+            <td>15 dias</td>
+            <td>Baixo</td>
+            <td>Média</td>
+          </tr>
+          <tr>
+            <td>SEO de conteúdo e busca local</td>
+            <td>Alto</td>
+            <td>Alto</td>
+            <td>60-120 dias</td>
+            <td>Médio</td>
+            <td>Média</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>5. Estratégia recomendada</h2>
+      <p>A proposta parte de uma premissa clara: a Nós do Crochê já tem produto e propósito; o que falta é sistema de crescimento. O foco não é “presença digital”, e sim <strong>conversão, recorrência e expansão B2B</strong>.</p>
+      <p>Para isso, a atuação integra quatro pilares:</p>
+      <ol>
+        <li><strong>Aquisição qualificada:</strong> tráfego pago, conteúdo, parcerias e busca.</li>
+        <li><strong>Conversão:</strong> funil de vendas, página B2B, kits e checkout otimizado.</li>
+        <li><strong>CRM e recorrência:</strong> captura, segmentação, automações e recompra.</li>
+        <li><strong>Expansão:</strong> B2B, influenciadores e novos canais alinhados ao propósito.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>6. Plano de 90 dias</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>0 a 30 dias — Diagnóstico, estrutura e quick wins</h3>
+          <ul>
+            <li>Mapear jornada atual, taxa de conversão estimada e gargalos.</li>
+            <li>Implementar rastreamento básico e estrutura de métricas.</li>
+            <li>Criar página de Brindes Corporativos e fluxo de orçamento.</li>
+            <li>Configurar CRM básico e recuperação de carrinho.</li>
+            <li>Gerar os primeiros criativos para tráfego pago.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>31 a 60 dias — Aquisição, conteúdo e otimização</h3>
+          <ul>
+            <li>Lançar campanhas de Meta Ads com foco em conversão.</li>
+            <li>Publicar calendário de conteúdo centrado em oferta e história.</li>
+            <li>Otimizar checkout, welcome e ofertas complementares.</li>
+            <li>Rodar primeiro teste de parceria ou colaboração alinhada.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>61 a 90 dias — Escala, CRM, recorrência e B2B</h3>
+          <ul>
+            <li>Escalar campanhas com base em ROI e ticket médio.</li>
+            <li>Expandir CRM e automações pós-venda.</li>
+            <li>Ampliar frente B2B com proposta recorrente e kits por volume.</li>
+            <li>Consolidar um ciclo de lançamentos e parcerias.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Indicadores por fase</h3>
+          <ul>
+            <li>Tráfego qualificado, CPC, CPA, ticket médio, recompra e MRR B2B.</li>
+            <li>Leads B2B, taxa de resposta, orçamentos enviados e receita nova.</li>
+            <li>Conversão do funil, recuperação de carrinho e LTV estimado.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. Escopo de trabalho</h2>
+      <p>Flávio atua como responsável por <strong>estratégia, crescimento e performance</strong>, com hands-on na execução das frentes que geram resultado mais rápido. O trabalho é orientado a negócio e dados, não a métricas de vaidade.</p>
+      <ul>
+        <li>Diagnóstico comercial e operacional do e-commerce.</li>
+        <li>Estruturação de funil, CRM e automações.</li>
+        <li>Conteúdo e campanhas com foco em receita.</li>
+        <li>Gestão de performance e otimização contínua.</li>
+        <li>Expansão B2B e parcerias comerciais.</li>
+        <li>Relatórios curtos e ação direta.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>8. Planos de proposta</h2>
+      <div class="grid grid-2">
+        <div class="plan">
+          <h3>Plano 1 — Estratégia + Performance</h3>
+          <p class="note">Entrada mais rápida e enxuta.</p>
+          <p>Objetivo: gerar resultado mensurável em até 60 dias com foco em e-commerce e B2B inicial.</p>
+          <p><strong>Escopo:</strong></p>
+          <ul>
+            <li>Diagnóstico e plano de crescimento.</li>
+            <li>Página de Brindes Corporativos.</li>
+            <li>CRM básico e recuperação de carrinho.</li>
+            <li>1 campanha de tráfego pago otimizada para conversão.</li>
+            <li>Relatório quinzenal de resultados.</li>
+          </ul>
+          <p class="price">Investimento: R$ 3.800/mês</p>
+          <p class="note">Prazo mínimo recomendado: 60 dias.</p>
+        </div>
+        <div class="plan">
+          <h3>Plano 2 — Growth</h3>
+          <p class="note">Modelo completo de crescimento contínuo.</p>
+          <p>Objetivo: escalar receita, estruturar recorrência e consolidar B2B como frente sistemática.</p>
+          <p><strong>Escopo:</strong></p>
+          <ul>
+            <li>Estratégia e planejamento contínuo.</li>
+            <li>Conteúdo, SEO e parcerias.</li>
+            <li>Performance, automações, CRM e remarketing.</li>
+            <li>Operação B2B com proposta recorrente.</li>
+            <li>Relatório semanal de métricas e ações.</li>
+          </ul>
+          <p class="price">Investimento: R$ 6.200/mês</p>
+          <p class="note">Prazo mínimo recomendado: 90 dias.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>9. Investimento</h2>
+      <p>Os valores abaixo referem-se a <strong>honorários de gestão</strong>. Verba de mídia, produção extraordinária, ferramentas ou custos de terceiros são separados e aprovados previamente.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Detalhe</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Plano 1</td>
+            <td>R$ 3.800/mês</td>
+            <td>Estratégia, página B2B, CRM inicial, 1 campanha otimizada, relatório quinzenal.</td>
+          </tr>
+          <tr>
+            <td>Plano 2</td>
+            <td>R$ 6.200/mês</td>
+            <td>Growth completo: conteúdo, SEO, parcerias, performance, CRM, remarketing e B2B recorrente.</td>
+          </tr>
+          <tr>
+            <td>Verba de mídia</td>
+            <td>A parte</td>
+            <td>Meta Ads, Google ou outras plataformas conforme decisão conjunta.</td>
+          </tr>
+          <tr>
+            <td>Produção extraordinária</td>
+            <td>A parte</td>
+            <td>Vídeos, ensaios ou peças além do pacote regular.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>10. Próximos passos</h2>
+      <ol>
+        <li>Avaliar esta proposta e escolher o plano.</li>
+        <li>Agendar reunião de alinhamento de metas e métricas.</li>
+        <li>Iniciar o diagnóstico operacional e configurar bases de medição.</li>
+        <li>Entregar o primeiro quick win em até 30 dias.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>11. Sobre Flávio Guedes</h2>
+      <p>Profissional de marketing, comunicação e growth com experiência em estratégia de marca, performance, conteúdo, estruturação de funis e análise de dados. Atua com foco em resultado comercial, integrando criatividade, mídia paga, CRM e expansão de canais. A proposta foi construída para o negócio da Nós do Crochê, sem pacotes genéricos.</p>
+    </section>
+
+    <section>
+      <div class="summary">
+        <h2>Resumo executivo</h2>
+        <p>A Nós do Crochê tem um ativo raro: propósito verdadeiro, produto físico e marca emocional. O crescimento atual é limitado por ausência de funil, CRM e frente B2B estruturada. A proposta cria um plano de 90 dias com dois níveis de investimento, quick wins em até 30 dias e crescimento mensurável a partir de conversão e recorrência.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Flávio Guedes · Marketing, Comunicação, Growth e Performance</p>
+      <p>Site: <a href="https://flavio-guedes.github.io/portfolio/" target="_blank" rel="noopener">flavio-guedes.github.io/portfolio</a> · E-mail: <a href="mailto:flavio@exemplo.com">flavio@exemplo.com</a></p>
+    </footer>
+  </div>
+</body>
+</html>

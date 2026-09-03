@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Analítico — Flávio Guedes</title>
+<style>
+  :root{
+    --bg:#060c1a;--surface:#080e1f;--card:#0b1228;--card2:#0d1530;
+    --g-light:#4293cb;--g-mid:#1570b6;--g-deep:#0d4f8a;--g-navy:#000f2a;
+    --grad:linear-gradient(135deg,var(--g-light) 0%,var(--g-mid) 50%,var(--g-navy) 100%);
+    --grad-text:linear-gradient(120deg,var(--g-light) 0%,var(--g-mid) 60%,#3ab0ff 100%);
+    --gold:#f5c842;--orange:#f97316;--orange-d:#ea580c;--orange-l:#fb923c;
+    --white:#ffffff;--text:#ccd6f0;--muted:#6a7a9a;
+    --border:rgba(66,147,203,.12);--border2:rgba(66,147,203,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.75;overflow-x:hidden}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;background:rgba(6,12,26,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'Syge',system-ui;font-weight:800;font-size:18px;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .nav-pill{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--g-light);border:1px solid rgba(66,147,203,.3);padding:6px 14px;border-radius:999px}
+  header.hero{padding:120px 0 64px;position:relative;overflow:hidden}
+  header.hero::before{content:'';position:absolute;top:-200px;right:-120px;width:700px;height:700px;background:radial-gradient(ellipse at center,rgba(66,147,203,.14) 0%,rgba(21,112,182,.06) 40%,transparent 70%);pointer-events:none}
+  .eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--g-light);font-weight:600;margin-bottom:24px}
+  .eyebrow::before{content:'';display:block;width:36px;height:2px;background:linear-gradient(90deg,var(--g-light),var(--g-mid));border-radius:2px}
+  h1{font-family:'Syne',system-ui;font-size:clamp(38px,5vw,64px);color:var(--white);line-height:1.05;letter-spacing:.01em;margin-bottom:20px;font-weight:800}
+  .sub{font-size:17px;color:var(--text);max-width:720px;line-height:1.85;margin-bottom:28px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:8px 16px;border-radius:4px;border:1px solid var(--border);color:var(--muted);background:rgba(66,147,203,.04)}
+  .grid-2{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;margin:28px 0}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:28px 0}
+  @media(max-width:960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:28px 28px 24px;position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
+  .card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g-deep),var(--g-light));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  .card:hover{border-color:var(--border2);transform:translateY(-3px)} .card:hover::after{transform:scaleX(1)}
+  .card h3{font-family:'Syne',system-ui;font-weight:700;font-size:18px;color:var(--white);margin-bottom:10px;line-height:1.25}
+  .card p{font-size:14px;color:var(--text);line-height:1.8}
+  .card .meta{font-size:12px;color:var(--muted);margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(66,147,203,.08);border:1px solid rgba(66,147,203,.25);color:var(--g-light);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .badge-orange{background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.25);color:var(--orange-l)}
+  .badge-gold{background:rgba(245,200,66,.08);border-color:rgba(245,200,66,.25);color:#f5c842}
+  .section{padding:56px 0;opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease}
+  .section.in{opacity:1;transform:translateY(0)}
+  .sec-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--g-light);font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .sec-label::before{content:'';display:block;width:28px;height:2px;background:linear-gradient(90deg,var(--g-light),var(--g-mid));border-radius:2px}
+  .sec-title{font-family:'Syne',system-ui;font-weight:800;font-size:clamp(30px,3.8vw,46px);color:var(--white);margin-bottom:36px;line-height:1.1}
+  .sec-title em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .num{font-family:'Syne',system-ui;font-weight:800;font-size:40px;line-height:1;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:18px 0}
+  .progress{height:8px;background:rgba(66,147,203,.1);border-radius:999px;overflow:hidden;margin-top:10px}
+  .progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--g-light),var(--orange));border-radius:999px}
+  footer{padding:40px 0;border-top:1px solid var(--border);background:var(--bg);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .footer-link{font-size:12px;color:var(--g-light);text-decoration:none;border-bottom:1px solid rgba(66,147,203,.4);padding-bottom:2px;letter-spacing:.08em}
+  .footer-link:hover{color:var(--white);border-color:rgba(255,255,255,.5)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Flávio Guedes</div>
+  <a class="nav-pill" href="https://flavio-guedes.github.io/portfolio/" target="_blank">Portfolio</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Painel Analítico · 2026</div>
+    <h1>Onde posso gerar <em style="font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">mais valor agora</em></h1>
+    <p class="sub">Mapeamento de propostas, caminhos de atuação e próximos movimentos a partir dos cases em educação, marketing, conteúdo e growth.</p>
+    <div class="chips">
+      <span class="chip">Content Strategy</span>
+      <span class="chip">Social Media</span>
+      <span class="chip">Event Marketing</span>
+      <span class="chip">Growth</span>
+      <span class="chip">EdTech</span>
+      <span class="chip">Partnerships</span>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="caminhos">
+  <div class="wrap">
+    <div class="sec-label">01 · Caminhos</div>
+    <h2 class="sec-title">Faixas de atuação com <em>prova</em></h2>
+    <div class="grid-3">
+      <div class="card">
+        <div class="meta"><span class="badge">EdTech / Jurídico</span></div>
+        <h3>Conteúdo & Lançamentos para educação</h3>
+        <p>Case IEJUR como referência: editorial, copy técnica, lançamento de eventos e estrutura de captação. Caminho natural para cursinhos, pós, EAD e editoras.</p>
+        <div class="progress"><span style="width:88%"></span></div>
+        <div class="meta">Preparação: alta</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge badge-orange">Marketing & Vendas</span></div>
+        <h3>Growth & conversão para alta ticket</h3>
+        <p>Funis de captação, campanhas orgânicas e patrocínios para serviços de R$ 2k–15k. Ideal para educação, saúde e serviços B2B.</p>
+        <div class="progress"><span style="width:78%"></span></div>
+        <div class="meta">Preparação: alta</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge badge-gold">Marca & Posicionamento</span></div>
+        <h3>Branding e tom de voz para negócios locais</h3>
+        <p>Cases de consultoria e posicionamento. Abre porta para retainer mensal com clínicas, imobiliárias e prestadores de serviço.</p>
+        <div class="progress"><span style="width:72%"></span></div>
+        <div class="meta">Preparação: média-alta</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge">Produto & Conteúdo</span></div>
+        <h3>Produto digital para conteúdo educativo</h3>
+        <p>Estrutura de cronogramas, playbooks, painéis e automações de conteúdo. Alinha marketing com produto.</p>
+        <div class="progress"><span style="width:70%"></span></div>
+        <div class="meta">Preparação: média</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge badge-orange">Parcerias</span></div>
+        <h3>Braço de conteúdo para agências e estúdios</h3>
+        <p>Posicionamento como parceiro de briefing, copy e demanda qualificada para animação, motion e VFX — sem concorrer com a produção.</p>
+        <div class="progress"><span style="width:65%"></span></div>
+        <div class="meta">Preparação: média</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge badge-gold">Operações & CRM</span></div>
+        <h3>Automação de atendimento e CRM comercial</h3>
+        <p>Sequências de follow-up, triagem e nurturing. Usa a base de experiência com CRM e automações.</p>
+        <div class="progress"><span style="width:68%"></span></div>
+        <div class="meta">Preparação: média</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="propostas" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="sec-label">02 · Propostas</div>
+    <h2 class="sec-title">Ofertas prontas para <em>negociar</em></h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="meta"><span class="badge">Assinatura</span><span class="badge badge-orange">EdTech</span></div>
+        <h3>Editorial & Social para instituições de ensino</h3>
+        <p>Planejamento mensal + copy + calendário de eventos. Para pós-graduações, EAD e cursos técnicos que precisam de presença consistente.</p>
+        <div class="meta">Ticket estimado: R$ 2.500–5.000/mês</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge">Projeto</span><span class="badge badge-gold">Evento</span></div>
+        <h3>Lançamento de seminários e imersões</h3>
+        <p>Sequência de teasers, apresentação de speakers, CTA de inscrição e pós-evento. Replicável para eventos jurídicos, empresariais ou de saúde.</p>
+        <div class="meta">Ticket estimado: R$ 3.000–8.000/evento</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge">Assinatura</span><span class="badge">Growth</span></div>
+        <h3>Conteúdo + Funil de alta ticket</h3>
+        <p>Estratégia de conteúdo para serviços de R$ 2k–15k: copy, nurturing, fluxo comercial e material de apoio para fechamento.</p>
+        <div class="meta">Ticket estimado: R$ 3.000–6.000/mês</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge">Projeto</span><span class="badge badge-orange">Brand</span></div>
+        <h3>Posicionamento e tom de voz</h3>
+        <p>Diagnóstico, PUV, avatar e manual de comunicação para negócios locais ou profissionais liberais que querem sair do genérico.</p>
+        <div class="meta">Ticket estimado: R$ 1.500–4.000/projeto</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge">Parceria</span><span class="badge badge-gold">B2B</span></div>
+        <h3>Parceiro de conteúdo para estúdios de pós</h3>
+        <p>Geração de briefing, copy e demanda qualificada para pós-produção, animação e motion em instituições de ensino e editoras.</p>
+        <div class="meta">Modelo: retainer ou revenue share</div>
+      </div>
+      <div class="card">
+        <div class="meta"><span class="badge">Assinatura</span><span class="badge">CRM</span></div>
+        <h3>CRM & automação de atendimento</h3>
+        <p>Estrutura de follow-up, Kanban, templates e automações para times comerciais pequenos sem estrutura de marketing.</p>
+        <div class="meta">Ticket estimado: R$ 1.800–3.500/mês</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prioridade">
+  <div class="wrap">
+    <div class="sec-label">03 · Prioridade</div>
+    <h2 class="sec-title">Próximos <em>movimentos</em></h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Curto prazo</h3>
+        <p>Fechar 1 assinatura de editorial/social para EdTech usando o case IEJUR como peça de entrada. O argumento é direto: “construí do zero e repliquei para 3 eventos”.</p>
+        <div class="meta"><span class="badge badge-orange">Imediato</span></div>
+      </div>
+      <div class="card">
+        <h3>Médio prazo</h3>
+        <p>Oferecer o modelo de parceiro de conteúdo para 2 estúdios de pós-produção ou agências de motion. Posiciona sem concorrer e amplia briefing do cliente.</p>
+        <div class="meta"><span class="badge">30–60 dias</span></div>
+      </div>
+      <div class="card">
+        <h3>Estruturação</h3>
+        <p>Padronizar 2 packages prontos: “Editorial 30 dias” e “Lançamento de evento”. Diminui ciclo de venda e facilita proposta.</p>
+        <div class="meta"><span class="badge badge-gold">Essencial</span></div>
+      </div>
+      <div class="card">
+        <h3>Expansão</h3>
+        <p>Levar o modelo de conteúdo + CRM para clínicas, imobiliárias e profissionais liberais de alto ticket. O gap é grande: poucos fazem conteúdo com intenção comercial.</p>
+        <div class="meta"><span class="badge">60–90 dias</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div style="font-family:'Syne',system-ui;font-weight:800;font-size:20px;color:var(--white)">Flávio Guedes</div>
+    <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Content Manager · Social Media Strategist · Rio de Janeiro</div>
+  </div>
+  <a class="footer-link" href="https://flavio-guedes.github.io/portfolio/" target="_blank">flavio-guedes.github.io/portfolio</a>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08});
+  document.querySelectorAll('.section').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

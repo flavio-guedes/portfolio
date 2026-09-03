@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brazil FoodHub — Auditoria de Marketing & Crescimento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a6b35;
+    --green-light: #2d8a47;
+    --green-pale: #e8f5ec;
+    --gold: #c8920a;
+    --gold-light: #e8a812;
+    --gold-pale: #fef8e6;
+    --cream: #faf8f3;
+    --offwhite: #f5f3ee;
+    --ink: #1a1a18;
+    --ink-70: #4a4a46;
+    --ink-40: #9a9a94;
+    --rule: #ddd9d0;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── SLIDE STRUCTURE ── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 72px 48px;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .slide-inner { padding: 48px 24px; }
+  }
+
+  /* ── SLIDE 1: COVER ── */
+  .slide-cover {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  .slide-cover::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 45%;
+    height: 100%;
+    background: var(--green-light);
+    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+    opacity: 0.4;
+  }
+
+  .slide-cover::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--gold-light);
+  }
+
+  .cover-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-title span {
+    color: var(--gold-light);
+  }
+
+  .cover-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    max-width: 540px;
+    margin-bottom: 56px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 28px;
+  }
+
+  .cover-meta-item {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .cover-meta-item strong {
+    display: block;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* ── SLIDE HEADER ── */
+  .slide-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .slide-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--green);
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--gold-light);
+  }
+
+  /* ── COLORS PER SECTION ── */
+  .slide-light { background: var(--white); }
+  .slide-cream { background: var(--cream); }
+  .slide-offwhite { background: var(--offwhite); }
+  .slide-green-pale { background: var(--green-pale); }
+  .slide-gold-pale { background: var(--gold-pale); }
+
+  /* ── TEXT ── */
+  p { color: var(--ink-70); margin-bottom: 16px; font-size: 16px; line-height: 1.65; max-width: 66ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+
+  /* ── CALLOUT BOX ── */
+  .callout {
+    background: var(--green);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+
+  .callout-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    color: rgba(255,255,255,0.88);
+    font-size: 17px;
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── GRID CARDS ── */
+  .grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(2, 1fr); }
+
+  @media (max-width: 700px) {
+    .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+
+  .slide-offwhite .card,
+  .slide-green-pale .card { background: var(--white); }
+  .slide-light .card { background: var(--offwhite); border-color: var(--rule); }
+
+  .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .card h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-70);
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── METRIC HIGHLIGHT ── */
+  .metric-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin: 28px 0;
+  }
+
+  .metric {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .metric-val {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .metric-val.gold { color: var(--gold); }
+
+  .metric-label {
+    font-size: 13px;
+    color: var(--ink-40);
+    font-weight: 500;
+    line-height: 1.3;
+    max-width: 120px;
+  }
+
+  /* ── TABLE ── */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+
+  .score-table th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--ink-40);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 12px;
+  }
+
+  .score-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-70);
+    vertical-align: middle;
+  }
+
+  .score-table tr:last-child td { border-bottom: none; }
+
+  .bar-wrap { width: 120px; background: var(--rule); border-radius: 4px; height: 7px; }
+  .bar { height: 7px; border-radius: 4px; background: var(--green); }
+  .bar.warn { background: var(--gold); }
+  .bar.crit { background: #d95b5b; }
+
+  /* ── LIST ── */
+  .check-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--ink-70);
+    line-height: 1.45;
+  }
+
+  .check-list li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-top: 2px;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--rule);
+  }
+
+  .timeline-item {
+    flex: 1;
+    padding-top: 52px;
+    padding-right: 20px;
+    position: relative;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 3px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--green);
+  }
+
+  .timeline-period {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .timeline-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .timeline-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .timeline-list li {
+    font-size: 13px;
+    color: var(--ink-70);
+    line-height: 1.4;
+    padding-left: 10px;
+    border-left: 2px solid var(--green-pale);
+  }
+
+  @media (max-width: 700px) {
+    .timeline { flex-direction: column; }
+    .timeline::before { display: none; }
+    .timeline-item { padding-top: 0; padding-left: 32px; border-left: 2px solid var(--rule); margin-left: 8px; }
+    .timeline-dot { top: 0; left: -10px; }
+  }
+
+  /* ── PRIORITY TABLE ── */
+  .pill {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .pill-p0 { background: rgba(217,91,91,0.12); color: #c0392b; border: 1px solid rgba(217,91,91,0.3); }
+  .pill-p1 { background: rgba(200,146,10,0.12); color: var(--gold); border: 1px solid rgba(200,146,10,0.3); }
+  .pill-p2 { background: rgba(26,107,53,0.1); color: var(--green); border: 1px solid rgba(26,107,53,0.25); }
+
+  /* ── RISK CARDS ── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 700px) { .risk-grid { grid-template-columns: 1fr; } }
+
+  .risk-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: var(--white);
+  }
+
+  .risk-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .risk-card p {
+    font-size: 12.5px;
+    color: var(--ink-40);
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── CONTACT SLIDE ── */
+  .slide-contact {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  .slide-contact::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 40%;
+    height: 100%;
+    background: var(--gold-light);
+    opacity: 0.08;
+    clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+
+  .slide-contact .slide-title {
+    color: var(--white);
+    border-bottom-color: rgba(255,255,255,0.2);
+  }
+
+  .contact-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .contact-role {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gold-light);
+    margin-bottom: 40px;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 560px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+
+  .contact-item-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+
+  .contact-item a,
+  .contact-item span {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 500;
+    text-decoration: none;
+    word-break: break-all;
+  }
+
+  .contact-item a:hover { color: var(--gold-light); }
+
+  /* ── DIVIDER BANNER ── */
+  .section-banner {
+    background: var(--green);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-banner span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .section-banner hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* ── PRINT NAV ── */
+  .top-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(26, 107, 53, 0.97);
+    backdrop-filter: blur(8px);
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-right: 16px;
+    flex-shrink: 0;
+  }
+
+  .nav-brand span { color: var(--gold-light); }
+
+  .top-nav a {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .top-nav a:hover {
+    background: rgba(255,255,255,0.12);
+    color: var(--white);
+  }
+
+  body { padding-top: 52px; }
+
+  @media print {
+    .top-nav { display: none; }
+    body { padding-top: 0; }
+    .slide { page-break-after: always; min-height: auto; }
+  }
+
+  /* ── FOOTER LINE ── */
+  .footer-bar {
+    background: var(--ink);
+    padding: 16px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-bar a { color: var(--gold-light); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span class="nav-brand">Brazil <span>FoodHub</span></span>
+  <a href="#cover">Capa</a>
+  <a href="#problema">Problema</a>
+  <a href="#modelo">Modelo</a>
+  <a href="#publicos">Públicos</a>
+  <a href="#posicionamento">Posicionamento</a>
+  <a href="#site">Site</a>
+  <a href="#canais">Canais</a>
+  <a href="#funil">Funil</a>
+  <a href="#radar">FoodHub Radar</a>
+  <a href="#abm">ABM</a>
+  <a href="#plano">Plano</a>
+  <a href="#prioridades">Prioridades</a>
+  <a href="#riscos">Riscos</a>
+  <a href="#contato">Contato</a>
+</nav>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 1 · COVER
+────────────────────────────────────────────── -->
+<section class="slide slide-cover" id="cover">
+  <div class="slide-inner">
+    <div class="cover-eyebrow">Auditoria · Marketing & Growth · Set/2026 · Confidencial</div>
+    <h1 class="cover-title">Onde está o<br>crescimento do<br><span>FoodHub?</span></h1>
+    <p class="cover-sub">Raio-x completo: modelo de negócio, canais, posicionamento, SEO, ABM, outbound, parcerias e plano de 90 dias.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <strong>Brazil FoodHub</strong>
+        Maior mesa nacional de oportunidades em alimentos
+      </div>
+      <div class="cover-meta-item">
+        <strong>Elaborado por</strong>
+        Flávio Guedes · Estratégia & Growth
+      </div>
+      <div class="cover-meta-item">
+        <strong>Data</strong>
+        Setembro de 2026
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 2 · O PROBLEMA CENTRAL
+────────────────────────────────────────────── -->
+<section class="slide slide-cream" id="problema">
+  <div class="slide-inner">
+    <div class="slide-num">01 · Diagnóstico</div>
+    <h2 class="slide-title">O problema não é<br>falta de demanda.</h2>
+
+    <p>O mercado de alimentos brasileiro movimenta centenas de bilhões por ano. A demanda por sourcing qualificado, previsibilidade e parceiros confiáveis é real e crescente.</p>
+    <p>O problema estratégico central do FoodHub é <strong>comunicação e conversão</strong>: o site gera atmosfera premium, mas não entrega prova de operação, prova social, next step comercial claro nem conteúdo proprietário. Isso freia inbound, autoridade e vendas.</p>
+
+    <div class="callout">
+      <div class="callout-label">Diagnóstico central</div>
+      <p>Uma marca invisível no digital perde negócios para concorrentes com posicionamento mais claro — mesmo que o produto seja inferior. O FoodHub tem proposta forte; o que falta é torná-la visível e convertível.</p>
+    </div>
+
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">4×</div>
+        <div class="metric-label">elos da cadeia sem integração eficiente</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val gold">2/10</div>
+        <div class="metric-label">nota de conversão atual do site</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">0</div>
+        <div class="metric-label">conteúdo proprietário publicado hoje</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 3 · MODELO DE NEGÓCIO
+────────────────────────────────────────────── -->
+<section class="slide slide-light" id="modelo">
+  <div class="slide-inner">
+    <div class="slide-num">02 · Modelo</div>
+    <h2 class="slide-title">Como o FoodHub gera valor</h2>
+
+    <div class="grid g3">
+      <div class="card">
+        <div class="card-label">Fluxo operacional</div>
+        <h3>Da oferta ao resultado</h3>
+        <p>Oferta → Curadoria → Match → Negociação → Operação → Resultado. Um ciclo fechado com governança em cada etapa.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Fontes de receita prováveis</div>
+        <h3>Modelo misto</h3>
+        <p>Matching fee / success fee · Assinatura de acesso · Inteligência e relatórios · Serviços operacionais · Parcerias institucionais</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Vantagem competitiva</div>
+        <h3>Diferenciação clara</h3>
+        <p>Não é marketplace, não é trader, não é broker. É curadoria com governança — barreira real quando executada com densidade.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 28px; background: var(--green-pale); border-radius: 10px; padding: 20px 24px; display: flex; gap: 32px; flex-wrap: wrap;">
+      <div><strong style="color: var(--green);">Ticket</strong><br><span style="color: var(--ink-70); font-size: 14px;">Médio / Alto</span></div>
+      <div><strong style="color: var(--green);">Ciclo de vendas</strong><br><span style="color: var(--ink-70); font-size: 14px;">Médio</span></div>
+      <div><strong style="color: var(--green);">Efeito de rede</strong><br><span style="color: var(--ink-70); font-size: 14px;">Sim — escala com densidade</span></div>
+      <div><strong style="color: var(--green);">Barreira</strong><br><span style="color: var(--ink-70); font-size: 14px;">Confiança e curadoria</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 4 · PÚBLICOS
+────────────────────────────────────────────── -->
+<section class="slide slide-offwhite" id="publicos">
+  <div class="slide-inner">
+    <div class="slide-num">03 · Públicos</div>
+    <h2 class="slide-title">Quatro elos. Quatro dores distintas.</h2>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-label">Produtores & Cooperativas</div>
+        <h3>Escoamento imprevisível</h3>
+        <p><strong>Dor:</strong> preços dispersos e canais irregulares.<br><strong>CTA:</strong> "Quero participar da mesa"<br><strong>Canais:</strong> referência, associações, WhatsApp, LinkedIn</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Indústria</div>
+        <h3>CAC alto, canais fragmentados</h3>
+        <p><strong>Dor:</strong> dificuldade de ampliar distribuição qualificada.<br><strong>CTA:</strong> "Quero ampliar canais qualificados"<br><strong>Canais:</strong> LinkedIn, ABM, eventos, PR</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Distribuição</div>
+        <h3>Sourcing sem previsibilidade</h3>
+        <p><strong>Dor:</strong> dificuldade em garantir mix confiável.<br><strong>CTA:</strong> "Quero acessar oferta curada"<br><strong>Canais:</strong> outbound, parcerias, associações</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Varejo & Food Service</div>
+        <h3>Confiança e regularidade</h3>
+        <p><strong>Dor:</strong> fornecedores inconsistentes, ruptura.<br><strong>CTA:</strong> "Quero comprar com mais previsibilidade"<br><strong>Canais:</strong> vendas diretas, indicação, conteúdo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 5 · POSICIONAMENTO
+────────────────────────────────────────────── -->
+<section class="slide slide-light" id="posicionamento">
+  <div class="slide-inner">
+    <div class="slide-num">04 · Posicionamento</div>
+    <h2 class="slide-title">Do conceitual ao comercial</h2>
+
+    <div class="grid g3" style="margin-bottom: 24px;">
+      <div class="card" style="opacity: 0.55;">
+        <div class="card-label">Atual (conservador)</div>
+        <h3>"Mesa Nacional de Oportunidades"</h3>
+        <p>Evocativo mas pouco tangível. Não responde "o que eu ganho como cliente?"</p>
+      </div>
+      <div class="card" style="border-color: var(--green); border-width: 2px;">
+        <div class="card-label" style="color: var(--gold);">✓ Recomendado (comercial)</div>
+        <h3>"Menos ruído. Mais deals qualificados."</h3>
+        <p>FoodHub é a mesa curada de sourcing e oportunidades — do produtor ao varejo. Com curadoria e governança.</p>
+      </div>
+      <div class="card" style="opacity: 0.55;">
+        <div class="card-label">Aspiracional (longo prazo)</div>
+        <h3>"A infraestrutura comercial do mercado de alimentos"</h3>
+        <p>Forte, mas requer prova social e escala para ser crível.</p>
+      </div>
+    </div>
+
+    <p style="font-size: 14px; color: var(--ink-40);">A versão comercial é a escolha certa agora: foco em benefício tangível (sourcing qualificado e previsibilidade), sem abrir mão do posicionamento premium.</p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 6 · AUDITORIA DO SITE
+────────────────────────────────────────────── -->
+<section class="slide slide-cream" id="site">
+  <div class="slide-inner">
+    <div class="slide-num">05 · Website</div>
+    <h2 class="slide-title">Site premium. Conversão crítica.</h2>
+
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Dimensão</th>
+          <th>Nota</th>
+          <th>Avaliação</th>
+          <th style="width:130px">Barra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>UX / UI</td><td><strong>8/10</strong></td><td style="color: var(--green);">Limpo e premium</td><td><div class="bar-wrap"><div class="bar" style="width:80%"></div></div></td></tr>
+        <tr><td>Clareza da proposta</td><td><strong>6/10</strong></td><td style="color: var(--gold);">Conceitual demais</td><td><div class="bar-wrap"><div class="bar warn" style="width:60%"></div></div></td></tr>
+        <tr><td>Posicionamento</td><td><strong>5/10</strong></td><td style="color: var(--gold);">Sem benefício tangível</td><td><div class="bar-wrap"><div class="bar warn" style="width:50%"></div></div></td></tr>
+        <tr><td>Confiança / Social Proof</td><td><strong>3/10</strong></td><td style="color: #c0392b;">Sem logos, cases ou números</td><td><div class="bar-wrap"><div class="bar crit" style="width:30%"></div></div></td></tr>
+        <tr><td>Conversão / CTA</td><td><strong>2/10</strong></td><td style="color: #c0392b;">1 CTA genérico para todos os perfis</td><td><div class="bar-wrap"><div class="bar crit" style="width:20%"></div></div></td></tr>
+        <tr><td>Geração de leads</td><td><strong>2/10</strong></td><td style="color: #c0392b;">Sem lead magnet, sem formulário</td><td><div class="bar-wrap"><div class="bar crit" style="width:20%"></div></div></td></tr>
+        <tr><td>SEO</td><td><strong>2/10</strong></td><td style="color: #c0392b;">Sem blog, sem páginas temáticas</td><td><div class="bar-wrap"><div class="bar crit" style="width:20%"></div></div></td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 24px; padding: 16px 20px; border-left: 3px solid var(--gold); background: var(--gold-pale); border-radius: 0 8px 8px 0;">
+      <strong>Prioridades imediatas:</strong> headline comercial com benefício tangível · prova social (cases, logos, números) · CTAs por segmento · conteúdo proprietário (radar + newsletter) · SEO estrutural
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 7 · CANAIS DE AQUISIÇÃO
+────────────────────────────────────────────── -->
+<section class="slide slide-light" id="canais">
+  <div class="slide-inner">
+    <div class="slide-num">06 · Aquisição</div>
+    <h2 class="slide-title">Top 5 canais por impacto</h2>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-label" style="color: var(--gold);">01 · Alta prioridade</div>
+        <h3>LinkedIn + CEO Marketing</h3>
+        <p>Posicionar executivos como referência em inteligência de sourcing B2B. Pilares: dados, governança, cases, cadeia, internacionalização. Frequência: 3–5 posts/semana + artigo semanal.</p>
+      </div>
+      <div class="card">
+        <div class="card-label" style="color: var(--gold);">02 · Alta prioridade</div>
+        <h3>Outbound + ABM</h3>
+        <p>ICP → Lista → Enriquecimento → Priorização → Abordagem → Follow-up → Reunião. Mensagem personalizada por perfil: produtor, indústria, distribuição, varejo/FS.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">03 · Médio prazo</div>
+        <h3>SEO + Conteúdo Proprietário</h3>
+        <p>Páginas por segmento (fornecedores, indústria, distribuição, food service) + blog temático + palavras-chave comerciais como "sourcing de alimentos B2B".</p>
+      </div>
+      <div class="card">
+        <div class="card-label">04 · Rápida ativação</div>
+        <h3>E-mail + Newsletter</h3>
+        <p>FoodHub Radar como âncora semanal. Nutre relacionamento, gera recorrência e alimenta pipeline de reuniões qualificadas.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px; border-color: var(--green); display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 220px;">
+        <div class="card-label">05 · Alavanca estratégica</div>
+        <h3>Parcerias Associativas</h3>
+        <p style="font-size: 14px;">ABIA · ABAD · ABRAS · APAS · ABPA · ABIEC · ABRASEL. Canal de credibilidade e acesso imediato a decisores qualificados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 8 · FUNIL
+────────────────────────────────────────────── -->
+<section class="slide slide-green-pale" id="funil">
+  <div class="slide-inner">
+    <div class="slide-num">07 · Funil</div>
+    <h2 class="slide-title">Da atenção ao negócio</h2>
+
+    <div class="grid g3">
+      <div class="card">
+        <div class="card-label">Topo · Atenção</div>
+        <h3>Inteligência de mercado</h3>
+        <ul class="check-list">
+          <li>Dados de commodities e tendências</li>
+          <li>Mapa de oportunidades por categoria</li>
+          <li>Supply chain e exportação</li>
+          <li>Conteúdo no LinkedIn e blog</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-label">Meio · Relacionamento</div>
+        <h3>FoodHub Radar</h3>
+        <ul class="check-list">
+          <li>Newsletter semanal curada</li>
+          <li>Relatórios por setor</li>
+          <li>Webinars e eventos</li>
+          <li>WhatsApp e LinkedIn direto</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-label">Fundo · Negócio</div>
+        <h3>Match qualificado</h3>
+        <ul class="check-list">
+          <li>Formulário por segmento</li>
+          <li>Diagnóstico comercial</li>
+          <li>Reunião com governança</li>
+          <li>Operação e resultado</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 9 · FOODHUB RADAR
+────────────────────────────────────────────── -->
+<section class="slide slide-cream" id="radar">
+  <div class="slide-inner">
+    <div class="slide-num">08 · Produto âncora</div>
+    <h2 class="slide-title">FoodHub Radar:<br>a alavanca principal</h2>
+
+    <p>Um produto de inteligência semanal que transforma a marca abstrata em valor tangível — e gera leads qualificados com custo quase zero.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-label">O que é</div>
+        <h3>Relatório semanal de oportunidades</h3>
+        <p>Curadoria de deals, tendências de preço, oportunidades por categoria e sinais de mercado. Entregue via newsletter e LinkedIn.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Por que é prioridade máxima</div>
+        <h3>5 funções em 1 produto</h3>
+        <ul class="check-list" style="margin-top: 4px;">
+          <li>Gera leads qualificados (inbound)</li>
+          <li>Alimenta SEO com conteúdo proprietário</li>
+          <li>Cria recorrência de relacionamento</li>
+          <li>Permite ABM e PR com material próprio</li>
+          <li>Prova social de inteligência e autoridade</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <div class="callout-label">Ação #1 recomendada</div>
+      <p>Criar e lançar o FoodHub Radar nos primeiros 30 dias. É a alavanca que transforma autoridade em reuniões qualificadas — e sustenta todos os outros canais.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 10 · ABM
+────────────────────────────────────────────── -->
+<section class="slide slide-light" id="abm">
+  <div class="slide-inner">
+    <div class="slide-num">09 · ABM</div>
+    <h2 class="slide-title">Account-Based Marketing:<br>segmentar para converter</h2>
+
+    <div class="grid g3">
+      <div class="card" style="border-top: 3px solid #c0392b;">
+        <div class="card-label" style="color: #c0392b;">Tier 1 · Altíssimo potencial</div>
+        <h3>Exec-led</h3>
+        <p>Patrocínio executivo direto. Conteúdo customizado por empresa. Reunião com governança e diagnóstico exclusivo.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--gold);">
+        <div class="card-label" style="color: var(--gold);">Tier 2 · Alto potencial</div>
+        <h3>Outbound direto</h3>
+        <p>Sequências personalizadas por perfil. Convite para webinars exclusivos. Diagnóstico de sourcing.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--green);">
+        <div class="card-label">Tier 3 · Escala</div>
+        <h3>Conteúdo + automação</h3>
+        <p>Newsletter semanal, FoodHub Radar e nutrição por e-mail. Automação de follow-up e qualificação.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; padding: 16px 20px; background: var(--offwhite); border-radius: 8px;">
+      <strong>Mensagem por perfil:</strong>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px;">
+        <span style="background: var(--white); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; font-size: 13px; color: var(--ink-70);">Produtor → previsibilidade e escoamento</span>
+        <span style="background: var(--white); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; font-size: 13px; color: var(--ink-70);">Indústria → canais e crescimento</span>
+        <span style="background: var(--white); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; font-size: 13px; color: var(--ink-70);">Distribuidor → sourcing e mix protegido</span>
+        <span style="background: var(--white); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; font-size: 13px; color: var(--ink-70);">Varejo/FS → confiança e regularidade</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 11 · PLANO 30/60/90
+────────────────────────────────────────────── -->
+<section class="slide slide-offwhite" id="plano">
+  <div class="slide-inner">
+    <div class="slide-num">10 · Execução</div>
+    <h2 class="slide-title">Plano 30 / 60 / 90 dias</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">Dias 1–30</div>
+        <div class="timeline-title">Fundação</div>
+        <ul class="timeline-list">
+          <li>Revisar headline e CTA da home</li>
+          <li>Definir ICPs por setor</li>
+          <li>Criar FoodHub Radar (produto âncora)</li>
+          <li>Estruturar tracking e CRM</li>
+          <li>Definir calendário editorial LinkedIn</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">Dias 31–60</div>
+        <div class="timeline-title">Ativação</div>
+        <ul class="timeline-list">
+          <li>LinkedIn ativo: conteúdo e engajamento</li>
+          <li>Iniciar outbound ABM Tier 1</li>
+          <li>Parcerias com 3–5 associações</li>
+          <li>Publicar primeiro Radar</li>
+          <li>SEO técnico + primeiras páginas</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">Dias 61–90</div>
+        <div class="timeline-title">Escala</div>
+        <ul class="timeline-list">
+          <li>Escalar conteúdo e SEO</li>
+          <li>Testar mídia paga controlada</li>
+          <li>Automação de nutrição</li>
+          <li>Evento ou webinar inaugural</li>
+          <li>Medir MQL/SQL e calibrar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 12 · MATRIZ DE PRIORIDADES
+────────────────────────────────────────────── -->
+<section class="slide slide-cream" id="prioridades">
+  <div class="slide-inner">
+    <div class="slide-num">11 · Prioridades</div>
+    <h2 class="slide-title">O que fazer agora</h2>
+
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ação</th>
+          <th>Impacto</th>
+          <th>Velocidade</th>
+          <th>Custo</th>
+          <th>Prioridade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>FoodHub Radar</strong></td><td style="color: var(--green);">Alto</td><td>Média</td><td>Médio</td><td><span class="pill pill-p0">P0 — Crítico</span></td></tr>
+        <tr><td>2</td><td>Revisar headline e CTA da home</td><td style="color: var(--green);">Alto</td><td>Rápida</td><td>Baixo</td><td><span class="pill pill-p0">P0 — Crítico</span></td></tr>
+        <tr><td>3</td><td>SEO por ICP (páginas de segmento)</td><td style="color: var(--green);">Alto</td><td>Lenta</td><td>Médio</td><td><span class="pill pill-p1">P1</span></td></tr>
+        <tr><td>4</td><td>LinkedIn editorial (CEO-led)</td><td style="color: var(--green);">Alto</td><td>Média</td><td>Baixo</td><td><span class="pill pill-p1">P1</span></td></tr>
+        <tr><td>5</td><td>Outbound ABM Tier 1</td><td style="color: var(--green);">Alto</td><td>Rápida</td><td>Baixo</td><td><span class="pill pill-p1">P1</span></td></tr>
+        <tr><td>6</td><td>Newsletter semanal</td><td style="color: var(--green);">Alto</td><td>Rápida</td><td>Baixo</td><td><span class="pill pill-p1">P1</span></td></tr>
+        <tr><td>7</td><td>Parcerias associativas (3–5)</td><td style="color: var(--green);">Alto</td><td>Média</td><td>Baixo</td><td><span class="pill pill-p2">P2</span></td></tr>
+        <tr><td>8</td><td>Eventos e webinars</td><td style="color: var(--green);">Alto</td><td>Média</td><td>Médio</td><td><span class="pill pill-p2">P2</span></td></tr>
+        <tr><td>9</td><td>Programa de indicação</td><td style="color: var(--gold);">Médio</td><td>Rápida</td><td>Baixo</td><td><span class="pill pill-p2">P2</span></td></tr>
+        <tr><td>10</td><td>Relatórios de categoria</td><td style="color: var(--gold);">Médio</td><td>Média</td><td>Médio</td><td><span class="pill pill-p2">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 13 · KPIs
+────────────────────────────────────────────── -->
+<section class="slide slide-light" id="kpis">
+  <div class="slide-inner">
+    <div class="slide-num">12 · Métricas</div>
+    <h2 class="slide-title">O que medir a cada quinzena</h2>
+
+    <div class="grid g3">
+      <div class="card">
+        <div class="card-label">Marketing</div>
+        <h3>Geração de demanda</h3>
+        <ul class="check-list">
+          <li>Visitantes únicos</li>
+          <li>Leads por canal</li>
+          <li>MQL e SQL</li>
+          <li>CAC e CPL</li>
+          <li>Conversão por etapa do funil</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-label">Comercial</div>
+        <h3>Pipeline e receita</h3>
+        <ul class="check-list">
+          <li>Reuniões qualificadas</li>
+          <li>Matches realizados</li>
+          <li>Propostas e operações</li>
+          <li>Ticket médio</li>
+          <li>Taxa de fechamento</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-label">Ecossistema</div>
+        <h3>Saúde da rede</h3>
+        <ul class="check-list">
+          <li>Fornecedores ativos</li>
+          <li>Compradores ativos</li>
+          <li>Parceiros institucionais</li>
+          <li>Recorrência de uso</li>
+          <li>NPS da mesa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 14 · RISCOS
+────────────────────────────────────────────── -->
+<section class="slide slide-cream" id="riscos">
+  <div class="slide-inner">
+    <div class="slide-num">13 · Riscos</div>
+    <h2 class="slide-title">O que pode atrapalhar</h2>
+
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="risk-card-title">⚖️ Regulatório</div>
+        <p>ANVISA, MAPA, rotulagem, ST/ICMS, rastreabilidade. Mudanças regulatórias afetam fluxo de deals.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card-title">🚚 Logística</div>
+        <p>Cadeia frio, rodovias, shelf-life, reversa. Gargalo operacional que impacta a experiência do match.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card-title">🤝 Confiança</div>
+        <p>Fraude, qualidade inconsistente, desvios sanitários. Reputação é o ativo mais frágil da mesa.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card-title">📅 Sazonalidade</div>
+        <p>Entressafra, datas comemorativas e fluxo de caixa irregular pelos elos da cadeia.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card-title">💸 Modelo</div>
+        <p>Guerra de preços por concorrentes, baixa digitalização do setor, dependência de plataformas.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-card-title">🌐 Internacional</div>
+        <p>Câmbio, regulatória e cultural. Expansão exige governança adicional e parceiros locais.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     SLIDE 15 · CONTATO
+────────────────────────────────────────────── -->
+<section class="slide slide-contact" id="contato">
+  <div class="slide-inner">
+    <div class="slide-num" style="color: rgba(255,255,255,0.45);">Elaborado por</div>
+    <div style="position: relative; z-index: 1;">
+      <div class="contact-name">Flávio Guedes</div>
+      <div class="contact-role">Estratégia & Growth com IA Agêntica</div>
+
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-item-label">E-mail</div>
+          <a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">WhatsApp</div>
+          <a href="https://wa.me/5521999719474"><span>(21) 99971-9474</span></a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">LinkedIn</div>
+          <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener">linkedin.com/in/flávio-guedes</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Portfólio</div>
+          <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank" rel="noopener">flavio-guedes.github.io/portfolio</a>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.14); max-width: 520px;">
+        <p style="color: rgba(255,255,255,0.5); font-size: 14px; max-width: none; line-height: 1.55; margin: 0;">
+          Este documento é uma auditoria executiva baseada em pesquisa pública e análise estrutural do setor. Versão para prospecção e crescimento — set/2026.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-bar">
+  <span>Brazil FoodHub · Auditoria Marketing & Growth · Set/2026</span>
+  <span>Elaborado por <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/">Flávio Guedes</a></span>
+</div>
+
+</body>
+</html>

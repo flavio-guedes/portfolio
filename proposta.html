@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta — Flávio Guedes</title>
+<style>
+  :root{
+    --bg:#060c1a;--surface:#080e1f;--card:#0b1228;--card2:#0d1530;
+    --g-light:#4293cb;--g-mid:#1570b6;--g-deep:#0d4f8a;--g-navy:#000f2a;
+    --grad:linear-gradient(135deg,var(--g-light) 0%,var(--g-mid) 50%,var(--g-navy) 100%);
+    --grad-text:linear-gradient(120deg,var(--g-light) 0%,var(--g-mid) 60%,#3ab0ff 100%);
+    --grad-accent:linear-gradient(90deg,var(--g-light),var(--g-mid));
+    --gold:#f5c842;--orange:#f97316;--orange-d:#ea580c;--orange-l:#fb923c;
+    --white:#ffffff;--text:#ccd6f0;--muted:#6a7a9a;
+    --border:rgba(66,147,203,.12);--border2:rgba(66,147,203,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.75;overflow-x:hidden}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;background:rgba(6,12,26,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'Syne',system-ui;font-weight:800;font-size:18px;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .nav-pill{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--g-light);border:1px solid rgba(66,147,203,.3);padding:6px 14px;border-radius:999px;text-decoration:none}
+  header.hero{padding:110px 0 64px;position:relative;overflow:hidden}
+  header.hero::before{content:'';position:absolute;top:-220px;right:-120px;width:720px;height:720px;background:radial-gradient(ellipse at center,rgba(66,147,203,.14) 0%,rgba(21,112,182,.06) 40%,transparent 70%);pointer-events:none}
+  .eyebrow{display:flex;align-items:center;gap:12px;font-size:11px; letter-spacing:.22em;text-transform:uppercase;color:var(--g-light);font-weight:600;margin-bottom:22px}
+  .eyebrow::before{content:'';display:block;width:36px;height:2px;background:linear-gradient(90deg,var(--g-light),var(--g-mid));border-radius:2px}
+  h1{font-family:'Syne',system-ui;font-size:clamp(34px,5vw,60px);color:var(--white);line-height:1.05;letter-spacing:.01em;margin-bottom:18px;font-weight:800}
+  .sub{font-size:17px;color:var(--text);max-width:760px;line-height:1.85;margin-bottom:24px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:8px 16px;border-radius:4px;border:1px solid var(--border);color:var(--muted);background:rgba(66,147,203,.04)}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}
+  @media(max-width:960px){.grid-2{grid-template-columns:1fr}}
+  .plan{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px 28px 24px;position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
+  .plan::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  .plan:hover{border-color:var(--border2);transform:translateY(-3px)} .plan:hover::after{transform:scaleX(1)}
+  .plan h3{font-family:'Syne',system-ui;font-weight:800;font-size:22px;color:var(--white);margin-bottom:8px}
+  .plan .price{font-family:'Syne',system-ui;font-weight:800;font-size:44px;color:var(--white);line-height:1;margin:8px 0 4px}
+  .plan .price span{font-size:16px;color:var(--muted);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .plan .meta{font-size:12px;color:var(--muted);margin-bottom:14px}
+  .plan ul{list-style:none;margin:0 0 18px;padding:0}
+  .plan li{font-size:14px;color:var(--text);line-height:1.8;display:flex;gap:10px;align-items:flex-start}
+  .plan li::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--g-light);margin-top:9px;flex-shrink:0}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .btn{padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:linear-gradient(135deg,rgba(66,147,203,.18),rgba(21,112,182,.18));color:var(--g-light);text-decoration:none;font-size:13px;font-weight:700;backdrop-filter:blur(8px)}
+  .btn:hover{border-color:var(--border2);color:var(--white)}
+  footer{padding:40px 0;border-top:1px solid var(--border);background:var(--bg);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .footer-link{font-size:12px;color:var(--g-light);text-decoration:none;border-bottom:1px solid rgba(66,147,203,.4);padding-bottom:2px;letter-spacing:.08em}
+  .footer-link:hover{color:var(--white);border-color:rgba(255,255,255,.5)}
+  .section{padding:56px 0;opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease}
+  .section.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Flávio Guedes</div>
+  <a class="nav-pill" href="https://flavio-guedes.github.io/portfolio/" target="_blank">Portfolio</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Proposta comercial</div>
+    <h1>Pacotes de <em style="font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">conteúdo & growth</em></h1>
+    <p class="sub">2 caminhos claros para transformar presença digital em matrículas, leads qualificados e vendas.</p>
+    <div class="chips">
+      <span class="chip">3 meses</span>
+      <span class="chip">EdTech</span>
+      <span class="chip">Social Media</span>
+      <span class="chip">Eventos</span>
+      <span class="chip">Funis</span>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="pacotes">
+  <div class="wrap">
+    <div class="grid-2">
+      <div class="plan">
+        <div class="meta"><span class="chip" style="border-color:rgba(66,147,203,.25);color:var(--g-light)">Essencial</span></div>
+        <h3>Conteúdo & Social</h3>
+        <div class="price">R$ 3K <span>/mês</span></div>
+        <div class="meta">Compromisso mínimo de 3 meses</div>
+        <ul>
+          <li>Planejamento editorial mensal</li>
+          <li>Copy para posts, Reels, carrosséis e stories</li>
+          <li>Calendário de conteúdo e hashtags</li>
+          <li>Briefing de avatar e dores do público</li>
+          <li>Acompanhamento de métricas básicas</li>
+          <li>1 campanha de lançamento curta</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn" href="https://wa.me/5521999719474" target="_blank">Quero esse pacote</a>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div class="meta"><span class="chip" style="border-color:rgba(249,115,22,.35);color:var(--orange-l)">Escala</span></div>
+        <h3>Conteúdo, Eventos & Growth</h3>
+        <div class="price">R$ 6K <span>/mês</span></div>
+        <div class="meta">Compromisso mínimo de 3 meses</div>
+        <ul>
+          <li>Tudo do pacote Essencial</li>
+          <li>Estratégia de eventos e lançamentos</li>
+          <li>Campanha completa de seminário/imersão</li>
+          <li>Sequência de teasers, speakers e CTA</li>
+          <li>CRM e follow-up comercial básico</li>
+          <li>Relatório quinzenal de resultado</li>
+          <li>Reunião de ajuste a cada 2 semanas</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn" href="https://wa.me/5521999719474" target="_blank">Quero esse pacote</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="como" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="sec-label">Como funciona</div>
+    <h2 class="sec-title" style="font-family:'Syne',system-ui;font-weight:800;font-size:clamp(26px,3.6vw,42px);color:var(--white);margin-bottom:28px;line-height:1.1">Do início ao <em style="font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">fechamento</em></h2>
+    <div class="grid-2">
+      <div class="plan">
+        <h3>1. Diagnóstico</h3>
+        <p>Alinhamos objetivos, público e produto em uma sessão curta.</p>
+      </div>
+      <div class="plan">
+        <h3>2. Execução</h3>
+        <p>Produzimos conteúdo e campanhas seguindo o cronograma acordado.</p>
+      </div>
+      <div class="plan">
+        <h3>3. Ajuste</h3>
+        <p>Otimizamos semanalmente com base em dados e feedback.</p>
+      </div>
+      <div class="plan">
+        <h3>4. Resultado</h3>
+        <p>Report de impacto e próximos passos para ampliar o que funcionar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="incluso">
+  <div class="wrap">
+    <div class="sec-label">Garantias do pacote</div>
+    <h2 class="sec-title" style="font-family:'Syne',system-ui;font-weight:800;font-size:clamp(26px,3.6vw,42px);color:var(--white);margin-bottom:28px;line-height:1.1">Em <em style="font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">qualquer</em> plano</h2>
+    <div class="grid-2">
+      <div class="plan">
+        <ul>
+          <li>Tom de voz consistente e revisado</li>
+          <li>Conteúdo alinhado ao produto e ao funil</li>
+          <li>Agenda previsível para sua equipe</li>
+          <li>Materiais prontos para uso interno</li>
+        </ul>
+      </div>
+      <div class="plan">
+        <ul>
+          <li>Comunicação direta, sem jargões</li>
+          <li>Otimização com base em dados</li>
+          <li>Documentação do que é replicável</li>
+          <li>Suporte por WhatsApp no horário comercial</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cta-row" style="margin-top:22px">
+      <a class="btn" href="https://wa.me/5521999719474" target="_blank">Conversar no WhatsApp</a>
+      <a class="btn" href="mailto:flavioguedesmkt@gmail.com" target="_blank">Enviar e-mail</a>
+      <a class="btn" href="https://flavio-guedes.github.io/portfolio/apresentacao.html" target="_blank">Ver apresentação</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div style="font-family:'Syne',system-ui;font-weight:800;font-size:20px;color:var(--white)">Flávio Guedes</div>
+    <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Content Manager · Social Media Strategist · Rio de Janeiro</div>
+  </div>
+  <a class="footer-link" href="https://flavio-guedes.github.io/portfolio/" target="_blank">flavio-guedes.github.io/portfolio</a>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08});
+  document.querySelectorAll('.section').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

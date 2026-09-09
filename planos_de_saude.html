@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Desempenho — Flávio Guedes · United</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --gold:        #FFCC00;
+  --gold-dim:    #B89600;
+  --gold-pale:   rgba(255,204,0,0.10);
+  --gold-glow:   rgba(255,204,0,0.25);
+  --ink:         #0D0D0D;
+  --ink2:        #1A1A1A;
+  --ink3:        #262626;
+  --ink4:        #333;
+  --smoke:       #F5F5F5;
+  --smoke2:      #EBEBEB;
+  --mist:        #B0B0B0;
+  --white:       #FFFFFF;
+  --green:       #27AE60;
+  --red:         #E74C3C;
+  --orange:      #E67E22;
+  --blue:        #2980B9;
+  --r:           8px;
+  --r2:          16px;
+}
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--ink);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+}
+::selection { background: var(--gold); color: var(--ink); }
+
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+.cursor-dot {
+  position: fixed; width: 6px; height: 6px;
+  background: var(--gold); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.05s;
+}
+.cursor-ring {
+  position: fixed; width: 32px; height: 32px;
+  border: 1.5px solid rgba(255,204,0,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.12s ease;
+}
+
+/* ══════════════════════════════════════════
+   NOISE OVERLAY
+══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 100;
+  opacity: 0.6;
+}
+
+/* ══════════════════════════════════════════
+   STICKY NAV
+══════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,204,0,0.12);
+  z-index: 500;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo img { height: 30px; width: auto; object-fit: contain; }
+.nav-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 3px;
+  color: var(--mist); text-transform: uppercase;
+}
+.nav-links {
+  display: flex; gap: 4px; align-items: center;
+}
+.nav-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 2px;
+  color: var(--mist); text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--r);
+  text-decoration: none;
+  cursor: none;
+  transition: all 0.2s;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--gold);
+  border-color: rgba(255,204,0,0.3);
+  background: var(--gold-pale);
+}
+.nav-score {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; color: var(--gold);
+  letter-spacing: 2px;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  position: fixed; top: 56px; left: 0;
+  height: 2px; background: var(--gold);
+  box-shadow: 0 0 10px var(--gold);
+  z-index: 499; width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ══════════════════════════════════════════
+   PARALLAX HERO
+══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+  padding: 100px 0 60px;
+}
+.hero-parallax-bg {
+  position: absolute; inset: -20%;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%,
+    rgba(255,204,0,0.08) 0%,
+    rgba(255,204,0,0.02) 40%,
+    transparent 70%);
+  will-change: transform;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,204,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,204,0,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  will-change: transform;
+}
+.hero-content {
+  position: relative; z-index: 10;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 40px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+.hero-left { display: flex; flex-direction: column; gap: 24px; }
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 4px;
+  color: var(--gold); text-transform: uppercase;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 1px; background: var(--gold);
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 0.95; letter-spacing: 2px;
+  color: var(--white);
+}
+.hero-title em {
+  color: var(--gold); font-style: normal;
+  display: block;
+}
+.hero-sub {
+  font-size: 14px; color: var(--mist);
+  line-height: 1.7; max-width: 440px;
+}
+.hero-meta {
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.hero-meta-item {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.hero-meta-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; color: var(--gold);
+  line-height: 1;
+}
+.hero-meta-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--mist); text-transform: uppercase;
+}
+.hero-cta {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.btn-primary {
+  padding: 12px 28px;
+  background: var(--gold); color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 1px; text-transform: uppercase;
+  border: none; border-radius: var(--r);
+  cursor: none; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  background: #FFD633; transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(255,204,0,0.3);
+}
+.btn-ghost {
+  padding: 12px 28px;
+  background: transparent; color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600; font-size: 12px;
+  letter-spacing: 1px; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--r);
+  cursor: none; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+}
+.btn-ghost:hover {
+  border-color: var(--gold); color: var(--gold);
+}
+
+/* HERO RIGHT — Score Card */
+.hero-scorecard {
+  background: var(--ink2);
+  border: 1px solid rgba(255,204,0,0.15);
+  border-radius: var(--r2);
+  padding: 36px;
+  position: relative; overflow: hidden;
+}
+.hero-scorecard::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.score-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 100px; color: var(--gold);
+  line-height: 1; letter-spacing: 2px;
+}
+.score-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 3px;
+  color: var(--mist); text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.score-bars { display: flex; flex-direction: column; gap: 10px; }
+.score-bar-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.score-bar-label {
+  font-size: 11px; color: var(--mist); width: 120px; flex-shrink: 0;
+}
+.score-bar-track {
+  flex: 1; height: 4px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px; overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%; background: var(--gold);
+  border-radius: 2px;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.2s cubic-bezier(.16,1,.3,1);
+}
+.score-bar-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--gold);
+  width: 30px; text-align: right;
+}
+
+/* ══════════════════════════════════════════
+   SECTION COMMON
+══════════════════════════════════════════ */
+.section {
+  position: relative;
+  padding: 100px 0;
+  overflow: hidden;
+}
+.section-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 40px;
+}
+.section-light { background: var(--white); }
+.section-smoke { background: var(--smoke); }
+.section-dark { background: var(--ink2); }
+.section-black { background: var(--ink); }
+.section-gold-edge {
+  border-top: 1px solid rgba(255,204,0,0.12);
+}
+
+/* SECTION HEADER */
+.sec-hdr { margin-bottom: 56px; }
+.sec-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 4px;
+  color: var(--gold); text-transform: uppercase;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+.sec-num::after { content: ''; flex: 0 0 40px; height: 1px; background: var(--gold-dim); }
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4vw, 56px);
+  letter-spacing: 2px; line-height: 1;
+}
+.sec-title.dark { color: var(--ink); }
+.sec-sub {
+  font-size: 14px; color: var(--mist);
+  line-height: 1.6; margin-top: 10px;
+}
+.sec-sub.dark { color: var(--ink4); }
+
+/* ══════════════════════════════════════════
+   KPI GRID
+══════════════════════════════════════════ */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2px; margin-bottom: 2px;
+}
+.kpi-card {
+  background: var(--ink3);
+  padding: 28px 24px;
+  position: relative; overflow: hidden;
+  transition: background 0.2s;
+}
+.kpi-card:hover { background: var(--ink4); }
+.kpi-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold); transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.kpi-card:hover::after { transform: scaleX(1); }
+.kpi-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; color: var(--gold);
+  line-height: 1; letter-spacing: 1px;
+}
+.kpi-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--mist); text-transform: uppercase;
+  margin-top: 4px;
+}
+.kpi-bg-num {
+  position: absolute; bottom: -10px; right: 6px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; color: rgba(255,204,0,0.04);
+  line-height: 1; pointer-events: none;
+}
+
+/* ══════════════════════════════════════════
+   TIMELINE (Eventos)
+══════════════════════════════════════════ */
+.timeline { position: relative; padding-left: 40px; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 12px; bottom: 12px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold), rgba(255,204,0,0.1));
+}
+.tl-item {
+  position: relative; margin-bottom: 20px;
+  opacity: 0; transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+.tl-item.visible {
+  opacity: 1; transform: translateX(0);
+}
+.tl-dot {
+  position: absolute; left: -48px; top: 14px;
+  width: 10px; height: 10px;
+  border: 2px solid var(--gold); border-radius: 50%;
+  background: var(--ink);
+}
+.tl-dot.done { background: var(--green); border-color: var(--green); }
+.tl-dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-glow);
+}
+.tl-card {
+  background: var(--ink3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 16px; align-items: start;
+  transition: border-color 0.2s, background 0.2s;
+}
+.tl-card:hover {
+  border-color: rgba(255,204,0,0.2);
+  background: var(--ink4);
+}
+.tl-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--gold); letter-spacing: 2px;
+  text-transform: uppercase; white-space: nowrap;
+  padding-top: 2px;
+}
+.tl-body { min-width: 0; }
+.tl-title { font-weight: 600; font-size: 14px; color: var(--white); }
+.tl-desc { font-size: 12px; color: var(--mist); margin-top: 3px; line-height: 1.5; }
+.tl-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 1px;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid; text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge-done { border-color: var(--green); color: var(--green); }
+.badge-plan { border-color: var(--orange); color: var(--orange); }
+
+/* ══════════════════════════════════════════
+   COMPETENCIES RADAR (visual bars)
+══════════════════════════════════════════ */
+.comp-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+.comp-card {
+  background: var(--ink3);
+  padding: 20px 24px;
+  border-radius: var(--r);
+  position: relative; overflow: hidden;
+}
+.comp-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--gold);
+}
+.comp-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 10px;
+}
+.comp-name { font-weight: 600; font-size: 13px; color: var(--white); }
+.comp-rating {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 1px;
+  padding: 3px 9px; border-radius: 20px;
+  text-transform: uppercase; border: 1px solid;
+}
+.rating-excelente { background: rgba(39,174,96,0.15); border-color: var(--green); color: var(--green); }
+.rating-muitobom { background: rgba(41,128,185,0.15); border-color: var(--blue); color: var(--blue); }
+.comp-desc { font-size: 11px; color: var(--mist); line-height: 1.6; }
+.comp-bar-track {
+  height: 3px; background: rgba(255,255,255,0.07);
+  border-radius: 2px; margin-top: 12px; overflow: hidden;
+}
+.comp-bar-fill {
+  height: 100%; background: var(--gold); border-radius: 2px;
+  transform-origin: left; transform: scaleX(0);
+  transition: transform 1.4s cubic-bezier(.16,1,.3,1);
+}
+
+/* ══════════════════════════════════════════
+   RESULTS TABLE (4-col)
+══════════════════════════════════════════ */
+.results-stack { display: flex; flex-direction: column; gap: 2px; }
+.result-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--ink3);
+  border-radius: var(--r);
+  overflow: hidden;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.result-row.visible {
+  opacity: 1; transform: translateY(0);
+}
+.result-row:hover { background: var(--ink4); }
+.result-cell {
+  padding: 16px 18px; border-right: 1px solid rgba(255,255,255,0.04);
+}
+.result-cell:last-child { border-right: none; }
+.result-cell-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 2px;
+  color: var(--gold-dim); text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.result-cell-text { font-size: 12px; color: var(--mist); line-height: 1.5; }
+
+/* ══════════════════════════════════════════
+   GARGALOS
+══════════════════════════════════════════ */
+.gap-grid { display: flex; flex-direction: column; gap: 8px; }
+.gap-card {
+  display: grid; grid-template-columns: 3px auto 1fr;
+  gap: 0 16px; align-items: stretch;
+  background: var(--ink3); border-radius: var(--r);
+  overflow: hidden;
+  opacity: 0; transform: translateX(-16px);
+  transition: all 0.4s ease;
+}
+.gap-card.visible {
+  opacity: 1; transform: translateX(0);
+}
+.gap-accent { background: var(--gap-color, #888); }
+.gap-badge-col {
+  display: flex; align-items: center; padding: 14px 0 14px 16px;
+}
+.gap-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 1px;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid; text-transform: uppercase;
+  white-space: nowrap;
+}
+.gap-content { padding: 14px 18px 14px 0; }
+.gap-title { font-weight: 600; font-size: 13px; color: var(--white); margin-bottom: 3px; }
+.gap-desc { font-size: 12px; color: var(--mist); line-height: 1.5; }
+
+/* ══════════════════════════════════════════
+   CAMPAIGNS GRID
+══════════════════════════════════════════ */
+.camp-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.camp-card {
+  background: var(--smoke);
+  border-radius: var(--r2);
+  padding: 24px;
+  border: 1px solid var(--smoke2);
+  position: relative; overflow: hidden;
+  color: var(--ink);
+  transition: all 0.25s;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s, background 0.25s;
+}
+.camp-card.visible {
+  opacity: 1; transform: translateY(0);
+}
+.camp-card:hover {
+  box-shadow: 0 20px 48px rgba(0,0,0,0.1);
+  background: var(--white);
+  transform: translateY(-4px) !important;
+}
+.camp-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gold);
+}
+.camp-icon {
+  font-size: 28px; margin-bottom: 12px;
+}
+.camp-title {
+  font-weight: 700; font-size: 15px;
+  color: var(--ink); margin-bottom: 6px;
+}
+.camp-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--mist); text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.camp-items { list-style: none; }
+.camp-items li {
+  font-size: 12px; color: var(--ink4);
+  line-height: 1.6; padding: 2px 0;
+  padding-left: 14px; position: relative;
+}
+.camp-items li::before {
+  content: '→';
+  position: absolute; left: 0;
+  color: var(--gold-dim); font-size: 10px;
+}
+
+/* ══════════════════════════════════════════
+   DIAGNOSIS
+══════════════════════════════════════════ */
+.diag-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.diag-card {
+  background: var(--ink3); border-radius: var(--r2); padding: 28px;
+}
+.diag-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.diag-card h3.good { color: var(--green); }
+.diag-card h3.risk { color: var(--red); }
+.diag-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.diag-list li {
+  font-size: 13px; color: var(--mist);
+  padding-left: 20px; position: relative; line-height: 1.5;
+}
+.diag-list li::before {
+  position: absolute; left: 0;
+  font-size: 12px;
+}
+.diag-list.good li::before { content: '✓'; color: var(--green); }
+.diag-list.risk li::before { content: '▲'; color: var(--red); }
+
+.conclusion-card {
+  background: linear-gradient(135deg, var(--ink2) 0%, rgba(255,204,0,0.05) 100%);
+  border: 1px solid rgba(255,204,0,0.2);
+  border-radius: var(--r2); padding: 36px;
+  margin-top: 24px; position: relative;
+}
+.conclusion-card::before {
+  content: '"';
+  position: absolute; top: -10px; left: 24px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; color: var(--gold);
+  opacity: 0.3; line-height: 1;
+}
+.conclusion-text {
+  font-size: 16px; line-height: 1.8;
+  color: var(--white); font-style: italic;
+}
+
+/* ══════════════════════════════════════════
+   CURRICULUM
+══════════════════════════════════════════ */
+.cv-section { margin-bottom: 32px; }
+.cv-section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 3px;
+  color: var(--ink); background: var(--gold);
+  padding: 8px 16px; margin-bottom: 12px;
+  display: inline-block; border-radius: 4px;
+}
+.cv-items { display: flex; flex-direction: column; gap: 6px; }
+.cv-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 14px;
+  background: var(--smoke);
+  border-radius: var(--r);
+  border-left: 3px solid var(--gold);
+  font-size: 13px; color: var(--ink4); line-height: 1.5;
+  opacity: 0; transform: translateX(-16px);
+  transition: all 0.4s ease;
+}
+.cv-item.visible {
+  opacity: 1; transform: translateX(0);
+}
+.cv-item:hover { background: var(--smoke2); }
+.cv-item::before {
+  content: '→'; color: var(--gold-dim); flex-shrink: 0; font-size: 12px; padding-top: 1px;
+}
+
+/* ══════════════════════════════════════════
+   DIRECTOR SUMMARY
+══════════════════════════════════════════ */
+.dir-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;
+}
+.dir-card {
+  padding: 28px 24px;
+}
+.dir-card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.dir-card-text { font-size: 14px; line-height: 1.7; }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,204,0,0.1);
+  padding: 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--mist); text-transform: uppercase;
+}
+.footer-logo img { height: 24px; opacity: 0.6; }
+
+/* ══════════════════════════════════════════
+   SCROLL ANIMATIONS
+══════════════════════════════════════════ */
+.fade-up {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .camp-grid { grid-template-columns: 1fr 1fr; }
+  .comp-grid { grid-template-columns: 1fr; }
+  .dir-grid { grid-template-columns: 1fr; }
+  .diag-grid { grid-template-columns: 1fr; }
+  .result-row { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .camp-grid { grid-template-columns: 1fr; }
+  .section { padding: 60px 0; }
+  .section-inner { padding: 0 20px; }
+  .hero-content { padding: 0 20px; }
+  .nav { padding: 0 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="curDot"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- PROGRESS -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="data:image/jpeg;base64,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" alt="United">
+    <span class="nav-badge">Relatório · Coordenação</span>
+  </div>
+  <div class="nav-links">
+    <a href="#kpis" class="nav-link">KPIs</a>
+    <a href="#campanhas" class="nav-link">Campanhas</a>
+    <a href="#eventos" class="nav-link">Eventos</a>
+    <a href="#competencias" class="nav-link">Perfil</a>
+    <a href="#resultados" class="nav-link">Resultados</a>
+    <a href="#diagnostico" class="nav-link">Diagnóstico</a>
+    <a href="#curriculo" class="nav-link">Currículo</a>
+  </div>
+  <div class="nav-score">8.5 / 10</div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-parallax-bg" id="heroBg"></div>
+  <div class="hero-grid" id="heroGrid"></div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Relatório de Desempenho · 2026</div>
+      <h1 class="hero-title">
+        Coordenador<br>de
+        <em>Comunicação</em>
+      </h1>
+      <p class="hero-sub">
+        Flávio Guedes assumiu em 06 de abril de 2026 um ambiente sem processos,
+        sem ferramentas e com equipe operando em reatividade total —
+        e em 65 dias estruturou a operação de comunicação da United de ponta a ponta.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">65</span>
+          <span class="hero-meta-lbl">Dias avaliados</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">8+</span>
+          <span class="hero-meta-lbl">Eventos</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">4</span>
+          <span class="hero-meta-lbl">Campanhas</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">3</span>
+          <span class="hero-meta-lbl">Colaboradores</span>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="#diagnostico" class="btn-primary">Ver Diagnóstico Final →</a>
+        <a href="#curriculo" class="btn-ghost">Currículo de Resultados</a>
+      </div>
+    </div>
+
+    <div class="hero-scorecard">
+      <div class="score-label">Nota Geral de Desempenho</div>
+      <div class="score-big">8.5</div>
+      <div class="score-label" style="margin-top:4px;">/ 10 pontos</div>
+      <div class="score-bars" id="scoreBars">
+        <div class="score-bar-row"><span class="score-bar-label">Organização</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.96"></div></div><span class="score-bar-val">9.6</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Inovação</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.95"></div></div><span class="score-bar-val">9.5</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Liderança</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.88"></div></div><span class="score-bar-val">8.8</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Execução</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.87"></div></div><span class="score-bar-val">8.7</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Comunicação</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.86"></div></div><span class="score-bar-val">8.6</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Tomada de Decisão</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.85"></div></div><span class="score-bar-val">8.5</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Gestão Prioridades</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.84"></div></div><span class="score-bar-val">8.4</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Técnico</span><div class="score-bar-track"><div class="score-bar-fill" data-width="0.86"></div></div><span class="score-bar-val">8.6</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   KPIs
+══════════════════════════════════════════ -->
+<section class="section section-black section-gold-edge" id="kpis">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">01 — Indicadores</div>
+      <h2 class="sec-title">Performance<br><span style="color:var(--gold)">em Números</span></h2>
+      <p class="sec-sub">Métricas coletadas de WhatsApp, Trello, Drive e relatório interno</p>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card fade-up"><div class="kpi-val">65</div><div class="kpi-lbl">Dias de Atuação</div><div class="kpi-bg-num">65</div></div>
+      <div class="kpi-card fade-up"><div class="kpi-val">8+</div><div class="kpi-lbl">Eventos Coordenados</div><div class="kpi-bg-num">8</div></div>
+      <div class="kpi-card fade-up"><div class="kpi-val">4</div><div class="kpi-lbl">Campanhas Gerenciadas</div><div class="kpi-bg-num">4</div></div>
+      <div class="kpi-card fade-up"><div class="kpi-val">12+</div><div class="kpi-lbl">Pastas Drive Criadas</div><div class="kpi-bg-num">12</div></div>
+    </div>
+    <div class="kpi-grid" style="margin-top:2px;">
+      <div class="kpi-card fade-up"><div class="kpi-val">3</div><div class="kpi-lbl">Colaboradores Gerenciados</div><div class="kpi-bg-num">3</div></div>
+      <div class="kpi-card fade-up"><div class="kpi-val">4</div><div class="kpi-lbl">Formulários Criados</div><div class="kpi-bg-num">4</div></div>
+      <div class="kpi-card fade-up"><div class="kpi-val">2</div><div class="kpi-lbl">GPTs / Ferramentas IA</div><div class="kpi-bg-num">2</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   CAMPANHAS
+══════════════════════════════════════════ -->
+<section class="section section-smoke" id="campanhas">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">02 — Marketing</div>
+      <h2 class="sec-title dark">Campanhas<br><span style="color:var(--gold-dim)">e Comunicação</span></h2>
+    </div>
+    <div class="camp-grid">
+      <div class="camp-card fade-up">
+        <div class="camp-icon">🦁</div>
+        <div class="camp-title">Invictos</div>
+        <div class="camp-period">Abr – Jun 2026</div>
+        <ul class="camp-items">
+          <li>Cards individuais por categoria (Ouro / Safira / Esmeralda / Diamante)</li>
+          <li>Vídeo institucional com looping, timer Resolume e trilha sonora</li>
+          <li>Narração IA (ElevenLabs) das categorias do sorteio</li>
+          <li>Artes para telão 2304×768px</li>
+          <li>GPT personalizado para o projeto</li>
+        </ul>
+      </div>
+      <div class="camp-card fade-up">
+        <div class="camp-icon">🇧🇷</div>
+        <div class="camp-title">Copa do Mundo — Camisa Brasil</div>
+        <div class="camp-period">Mai – Jun 2026</div>
+        <ul class="camp-items">
+          <li>Pesquisa e cotação de 4+ fornecedores</li>
+          <li>Mockup da arte final (verde/amarelo)</li>
+          <li>Cards-figurinha dos supervisores</li>
+          <li>Pasta Drive colaborativa para fotos</li>
+          <li>Vídeo looping para evento copa</li>
+        </ul>
+      </div>
+      <div class="camp-card fade-up">
+        <div class="camp-icon">✈️</div>
+        <div class="camp-title">Viagem Roma 12</div>
+        <div class="camp-period">Abr 2026</div>
+        <ul class="camp-items">
+          <li>Mapeamento de kit completo (camisa, mochila, capa mala)</li>
+          <li>Brainstorming de itens exclusivos</li>
+          <li>Fotos dos ganhadores em alta resolução</li>
+          <li>Pasta Drive organizada por projeto</li>
+        </ul>
+      </div>
+      <div class="camp-card fade-up">
+        <div class="camp-icon">📢</div>
+        <div class="camp-title">Comunicados e Identidade Visual</div>
+        <div class="camp-period">Abr – Jun 2026</div>
+        <ul class="camp-items">
+          <li>Template padrão de comunicados (formato story)</li>
+          <li>Definição de identidade: #FFCC00 / Poppins</li>
+          <li>Orientação visual para nova colaboradora</li>
+          <li>Integração Mariana ao fluxo criativo</li>
+        </ul>
+      </div>
+      <div class="camp-card fade-up">
+        <div class="camp-icon">👕</div>
+        <div class="camp-title">Camisas — Invictos</div>
+        <div class="camp-period">Abr – Mai 2026</div>
+        <ul class="camp-items">
+          <li>Processo completo: formulário → tamanhos → cotação → arte → aprovação</li>
+          <li>Google Forms para coleta de tamanhos</li>
+          <li>Contato com Ana Maria Dimona, Ton Gráfica, Wallace</li>
+          <li>Arte preta/dourada aprovada por Fernanda</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   EVENTOS (TIMELINE)
+══════════════════════════════════════════ -->
+<section class="section section-black section-gold-edge" id="eventos">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">03 — Produção</div>
+      <h2 class="sec-title">Eventos<br><span style="color:var(--gold)">Coordenados</span></h2>
+      <p class="sec-sub">8 eventos em 65 dias — planejamento, execução e documentação operacional</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-card">
+          <div class="tl-date">11/05/2026</div>
+          <div class="tl-body"><div class="tl-title">Sorteio Caminhão + Moto</div><div class="tl-desc">Planejamento completo, cheques de prêmio, narração IA das categorias, roteiro AV, checklists operacionais. Primeiro piloto metodologia Trello.</div></div>
+          <div class="tl-badge badge-done">Executado</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-card">
+          <div class="tl-date">Abr/Mai 2026</div>
+          <div class="tl-body"><div class="tl-title">Evento Boteco Corretores</div><div class="tl-desc">Levantamento de lista de participantes, apoio logístico, comunicação interna e organização da operação de campo.</div></div>
+          <div class="tl-badge badge-done">Executado</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-card">
+          <div class="tl-date">Mai 2026</div>
+          <div class="tl-body"><div class="tl-title">Treinamento Bradesco</div><div class="tl-desc">Protocolo AV definido (HDMI direto do palco pelos gestores). Apoio de comunicação e alinhamento operacional.</div></div>
+          <div class="tl-badge badge-done">Executado</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-card">
+          <div class="tl-date">Mai/Jun 2026</div>
+          <div class="tl-body"><div class="tl-title">Bingo Leve</div><div class="tl-desc">Coordenação de produção de cartelas, supervisão logística, acompanhamento da execução. Mariana ficou além do horário para garantir entrega.</div></div>
+          <div class="tl-badge badge-done">Executado</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-card">
+          <div class="tl-date">Jun 2026</div>
+          <div class="tl-body"><div class="tl-title">Inauguração 9º Andar</div><div class="tl-desc">Card de divulgação para diretores, planejamento completo no Trello, comunicação institucional coordenada.</div></div>
+          <div class="tl-badge badge-done">Executado</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot active"></div>
+        <div class="tl-card">
+          <div class="tl-date">08/06/2026</div>
+          <div class="tl-body"><div class="tl-title">Sorteio Caminhão + Baú</div><div class="tl-desc">Vídeo Invictos complexo (looping animado, timer Resolume, trilha sonora), cupons acrílico, entry dos ganhadores, planejamento integral Trello.</div></div>
+          <div class="tl-badge badge-done">Executado</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">10/06/2026</div>
+          <div class="tl-body"><div class="tl-title">Inauguração Quiosque MedSenior</div><div class="tl-desc">Card de divulgação criado, coordenação da equipe (Nathália + Pamela) para cobertura externa da inauguração da parceria.</div></div>
+          <div class="tl-badge badge-plan">Planejado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   COMPETÊNCIAS
+══════════════════════════════════════════ -->
+<section class="section section-smoke" id="competencias">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">04 — Perfil</div>
+      <h2 class="sec-title dark">Análise de<br><span style="color:var(--gold-dim)">Competências</span></h2>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Organização</span>
+          <span class="comp-rating rating-excelente">Excelente</span>
+        </div>
+        <p class="comp-desc">Estruturou Drive, Trello e formulários em paralelo à operação diária. Criou pastas organizadas por evento, nomenclatura padronizada. Mente sistêmica evidente mesmo em ambiente caótico.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.96"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Inovação</span>
+          <span class="comp-rating rating-excelente">Excelente</span>
+        </div>
+        <p class="comp-desc">Introduziu IA (ChatGPT, ElevenLabs) no fluxo de produção. GPT personalizado Caminhão United. Proposta de Discord como walkie-talkie. Postura de inovador num ambiente conservador.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.95"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Liderança</span>
+          <span class="comp-rating rating-muitobom">Muito Bom</span>
+        </div>
+        <p class="comp-desc">Assumiu postura de coordenador desde o primeiro dia. Não cedeu em decisões de processo mesmo sob pressão. Gerenciou conflito com documentação e sem escalada desnecessária.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.88"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Capacidade de Execução</span>
+          <span class="comp-rating rating-muitobom">Muito Bom</span>
+        </div>
+        <p class="comp-desc">Alta execução simultânea: coordena demandas, produz conteúdo, alinha com gestão e trata conflito no mesmo dia. Volume elevado é o único limitante.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.87"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Comunicação</span>
+          <span class="comp-rating rating-muitobom">Muito Bom</span>
+        </div>
+        <p class="comp-desc">Clara, direta e orientada a dados nas conversas com gestão. Sabe redirecionar demandas sem confrontar. Protocolo de grupos implementado com leveza estratégica.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.86"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Tomada de Decisão</span>
+          <span class="comp-rating rating-muitobom">Muito Bom</span>
+        </div>
+        <p class="comp-desc">Decide com base em dados e histórico. Manteve decisão de redistribuição de esteira mesmo sob resistência. Escala quando necessário, não por insegurança.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.85"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Gestão de Prioridades</span>
+          <span class="comp-rating rating-muitobom">Muito Bom</span>
+        </div>
+        <p class="comp-desc">Identifica urgente vs. importante. Cria cards com prazo e responsável. Risco: volume alto em semanas de múltiplos eventos simultâneos pode comprometer a priorização.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.84"></div></div>
+      </div>
+      <div class="comp-card fade-up">
+        <div class="comp-header">
+          <span class="comp-name">Competências Técnicas</span>
+          <span class="comp-rating rating-muitobom">Muito Bom</span>
+        </div>
+        <p class="comp-desc">Domina Trello, Drive, Google Forms, Canva, ChatGPT, Resolume. Produz materiais e coordena vídeo com qualidade. Fluência suficiente para supervisionar criação com propriedade.</p>
+        <div class="comp-bar-track"><div class="comp-bar-fill" data-width="0.86"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   RESULTADOS
+══════════════════════════════════════════ -->
+<section class="section section-black section-gold-edge" id="resultados">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">05 — Resultados</div>
+      <h2 class="sec-title">Problema →<br><span style="color:var(--gold)">Solução → Resultado</span></h2>
+    </div>
+    <div class="results-stack">
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Ausência total de gestão de demandas — tudo por WhatsApp sem prioridade</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Implantou Trello com Kanban, cards, checklists e responsáveis definidos</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">Primeira visão panorâmica de todas as entregas em andamento</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Redução de trabalho duplicado e total rastreabilidade</div></div>
+      </div>
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Arquivos dispersos, sem organização ou versionamento</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Estruturou Google Drive com hierarquia padrão por projeto</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">Todos os projetos acessíveis de forma organizada</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Continuidade mesmo em ausência de colaboradores</div></div>
+      </div>
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Camisas sem processo — atrasos, erros de tamanho e sem fornecedor fixo</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Formulário Google Forms + fluxo de cotação + aprovação formal</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">2 campanhas de camisas produzidas no período com sucesso</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Padrão replicável para todas as próximas campanhas</div></div>
+      </div>
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Demandas chegando direto à equipe, bypassando coordenação</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Grupo interno + protocolo de filtragem + redirecionamento elegante</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">Coordenador virou filtro natural das demandas</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Proteção da equipe e visibilidade real de volume</div></div>
+      </div>
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Eventos executados sem documentação ou planejamento prévio</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Checklists, roteiros e responsáveis definidos no Trello por evento</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">8+ eventos executados com planejamento documentado</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Redução de erros e base para melhoria contínua</div></div>
+      </div>
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Produção de vídeo sem processo — trilha faltando, retrabalho constante</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Fluxo: brief → Drive → Resolume → aprovação — com checklist de trilha obrigatória</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">Vídeo Invictos complexo entregue com looping, timer e IA</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Padrão de qualidade elevado para próximos eventos</div></div>
+      </div>
+      <div class="result-row fade-up">
+        <div class="result-cell"><div class="result-cell-label">Problema</div><div class="result-cell-text">Ausência de IA na produção — tudo manual e demorado</div></div>
+        <div class="result-cell"><div class="result-cell-label">Solução</div><div class="result-cell-text">Introduziu ChatGPT, ElevenLabs e GPT personalizado no fluxo criativo</div></div>
+        <div class="result-cell"><div class="result-cell-label">Resultado</div><div class="result-cell-text">Narração de categorias do sorteio gerada por IA</div></div>
+        <div class="result-cell"><div class="result-cell-label">Benefício</div><div class="result-cell-text">Redução de tempo de produção e ganho de inovação</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   GARGALOS
+══════════════════════════════════════════ -->
+<section class="section section-smoke" id="gargalos">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">06 — Gargalos</div>
+      <h2 class="sec-title dark">Riscos<br><span style="color:var(--gold-dim)">Identificados</span></h2>
+    </div>
+    <div class="gap-grid">
+      <div class="gap-card fade-up" style="--gap-color:#C0392B;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#C0392B;color:#C0392B;">Crítico</span></div>
+        <div class="gap-content"><div class="gap-title">Volume de Demandas</div><div class="gap-desc">Alto volume de interações em 65 dias em apenas um grupo. Volume incompatível com o que 1 coordenador consegue processar sozinho sem risco de sobrecarga e perda de qualidade.</div></div>
+      </div>
+      <div class="gap-card fade-up" style="--gap-color:#E67E22;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#E67E22;color:#E67E22;">Alto</span></div>
+        <div class="gap-content"><div class="gap-title">Aprovações Dependentes de Fernanda</div><div class="gap-desc">Decisões de aprovação ficam travadas quando Fernanda não está disponível. Sem protocolo de delegação para urgências, tudo para.</div></div>
+      </div>
+      <div class="gap-card fade-up" style="--gap-color:#E67E22;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#E67E22;color:#E67E22;">Alto</span></div>
+        <div class="gap-content"><div class="gap-title">Acesso Direto à Equipe pelos Gestores</div><div class="gap-desc">Apesar do protocolo iniciado, gestores ainda acionam Nathália diretamente. Corrói a autoridade do coordenador e sobrecarrega a equipe.</div></div>
+      </div>
+      <div class="gap-card fade-up" style="--gap-color:#E67E22;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#E67E22;color:#E67E22;">Alto</span></div>
+        <div class="gap-content"><div class="gap-title">Resistência da Colaboradora Pamela</div><div class="gap-desc">Insubordinação pública e resistência por escrito documentadas. Risco de coalizão negativa se não tratado com firmeza institucional.</div></div>
+      </div>
+      <div class="gap-card fade-up" style="--gap-color:#F39C12;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#F39C12;color:#F39C12;">Médio</span></div>
+        <div class="gap-content"><div class="gap-title">Ausência de Ferramentas Pagas Críticas</div><div class="gap-desc">Lista de transmissão recusada, automações não aprovadas. Equipe opera manualmente em processos que poderiam ser automatizados.</div></div>
+      </div>
+      <div class="gap-card fade-up" style="--gap-color:#F39C12;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#F39C12;color:#F39C12;">Médio</span></div>
+        <div class="gap-content"><div class="gap-title">Infraestrutura AV Frágil</div><div class="gap-desc">Passador com defeito, microfone sem bateria, computador de eventos com problemas. Infraestrutura de AV é ponto de falha recorrente nos eventos.</div></div>
+      </div>
+      <div class="gap-card fade-up" style="--gap-color:#F39C12;">
+        <div class="gap-accent"></div>
+        <div class="gap-badge-col"><span class="gap-badge" style="border-color:#F39C12;color:#F39C12;">Médio</span></div>
+        <div class="gap-content"><div class="gap-title">Falta de Métricas Formais</div><div class="gap-desc">Sem dashboard de indicadores ainda. Sem dados consolidados para justificar recursos adicionais ou novos processos junto à diretoria.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   DIAGNÓSTICO FINAL
+══════════════════════════════════════════ -->
+<section class="section section-black section-gold-edge" id="diagnostico">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">07 — Diagnóstico</div>
+      <h2 class="sec-title">Diagnóstico<br><span style="color:var(--gold)">Final</span></h2>
+    </div>
+
+    <div class="diag-grid fade-up">
+      <div class="diag-card">
+        <h3 class="good">Pontos Fortes</h3>
+        <ul class="diag-list good">
+          <li>Perfil sistêmico e orientado a processos</li>
+          <li>Alta capacidade de execução em volume</li>
+          <li>Inovação com uso estratégico de IA</li>
+          <li>Resiliência e firmeza em conflitos</li>
+          <li>Comunicação clara e uso de dados</li>
+          <li>Organização de arquivos e projetos</li>
+          <li>Proatividade na estruturação de ferramentas</li>
+          <li>Construção de aliança estratégica com gestão</li>
+        </ul>
+      </div>
+      <div class="diag-card">
+        <h3 class="risk">Principais Riscos</h3>
+        <ul class="diag-list risk">
+          <li>Sobrecarga individual sem suporte estrutural</li>
+          <li>Dependência de aprovação de Fernanda</li>
+          <li>Resistência de Pamela não resolvida</li>
+          <li>Ausência de métricas formais</li>
+          <li>Infraestrutura AV frágil em eventos</li>
+          <li>Sem protocolo escrito de urgências</li>
+          <li>Volume pode comprometer qualidade em picos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="conclusion-card fade-up">
+      <p class="conclusion-text">
+        Flávio Guedes entregou em 65 dias o que normalmente demandaria 6 meses de estruturação em comunicação corporativa.
+        Assumiu um ambiente sem processos, sem ferramentas e com dinâmica de equipe complexa — e construiu a base operacional
+        necessária para que a comunicação da United escale com qualidade.
+        O investimento em sua continuidade e desenvolvimento é justificado pelos resultados já entregues e pelo potencial identificado.
+        <br><br>
+        <strong style="color:var(--gold)">Recomendações:</strong> (1) Formalização do escopo e autoridade perante gestores,
+        (2) aprovação das ferramentas de automação solicitadas,
+        (3) alinhamento institucional sobre a situação de resistência da colaboradora Pamela.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   RESUMO PARA DIRETORIA
+══════════════════════════════════════════ -->
+<section class="section section-smoke">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num">08 — Diretoria</div>
+      <h2 class="sec-title dark">Resumo<br><span style="color:var(--gold-dim)">para a Diretoria</span></h2>
+    </div>
+    <div class="dir-grid fade-up">
+      <div class="dir-card" style="background:var(--ink2); border-radius:var(--r2); color:var(--white);">
+        <div class="dir-card-title" style="color:var(--gold);">O Que Foi Encontrado</div>
+        <p class="dir-card-text" style="color:var(--mist);">Ambiente sem processos de comunicação. Demandas via WhatsApp sem priorização, sem rastreabilidade e sem responsáveis definidos. Equipe operando em reatividade total.</p>
+      </div>
+      <div class="dir-card" style="background:var(--gold); border-radius:var(--r2); color:var(--ink);">
+        <div class="dir-card-title" style="color:var(--ink);">O Que Foi Feito</div>
+        <p class="dir-card-text">Implantou gestão via Trello. Estruturou Google Drive. Criou formulários e protocolos. Coordenou 8+ eventos e 4+ campanhas em paralelo. Integrou IA na produção. Onboardou nova colaboradora.</p>
+      </div>
+      <div class="dir-card" style="background:var(--ink); border-radius:var(--r2); border:1px solid rgba(255,204,0,0.2); color:var(--white);">
+        <div class="dir-card-title" style="color:var(--gold);">O Que a Empresa Ganha</div>
+        <p class="dir-card-text" style="color:var(--mist);">Comunicação escalável e profissional. Imagem institucional consistente. Operação de eventos com menos risco. Equipe produtiva com escopo claro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+   CURRÍCULO DE RESULTADOS
+══════════════════════════════════════════ -->
+<section class="section section-white" id="curriculo" style="background:var(--white);">
+  <div class="section-inner">
+    <div class="sec-hdr fade-up">
+      <div class="sec-num" style="color:var(--gold-dim);">09 — Currículo</div>
+      <h2 class="sec-title dark">Currículo<br><span style="color:var(--gold-dim)">de Resultados</span></h2>
+      <p class="sec-sub dark">Flávio Guedes · Coordenador de Comunicação · United Planos de Saúde · 2026</p>
+    </div>
+
+    <div class="cv-section">
+      <div class="cv-section-title">Gestão e Liderança</div>
+      <div class="cv-items">
+        <div class="cv-item">Liderou equipe multidisciplinar de 3 profissionais com delegação estruturada, acompanhamento de entregas e gestão de conflitos documentada.</div>
+        <div class="cv-item">Implantou metodologia Kanban (Trello) do zero, criando a primeira visão panorâmica de produção da área de comunicação.</div>
+        <div class="cv-item">Realizou onboarding estruturado de nova colaboradora com repasse de ferramentas, referências visuais e integração ao fluxo operacional.</div>
+        <div class="cv-item">Gerenciou episódio de insubordinação com documentação formal, postura firme e resolução interna sem escalada desnecessária à gestão.</div>
+        <div class="cv-item">Alinhou proposta de fluxo, formulário de brief e SLAs com a gerência de marketing antes de apresentar à equipe.</div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <div class="cv-section-title">Projetos e Processos</div>
+      <div class="cv-items">
+        <div class="cv-item">Estruturou Google Drive com hierarquia padrão de pastas por projeto, garantindo rastreabilidade e continuidade operacional.</div>
+        <div class="cv-item">Criou 4 formulários digitais (Google Forms) para coleta estruturada: tamanhos de camisas, briefings, listas de participantes.</div>
+        <div class="cv-item">Desenhou fluxo de aprovação de camisas: formulário → lista → cotação → mockup → aprovação → produção.</div>
+        <div class="cv-item">Desenvolveu protocolo de redirecionamento de demandas para proteger a equipe do acesso direto de gestores.</div>
+        <div class="cv-item">Documentou processos replicáveis de planejamento de eventos com checklists, roteiros e aprendizados pós-evento.</div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <div class="cv-section-title">Campanhas e Produção</div>
+      <div class="cv-items">
+        <div class="cv-item">Coordenou produção de campanha Invictos: cards por categoria, vídeos institucionais e artes para telão 2304×768px.</div>
+        <div class="cv-item">Supervisionou criação de vídeo complexo para Sorteio Caminhão: looping animado, timer Resolume, trilha sonora, entrada com música tema.</div>
+        <div class="cv-item">Integrou Inteligência Artificial (ChatGPT / ElevenLabs) na produção de narração de categorias do sorteio.</div>
+        <div class="cv-item">Criou GPT personalizado (Caminhão United) para apoio à produção de conteúdo do projeto.</div>
+        <div class="cv-item">Gerenciou produção de camisas para 2 campanhas: Invictos (preta/dourada) e Copa do Mundo Brasil.</div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <div class="cv-section-title">Eventos Coordenados (65 dias)</div>
+      <div class="cv-items">
+        <div class="cv-item">Sorteio Caminhão + Moto (11/05): planejamento completo, cheques de prêmio, narração IA, roteiro AV, checklists.</div>
+        <div class="cv-item">Sorteio Caminhão + Baú (08/06): vídeo Invictos, cupons acrílico, looping Resolume, entry dos ganhadores.</div>
+        <div class="cv-item">Inauguração 9º Andar: card de divulgação, planejamento Trello, comunicação para diretores.</div>
+        <div class="cv-item">Evento Boteco, Treinamento Bradesco, Bingo Leve — logística, materiais e comunicação integrada.</div>
+        <div class="cv-item">Inauguração Quiosque MedSenior (10/06): card de divulgação, coordenação de equipe para cobertura.</div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <div class="cv-section-title">Inovação e Tecnologia</div>
+      <div class="cv-items">
+        <div class="cv-item">Introduziu metodologia de gestão visual (Trello) em equipe que operava 100% por WhatsApp sem processos.</div>
+        <div class="cv-item">Implementou uso de IA generativa (ChatGPT, ElevenLabs, YouTube Create) no fluxo criativo da equipe.</div>
+        <div class="cv-item">Proposta de Discord como walkie-talkie digital para substituir rádios físicos problemáticos em eventos.</div>
+        <div class="cv-item">Reorganizou e simplificou estrutura do Drive por feedback coletivo da equipe — liderança participativa.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo"><img src="data:image/jpeg;base64,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" alt="United"></div>
+  <div class="footer-text">United Planos de Saúde · Coordenação de Comunicação · Flávio Guedes · Abr–Jun 2026</div>
+  <div class="footer-text">Relatório de Desempenho · 65 dias</div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+// CURSOR
+// ══════════════════════════════════════════
+const dot = document.getElementById('curDot');
+const ring = document.getElementById('curRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+// ══════════════════════════════════════════
+// PROGRESS BAR
+// ══════════════════════════════════════════
+const pb = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  pb.style.width = (window.scrollY / h * 100) + '%';
+});
+
+// ══════════════════════════════════════════
+// PARALLAX HERO
+// ══════════════════════════════════════════
+const heroBg = document.getElementById('heroBg');
+const heroGrid = document.getElementById('heroGrid');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (heroBg) heroBg.style.transform = `translateY(${y * 0.3}px)`;
+  if (heroGrid) heroGrid.style.transform = `translateY(${y * 0.15}px)`;
+});
+
+// ══════════════════════════════════════════
+// HERO SCORE BARS (trigger once)
+// ══════════════════════════════════════════
+function triggerBars() {
+  document.querySelectorAll('.score-bar-fill, .comp-bar-fill').forEach(el => {
+    const w = parseFloat(el.dataset.width);
+    el.style.transform = `scaleX(${w})`;
+  });
+}
+setTimeout(triggerBars, 600);
+
+// ══════════════════════════════════════════
+// INTERSECTION OBSERVER — scroll reveals
+// ══════════════════════════════════════════
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll(
+  '.fade-up, .tl-item, .result-row, .gap-card, .camp-card, .cv-item'
+).forEach(el => obs.observe(el));
+
+// ══════════════════════════════════════════
+// ACTIVE NAV
+// ══════════════════════════════════════════
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>

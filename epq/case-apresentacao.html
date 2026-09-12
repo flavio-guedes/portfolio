@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Case Apresentação — Automação e Painéis Operacionais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #050B18;
+  --bg-panel: #0A1228;
+  --bg-card: #0E1A34;
+  --border: rgba(92, 155, 255, 0.16);
+  --border-strong: rgba(92, 155, 255, 0.35);
+  --blue: #2F6BFF;
+  --blue-light: #5C9BFF;
+  --cyan: #08B7D6;
+  --text: #EAEFF9;
+  --dim: #8794BA;
+  --white: #FFFFFF;
+  --amber: #F5B942;
+  --green: #3CDC97;
+  --red: #FF6B6B;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HERO COM CAPA ANEXA ===== */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(47, 107, 255, 0.25), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(8, 183, 214, 0.12), transparent 40%),
+    linear-gradient(175deg, #030712 0%, #070E1F 40%, #0A1530 100%);
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-backdrop::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 80%;
+  height: 140%;
+  background: url('https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/assets/01%20-%20Banner%20Hero.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(47,107,255,0.12), rgba(8,183,214,0.06));
+  opacity: 0.55;
+  transform: perspective(1200px) rotateX(6deg) scale(1.02);
+  filter: blur(0.5px);
+  background-blend-mode: normal;
+}
+
+.hero-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 11, 24, 0.92) 0%,
+    rgba(5, 11, 24, 0.68) 35%,
+    rgba(5, 11, 24, 0.40) 55%,
+    rgba(5, 11, 24, 0.35) 75%,
+    rgba(5, 11, 24, 0.92) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 100px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  background: rgba(47, 107, 255, 0.12);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 8px 18px;
+  margin-bottom: 32px;
+  backdrop-filter: blur(8px);
+}
+
+.eyebrow .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  max-width: 920px;
+  margin-bottom: 20px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #8FBCFF, var(--blue), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--dim);
+  max-width: 680px;
+  margin-bottom: 48px;
+  line-height: 1.55;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), #1E4FD6);
+  color: var(--white);
+  box-shadow: 0 8px 26px rgba(47, 107, 255, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(47, 107, 255, 0.5);
+}
+
+.btn-ghost {
+  color: var(--white);
+  border-color: var(--border-strong);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+}
+
+.btn-ghost:hover {
+  background: rgba(92, 155, 255, 0.12);
+  border-color: var(--blue-light);
+}
+
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: var(--dim);
+  font-size: 13px;
+}
+
+.hero-meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-meta b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px 100px;
+}
+
+.section {
+  margin-bottom: 80px;
+}
+
+.section-head {
+  margin-bottom: 40px;
+}
+
+.section-head .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  background: rgba(47, 107, 255, 0.10);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 14px;
+  margin-bottom: 14px;
+}
+
+.section-head h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.section-head p {
+  color: var(--dim);
+  font-size: 15px;
+  max-width: 680px;
+}
+
+/* ===== RESUMO ===== */
+.resumo-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.resumo-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media(min-width: 800px) {
+  .resumo-grid { grid-template-columns: 1fr 1.4fr; }
+}
+
+.resumo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.resumo-card .label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 14px;
+}
+
+.resumo-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.resumo-card p {
+  color: var(--dim);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.resumo-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.metric {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+}
+
+.metric .num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+}
+
+.metric .num.good { color: var(--green); }
+.metric .num.warn { color: var(--amber); }
+.metric .num.info { color: var(--blue-light); }
+
+.metric .lbl {
+  font-size: 11.5px;
+  color: var(--dim);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ===== VÍDEOS ===== */
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.video-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+}
+
+.video-card .video-thumb {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.video-card .video-thumb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(47,107,255,0.15), rgba(8,183,214,0.10));
+}
+
+.video-play {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(47, 107, 255, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.video-card:hover .video-play {
+  transform: scale(1.08);
+}
+
+.video-play svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--white);
+  margin-left: 3px;
+}
+
+.video-info {
+  padding: 16px;
+}
+
+.video-info h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.video-info p {
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.video-info .duration {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--blue-light);
+  background: rgba(47, 107, 255, 0.10);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* ===== DADOS / RESULTADOS ===== */
+.dados-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dados-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--amber), var(--blue));
+}
+
+.dados-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media(min-width: 900px) {
+  .dados-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.dados-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.dados-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+
+.dados-card .highlight-img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+
+.dados-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dados-list li {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.dados-list .num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--green);
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.dados-list .num.warn { color: var(--amber); }
+
+.dados-list .lbl {
+  color: var(--dim);
+  font-size: 13px;
+}
+
+/* ===== FORMULÁRIO LEAD ===== */
+.lead-form-section {
+  background: linear-gradient(135deg, rgba(47, 107, 255, 0.08), rgba(8, 183, 214, 0.05));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 40px;
+}
+
+.lead-form-section .form-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.lead-form-section .form-subtitle {
+  color: var(--dim);
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.lead-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media(min-width: 800px) {
+  .lead-form-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.form-group label .required {
+  color: var(--red);
+  margin-left: 3px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--blue-light);
+  box-shadow: 0 0 0 3px rgba(92, 155, 255, 0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--dim);
+  opacity: 0.6;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238794BA' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media(max-width: 500px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.form-checkbox input[type="checkbox"] {
+  width: auto;
+  accent-color: var(--blue);
+}
+
+.form-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+.form-submit-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.btn-submit {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--blue), #1E4FD6);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 26px rgba(47, 107, 255, 0.35);
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(47, 107, 255, 0.5);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-note {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 14px;
+  text-align: center;
+}
+
+.form-success {
+  display: none;
+  background: rgba(60, 220, 151, 0.10);
+  border: 1px solid rgba(60, 220, 151, 0.3);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+}
+
+.form-success.show {
+  display: block;
+}
+
+.form-success .check {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 24px rgba(60, 220, 151, 0.4);
+}
+
+.form-success .check svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--white);
+}
+
+.form-success h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.form-success p {
+  color: var(--dim);
+  font-size: 14px;
+}
+
+/* ===== RESULTADO / CTA FINAL ===== */
+.resultado-box {
+  background: linear-gradient(135deg, rgba(47, 107, 255, 0.10), rgba(8, 183, 214, 0.06));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 36px;
+  text-align: center;
+}
+
+.resultado-box .big-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--blue-light), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.resultado-box h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.resultado-box p {
+  color: var(--dim);
+  font-size: 14px;
+  max-width: 540px;
+  margin: 0 auto 24px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--dim);
+  font-size: 12px;
+}
+
+footer .logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+footer .logo span {
+  color: var(--blue-light);
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width: 800px){
+  .resumo-grid { grid-template-columns: 1fr; }
+  .dados-grid { grid-template-columns: 1fr; }
+  main { padding: 60px 16px 80px; }
+  .hero-content { padding: 80px 16px 60px; }
+  .resumo-box { padding: 24px; }
+  .lead-form-section { padding: 24px; }
+  .videos-grid { grid-template-columns: 1fr; }
+}
+
+@media(prefers-reduced-motion: reduce){
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-backdrop" aria-hidden="true"></div>
+  <div class="hero-content">
+
+    <div class="eyebrow">
+      <span class="dot"></span>
+      EPQ · Case Operacional
+    </div>
+
+    <h1>
+      Do caos ao controle:<br>
+      <em>automação e painéis que digitalizaram o atendimento de leads da EPQ</em>
+    </h1>
+
+    <p class="hero-sub">
+      Um panorama do que foi construído em menos de 4 meses: painéis de comandos,
+      dashboards de leads, automação de follow-up, playbooks operacionais e ferramentas
+      de prospecção — tudo rodando no ecossistema Hermes + GitHub Pages.
+    </p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#resumo">Ver resumo do case</a>
+      <a class="btn btn-ghost" href="#videos">Assistir vídeos</a>
+      <a class="btn btn-ghost" href="#lead-form">Quero esse resultado</a>
+    </div>
+
+    <div class="hero-meta">
+      <span>📅 <b>Set 2026</b> — em construção</span>
+      <span>🏗️ <b>98</b> painéis mapeados</span>
+      <span>⚡ <b>9</b> automações configuradas</span>
+      <span>📊 <b>38</b> conversas reais analisadas</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== CONTEÚDO PRINCIPAL ===== -->
+<main>
+
+  <!-- RESUMO DO CASE -->
+  <section id="resumo" class="section">
+    <div class="section-head">
+      <div class="tag">📋 Resumo executivo</div>
+      <h2>O problema que deu início ao case</h2>
+      <p>
+        A EPQ (Estudando Por Questões) precisava escalar o atendimento de leads vindos de anúncios
+        sem perder qualidade, velocidade e contexto. Antes dos painéis e automações, o atendimento
+        dependia de memória, planilhas espalhadas e respostas manuais — com erros de digitação,
+        perguntas não respondidas e leads quentes friando na fila.
+      </p>
+    </div>
+
+    <div class="resumo-box">
+      <div class="resumo-grid">
+        <div class="resumo-card">
+          <div class="label">O que foi feito</div>
+          <h3>Uma operação de atendimento end-to-end</h3>
+          <p>
+            Do primeiro toque no anúncio até o follow-up programado: painéis de visão operacional,
+            playbooks com roteiros e classificação de lead, automação de briefing diário para a equipe,
+            sequência de follow-up por D+1/D+3/D+4/D+8/D+12, e ferramentas de prospecção e CRM.
+          </p>
+        </div>
+        <div class="resumo-card">
+          <div class="label">Onde tá rodando</div>
+          <h3>Ecossistema Hermes + GitHub Pages</h3>
+          <p>
+            Painéis estáticos publicados em GitHub Pages, integração com Google Workspace/Drive,
+            automações agendadas pelo Hermes, e um ecossistema de ferramentas conectadas —
+            desde radar de concursos até central de tarefas e command center de prospecção.
+          </p>
+        </div>
+      </div>
+      <div class="resumo-metrics">
+        <div class="metric">
+          <div class="num good">98</div>
+          <div class="lbl">Painéis mapeados</div>
+        </div>
+        <div class="metric">
+          <div class="num info">9</div>
+          <div class="lbl">Automações ativas</div>
+        </div>
+        <div class="metric">
+          <div class="num warn">38</div>
+          <div class="lbl">Conversas reais</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VÍDEOS -->
+  <section id="videos" class="section">
+    <div class="section-head">
+      <div class="tag">🎬 Vídeos do case</div>
+      <h2>O case em movimento</h2>
+      <p>
+        Cada vídeo mostra uma parte do que foi construído — da análise estratégica ao follow-up automatizado.
+        Assista na ordem ou vá direto ao que te interessa.
+      </p>
+    </div>
+
+    <div class="videos-grid">
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/02%20-%20Analise%20Estrategica.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>01 — Análise Estratégica</h4>
+          <p>Primeiro momento: diagnóstico do estado atual da operação e definição do que precisava ser construído.</p>
+          <span class="duration">~12 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/03%20-%20Fluxo%20Comercial.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>02 — Fluxo Comercial</h4>
+          <p>Mapa do funil de vendas: desde o lead quente até a matrícula, com decisões e gargalos identificados.</p>
+          <span class="duration">~10 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/04%20-%20Meta%20Ads.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>03 — Meta Ads</h4>
+          <p>Estratégia de campanhas: lotes, públicos, escolhas criativas e monitoramento de performance.</p>
+          <span class="duration">~8 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/05%20-%20Pedagogico.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>04 — Pedagogico</h4>
+          <p>A proposta de valor pedagógica da EPQ e como se conecta com a expectativa do aluno que busca concurso.</p>
+          <span class="duration">~15 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/05.2%20-%20Playbook%20marketing.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>05 — Playbook Marketing</h4>
+          <p>Roteiros de marketing: calendário, canais, conteúdos e sequência de nutrição de leads.</p>
+          <span class="duration">~18 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/06%20-%20Playbook%20Atendimento.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>06 — Playbook Atendimento</h4>
+          <p>O playbook da equipe: como atender, qualificar, responder dúvidas e fechar — com scripts e exemplos.</p>
+          <span class="duration">~22 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/08%20-%20Automac%C3%A7%C3%A3o%20Gest%C3%A3o%20Leads.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>07 — Automação Gestão Leads</h4>
+          <p>Como os leads são gerenciados automaticamente: classificação, follow-up programado e notificações.</p>
+          <span class="duration">~14 min</span>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">
+          <a href="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/epq/01-apoio/09%20-%20Prova%20-%20Resultados%20e%20Analise%20Leads.mp4" target="_blank" rel="noopener noreferrer">
+            <div class="video-play">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="video-info">
+          <h4>08 — Resultados e Análise Leads</h4>
+          <p>Prova de resultado: análise das conversas reais, métricas de atendimento e o que mudou com a automação.</p>
+          <span class="duration">~20 min</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DADOS / RESULTADOS -->
+  <section id="dados" class="section">
+    <div class="section-head">
+      <div class="tag">📊 Dados e resultados</div>
+      <h2>O que mudou com a automação</h2>
+      <p>
+        Números e evidências do que foi entregue — baseados em conversas reais, painéis operacionais
+        e o que a equipe avança hoje em menos tempo.
+      </p>
+    </div>
+
+    <div class="dados-box">
+      <div class="dados-grid">
+        <div class="dados-card">
+          <h3>Resultados no atendimento</h3>
+          <img src="https://raw.githubusercontent.com/flavio-guedes/portfolio-repo/main/assets/9.1%20-%20Dados.png" alt="Dados e resultados do case" class="highlight-img">
+          <ul class="dados-list">
+            <li>
+              <span class="num">98</span>
+              <span class="lbl">Painéis criados e mapeados no ecossistema</span>
+            </li>
+            <li>
+              <span class="num">9</span>
+              <span class="lbl">Automações ativas rodando em produção</span>
+            </li>
+            <li>
+              <span class="num">38</span>
+              <span class="lbl">Conversas reais analisadas e documentadas</span>
+            </li>
+            <li>
+              <span class="num warn">D+12</span>
+              <span class="lbl">Sequência de follow-up automatizada por tempo</span>
+            </li>
+          </ul>
+        </div>
+        <div class="dados-card">
+          <h3>O que a equipe ganhou</h3>
+          <ul class="dados-list">
+            <li>
+              <span class="num">✓</span>
+              <span class="lbl">Respostas padronizadas — sem erros de digitação ou info faltando</span>
+            </li>
+            <li>
+              <span class="num">✓</span>
+              <span class="lbl">Leads classificados por temperatura no momento do contato</span>
+            </li>
+            <li>
+              <span class="num">✓</span>
+              <span class="lbl">Follow-up automático D+1 a D+12 sem depender da memória</span>
+            </li>
+            <li>
+              <span class="num">✓</span>
+              <span class="lbl">Briefing diário automatizado para a equipe no início do dia</span>
+            </li>
+            <li>
+              <span class="num">✓</span>
+              <span class="lbl">Painel único de visão de todos os leads e conversas</span>
+            </li>
+            <li>
+              <span class="num">✓</span>
+              <span class="lbl">Playbook de atendimento acessível para toda a equipe</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULÁRIO LEAD -->
+  <section id="lead-form" class="section">
+    <div class="lead-form-section">
+      <div class="form-title">Quero esse resultado na minha operação</div>
+      <div class="form-subtitle">
+        Preencha seus dados e o que sua operação precisa. Retornamos com uma proposta personalizada
+        e um diagnóstico inicial do que pode ser automatizado.
+      </div>
+
+      <form id="leadForm" class="lead-form-grid">
+
+        <!-- COLUNA 1: DADOS DE CONTATO -->
+        <div>
+          <div class="section-head" style="margin-bottom:20px;">
+            <div class="tag">👤 Seus dados</div>
+            <h2 style="font-size:18px;">Quem vai receber a proposta</h2>
+          </div>
+
+          <div class="form-group">
+            <label for="nome">Nome completo <span class="required">*</span></label>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="voce@empresa.com" required>
+            </div>
+            <div class="form-group">
+              <label for="telefone">WhatsApp <span class="required">*</span></label>
+              <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="empresa">Empresa / Negócio</label>
+            <input type="text" id="empresa" name="empresa" placeholder="Nome da sua empresa ou 'Estou iniciando'">
+          </div>
+
+          <div class="form-checkbox">
+            <input type="checkbox" id="permissaocontato" name="permissaocontato" required>
+            <label for="permissaocontato" style="margin:0; cursor:pointer;">Autorizo contato para apresentação da proposta e diagnóstico</label>
+          </div>
+        </div>
+
+        <!-- COLUNA 2: QUALIFICAÇÃO -->
+        <div>
+          <div class="section-head" style="margin-bottom:20px;">
+            <div class="tag">🎯 Qualificação</div>
+            <h2 style="font-size:18px;">Sua situação agora</h2>
+          </div>
+
+          <div class="form-group">
+            <label for="intent">Qual seu objetivo principal? <span class="required">*</span></label>
+            <select id="intent" name="intent" required>
+              <option value="">Selecione...</option>
+              <option value="automatizar-atendimento">Automatizar atendimento de leads</option>
+              <option value="criar-paineis">Criar painéis e dashboards operacionais</option>
+              <option value="automatizar-campanhas">Automatizar campanhas e follow-up</option>
+              <option value="crm-integracao">Integrar CRM e inteligência de contatos</option>
+              <option value="prospecao">Agressivo de prospecção e captação</option>
+              <option value="consolidar-operacoes">Consolidar operações e padronizar processos</option>
+              <option value="outro">Outro — quero conversar</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tempo">Em quanto tempo você pretende começar?</label>
+            <select id="tempo" name="tempo">
+              <option value="">Selecione...</option>
+              <option value="imediato">Imediato — já tenho urgência</option>
+              <option value="1-2-semanas">1 a 2 semanas</option>
+              <option value="1-mes">1 mês</option>
+              <option value="3-meses">3 meses ou mais</option>
+              <option value="ainda-nao">Ainda não tenho definição</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="orcamento">Faixa de investimento pretendida</label>
+            <select id="orcamento" name="orcamento">
+              <option value="">Selecione...</option>
+              <option value="menos-2k">Menos de R$ 2.000 / mês</option>
+              <option value="2k-5k">R$ 2.000 a R$ 5.000 / mês</option>
+              <option value="5k-10k">R$ 5.000 a R$ 10.000 / mês</option>
+              <option value="mais-10k">Mais de R$ 10.000 / mês</option>
+              <option value="nao sei">Ainda não sei</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contexto">Contexto: o que sua operação precisa resolver hoje? <span class="required">*</span></label>
+            <textarea id="contexto" name="contexto" placeholder="Descreva em 2-3 frases: o que está acontecendo, qual a dor principal e o que você gostaria que mudasse." required></textarea>
+          </div>
+
+          <hr class="form-divider">
+
+          <div class="form-submit-row">
+            <button type="submit" class="btn-submit" id="btnEnviar">Enviar solicitação</button>
+          </div>
+
+          <div class="form-note">
+            Seus dados são usados apenas para contato sobre esta proposta. Sem spam, sem compartilhamento.
+          </div>
+        </div>
+
+      </form>
+
+      <!-- MENSAGEM DE SUCESSO -->
+      <div class="form-success" id="formSuccess">
+        <div class="check">
+          <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>
+        </div>
+        <h4>Solicitação recebida</h4>
+        <p>
+          Obrigado! Entraremos em contato em até 24 horas para apresentar uma proposta
+          e agendar um diagnóstico da sua operação. Merece um case igual ao da EPQ.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RESULTADO FINAL / CTA -->
+  <section id="final" class="section">
+    <div class="resultado-box">
+      <div class="big-num">98</div>
+      <h3>Painéis mapeados — um ecossistema operacional</h3>
+      <p>
+        Do atendimento de leads à prospecção, automação e inteligência de concursos:
+        a EPQ construiu uma operação documentada, com painéis publicados e
+        automações rodando no ecossistema Hermes.
+      </p>
+      <div class="hero-cta" style="justify-content:center;">
+        <a class="btn btn-primary" href="#lead-form">Solicitar resultado similar</a>
+        <a class="btn btn-ghost" href="https://flavio-guedes.github.io/epq/leads_11_09.html" target="_blank" rel="noopener noreferrer">Ver painel de leads</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="logo">EP<span>Q</span> · Case Operacional</div>
+  <div>Construído com Hermes Agent · Flavio Guedes · Set 2026</div>
+</footer>
+
+<script>
+(function() {
+  const form = document.getElementById('leadForm');
+  const success = document.getElementById('formSuccess');
+  const btn = document.getElementById('btnEnviar');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Coletar dados
+    const dados = {
+      nome: document.getElementById('nome').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      telefone: document.getElementById('telefone').value.trim(),
+      empresa: document.getElementById('empresa').value.trim() || 'Não informado',
+      permissaocontato: document.getElementById('permissaocontato').checked,
+      intent: document.getElementById('intent').value,
+      tempo: document.getElementById('tempo').value,
+      orcamento: document.getElementById('orcamento').value,
+      contexto: document.getElementById('contexto').value.trim()
+    };
+
+    // Validação básica
+    if (!dados.nome || !dados.email || !dados.telefone || !dados.contexto || !dados.permissaocontato) {
+      alert('Preencha todos os campos obrigatórios (marcados com *) antes de enviar.');
+      return;
+    }
+
+    // Simulação de envio (substituir com integração real: email, webhook, CRM)
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    // Ler o formulário para debug e simular delay
+    console.log('Dados do lead:', JSON.stringify(dados, null, 2));
+
+    setTimeout(function() {
+      form.style.display = 'none';
+      success.classList.add('show');
+
+      // Aqui entra a integração real (webhook, email, Sheets, CRM)
+      // Exemplo: fetch('https://hooks.example.com/lead', { method: 'POST', body: JSON.stringify(dados) })
+    }, 1200);
+  });
+
+  // Limpar erro de validação ao digitar
+  form.querySelectorAll('input, textarea, select').forEach(function(el) {
+    el.addEventListener('input', function() {
+      if (success.classList.contains('show')) {
+        success.classList.remove('show');
+        form.style.display = 'grid';
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitação';
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

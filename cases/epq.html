@@ -282,6 +282,106 @@
     <div class="chip-row" id="chips-competencias"></div>
   </section>
 
+  <!-- FÓRMULA DE LEAD -->
+  <section class="block" id="lead-form">
+    <div class="section-head">
+      <div class="kicker">Quer esse resultado na sua operação?</div>
+      <h2>Fale com a gente</h2>
+      <p>Preencha seu contato e me diga um pouco sobre sua situação. Te retorno com um diagnóstico inicial do que pode ser estruturado ou automatizado.</p>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <div class="section-head" style="margin-bottom:16px;">
+          <div class="kicker">Seus dados</div>
+        </div>
+        <div style="display:grid; gap:14px;">
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Nome <span style="color:var(--blue-vivid);">*</span></label>
+            <input type="text" id="nome" name="nome" required style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div>
+              <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Email <span style="color:var(--blue-vivid);">*</span></label>
+              <input type="email" id="email" name="email" required style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">WhatsApp</label>
+              <input type="tel" id="telefone" name="telefone" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+            </div>
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Empresa / Contexto</label>
+            <input type="text" id="empresa" name="empresa" placeholder="Nome da empresa ou 'Estou iniciando'" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+          </div>
+          <label style="display:flex; gap:10px; align-items:flex-start; font-size:12.5px; color:var(--muted); cursor:pointer; padding:8px 0;">
+            <input type="checkbox" id="permissaocontato" name="permissaocontato" required style="margin-top:3px; accent-color:var(--blue);">
+            <span>Autorizo retorno para apresentação de diagnóstico e proposta. Li e aceito a política de privacidade. <span style="color:var(--blue-vivid);">*</span></span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="section-head" style="margin-bottom:16px;">
+          <div class="kicker">Qualificação</div>
+        </div>
+        <div style="display:grid; gap:14px;">
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Qual seu objetivo principal? <span style="color:var(--blue-vivid);">*</span></label>
+            <select id="intent" name="intent" required style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+              <option value="">Selecione...</option>
+              <option value="automatizar-atendimento">Automatizar atendimento de leads</option>
+              <option value="criar-paineis">Criar painéis e dashboards operacionais</option>
+              <option value="automatizar-campanhas">Automatizar campanhas e follow-up</option>
+              <option value="crm-integracao">Integrar CRM e inteligência de contatos</option>
+              <option value="prospecao">Prospecção e captação</option>
+              <option value="consolidar-operacoes">Consolidar operações e padronizar processos</option>
+              <option value="outro">Outro — quero conversar</option>
+            </select>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div>
+              <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Quando pretende começar?</label>
+              <select id="tempo" name="tempo" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                <option value="">Selecione...</option>
+                <option value="imediato">Imediato</option>
+                <option value="1-2-semanas">1 a 2 semanas</option>
+                <option value="1-mes">1 mês</option>
+                <option value="3-meses">3 meses ou mais</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Faixa de investimento</label>
+              <select id="orcamento" name="orcamento" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                <option value="">Selecione...</option>
+                <option value="<2k">Menos de R$2k/mês</option>
+                <option value="2k-5k">R$2k–5k/mês</option>
+                <option value="5k-10k">R$5k–10k/mês</option>
+                <option value=">10k">Mais de R$10k/mês</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">O que precisa resolver? <span style="color:var(--blue-vivid);">*</span></label>
+            <textarea id="contexto" name="contexto" required rows="4" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px; resize:vertical;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+      <button type="submit" id="btnEnviar" style="padding:12px 28px; background:var(--grad-brand); color:var(--white); border:none; border-radius:9px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; cursor:pointer; box-shadow:0 0 24px var(--blue-glow);">Enviar solicitação</button>
+    </div>
+    <p style="font-size:11.5px; color:var(--muted-2); margin-top:4px;">Seus dados são usados apenas para retorno sobre esta solicitação. Sem spam, sem compartilhamento.</p>
+
+    <div id="formSuccess" style="display:none; background:rgba(60,220,151,.08); border:1px solid rgba(60,220,151,.3); border-radius:12px; padding:28px; text-align:center; margin-top:20px;">
+      <div style="width:48px; height:48px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; box-shadow:0 0 20px rgba(60,220,151,.4);">
+        <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:#fff;"><polyline points="4,12 10,18 20,6" stroke="none"/></svg>
+      </div>
+      <h3 style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--green); margin:0 0 6px;">Solicitação recebida</h3>
+      <p style="color:var(--muted); font-size:14px; margin:0;">Retornamos em até 24h com um diagnóstico inicial. Merece um case igual ao da EPQ.</p>
+    </div>
+  </section>
+
   <!-- FECHAMENTO -->
   <div class="closing" id="fechamento">
     <div class="quote">Marketing não termina no <span class="accent">anúncio</span>.</div>
@@ -370,6 +470,7 @@ const NAV = [
   {id:"prova-visual", label:"Prova visual"},
   {id:"resultados", label:"Resultados"},
   {id:"competencias", label:"Aprendizados"},
+  {id:"lead-form", label:"Lead form"},
   {id:"fechamento", label:"Fechamento"}
 ];
 
@@ -385,23 +486,23 @@ const VIDEOS = {
     {titulo:"Fluxo comercial", desc:"O caminho completo do lead, do primeiro contato até a matrícula.", src:"assets/video-fluxo-comercial.mp4"}
   ],
   growth: [
-    {titulo:"Meta Ads", desc:"Estrutura de campanhas e segmentação por curso, turno e unidade.", src:null}
+    {titulo:"Meta Ads", desc:"Estrutura de campanhas e segmentação por curso, turno e unidade.", src:"assets/video-meta-ads.mp4"}
   ],
   pm: [
-    {titulo:"Pedagógico", desc:"Como o conteúdo pedagógico se conecta à oferta comercial.", src:null},
-    {titulo:"Playbook de marketing", desc:"Diretrizes de comunicação e uso de cada canal na aquisição.", src:null}
+    {titulo:"Pedagógico", desc:"Como o conteúdo pedagógico se conecta à oferta comercial.", src:"assets/video-pedagogico.mp4"},
+    {titulo:"Playbook de marketing", desc:"Diretrizes de comunicação e uso de cada canal na aquisição.", src:"assets/video-playbook-marketing.mp4"}
   ],
   atendimento: [
-    {titulo:"Playbook de atendimento", desc:"Roteiros construídos a partir das objeções reais dos leads.", src:null}
+    {titulo:"Playbook de atendimento", desc:"Roteiros construídos a partir das objeções reais dos leads.", src:"assets/video-playbook-atendimento.mp4"}
   ],
   followup: [
     {titulo:"Follow-up", desc:"Registro visual da rotina de follow-up por estágio.", tipo:"imagem", src:null}
   ],
   ia: [
-    {titulo:"Automação e gestão de leads", desc:"Rotinas automatizadas sustentando a operação no dia a dia.", src:null}
+    {titulo:"Automação e gestão de leads", desc:"Rotinas automatizadas sustentando a operação no dia a dia.", src:"assets/video-automacao-gestao-leads.mp4"}
   ],
   prova: [
-    {titulo:"Resultados e análise de leads", desc:"Painel de acompanhamento do funil, do lead frio à matrícula confirmada.", src:null}
+    {titulo:"Resultados e análise de leads", desc:"Painel de acompanhamento do funil, do lead frio à matrícula confirmada.", src:"assets/video-prova-resultados-leads.mp4"}
   ]
 };
 
@@ -546,6 +647,31 @@ const statObserver = new IntersectionObserver((entries, obs)=>{
   });
 }, {threshold:.6});
 statEls.forEach(n=> statObserver.observe(n));
+
+// lead form handler
+const leadForm = document.getElementById('leadForm');
+if(leadForm){
+  leadForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = document.getElementById('btnEnviar');
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const contexto = document.getElementById('contexto').value.trim();
+    const perm = document.getElementById('permissaocontato').checked;
+    if(!nome || !email || !contexto || !perm){
+      alert('Preencha todos os campos obrigatórios antes de enviar.');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    setTimeout(()=>{
+      leadForm.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitação';
+    }, 800);
+  });
+}
 </script>
 </body>
 </html>

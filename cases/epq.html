@@ -247,7 +247,21 @@
     </div>
     <div class="timeline" id="timeline-followup"></div>
 
-    <div class="video-block" id="video-followup"></div>
+    <div style="margin-top:24px; display:flex; gap:10px; flex-wrap:wrap;">
+      <div class="sys-pill"><span>38</span><small>Conversas</small></div>
+      <div class="sys-pill"><span>5</span><small>Etapas</small></div>
+      <div class="sys-pill"><span>100%</span><small>Base real</small></div>
+    </div>
+
+    <div class="video-block" id="video-followup">
+      <div class="video-frame">
+        <video controls preload="auto" playsinline>
+          <source src="https://flavio-guedes.github.io/portfolio/assets/07-follow-up.mp4" type="video/mp4">
+          Seu navegador não suporta vídeo HTML5.
+        </video>
+        <div class="cap"><strong>Follow-up</strong> — Registro visual da rotina de follow-up por estágio, com as 5 etapas aplicadas sobre 38 conversas reais.</div>
+      </div>
+    </div>
   </section>
 
   <!-- IA E AUTOMAÇÃO -->
@@ -504,9 +518,6 @@ const VIDEOS = {
   atendimento: [
     {titulo:"Playbook de atendimento", desc:"Roteiros construídos a partir das objeções reais dos leads.", src:"https://flavio-guedes.github.io/portfolio/assets/video-playbook-atendimento.mp4"}
   ],
-  followup: [
-    {titulo:"Follow-up", desc:"Registro visual da rotina de follow-up por estágio.", src:"/assets/07-follow-up.mp4"}
-  ],
   ia: [
     {titulo:"Automação e gestão de leads", desc:"Rotinas automatizadas sustentando a operação no dia a dia.", src:"https://flavio-guedes.github.io/portfolio/assets/video-automacao-gestao-leads.mp4"}
   ],
@@ -595,7 +606,6 @@ const tl = document.getElementById('timeline-followup');
 FOLLOWUP.forEach(f=>{
   tl.appendChild(el(`<div class="tl-item"><div class="day">${f.dia}</div><h4>${f.titulo}</h4><p>${f.texto}</p></div>`));
 });
-renderVideoBlock('video-followup', VIDEOS.followup);
 
 // ia chips
 const chipsIa = document.getElementById('chips-ia');

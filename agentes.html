@@ -1,1 +1,100 @@
 cd "/Users/mac/Desktop/HermesWorkspace/portfolio-repo" && git reset --hard origin/main && pbpaste > agentes.html && grep -q "kanbanGeral" agentes.html && grep -q -- "--nav-w:210px" agentes.html && git add agentes.html && git commit -m "feat(agentes): layout EPQ" && git push origin HEAD && open "https://flavio-guedes.github.io/portfolio/agentes.html"
+<style id="agentes-style">
+.ag-wrap{padding:4px 0}
+.ag-h2{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin:0 0 8px;display:flex;align-items:center;gap:10px}
+.ag-h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,191,255,.4),transparent)}
+.ag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin:0 0 12px}
+.ag-card{background:linear-gradient(135deg,rgba(14,32,56,.42),rgba(7,18,36,.32));border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.ag-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac,var(--cyan));opacity:.8}
+.ag-card:hover{transform:translateY(-2px);border-color:rgba(0,191,255,.35);box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.ag-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ag-av{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-weight:700;font-size:12px;color:#02070F;flex-shrink:0}
+.ag-nm{font-size:12.5px;color:var(--title);font-weight:650;line-height:1.2}
+.ag-rl{font-size:10.5px;color:var(--dim)}
+.ag-st{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:4px;margin-left:auto;white-space:nowrap}
+.ag-st.ativo{background:rgba(18,199,160,.15);color:var(--green)}
+.ag-st.overload{background:rgba(232,76,98,.15);color:var(--red)}
+.ag-task{font-size:11px;color:var(--text);padding:6px 8px;background:rgba(0,0,0,.2);border-radius:6px;border-left:2px solid var(--ac,var(--cyan));margin-bottom:8px;line-height:1.4}
+.ag-stats{display:flex;gap:8px;padding-top:6px;border-top:1px solid var(--hair)}
+.ag-stat{flex:1;text-align:center}
+.ag-stat strong{display:block;font-size:13px;color:var(--title);font-weight:700}
+.ag-stat span{font-size:8.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.ag-kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+@media(max-width:1100px){.ag-kanban{grid-template-columns:repeat(2,1fr)}}
+.ag-col{background:rgba(7,18,36,.42);border:1px solid var(--line);border-radius:10px;padding:8px;min-height:100px}
+.ag-col-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--title);font-weight:600}
+.ag-col-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px}
+.ag-col-c{font-size:9.5px;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:99px;color:var(--dim)}
+.ag-kcard{background:rgba(14,32,56,.7);border:1px solid var(--hair);border-radius:7px;padding:7px;margin-bottom:5px;font-size:10.5px}
+.ag-kcard-top{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:4px}
+.ag-kcard-name{display:flex;align-items:center;gap:3px;font-size:9px;color:var(--dim)}
+.ag-kav{width:14px;height:14px;border-radius:3px;display:grid;place-items:center;font-size:7px;font-weight:700;color:#02070F}
+.ag-prio{font-size:7.5px;font-weight:700;text-transform:uppercase;padding:1px 4px;border-radius:3px}
+.ag-prio.alta{background:rgba(232,76,98,.18);color:var(--red)}
+.ag-prio.media{background:rgba(255,181,71,.18);color:var(--amber)}
+.ag-prio.baixa{background:rgba(95,123,151,.18);color:var(--dim)}
+.ag-kt{color:var(--text);line-height:1.35}
+.ag-suggs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.ag-sugg{background:linear-gradient(135deg,rgba(14,32,56,.42),rgba(7,18,36,.32));border:1px solid var(--line);border-radius:10px;padding:10px;font-size:11px}
+.ag-sugg-h{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.ag-imp{font-size:8px;font-weight:700;text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-left:auto}
+.ag-imp.alto{background:rgba(18,199,160,.18);color:var(--green)}
+.ag-imp.medio{background:rgba(255,181,71,.18);color:var(--amber)}
+.ag-sugg-t{font-size:11px;font-weight:600;color:var(--title);margin-bottom:3px}
+.ag-sugg-r{color:var(--text);line-height:1.4;margin-bottom:7px}
+.ag-sugg-a{display:flex;gap:5px}
+.ag-sugg-a button{flex:1;background:rgba(0,191,255,.08);border:1px solid rgba(0,191,255,.2);color:var(--cyan2);padding:4px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer}
+.ag-sugg-a button.ds{background:transparent;color:var(--dim);border-color:var(--hair)}
+</style>
+<div id="agentes-section-preenchida" class="ag-wrap">
+  <h2 class="ag-h2">Agentes em operação</h2>
+  <div class="ag-grid" id="ag-grid"></div>
+  <h2 class="ag-h2">Kanban geral</h2>
+  <div class="ag-kanban" id="ag-kanban"></div>
+  <h2 class="ag-h2">Sugestões dos agentes</h2>
+  <div class="ag-suggs" id="ag-suggs"></div>
+</div>
+<script>
+(function(){
+  var AG=[
+    {name:'Atlas',role:'Estrategista',initials:'AT',color:'#00BFFF',status:'ativo',task:'Analisando 240 questões de Direito',tasks:24,done:18,rate:87},
+    {name:'Nave',role:'Analista de Dados',initials:'NV',color:'#12C7A0',status:'ativo',task:'Dashboard de retenção Q4',tasks:18,done:14,rate:92},
+    {name:'Forge',role:'Gerador de Questões',initials:'FG',color:'#FFB547',status:'ativo',task:'Gerando 50 questões OAB',tasks:32,done:28,rate:95},
+    {name:'Sentinela',role:'QA e Revisão',initials:'SN',color:'#7C8CFF',status:'ativo',task:'Validando 120 questões ENEM-24',tasks:15,done:11,rate:98},
+    {name:'Mercúrio',role:'Atendimento',initials:'MC',color:'#F06CA1',status:'overload',task:'47 tickets abertos · fila em alta',tasks:47,done:32,rate:84},
+    {name:'Órbita',role:'Pipeline de Vendas',initials:'OR',color:'#2DD4BF',status:'ativo',task:'Follow-up com 3 escolas',tasks:21,done:16,rate:89}
+  ];
+  var map={}; AG.forEach(function(a){map[a.initials]=a});
+  var COLS=[
+    {id:'backlog',label:'Backlog',color:'#5F7B97',tasks:[{t:'Mapear tópicos 2025',ag:'AT',p:'media'},{t:'Integrar eventos',ag:'NV',p:'media'},{t:'Revisar FAQ',ag:'MC',p:'baixa'}]},
+    {id:'progress',label:'Em progresso',color:'#FFB547',tasks:[{t:'Analisar 240 questões',ag:'AT',p:'alta'},{t:'Dashboard Q4',ag:'NV',p:'alta'},{t:'Gerar 50 questões OAB',ag:'FG',p:'media'},{t:'Fila de tickets',ag:'MC',p:'alta'}]},
+    {id:'review',label:'Revisão',color:'#7C8CFF',tasks:[{t:'QA banco ENEM-24',ag:'SN',p:'alta'},{t:'Relatório gaps',ag:'AT',p:'media'}]},
+    {id:'done',label:'Concluído',color:'#12C7A0',tasks:[{t:'Plano ENEM-24',ag:'AT',p:'alta'},{t:'Coorte out/2025',ag:'NV',p:'alta'},{t:'12 questões Ética',ag:'FG',p:'alta'}]}
+  ];
+  var SG=[
+    {ag:'AT',impact:'alto',title:'Priorizar Estatística',reason:'Maior índice de erro (62%) nas últimas 200 questões.'},
+    {ag:'NV',impact:'alto',title:'Automatizar alerta de churn',reason:'3 contas em risco esta semana.'},
+    {ag:'MC',impact:'alto',title:'Escalar carga — 47 tickets',reason:'Volume 120% acima da média. Distribuir para Atlas e Forge.'},
+    {ag:'SN',impact:'medio',title:'Reforçar QA em Exatas',reason:'Taxa de erro 3x maior que Humanas.'}
+  ];
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  document.getElementById('ag-grid').innerHTML=AG.map(function(a){
+    return '<div class="ag-card" style="--ac:'+a.color+'"><div class="ag-top"><div class="ag-av" style="background:'+a.color+'">'+a.initials+'</div><div style="flex:1;min-width:0"><div class="ag-nm">'+esc(a.name)+'</div><div class="ag-rl">'+esc(a.role)+'</div></div><span class="ag-st '+a.status+'">'+(a.status==='ativo'?'● Ativo':'⚠ Sobrecarga')+'</span></div><div class="ag-task">'+esc(a.task)+'</div><div class="ag-stats"><div class="ag-stat"><strong>'+a.tasks+'</strong><span>tarefas</span></div><div class="ag-stat"><strong>'+a.done+'</strong><span>feitas</span></div><div class="ag-stat"><strong>'+a.rate+'%</strong><span>sucesso</span></div></div></div>';
+  }).join('');
+  document.getElementById('ag-kanban').innerHTML=COLS.map(function(c){
+    var tasks=c.tasks.map(function(t){
+      var a=map[t.ag];
+      return '<div class="ag-kcard"><div class="ag-kcard-top"><div class="ag-kcard-name"><span class="ag-kav" style="background:'+a.color+'">'+a.initials+'</span>'+esc(a.name)+'</div><span class="ag-prio '+t.p+'">'+t.p+'</span></div><div class="ag-kt">'+esc(t.t)+'</div></div>';
+    }).join('');
+    return '<div class="ag-col"><div class="ag-col-h"><span><span class="ag-col-dot" style="background:'+c.color+'"></span>'+c.label+'</span><span class="ag-col-c">'+c.tasks.length+'</span></div>'+tasks+'</div>';
+  }).join('');
+  document.getElementById('ag-suggs').innerHTML=SG.map(function(s){
+    var a=map[s.ag];
+    return '<div class="ag-sugg"><div class="ag-sugg-h"><span style="width:18px;height:18px;border-radius:4px;display:grid;place-items:center;font-size:8px;font-weight:700;color:#02070F;background:'+a.color+'">'+a.initials+'</span><span style="font-size:10px;color:var(--dim);font-weight:600">'+esc(a.name)+'</span><span class="ag-imp '+s.impact+'">'+s.impact+'</span></div><div class="ag-sugg-t">'+esc(s.title)+'</div><div class="ag-sugg-r">'+esc(s.reason)+'</div><div class="ag-sugg-a"><button type="button">Aplicar</button><button type="button" class="ds">Dispensar</button></div></div>';
+  }).join('');
+  document.querySelectorAll('.ag-sugg').forEach(function(el){
+    el.querySelector('button').addEventListener('click',function(){el.style.opacity='.5';this.textContent='✓ Aplicado';this.disabled=true});
+    el.querySelector('.ds').addEventListener('click',function(){el.style.transition='opacity .25s';el.style.opacity='0';setTimeout(function(){el.remove()},260)});
+  });
+})();
+</script>

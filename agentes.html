@@ -56,6 +56,33 @@ cd "/Users/mac/Desktop/HermesWorkspace/portfolio-repo" && git reset --hard origi
 </div>
 <script>
 (function(){
+  const MOCK_AGENTS = [
+    {id:'atlas',name:'Atlas',role:'Estrategista de Conteudo',status:'ativo',task:'Analisando 240 questoes de Direito',tasks:24,done:18,rate:87},
+    {id:'nave',name:'Nave',role:'Analista de Dados',status:'ativo',task:'Dashboard de retencao Q4',tasks:18,done:14,rate:92},
+    {id:'forge',name:'Forge',role:'Gerador de Questoes',status:'ativo',task:'Gerando 50 questoes OAB',tasks:32,done:28,rate:95},
+    {id:'sentinela',name:'Sentinela',role:'QA e Revisao',status:'ativo',task:'Validando 120 questoes ENEM-24',tasks:15,done:11,rate:98},
+    {id:'mercurio',name:'Mercurio',role:'Atendimento',status:'overload',task:'47 tickets abertos',tasks:47,done:32,rate:84},
+    {id:'orbita',name:'Orbita',role:'Pipeline de Vendas',status:'ativo',task:'Follow-up com 3 escolas',tasks:21,done:16,rate:89}
+  ];
+  const MOCK_KANBAN = {
+    backlog:[{t:'Mapear topicos 2025',ag:'Atlas',p:'media'},{t:'Integrar eventos',ag:'Nave',p:'media'},{t:'Revisar FAQ',ag:'Mercurio',p:'baixa'}],
+    progress:[{t:'Analisar 240 questoes',ag:'Atlas',p:'alta'},{t:'Dashboard Q4',ag:'Nave',p:'alta'},{t:'Gerar 50 questoes OAB',ag:'Forge',p:'media'},{t:'Fila de tickets',ag:'Mercurio',p:'alta'}],
+    review:[{t:'QA banco ENEM-24',ag:'Sentinela',p:'alta'},{t:'Relatorio gaps',ag:'Atlas',p:'media'}],
+    done:[{t:'Plano ENEM-24',ag:'Atlas',p:'alta'},{t:'Coorte out/2025',ag:'Nave',p:'alta'},{t:'12 questoes Etica',ag:'Forge',p:'alta'}]
+  };
+  const MOCK_SUGGESTIONS = [
+    {from:'Atlas',impact:'alto',title:'Priorizar Estatistica',reason:'Maior indice de erro (62%) nas ultimas 200 questoes.'},
+    {from:'Nave',impact:'alto',title:'Automatizar alerta de churn',reason:'3 contas em risco esta semana.'},
+    {from:'Mercurio',impact:'alto',title:'Escalar carga — 47 tickets',reason:'Volume 120% acima da media.'},
+    {from:'Sentinela',impact:'medio',title:'Reforcar QA em Exatas',reason:'Taxa de erro 3x maior que Humanas.'}
+  ];
+  window.MOCK_AGENTS = MOCK_AGENTS;
+  window.MOCK_KANBAN = MOCK_KANBAN;
+  window.MOCK_SUGGESTIONS = MOCK_SUGGESTIONS;
+  window.mockFetch = function(url){ return Promise.resolve({ok:true, json:function(){return Promise.resolve({agents:MOCK_AGENTS, kanban:MOCK_KANBAN, suggestions:MOCK_SUGGESTIONS});}}); };
+})();
+
+(function(){
   var AG=[
     {name:'Atlas',role:'Estrategista',initials:'AT',color:'#00BFFF',status:'ativo',task:'Analisando 240 questões de Direito',tasks:24,done:18,rate:87},
     {name:'Nave',role:'Analista de Dados',initials:'NV',color:'#12C7A0',status:'ativo',task:'Dashboard de retenção Q4',tasks:18,done:14,rate:92},

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0c0f">
+<title>Painel de Follow-up Personalizado — EPQ</title>
+<style>
+  :root{
+    --bg0:#0b0c0f; --bg1:#0f1114; --bg2:#14161a;
+    --card:rgba(26,28,33,.92); --card2:rgba(18,20,24,.96);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.16);
+    --txt:#e8eaee; --muted:#9ea4ae; --dim:#6c727d;
+    --accent:#4f6a95; --accent-h:#415a82;
+    --p0:#f87171; --p1:#fbbf24; --p2:#60a5fa; --p3:#94a3b8;
+    --ok:#34d399; --wa:#25d366;
+    --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    color-scheme:dark;
+  }
+  [data-theme="light"]{
+    --bg0:#f3f4f6; --bg1:#eceef2; --bg2:#e5e8ee;
+    --card:rgba(255,255,255,.96); --card2:rgba(250,250,251,.98);
+    --line:rgba(15,23,42,.08); --line2:rgba(15,23,42,.16);
+    --txt:#161a21; --muted:#545b67; --dim:#7f8691;
+    --accent:#3f5f94; --accent-h:#34507e;
+    --p0:#dc2626; --p1:#b45309; --p2:#1d4ed8; --p3:#475569;
+    --ok:#047857; --wa:#128c4b;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--font);color:var(--txt);font-size:14px;line-height:1.55;
+       background:linear-gradient(180deg,var(--bg0),var(--bg1) 55%,var(--bg2));
+       min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .ico{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;
+       stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .ico.s{width:13px;height:13px;vertical-align:-2px}
+
+  .panel{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+  .head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .logo{width:38px;height:38px;border-radius:10px;background:var(--accent);
+        display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0}
+  .head h1{font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .head p{color:var(--dim);font-size:12.5px}
+  .theme-btn{margin-left:auto;padding:7px 12px;border-radius:8px;border:1px solid var(--line2);
+             color:var(--muted);font-size:12.5px;display:inline-flex;gap:7px;align-items:center}
+  .theme-btn:hover{color:var(--txt);border-color:var(--accent)}
+
+  .explain{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 13px;position:relative}
+  .step b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+  .step span{font-size:12.5px;color:var(--txt)}
+  .step .n{position:absolute;top:10px;right:12px;font-size:11px;color:var(--dim);font-weight:600}
+
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0 18px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .stat small{display:block;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+  .stat b{font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .stat b i{font-style:normal;font-size:12px;color:var(--dim);margin-left:3px}
+
+  .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .filters input{flex:1;min-width:200px;padding:9px 12px;border-radius:9px;border:1px solid var(--line2);
+                 background:var(--card2);color:var(--txt);outline:none;font-size:13px}
+  .filters input:focus{border-color:var(--accent)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{padding:5px 11px;border-radius:999px;border:1px solid var(--line2);
+        color:var(--muted);font-size:12px;font-weight:500;white-space:nowrap}
+  .chip:hover{color:var(--txt);border-color:var(--accent)}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  .card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);
+        border-radius:12px;padding:15px 16px;display:flex;flex-direction:column;gap:10px;
+        transition:border-color .2s}
+  .card:hover{border-color:var(--line2)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .card-name{font-size:14.5px;font-weight:600;line-height:1.3}
+  .card-phone{font-size:12px;color:var(--dim);margin-top:2px}
+  .badge{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
+         letter-spacing:.04em;white-space:nowrap;flex-shrink:0}
+  .badge.p0{color:var(--p0);border:1px solid var(--p0)}
+  .badge.p1{color:var(--p1);border:1px solid var(--p1)}
+  .badge.p2{color:var(--p2);border:1px solid var(--p2)}
+  .badge.p3{color:var(--p3);border:1px solid var(--p3)}
+  .badge.turma{background:rgba(79,106,149,.18);color:#b8c5e0;border:1px solid rgba(79,106,149,.4);
+               white-space:normal;line-height:1.3}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--dim);align-items:center}
+  .meta b{color:var(--muted);font-weight:500}
+  .objecao{font-size:12.5px;color:var(--muted);background:rgba(255,255,255,.03);
+           border-left:2px solid var(--line2);padding:7px 10px;border-radius:0 6px 6px 0}
+  .objecao b{color:var(--txt)}
+
+  .msg-preview{font-size:12.5px;color:var(--txt);background:rgba(37,211,102,.07);
+               border:1px solid rgba(37,211,102,.22);border-radius:8px;padding:9px 11px;
+               white-space:pre-line;line-height:1.5;max-height:120px;overflow:hidden;
+               position:relative;overflow-wrap:anywhere;word-break:break-word}
+  .msg-preview::after{content:"";position:absolute;left:0;right:0;bottom:0;height:24px;
+                      background:linear-gradient(180deg,transparent,rgba(18,20,24,.95))}
+  [data-theme="light"] .msg-preview::after{background:linear-gradient(180deg,transparent,rgba(250,250,251,.98))}
+  .msg-preview b{color:var(--ok)}
+
+  @media (hover: hover) and (pointer: fine){
+    .msg-preview{cursor:pointer}
+    .msg-preview:hover{max-height:none}
+    .msg-preview:hover::after{display:none}
+  }
+
+  .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+  .actions .row-secondary{display:contents}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:8px;
+       font-size:12px;font-weight:600;white-space:nowrap;border:1px solid transparent}
+  .btn.wa{background:var(--wa);color:#fff}
+  .btn.wa:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;border-color:var(--line2);color:var(--txt)}
+  .btn.ghost:hover{border-color:var(--accent)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn .ico{width:14px;height:14px}
+
+  .foot{margin-top:26px;padding:14px 16px;border-top:1px solid var(--line);
+        font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .foot code{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
+
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:grid;place-items:center;
+         padding:18px;z-index:50;backdrop-filter:blur(4px)}
+  .modal-inner{background:var(--card2);border:1px solid var(--line2);border-radius:14px;
+               max-width:640px;width:100%;max-height:88vh;overflow:auto;position:relative;padding:22px}
+  .modal-close{position:absolute;top:10px;right:12px;width:36px;height:36px;border-radius:8px;
+               color:var(--muted);font-size:20px;display:grid;place-items:center}
+  .modal-close:hover{color:var(--txt);background:rgba(255,255,255,.06)}
+
+  .landing{max-width:680px;margin:0 auto;padding:26px 20px 60px}
+  .land-logo{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .land-logo .logo{width:34px;height:34px;font-size:12px}
+  .land-logo b{font-size:14px}
+  .land-logo small{display:block;color:var(--dim);font-size:11.5px}
+  .land-hero h1{font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:6px}
+  .land-hero p{color:var(--muted);font-size:14px}
+  .land-badge{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:999px;
+              background:rgba(79,106,149,.2);border:1px solid rgba(79,106,149,.45);
+              color:#b8c5e0;font-size:12px;font-weight:600}
+  .land-section{background:var(--card);border:1px solid var(--line);border-radius:12px;
+                padding:16px 18px;margin-top:14px}
+  .land-section h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+                   color:var(--dim);font-weight:600;margin-bottom:8px}
+  .land-section p{color:var(--muted);font-size:13.5px;line-height:1.6}
+  .land-section p + p{margin-top:8px}
+  .land-section ul{list-style:none;padding:0;margin-top:6px}
+  .land-section li{padding:6px 0 6px 22px;position:relative;color:var(--muted);font-size:13.5px}
+  .land-section li::before{content:"›";position:absolute;left:6px;color:var(--accent);font-weight:700}
+  .land-next{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.06)}
+  .land-next p{color:var(--txt)}
+  .land-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .land-cta .btn{padding:12px 18px;font-size:13.5px}
+  .land-foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+             color:var(--dim);font-size:11.5px;text-align:center;line-height:1.6}
+
+  @media (max-width: 900px){
+    .explain{grid-template-columns:repeat(2,1fr)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+
+  @media (max-width: 720px){
+    body{font-size:14px}
+    .panel{padding:14px 12px max(40px, env(safe-area-inset-bottom))}
+    .head{gap:10px;margin-bottom:4px}
+    .head h1{font-size:17px}
+    .head p{font-size:12px}
+    .logo{width:32px;height:32px;font-size:12px;border-radius:8px}
+    .theme-btn{padding:6px 10px;font-size:12px;gap:6px}
+
+    .explain{grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+    .step{padding:10px 11px}
+    .step b{font-size:10px;margin-bottom:2px}
+    .step span{font-size:12px;line-height:1.35}
+
+    .stats{grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 14px}
+    .stat{padding:10px 12px}
+    .stat b{font-size:19px}
+
+    .filters{flex-direction:column;align-items:stretch;gap:8px;margin-bottom:12px}
+    .filters input{
+      font-size:16px;
+      padding:11px 12px;
+      width:100%;
+      min-width:0;
+    }
+    .chips{
+      display:flex;flex-wrap:nowrap;gap:6px;
+      overflow-x:auto;-webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      margin:0 -12px;padding:4px 12px;
+    }
+    .chips::-webkit-scrollbar{display:none}
+    .chip{flex-shrink:0;padding:7px 12px;font-size:12.5px}
+
+    .grid{grid-template-columns:1fr;gap:10px}
+    .card{padding:14px;gap:10px;border-radius:11px}
+    .card-name{font-size:15px}
+    .card-phone{font-size:12.5px}
+    .meta{font-size:12px}
+    .objecao{font-size:13px;padding:8px 10px}
+
+    .msg-preview{max-height:150px;font-size:13px;padding:11px 12px;cursor:pointer}
+    .msg-preview::before{
+      content:"Toque para expandir";
+      display:block;font-size:10.5px;color:var(--dim);
+      font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+      margin-bottom:6px;
+    }
+    .msg-preview.expanded{max-height:none}
+    .msg-preview.expanded::before{content:"Toque para recolher"}
+    .msg-preview.expanded::after{display:none}
+
+    .actions{flex-direction:column;gap:6px}
+    .actions .row-secondary{display:flex;gap:6px}
+    .actions .btn{padding:11px 12px;font-size:13px;border-radius:9px;justify-content:center}
+    .actions .btn.wa{width:100%}
+    .actions .row-secondary .btn{flex:1;min-width:0}
+    .actions .btn .ico{width:16px;height:16px}
+
+    .modal{padding:0;place-items:end stretch}
+    .modal-inner{
+      max-width:100%;width:100%;max-height:92vh;
+      border-radius:16px 16px 0 0;
+      padding:22px 16px max(22px, env(safe-area-inset-bottom));
+      border-left:0;border-right:0;border-bottom:0;
+      animation:sheet-up .22s ease-out;
+    }
+    .modal-close{top:8px;right:8px;background:rgba(255,255,255,.06)}
+
+    .landing{padding:20px 16px max(40px, env(safe-area-inset-bottom))}
+    .land-logo{margin-bottom:18px}
+    .land-hero h1{font-size:22px}
+    .land-hero p{font-size:13.5px}
+    .land-section{padding:14px 15px;border-radius:11px}
+    .land-section p,.land-section li{font-size:13px}
+    .land-cta{flex-direction:column;gap:8px}
+    .land-cta .btn{width:100%;justify-content:center;padding:13px 18px}
+
+    .foot{font-size:11.5px;padding:14px 12px}
+  }
+
+  @media (max-width: 380px){
+    .explain{grid-template-columns:1fr}
+    .head h1{font-size:16px}
+    .stat b{font-size:17px}
+    .land-hero h1{font-size:20px}
+    .theme-btn span{display:none}
+    .theme-btn{padding:7px 9px}
+  }
+
+  @keyframes sheet-up{
+    from{transform:translateY(24px);opacity:.6}
+    to{transform:translateY(0);opacity:1}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div id="panel" class="panel" hidden>
+  <header class="head">
+    <div class="logo">EPQ</div>
+    <div>
+      <h1>Painel de Follow-up Personalizado</h1>
+      <p>Mensagens prontas por lead · link com a landing de cada um · envio direto no WhatsApp</p>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <span>Tema</span>
+    </button>
+  </header>
+
+  <div class="explain">
+    <div class="step"><span class="n">1</span><b>Painel</b><span>Time vê o lead, a objeção e a prioridade</span></div>
+    <div class="step"><span class="n">2</span><b>Mensagem + link</b><span>Mensagem personalizada já com o link do lead</span></div>
+    <div class="step"><span class="n">3</span><b>Landing</b><span>Lead clica e vê o objetivo do painel + seu histórico</span></div>
+    <div class="step"><span class="n">4</span><b>Resposta</b><span>Lead responde no WhatsApp; time retoma a conversa</span></div>
+  </div>
+
+  <section class="stats" id="stats"></section>
+
+  <section class="filters">
+    <input id="search" type="search" placeholder="Buscar por nome, telefone, turma ou objeção…" autocomplete="off" enterkeyhint="search">
+    <div class="chips" id="filterPrio"></div>
+    <div class="chips" id="filterTurma"></div>
+  </section>
+
+  <main class="grid" id="grid"></main>
+
+  <footer class="foot">
+    <span>Demonstração · dados fictícios de leads. Números de WhatsApp são exemplos.</span>
+    <span>Configure <code>SALES_WHATSAPP</code> no código para apontar para o número do time.</span>
+  </footer>
+</div>
+
+<div id="landing" class="landing" hidden></div>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-inner">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const SALES_WHATSAPP = '5521999999999';
+const BASE_URL = location.protocol.startsWith('http')
+  ? location.origin + location.pathname
+  : 'https://flavio-guedes.github.io/portfolio/painel-leads-epq.html';
+
+const LEADS = [
+  { id:'clara-luiz', nome:'Clara Luiz dos Santos', primeiroNome:'Clara',
+    fone:'5521999719474', foneDisplay:'(21) 99971-9474',
+    turma:'GCM Maricá combo', etapa:'Qualificado', resp:'Clara', dias:5, prio:'P0',
+    objecao:'Filho no ESPCEX no mesmo dia do aulão — negociável',
+    contextoCurto:'Vi que você tinha interesse no combo GCM Maricá e que o aulão de 12/09 coincidiu com o ESPCEX do seu filho. Separei uma alternativa que não conflita.',
+    historico:'Você já recebeu a tabela do combo (R$ 1.945,50 à vista ou 5x R$ 389,50 no Pix), confirmou o nome para o aulão de 12/09, mas precisa levar seu filho ao concurso ESPCEX na Tijuca no mesmo dia.',
+    proximo:'Oferecer aula experimental online ou em outro dia — sem perder o ritmo do combo.' },
+  { id:'ramon-cerqueira', nome:'Ramon Cerqueira', primeiroNome:'Ramon',
+    fone:'5521966604178', foneDisplay:'(21) 96660-4178',
+    turma:'GCM Maricá', etapa:'Negociação', resp:'Ronan', dias:4, prio:'P0',
+    objecao:'Aguardando resolver situação no trabalho antes de fechar',
+    contextoCurto:'Vi que você pediu um prazo pra resolver uma situação no trabalho antes de fechar o GCM Maricá (noite, 19h–22h, 5 meses). Ainda tá querendo seguir?',
+    historico:'Você recebeu a oferta da turma da noite (19h–22h, seg–sex, 5 meses), convite para aula experimental de matemática e os valores: R$ 300/mês no Pix ou R$ 330 no cartão. Disse que ia resolver uma situação do trabalho e retornar.',
+    proximo:'Retomar com a turma aberta e oferecer reserva de vaga sem compromisso.' },
+  { id:'lead-prf', nome:'Lead PRF (sem nome)', primeiroNome:'',
+    fone:'5521980555629', foneDisplay:'(21) 98055-5629',
+    turma:'PRF Agente Administrativo', etapa:'Proposta Enviada', resp:'Ronan', dias:6, prio:'P0',
+    objecao:'4 perguntas (inscrição, requisitos, edital, valores) não respondidas',
+    contextoCurto:'Você perguntou sobre inscrição, requisitos, edital e valores do PRF Ag. Administrativo e a equipe não respondeu às 4 perguntas. Vou responder agora, uma por uma.',
+    historico:'Em 09/09 você fez 4 perguntas concretas sobre o concurso PRF Agente Administrativo. A equipe respondeu apenas com uma mensagem genérica de boas-vindas. Nada foi respondido de fato.',
+    proximo:'Responder as 4 perguntas + oferecer aula experimental e valores da preparação.' },
+  { id:'andressa-pmerj', nome:'Andressa PMERJ', primeiroNome:'Andressa',
+    fone:'5521982946742', foneDisplay:'(21) 98294-6742',
+    turma:'PMERJ', etapa:'Contato Feito', resp:'Clara', dias:6, prio:'P0',
+    objecao:'Erro de digitação “PMERG” + lead não percebeu conversa ativa',
+    contextoCurto:'Sobre sua inscrição no PMERJ: a equipe errou o nome do concurso na conversa anterior. Quer que eu te passe as opções de turno e turma, sem erro dessa vez?',
+    historico:'A equipe respondeu com “PMERG” em vez de “PMERJ”. Você respondeu “Sim” mas não informou o nome, e a conversa parou. O erro de digitação enfraqueceu a credibilidade.',
+    proximo:'Retomar com “PMERJ” correto, perguntar turno preferido e oferecer aula experimental.' },
+  { id:'raquel-pmerj', nome:'Raquel PMERJ', primeiroNome:'Raquel',
+    fone:'5521987625333', foneDisplay:'(21) 98762-5333',
+    turma:'PMERJ', etapa:'Proposta Enviada', resp:'Ronan', dias:4, prio:'P0',
+    objecao:'Equipe desviou a conversa para GCM sem oferecer PMERJ',
+    contextoCurto:'Você pediu informações do PMERJ e a equipe desviou pra GCM. Vou te passar os valores reais da preparação PMERJ, sem trocar o foco.',
+    historico:'Você manifestou interesse no PMERJ. A equipe ofereceu GCM Maricá e São Gonçalo como alternativa, mas nunca te passou os valores nem aula experimental do PMERJ.',
+    proximo:'Oferecer valores e aula experimental de PMERJ (não GCM).' },
+  { id:'andreia-cnu', nome:'Andreia Moreira CNU', primeiroNome:'Andreia',
+    fone:null, foneDisplay:'sem telefone',
+    turma:'CNU Queimados — Assistente Administrativo', etapa:'Contato Feito', resp:'Clara', dias:1, prio:'P0',
+    objecao:'Resposta tardia (~44h) e genérica; sem data de abertura',
+    contextoCurto:'Você perguntou sobre a turma de Queimados (Assistente Administrativo) em 12/09 e a resposta anterior foi genérica. Vou te passar a previsão real de abertura.',
+    historico:'Em 12/09 às 12h33 você perguntou sobre a turma do concurso de Queimados Assistente Administrativo. A equipe só respondeu em 14/09 (~44h depois) com uma mensagem genérica, sem data de abertura.',
+    proximo:'Confirmar data de abertura da turma e oferecer aula experimental.' },
+  { id:'walber-nunes', nome:'Walber Nunes', primeiroNome:'Walber',
+    fone:'5521967688448', foneDisplay:'(21) 96768-8448',
+    turma:'PMERJ', etapa:'Contato Feito', resp:'Clara', dias:6, prio:'P0',
+    objecao:'Pergunta sobre unidade Nilópolis nunca respondida',
+    contextoCurto:'Você perguntou se temos unidade em Nilópolis e a equipe não respondeu. Vou responder agora e te passar as opções de turma.',
+    historico:'Em 09/09 você perguntou “Só tem em Nilópolis?” — uma pergunta direta que decide a continuidade. A equipe não respondeu. A conversa parou.',
+    proximo:'Responder sobre a unidade + oferecer aula experimental de noite.' },
+  { id:'mesquita', nome:'Lead de Mesquita', primeiroNome:'',
+    fone:'5521979607938', foneDisplay:'(21) 97960-7938',
+    turma:'GCM São Gonçalo presencial', etapa:'Novo Lead', resp:'Ronan', dias:1, prio:'P0',
+    objecao:'Voltou espontaneamente pedindo previsão da turma',
+    contextoCurto:'Você voltou em 02/09 perguntando sobre a turma presencial de GCM São Gonçalo. A turma abre 19/09 — quer reservar sua vaga na aula experimental?',
+    historico:'Contato original em 03/08: você perguntou por GCM São Gonçalo presencial e recusou entrar na turma de PMERJ como alternativa, dizendo “assim que abrir, entro em contato”. Voltou sozinho em 02/09 pedindo previsão e recebeu só a mensagem padrão de boas-vindas.',
+    proximo:'Responder com a data real (19/09) e reservar aula experimental.' },
+  { id:'gustavo', nome:'Gustavo', primeiroNome:'Gustavo',
+    fone:'5521964294767', foneDisplay:'(21) 96429-4767',
+    turma:'PMERJ', etapa:'Novo Lead', resp:'Ronan', dias:6, prio:'P0',
+    objecao:'Erro de digitação “PMERG” e sem follow-up posterior',
+    contextoCurto:'Você pediu informações do PMERJ e a equipe errou o nome do concurso na resposta. Vou corrigir e te passar a turma disponível.',
+    historico:'Em 09/09 você perguntou sobre o concurso e recebeu “PMERG” em vez de “PMERJ”. Não houve follow-up posterior. O lead ficou sem resposta real.',
+    proximo:'Retomar com “PMERJ” correto e oferecer aula experimental de matemática.' },
+  { id:'brenda', nome:'Brenda', primeiroNome:'Brenda',
+    fone:'5521969977512', foneDisplay:'(21) 96997-7512',
+    turma:'INSS', etapa:'Proposta Enviada', resp:'Clara', dias:6, prio:'P1',
+    objecao:'Parou após receber os valores — possível objeção de preço não declarada',
+    contextoCurto:'Você recebeu os valores e o endereço da turma INSS e parou. Ficou alguma dúvida sobre a preparação ou sobre o investimento?',
+    historico:'Você perguntou sobre localização e valor da turma INSS. Recebeu endereço + tabela completa de valores. Depois disso, não confirmou visita nem aula experimental. Único lead do funil fora do eixo policial/militar.',
+    proximo:'Reengajar com aula experimental e conversar sobre formas de pagamento.' },
+  { id:'guilherme', nome:'Guilherme', primeiroNome:'Guilherme',
+    fone:'5521974316907', foneDisplay:'(21) 97431-6907',
+    turma:'GCM Maricá / São Gonçalo', etapa:'Proposta Enviada', resp:'Clara', dias:6, prio:'P1',
+    objecao:'Recebeu tabela do combo e parou sem confirmar o aulão',
+    contextoCurto:'Você viu a tabela do combo GCM Maricá/São Gonçalo e parou sem confirmar o aulão. Quer conhecer a turma aberta esta semana?',
+    historico:'Você recebeu a tabela completa do combo (R$ 1.945,50 à vista ≈ R$ 332/mês ou 5x R$ 389,50 no Pix). Parou sem confirmar presença no aulão de 12/09.',
+    proximo:'Reengajar com tour da turma aberta + aula experimental.' },
+  { id:'douglas', nome:'Douglas', primeiroNome:'Douglas',
+    fone:'5521990439709', foneDisplay:'(21) 99043-9709',
+    turma:'GCM Maricá', etapa:'Proposta Enviada', resp:'Clara', dias:5, prio:'P1',
+    objecao:'Dúvida sobre legitimidade do concurso',
+    contextoCurto:'Você perguntou se o concurso do GCM Maricá era real mesmo. Posso te mostrar a legitimidade (edital, banca) e a turma disponível.',
+    historico:'Você perguntou “Esse concurso é real mesmo?”. A equipe confirmou, mas você não respondeu depois. A dúvida sobre a legitimidade precisa de prova concreta, não só de confirmação.',
+    proximo:'Enviar link oficial do edital + oferecer aula experimental.' },
+  { id:'marcelo', nome:'Marcelo', primeiroNome:'Marcelo',
+    fone:'5521992283360', foneDisplay:'(21) 99228-3360',
+    turma:'GCM Queimados', etapa:'Proposta Enviada', resp:'Clara', dias:6, prio:'P1',
+    objecao:'Recebeu as turmas e não escolheu turno',
+    contextoCurto:'Você viu as turmas de GCM Queimados (manhã, noite e sábado) e parou sem escolher turno. Qual fica melhor pra sua rotina?',
+    historico:'Você perguntou sobre o preparatório GCM Queimados e recebeu os detalhes das turmas de manhã, noite e sábado. Parou sem confirmar qual turno prefere.',
+    proximo:'Fechar a escolha de turno e reservar aula experimental.' },
+  { id:'andressa-gcm-noturno', nome:'Andressa GCM noturno', primeiroNome:'Andressa',
+    fone:'5521998127074', foneDisplay:'(21) 99812-7074',
+    turma:'GCM Maricá noturno', etapa:'Proposta Enviada', resp:'Clara', dias:6, prio:'P1',
+    objecao:'Confirmou GCM noturno mas não confirmou presença no aulão',
+    contextoCurto:'Você confirmou o GCM noturno e recebeu os detalhes do combo (19h–22h, 5 meses). Quer garantir sua vaga na turma aberta?',
+    historico:'Você confirmou o GCM noturno, recebeu os detalhes do combo (19h–22h, seg–sex, 5 meses) e o convite para o aulão de 12/09. Parou sem confirmar presença.',
+    proximo:'Usar a turma aberta como gatilho e oferecer visita à unidade.' },
+  { id:'elen-pmerj', nome:'Elen PMERJ', primeiroNome:'Elen',
+    fone:'5521990439709', foneDisplay:'(21) 99043-9709',
+    turma:'PMERJ noturno semanal', etapa:'Proposta Enviada', resp:'Clara', dias:5, prio:'P1',
+    objecao:'Repouso médico — sem pressa',
+    contextoCurto:'Você viu os valores do PMERJ noturno (5x R$ 300 no Pix ou R$ 330 no cartão). Como tá seu repouso médico? Quando quiser, marco uma aula experimental.',
+    historico:'Você recebeu os valores do PMERJ noturno (5x R$ 300 no Pix ou R$ 330 no cartão + material R$ 50 + camisa R$ 75) e o convite para o aulão de 12/09. Disse “Entendi” e comentou que está em repouso médico.',
+    proximo:'Reservar aula experimental para quando o repouso terminar, sem pressão.' },
+  { id:'mateus-pmerj', nome:'Mateus PMERJ', primeiroNome:'Mateus',
+    fone:null, foneDisplay:'sem telefone',
+    turma:'PMERJ / PC / PRF / PF', etapa:'Contato Feito', resp:'Clara', dias:5, prio:'P1',
+    objecao:'Prioridade difusa entre vários concursos',
+    contextoCurto:'Você pediu informações de vários concursos (PMERJ, PC, PRF, PF e secretarias). Qual você quer priorizar pra eu te passar a preparação certa?',
+    historico:'Você pediu informações de vários concursos militares. Recebeu oferta GCM + convite para o aulão de 12/09, mas não confirmou. Prioridade ainda não definida.',
+    proximo:'Definir o concurso-alvo antes de qualquer oferta específica.' },
+  { id:'flavio-gcm', nome:'Flavio GCM', primeiroNome:'Flavio',
+    fone:'5521974927884', foneDisplay:'(21) 97492-7884',
+    turma:'GCM Maricá / São Gonçalo', etapa:'Novo Lead', resp:'Andressa', dias:4, prio:'P1',
+    objecao:'Recebeu oferta mas não respondeu',
+    contextoCurto:'Você viu as turmas de GCM Maricá (abre 14/09) e São Gonçalo (abre 19/09). Qual das duas te interessa mais?',
+    historico:'Você perguntou informações e a equipe ofereceu GCM Maricá e São Gonçalo com abertura em 14/09 e 19/09. Pediu seu nome e área, sem resposta depois.',
+    proximo:'Retomar com a turma que já abriu e oferecer aula experimental.' },
+  { id:'karen', nome:'Karen Ribeiro GCM', primeiroNome:'Karen',
+    fone:null, foneDisplay:'sem telefone',
+    turma:'GCM Maricá — noite', etapa:'Proposta Enviada', resp:'Clara', dias:3, prio:'P1',
+    objecao:'Turno noite definido, horário pendente',
+    contextoCurto:'Você já definiu turno noite semanal pro GCM Maricá. Falta só encaixar o horário — posso te ajudar a ver as opções?',
+    historico:'Em 12/09 você enviou nome “Karen”, turno “Noite” e frequência “Semanal”. A equipe perguntou disponibilidade de horário e você ainda não respondeu com o horário concreto.',
+    proximo:'Confirmar o horário específico e reservar a aula experimental.' },
+  { id:'bergdias', nome:'Bergdias GCM — Gutemberg', primeiroNome:'Gutemberg',
+    fone:null, foneDisplay:'sem telefone',
+    turma:'GCM Maricá', etapa:'Proposta Enviada', resp:'Clara', dias:3, prio:'P1',
+    objecao:'Aguardando disponibilidade para aula experimental',
+    contextoCurto:'Você recebeu a lista de turmas de GCM Maricá (manhã, noite e sábado) e o convite pra aula experimental. Conseguiu ver a disponibilidade?',
+    historico:'Em 12/09 às 9h18 você enviou nome e concurso. A equipe listou as turmas (manhã/noite/sábado) e ofereceu aula experimental. Ainda aguardando sua disponibilidade.',
+    proximo:'Confirmar dia/horário da aula experimental e reservar vaga.' }
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const waLink = (fone, msg) => 'https://wa.me/' + fone + '?text=' + encodeURIComponent(msg);
+const landingUrl = id => BASE_URL + '?lead=' + id;
+
+function buildWaMessage(lead) {
+  const saud = lead.primeiroNome ? 'Oi ' + lead.primeiroNome + '! Tudo bem?' : 'Olá! Tudo bem?';
+  const intro = 'Aqui é ' + lead.resp + ' do preparatório EPQ.';
+  const link  = 'Dá uma olhada neste resumo da sua preparação: ' + landingUrl(lead.id);
+  const pergunta = 'Quer saber mais sobre as turmas de ' + lead.turma + '?';
+  return [saud, intro, lead.contextoCurto, link, pergunta].join('\n\n');
+}
+function buildReplyLink(lead) {
+  const msg = 'Oi ' + lead.resp + '! Vi o painel da minha preparação de ' + lead.turma + ' e quero saber mais sobre as turmas.';
+  return 'https://wa.me/' + SALES_WHATSAPP + '?text=' + encodeURIComponent(msg);
+}
+
+const PRIO_LABEL = {P0:'P0 · urgente', P1:'P1 · atenção', P2:'P2 · morno', P3:'P3 · frio'};
+const PRIO_CLASS = p => p.toLowerCase();
+
+let filtroPrio = 'todas', filtroTurma = 'todas', busca = '';
+
+function renderStats() {
+  const total = LEADS.length;
+  const p0 = LEADS.filter(l => l.prio === 'P0').length;
+  const p1 = LEADS.filter(l => l.prio === 'P1').length;
+  const semFone = LEADS.filter(l => !l.fone).length;
+  $('#stats').innerHTML =
+    '<div class="stat"><small>Leads com mensagem</small><b>' + total + '</b></div>' +
+    '<div class="stat"><small>Prioridade P0</small><b>' + p0 + '</b></div>' +
+    '<div class="stat"><small>Prioridade P1</small><b>' + p1 + '</b></div>' +
+    '<div class="stat"><small>Sem telefone</small><b>' + semFone + '</b></div>' +
+    '<div class="stat"><small>WhatsApp prontos</small><b>' + (total - semFone) + '<i>links</i></b></div>';
+}
+
+function renderFilters() {
+  const prios = ['todas','P0','P1'];
+  $('#filterPrio').innerHTML = prios.map(p =>
+    '<button class="chip ' + (filtroPrio === p ? 'on' : '') + '" data-prio="' + p + '">' +
+    (p === 'todas' ? 'Todas as prioridades' : PRIO_LABEL[p]) + '</button>'
+  ).join('');
+  const turmas = ['todas', ...new Set(LEADS.map(l => l.turma))];
+  $('#filterTurma').innerHTML = turmas.map(t =>
+    '<button class="chip ' + (filtroTurma === t ? 'on' : '') + '" data-turma="' + esc(t) + '">' +
+    (t === 'todas' ? 'Todas as turmas' : esc(t)) + '</button>'
+  ).join('');
+}
+
+function matchLead(l) {
+  if (filtroPrio !== 'todas' && l.prio !== filtroPrio) return false;
+  if (filtroTurma !== 'todas' && l.turma !== filtroTurma) return false;
+  if (busca) {
+    const blob = [l.nome, l.primeiroNome, l.foneDisplay, l.turma, l.objecao, l.contextoCurto, l.resp]
+      .join(' ').toLowerCase();
+    if (!blob.includes(busca.toLowerCase())) return false;
+  }
+  return true;
+}
+
+function renderGrid() {
+  const lista = LEADS.filter(matchLead);
+  if (!lista.length) {
+    $('#grid').innerHTML = '<p style="color:var(--dim);padding:30px;text-align:center">Nenhum lead com esses filtros.</p>';
+    return;
+  }
+  $('#grid').innerHTML = lista.map(l => {
+    const msg = buildWaMessage(l);
+    const wa = l.fone ? waLink(l.fone, msg) : null;
+    return '<article class="card">' +
+      '<div class="card-top"><div>' +
+        '<div class="card-name">' + esc(l.nome || 'Lead sem nome') + '</div>' +
+        '<div class="card-phone">' + esc(l.foneDisplay) + ' · ' + esc(l.resp) + '</div>' +
+      '</div>' +
+      '<span class="badge ' + PRIO_CLASS(l.prio) + '">' + l.prio + '</span></div>' +
+      '<div class="meta">' +
+        '<span class="badge turma">' + esc(l.turma) + '</span>' +
+        '<span><b>Etapa:</b> ' + esc(l.etapa) + '</span>' +
+        '<span><b>' + l.dias + 'd</b> sem contato</span>' +
+      '</div>' +
+      '<div class="objecao"><b>Objeção:</b> ' + esc(l.objecao) + '</div>' +
+      '<div class="msg-preview" title="Toque/clique para expandir">' +
+        '<b>Mensagem pronta:</b>\n' + esc(msg) +
+      '</div>' +
+      '<div class="actions">' +
+        '<a class="btn wa" href="' + (wa || '#') + '"' +
+        (!l.fone ? ' aria-disabled="true" onclick="return false" tabindex="-1"' : ' target="_blank" rel="noopener"') + '>' +
+        '<svg class="ico" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3.5-7.1L21 3l-1.9 5.4A8.9 8.9 0 0 1 21 12z"/><path d="M8 9.5c.4 1.4 1.2 2.6 2.3 3.6 1.1 1.1 2.3 1.9 3.6 2.3l1.3-1.3 2 2c-.5 1-1.5 1.6-2.6 1.6-4 0-8-4-8-8 0-1.1.6-2.1 1.6-2.6l2 2z"/></svg>' +
+        'WhatsApp</a>' +
+        '<div class="row-secondary">' +
+          '<button class="btn ghost" data-act="copy" data-id="' + l.id + '">' +
+            '<svg class="ico" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>' +
+            'Copiar</button>' +
+          '<button class="btn ghost" data-act="preview" data-id="' + l.id + '">' +
+            '<svg class="ico" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>' +
+            'Ver landing</button>' +
+        '</div>' +
+      '</div></article>';
+  }).join('');
+}
+
+function renderPanel() { renderStats(); renderFilters(); renderGrid(); }
+
+function renderLanding(lead) {
+  if (!lead) return '<p style="text-align:center;color:var(--dim);padding:40px">Lead não encontrado.</p>';
+  const reply = buildReplyLink(lead);
+  return '<div class="land-logo"><div class="logo">EPQ</div><div><b>Preparatório EPQ</b><small>Painel de acompanhamento personalizado</small></div></div>' +
+    '<div class="land-hero">' +
+      '<h1>' + (lead.primeiroNome ? 'Olá, ' + esc(lead.primeiroNome) + '!' : 'Olá!') + ' Este é o seu painel de acompanhamento.</h1>' +
+      '<p>Preparei um resumo da sua preparação para que você não precise recomeçar a conversa do zero.</p>' +
+      '<span class="land-badge">' + esc(lead.turma) + '</span>' +
+    '</div>' +
+    '<section class="land-section"><h2>O objetivo deste painel</h2>' +
+      '<p>Este painel foi criado para você acompanhar sua preparação sem perder nenhum detalhe do que já conversamos. Ele mostra:</p>' +
+      '<ul><li>O que já foi discutido sobre a sua preparação</li><li>Seu status atual no processo</li><li>Qual é o próximo passo combinado</li></ul>' +
+      '<p>Assim, você não precisa recomeçar do zero e a gente não perde o fio da meada.</p></section>' +
+    '<section class="land-section"><h2>O que já conversamos</h2><p>' + esc(lead.historico) + '</p></section>' +
+    '<section class="land-section land-next"><h2>Próximo passo</h2><p>' + esc(lead.proximo) + '</p></section>' +
+    '<div class="land-cta">' +
+      '<a class="btn wa" href="' + reply + '" target="_blank" rel="noopener">' +
+        '<svg class="ico" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3.5-7.1L21 3l-1.9 5.4A8.9 8.9 0 0 1 21 12z"/><path d="M8 9.5c.4 1.4 1.2 2.6 2.3 3.6 1.1 1.1 2.3 1.9 3.6 2.3l1.3-1.3 2 2c-.5 1-1.5 1.6-2.6 1.6-4 0-8-4-8-8 0-1.1.6-2.1 1.6-2.6l2 2z"/></svg>' +
+        'Falar no WhatsApp</a>' +
+      '<button class="btn ghost" type="button" data-act="copy-link" data-id="' + lead.id + '">' +
+        '<svg class="ico" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>' +
+        'Copiar link do painel</button>' +
+    '</div>' +
+    '<div class="land-foot">EPQ — Preparatório para concursos · Painel demonstrativo<br>Dados fictícios. Para atendimento, fale com ' + esc(lead.resp) + ' pelo WhatsApp.</div>';
+}
+
+function openPreview(id) {
+  const lead = LEADS.find(l => l.id === id);
+  if (!lead) return;
+  $('#modalContent').innerHTML = renderLanding(lead);
+  $('#modal').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  $('#modal').hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('click', async e => {
+  const chipP = e.target.closest('[data-prio]');
+  if (chipP) { filtroPrio = chipP.dataset.prio; renderPanel(); return; }
+  const chipT = e.target.closest('[data-turma]');
+  if (chipT) { filtroTurma = chipT.dataset.turma; renderPanel(); return; }
+
+  const prev = e.target.closest('.msg-preview');
+  if (prev && window.matchMedia('(max-width: 720px)').matches) {
+    prev.classList.toggle('expanded');
+    return;
+  }
+
+  const act = e.target.closest('[data-act]');
+  if (act) {
+    if (act.dataset.act === 'copy-link') {
+      try {
+        await navigator.clipboard.writeText(landingUrl(act.dataset.id));
+        const old = act.innerHTML;
+        act.innerHTML = '✓ Link copiado';
+        setTimeout(() => act.innerHTML = old, 1400);
+      } catch (_) { alert('Não foi possível copiar o link.'); }
+      return;
+    }
+    const lead = LEADS.find(l => l.id === act.dataset.id);
+    if (!lead) return;
+    if (act.dataset.act === 'preview') { openPreview(lead.id); return; }
+    if (act.dataset.act === 'copy') {
+      try {
+        await navigator.clipboard.writeText(buildWaMessage(lead));
+        const old = act.innerHTML;
+        act.innerHTML = '✓ Copiado';
+        setTimeout(() => act.innerHTML = old, 1400);
+      } catch (_) { alert('Não foi possível copiar. Selecione o texto manualmente.'); }
+      return;
+    }
+  }
+
+  if (e.target.id === 'modal' || e.target.id === 'modalClose') closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#modal').hidden) closeModal();
+});
+
+$('#search').addEventListener('input', e => { busca = e.target.value; renderGrid(); });
+
+$('#themeBtn').addEventListener('click', () => {
+  const root = document.documentElement;
+  const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+  root.dataset.theme = next;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = next === 'light' ? '#f3f4f6' : '#0b0c0f';
+  try { localStorage.setItem('epq-tema', next); } catch (_) {}
+});
+
+(function init() {
+  try {
+    const t = localStorage.getItem('epq-tema');
+    if (t) {
+      document.documentElement.dataset.theme = t;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = t === 'light' ? '#f3f4f6' : '#0b0c0f';
+    }
+  } catch (_) {}
+
+  const params = new URLSearchParams(location.search);
+  const leadId = params.get('lead');
+  if (leadId) {
+    const lead = LEADS.find(l => l.id === leadId);
+    $('#landing').innerHTML = renderLanding(lead);
+    $('#landing').hidden = false;
+  } else {
+    $('#panel').hidden = false;
+    renderPanel();
+  }
+})();
+</script>
+</body>
+</html>

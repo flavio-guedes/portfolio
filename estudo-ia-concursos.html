@@ -444,30 +444,7 @@
 }
 
 
-/* === COPILOTO FIXO — VERSÃO CORRIGIDA === */
-@media(max-width:980px){
-  .col{display:contents!important}
-
-  .foot{
-    position:fixed!important;
-    left:0!important; right:0!important; bottom:0!important;
-    top:auto!important;
-    z-index:80!important;
-    margin:0!important;
-    border-radius:14px 14px 0 0!important;
-    box-shadow:0 -8px 24px rgba(0,0,0,.45)!important;
-    background:linear-gradient(180deg,var(--card),var(--card2))!important;
-    border:1px solid var(--line2)!important;
-    border-bottom:0!important;
-    padding-bottom:env(safe-area-inset-bottom)!important;
-    display:flex!important;
-    flex-direction:column!important;
-    height:auto!important;
-    max-height:none!important;
-    overflow:hidden!important;
-  }
-
-  /* Header sempre visível */
+/* Header sempre visível */
   .foot-h{flex-shrink:0!important;padding:8px 12px!important}
   .foot-h .title{font-size:12px!important}
   .foot-h .tog{padding:6px 10px!important;font-size:11.5px!important}
@@ -547,30 +524,7 @@
 }
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* === FOOTER FIXO — LAYOUT EXATO === */
-@media(max-width:980px){
-  .col{display:contents!important}
-
-  .foot{
-    position:fixed!important;
-    left:0!important; right:0!important; bottom:0!important;
-    top:auto!important;
-    z-index:80!important;
-    margin:0!important;
-    border-radius:14px 14px 0 0!important;
-    box-shadow:0 -8px 24px rgba(0,0,0,.45)!important;
-    background:linear-gradient(180deg,var(--card),var(--card2))!important;
-    border:1px solid var(--line2)!important;
-    border-bottom:0!important;
-    display:flex!important;
-    flex-direction:column!important;
-    height:auto!important;
-    max-height:none!important;
-    overflow:hidden!important;
-    box-sizing:border-box!important;
-  }
-
-  /* Estados de altura exata */
+/* Estados de altura exata */
   .foot:not(.open):not(.chips-expanded){
     height:auto!important;
     max-height:none!important;
@@ -670,6 +624,125 @@
   body.foot-open .foot-backdrop{display:block;animation:fadeIn .2s ease}
 }
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* === FOOTER MOBILE — MINIMAL === */
+@media (max-width: 980px){
+  /* App com espaço para o footer fixo */
+  .app{
+    grid-template-columns:minmax(0,1fr)!important;
+    padding:56px 8px 180px!important;
+    height:auto!important;
+    min-height:100vh!important;
+    gap:8px!important;
+  }
+  .rz{display:none!important}
+  .col{
+    grid-column:1!important;
+    display:block!important;
+    position:static!important;
+  }
+  .view{
+    overflow:visible!important;
+    overflow-x:visible!important;
+    padding-right:0!important;
+    height:auto!important;
+    flex:none!important;
+  }
+  .pg,.grow{flex:none!important}
+
+  /* Sidebar drawer (mantém) */
+  aside.side{
+    position:fixed!important;top:0!important;left:0!important;bottom:0!important;
+    width:min(300px,84vw)!important;z-index:56!important;
+  }
+
+  /* Footer fixo, altura natural, sem max-height */
+  .foot{
+    position:fixed!important;
+    left:0!important; right:0!important; bottom:0!important;
+    top:auto!important;
+    z-index:80!important;
+    margin:0!important;
+    border-radius:14px 14px 0 0!important;
+    background:linear-gradient(180deg,var(--card),var(--card2))!important;
+    border:1px solid var(--line2)!important;
+    border-bottom:0!important;
+    box-shadow:0 -6px 20px rgba(0,0,0,.4)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    max-height:none!important;
+    height:auto!important;
+    overflow:visible!important;
+    padding-bottom:env(safe-area-inset-bottom)!important;
+  }
+
+  /* Header e input sempre visíveis, chips controlam altura */
+  .foot-h{flex-shrink:0!important}
+  .foot .inputbar{
+    flex-shrink:0!important;
+    padding:8px 12px!important;
+    padding-bottom:max(10px,env(safe-area-inset-bottom))!important;
+    background:var(--card2)!important;
+    border-top:1px solid var(--line)!important;
+    margin:0!important;
+  }
+  .foot .inputbar input{
+    font-size:16px!important;
+    padding:9px 11px!important;
+    min-height:36px!important;
+  }
+  .foot .send{width:36px!important;height:36px!important;flex-shrink:0!important}
+
+  /* Log: quando aberto, limite de altura, scroll interno */
+  .foot .log{
+    display:none!important;
+  }
+  .foot.open .log{
+    display:flex!important;
+    flex-direction:column!important;
+    max-height:50vh!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    flex-shrink:1!important;
+  }
+
+  /* Chips: por padrão 2 linhas visíveis, resto rola */
+  .qchips, #qchips, .foot .qchips{
+    display:flex!important;
+    flex-direction:column!important;
+    flex-wrap:nowrap!important;
+    gap:3px!important;
+    padding:4px 12px 6px!important;
+    max-height:80px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+    flex-shrink:0!important;
+    border-top:1px solid var(--line)!important;
+  }
+  .qchips::-webkit-scrollbar{display:none}
+  .qchips .chip{
+    display:block!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    text-align:left!important;
+    font-size:11.5px!important;
+    line-height:1.4!important;
+    padding:5px 10px!important;
+    border-radius:6px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    flex-shrink:0!important;
+  }
+  /* Quando chat aberto, esconde chips para dar lugar ao log */
+  .foot.open .qchips{display:none!important}
+
+  /* Backdrop */
+  .foot-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:79}
+  body.foot-open .foot-backdrop{display:block}
+}
 </style>
 </head>
 <body>
@@ -713,8 +786,7 @@
         <button class="tog" id="tog" type="button" aria-expanded="false">Respostas<span class="cnt" id="cnt"></span><svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       </div>
       <div class="log" id="log"></div>
-      <button class="qchips-toggle" id="qchipsToggle" type="button" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg><span>Sugestões de pergunta</span></button>
-<div class="qchips" id="qchips"></div>
+      <div class="qchips" id="qchips"></div>
       <form class="inputbar" id="form">
         <input id="inp" placeholder="Pergunte, peça um plano ou uma fonte..." autocomplete="off">
         <button class="send" type="submit" aria-label="Enviar"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
@@ -1190,66 +1262,12 @@ render(true);
 
 
 
-document.addEventListener('DOMContentLoaded',function(){
-  var cb=document.getElementById('drawerToggle');
-  if(!cb)return;
-  
-    bd.addEventListener('click', function(){
-      if(foot.classList.contains('open')){
-        var t = document.getElementById('tog'); if(t) t.click();
-      }
-    });
-  }
-});
-
-document.addEventListener('DOMContentLoaded',function(){
-  var tg = document.getElementById('qchipsToggle');
-  if(tg){
-    tg.onclick = function(){
-      var on = document.body.classList.toggle('chips-open');
-      tg.setAttribute('aria-expanded', on ? 'true' : 'false');
-      var lbl = tg.querySelector('span');
-      if(lbl) lbl.textContent = on ? 'Ocultar sugestões' : 'Sugestões de pergunta';
-    };
-  }
-  var foot = document.getElementById('foot');
-  if(foot){
-    if(!document.querySelector('.foot-backdrop')){
-      var bd = document.createElement('div');
-      bd.className = 'foot-backdrop';
-      document.body.appendChild(bd);
-      bd.addEventListener('click', function(){
-        if(foot.classList.contains('open')){
-          var t = document.getElementById('tog'); if(t) t.click();
-        }
-      });
-    }
+}
     
   }
 });
 
-document.addEventListener('DOMContentLoaded',function(){
-  var tg = document.getElementById('qchipsToggle');
-  if(tg){
-    tg.onclick = function(){
-      var on = document.body.classList.toggle('chips-open');
-      tg.setAttribute('aria-expanded', on ? 'true' : 'false');
-      var lbl = tg.querySelector('span');
-      if(lbl) lbl.textContent = on ? 'Ocultar sugestões' : 'Sugestões de pergunta';
-    };
-  }
-  var foot = document.getElementById('foot');
-  if(foot){
-    if(!document.querySelector('.foot-backdrop')){
-      var bd = document.createElement('div');
-      bd.className = 'foot-backdrop';
-      document.body.appendChild(bd);
-      bd.addEventListener('click', function(){
-        if(foot.classList.contains('open')){
-          var t = document.getElementById('tog'); if(t) t.click();
-        }
-      });
-    }
+}
     function sync(){
       var isOpen = foot.classList.contains('open');
       document.body.classList.toggle('foot-open', isOpen);
@@ -1260,6 +1278,26 @@ document.addEventListener('DOMContentLoaded',function(){
     new MutationObserver(sync).observe(foot, {attributes:true, attributeFilter:['class']});
     sync();
   }
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var foot = document.getElementById('foot');
+  if(!foot) return;
+  if(!document.querySelector('.foot-backdrop')){
+    var bd = document.createElement('div');
+    bd.className = 'foot-backdrop';
+    document.body.appendChild(bd);
+    bd.addEventListener('click', function(){
+      if(foot.classList.contains('open')){
+        var t = document.getElementById('tog'); if(t) t.click();
+      }
+    });
+  }
+  function sync(){
+    document.body.classList.toggle('foot-open', foot.classList.contains('open'));
+  }
+  new MutationObserver(sync).observe(foot, {attributes:true, attributeFilter:['class']});
+  sync();
 });
 </script>
 <label class="hamburger" for="drawerToggle" aria-label="Abrir menu"><svg viewBox="0 0 24 24" class="ico"><path d="M4 7h16M4 12h16M4 17h16"/></svg></label>

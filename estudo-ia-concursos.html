@@ -254,7 +254,7 @@
   .msg.me{color:var(--k-question);font-weight:500}
   .msg.me::before{content:"› "}
   .qchips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px 6px}
-  .chip{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--muted)}
+  .chip{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);line-height:1.35}
   .chip:hover{color:var(--txt);border-color:var(--accent)}
   .inputbar{display:flex;gap:8px;padding:0 14px 12px;align-items:center}
   .inputbar input{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--input);color:var(--txt);outline:none;font-size:13px}
@@ -530,13 +530,13 @@ const PLANO=[
 const KPI_IC=[['clock','date'],['chart','sim'],['ok','ok'],['target','goal'],['alert','alert'],['trend','prog']];
 
 const PERG={
- painel:['O que devo fazer hoje?','Quais alertas exigem ação?','Estou no ritmo para a prova?','Qual concurso priorizar?'],
- concursos:['Qual concurso combina com meu plano?','Quais são as datas-chave?','Vale a pena o concurso de MG?','Quais portais devo acompanhar?'],
- fontes:['Algo está desatualizado?','Qual material é mais confiável?','Quais fontes faltam para Matemática?','Como verificar uma lei antes de usar?'],
- estudo:['Por que errei tanto em Português?','Gere um resumo de crase','Qual tema revisar primeiro?','Monte um cronograma de revisão'],
- plano:['O que priorizar nesta semana?','Quanto tempo cada bloco leva?','O que cortar se faltar tempo?'],
- simulados:['Como revisar após o simulado?','Qual a meta para a próxima prova?','Quais temas repetem nos erros?'],
- alertas:['Quais alertas são urgentes?','O que resolver hoje?','Quais alertas posso ignorar?']
+ painel:['O que devo fazer hoje?','Quais alertas exigem ação?','Estou no ritmo para a prova?','Qual concurso priorizar?','Como está meu desempenho?','O que revisar primeiro?'],
+ concursos:['Qual concurso combina com meu plano?','Quais são as datas-chave?','Vale a pena o concurso de MG?','Quais portais devo acompanhar?','Qual a aderência de cada concurso?','Quais editais estão publicados?'],
+ fontes:['Algo está desatualizado?','Qual material é mais confiável?','Quais fontes faltam para Matemática?','Como verificar uma lei antes de usar?','Quais materiais têm link oficial?','Tem videoaula do tema de maior peso?'],
+ estudo:['Por que errei tanto em Português?','Gere um resumo de crase','Qual tema revisar primeiro?','Monte um cronograma de revisão','Qual disciplina tem maior lacuna?','Como estudar Dir. Administrativo?'],
+ plano:['O que priorizar nesta semana?','Quanto tempo cada bloco leva?','O que cortar se faltar tempo?','Como marcar blocos concluídos?','Qual bloco rende mais pontos?','Posso dividir o bloco de 1h30?'],
+ simulados:['Como revisar após o simulado?','Qual a meta para a próxima prova?','Quais temas repetem nos erros?','Como comparar simulados?','Qual matéria puxa minha média?','Quantos simulados até a prova?'],
+ alertas:['Quais alertas são urgentes?','O que resolver hoje?','Quais alertas posso ignorar?','Qual prazo vence primeiro?','Como marcar um alerta como resolvido?','Quais alertas são de fonte?']
 };
 const TITULOS={painel:'Visão geral',concursos:'Concursos',fontes:'Fontes',estudo:'Estudo',plano:'Plano de hoje',simulados:'Simulados',alertas:'Alertas'};
 const SEV={r:0,a:1,b:2};
@@ -638,7 +638,7 @@ function responder(q){
   },250);
 }
 function renderQ(){
-  document.getElementById('qchips').innerHTML=PERG[tab].slice(0,3).map(q=>`<button class="chip" data-act="ask" data-q="${esc(q)}">${esc(q)}</button>`).join('');
+  document.getElementById('qchips').innerHTML=PERG[tab].slice(0,6).map(q=>`<button class="chip" data-act="ask" data-q="${esc(q)}">${esc(q)}</button>`).join('');
 }
 
 /* TEMA */

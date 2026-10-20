@@ -253,8 +253,8 @@
   .msg:last-child{background:none}
   .msg.me{color:var(--k-question);font-weight:500}
   .msg.me::before{content:"› "}
-  .qchips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px 6px}
-  .chip{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);line-height:1.35}
+  .qchips{display:flex;flex-direction:column;gap:4px;padding:8px 14px 6px;align-items:stretch}
+  .chip{width:100%;text-align:left;font-size:11px;padding:5px 10px;border-radius:6px;border:1px solid var(--line2);color:var(--muted);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .chip:hover{color:var(--txt);border-color:var(--accent)}
   .inputbar{display:flex;gap:8px;padding:0 14px 12px;align-items:center}
   .inputbar input{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--input);color:var(--txt);outline:none;font-size:13px}
@@ -319,7 +319,7 @@
   .foot{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:45!important;border-radius:16px 16px 0 0!important;box-shadow:0 -8px 24px rgba(0,0,0,.45)!important;max-height:200px!important;transition:max-height .25s ease!important;padding-bottom:env(safe-area-inset-bottom)!important;background:linear-gradient(180deg,var(--card),var(--card2))!important;border:1px solid var(--line2)!important;border-bottom:0!important}
   .foot.open{max-height:72vh!important;max-height:min(72dvh,calc(100dvh - 72px))!important}
   .foot .log{flex:1 1 auto!important;max-height:none!important;min-height:0!important;-webkit-overflow-scrolling:touch!important}
-  .foot .qchips{flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none!important;flex-shrink:0!important;-webkit-overflow-scrolling:touch!important}
+  .foot .qchips{flex-direction:column!important;overflow:visible!important;flex-shrink:0!important}
   .foot .qchips::-webkit-scrollbar{display:none}
   .foot .inputbar{flex-shrink:0!important}
   .foot-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:44;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
@@ -530,13 +530,13 @@ const PLANO=[
 const KPI_IC=[['clock','date'],['chart','sim'],['ok','ok'],['target','goal'],['alert','alert'],['trend','prog']];
 
 const PERG={
- painel:['O que devo fazer hoje?','Quais alertas exigem ação?','Estou no ritmo para a prova?','Qual concurso priorizar?','Como está meu desempenho?','O que revisar primeiro?'],
- concursos:['Qual concurso combina com meu plano?','Quais são as datas-chave?','Vale a pena o concurso de MG?','Quais portais devo acompanhar?','Qual a aderência de cada concurso?','Quais editais estão publicados?'],
- fontes:['Algo está desatualizado?','Qual material é mais confiável?','Quais fontes faltam para Matemática?','Como verificar uma lei antes de usar?','Quais materiais têm link oficial?','Tem videoaula do tema de maior peso?'],
- estudo:['Por que errei tanto em Português?','Gere um resumo de crase','Qual tema revisar primeiro?','Monte um cronograma de revisão','Qual disciplina tem maior lacuna?','Como estudar Dir. Administrativo?'],
+ painel:['O que devo fazer hoje agora?','Quais alertas exigem ação hoje?','Estou no ritmo certo para a prova?','Qual concurso devo priorizar agora?','Como está meu desempenho geral?','O que devo revisar primeiro hoje?'],
+ concursos:['Qual concurso combina com meu plano?','Quais são as datas-chave do edital?','Vale a pena o concurso de MG?','Quais portais devo acompanhar?','Qual a aderência de cada concurso?','Quais editais já estão publicados?'],
+ fontes:['Algum material está desatualizado?','Qual material é mais confiável?','Quais fontes faltam para Matemática?','Como verificar uma lei antes de usar?','Quais materiais têm link oficial?','Tem videoaula do tema principal?'],
+ estudo:['Por que errei tanto em Português?','Gere um resumo sobre crase hoje','Qual tema devo revisar primeiro?','Monte um cronograma de revisão','Qual disciplina tem maior lacuna?','Como estudar Dir. Administrativo?'],
  plano:['O que priorizar nesta semana?','Quanto tempo cada bloco leva?','O que cortar se faltar tempo?','Como marcar blocos concluídos?','Qual bloco rende mais pontos?','Posso dividir o bloco de 1h30?'],
- simulados:['Como revisar após o simulado?','Qual a meta para a próxima prova?','Quais temas repetem nos erros?','Como comparar simulados?','Qual matéria puxa minha média?','Quantos simulados até a prova?'],
- alertas:['Quais alertas são urgentes?','O que resolver hoje?','Quais alertas posso ignorar?','Qual prazo vence primeiro?','Como marcar um alerta como resolvido?','Quais alertas são de fonte?']
+ simulados:['Como revisar após o simulado?','Qual a meta para a próxima prova?','Quais temas repetem nos erros?','Como comparar dois simulados?','Qual matéria puxa minha média?','Quantos simulados até a prova?'],
+ alertas:['Quais alertas são mais urgentes?','O que eu preciso resolver hoje?','Quais alertas posso ignorar?','Qual prazo vence primeiro?','Como marcar alerta como resolvido?','Quais alertas vêm de fontes?']
 };
 const TITULOS={painel:'Visão geral',concursos:'Concursos',fontes:'Fontes',estudo:'Estudo',plano:'Plano de hoje',simulados:'Simulados',alertas:'Alertas'};
 const SEV={r:0,a:1,b:2};

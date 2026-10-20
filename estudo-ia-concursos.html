@@ -443,16 +443,19 @@
   }
 }
 
-
-/* === COPILOTO FIXO — VERSÃO CORRIGIDA === */
+/* === COPILOTO FIXO NO RODAPÉ (MOBILE) === */
 @media(max-width:980px){
+  /* Impede que o parent (col) prenda o footer */
   .col{display:contents!important}
 
   .foot{
     position:fixed!important;
-    left:0!important; right:0!important; bottom:0!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
     top:auto!important;
     z-index:80!important;
+    max-height:none!important;
     margin:0!important;
     border-radius:14px 14px 0 0!important;
     box-shadow:0 -8px 24px rgba(0,0,0,.45)!important;
@@ -462,102 +465,111 @@
     padding-bottom:env(safe-area-inset-bottom)!important;
     display:flex!important;
     flex-direction:column!important;
-    height:auto!important;
-    max-height:none!important;
-    overflow:hidden!important;
+    transition:max-height .3s ease!important;
   }
+  .foot:not(.open){max-height:200px!important}
+  .foot.open{max-height:85vh!important;max-height:min(85dvh,calc(100dvh - 44px))!important}
 
-  /* Header sempre visível */
   .foot-h{flex-shrink:0!important;padding:8px 12px!important}
   .foot-h .title{font-size:12px!important}
   .foot-h .tog{padding:6px 10px!important;font-size:11.5px!important}
 
-  /* Botão de sugestões sempre visível */
-  .qchips-toggle{
-    display:flex!important;
-    align-items:center; gap:6px;
-    background:none; border:0;
-    color:var(--muted);
-    font-size:11px; padding:4px 12px 6px;
-    cursor:pointer;
-    text-transform:uppercase; letter-spacing:.05em; font-weight:600;
-    flex-shrink:0;
-    width:100%; text-align:left;
-  }
-  .qchips-toggle .ico{width:12px;height:12px;transition:transform .2s}
-  body.chips-open .qchips-toggle .ico{transform:rotate(180deg)}
-
-  /* Chips: escondidos por padrão */
+  /* Chips: coluna, scrolláveis se muitos, área limitada */
   .qchips, .foot .qchips, #qchips{
-    display:none!important;
+    flex-shrink:0!important;
+    display:flex!important;
     flex-direction:column!important;
     flex-wrap:nowrap!important;
     overflow-y:auto!important;
     overflow-x:hidden!important;
     gap:3px!important;
     padding:6px 12px!important;
+    max-height:120px!important;
     border-top:1px solid var(--line)!important;
     -webkit-overflow-scrolling:touch!important;
     scrollbar-width:none!important;
-    flex-shrink:0!important;
   }
   .qchips::-webkit-scrollbar{display:none}
-  body.chips-open .qchips,
-  body.chips-open .foot .qchips,
-  body.chips-open #qchips{
-    display:flex!important;
-    max-height:45vh!important;
-    overflow-y:auto!important;
+  .foot.open .qchips, .foot.open #qchips{
+    max-height:180px!important;
+    border-top:1px solid var(--line)!important;
   }
 
   .qchips .chip, .foot .qchips .chip, #qchips .chip{
     display:block!important;
-    width:100%!important; box-sizing:border-box!important;
+    width:100%!important;
+    box-sizing:border-box!important;
     text-align:left!important;
-    font-size:11.5px!important; line-height:1.4!important;
-    padding:6px 10px!important; border-radius:6px!important;
-    white-space:nowrap!important; overflow:hidden!important; text-overflow:ellipsis!important;
+    font-size:11.5px!important;
+    line-height:1.4!important;
+    padding:5px 10px!important;
+    border-radius:6px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
     flex-shrink:0!important;
   }
 
-  /* Log: só quando chat aberto */
-  .foot .log{display:none!important}
-  .foot.open .log{
-    display:flex!important;
+  /* Log: só aparece quando aberto */
+  .foot .log{
     flex:1 1 auto!important;
-    min-height:0!important; max-height:none!important;
-    overflow-y:auto!important; -webkit-overflow-scrolling:touch!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
   }
 
-  /* Input sempre visível e fixo no fundo */
+  /* Input fixo no fundo */
   .foot .inputbar{
     flex-shrink:0!important;
     padding:6px 12px max(10px,env(safe-area-inset-bottom))!important;
     background:linear-gradient(180deg,transparent,var(--card2))!important;
     border-top:1px solid var(--line)!important;
     margin:0!important;
-    margin-top:auto!important;
   }
-  .foot .inputbar input{font-size:16px!important;padding:9px 11px!important}
+  .foot .inputbar input{
+    font-size:16px!important;
+    padding:9px 11px!important;
+  }
   .foot .send{width:36px!important;height:36px!important}
 
-  /* Estados: só chips abertos */
-  body.chips-open .foot:not(.open){max-height:70vh!important}
-  /* Chat aberto: mostra log e esconde chips para não cortar */
-  .foot.open{max-height:85vh!important;max-height:min(85dvh,calc(100dvh - 44px))!important}
-  .foot.open .qchips{display:none!important}
-  .foot.open .qchips-toggle{display:none!important}
-
-  /* Conteúdo da página não fica escondido atrás do footer */
+  /* Empurra conteúdo para o footer não cobrir */
   body{overflow-x:hidden!important}
-  .app{padding-bottom:150px!important}
-  body.foot-open .app{padding-bottom:150px!important}
+  .app{padding-bottom:220px!important}
+  .foot.open ~ *{}
 
-  /* Backdrop quando chat aberto */
+  /* Backdrop quando o chat estiver aberto */
   .foot-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:79}
   body.foot-open .foot-backdrop{display:block;animation:fadeIn .2s ease}
 }
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Botão extra para expandir sugestões (mobile) */
+.qchips-toggle{display:none}
+@media(max-width:980px){
+  .qchips-toggle{
+    display:flex!important;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border:0;
+    color:var(--muted);
+    font-size:11px;
+    padding:4px 12px 0;
+    cursor:pointer;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-weight:600;
+    flex-shrink:0;
+  }
+  .qchips-toggle .ico{width:12px;height:12px;transition:transform .2s}
+  body.chips-open .qchips-toggle .ico{transform:rotate(180deg)}
+  body.chips-open .qchips,
+  body.chips-open .foot .qchips,
+  body.chips-open #qchips{
+    max-height:min(60vh,420px)!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -601,8 +613,7 @@
         <button class="tog" id="tog" type="button" aria-expanded="false">Respostas<span class="cnt" id="cnt"></span><svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       </div>
       <div class="log" id="log"></div>
-      <button class="qchips-toggle" id="qchipsToggle" type="button" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg><span>Sugestões de pergunta</span></button>
-<div class="qchips" id="qchips"></div>
+      <div class="qchips" id="qchips"></div>
       <form class="inputbar" id="form">
         <input id="inp" placeholder="Pergunte, peça um plano ou uma fonte..." autocomplete="off">
         <button class="send" type="submit" aria-label="Enviar"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
@@ -1108,38 +1119,6 @@ document.addEventListener('DOMContentLoaded',function(){
         var t = document.getElementById('tog'); if(t) t.click();
       }
     });
-  }
-});
-
-document.addEventListener('DOMContentLoaded',function(){
-  var tg = document.getElementById('qchipsToggle');
-  if(tg){
-    tg.onclick = function(){
-      var on = document.body.classList.toggle('chips-open');
-      tg.setAttribute('aria-expanded', on ? 'true' : 'false');
-      var lbl = tg.querySelector('span');
-      if(lbl) lbl.textContent = on ? 'Ocultar sugestões' : 'Sugestões de pergunta';
-    };
-  }
-  var foot = document.getElementById('foot');
-  if(foot){
-    if(!document.querySelector('.foot-backdrop')){
-      var bd = document.createElement('div');
-      bd.className = 'foot-backdrop';
-      document.body.appendChild(bd);
-      bd.addEventListener('click', function(){
-        if(foot.classList.contains('open')){
-          var t = document.getElementById('tog'); if(t) t.click();
-        }
-      });
-    }
-    function sync(){
-      document.body.classList.toggle('foot-open', foot.classList.contains('open'));
-      // quando abre o chat, fecha os chips
-      if(foot.classList.contains('open')) document.body.classList.remove('chips-open');
-    }
-    new MutationObserver(sync).observe(foot, {attributes:true, attributeFilter:['class']});
-    sync();
   }
 });
 </script>

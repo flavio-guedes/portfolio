@@ -1,0 +1,29 @@
+{
+  "manual": {
+    "id": "manual",
+    "label": "Manual",
+    "active": true,
+    "template_id": "outreach",
+    "fluxo": "FLUXO • CAPTAÇÃO",
+    "status": "AUTOMAÇÃO ATIVA",
+    "etiqueta": "🔵 02 • AUTOMAÇÃO ATIVA"
+  },
+  "agendado_09h": {
+    "id": "agendado_09h",
+    "label": "Agendado — 09h",
+    "active": false,
+    "template_id": "outreach",
+    "fluxo": "FLUXO • CAPTAÇÃO",
+    "status": "AUTOMAÇÃO ATIVA",
+    "etiqueta": "🔵 02 • AUTOMAÇÃO ATIVA"
+  },
+  "resposta": {
+    "id": "resposta",
+    "label": "Resposta recebida",
+    "active": true,
+    "template_id": "resposta_1",
+    "fluxo": "FLUXO • CAPTAÇÃO",
+    "status": "RESPONDEU",
+    "etiqueta": "🟠 05 • RESPONDEU"
+  }
+}

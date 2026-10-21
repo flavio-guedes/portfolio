@@ -1,0 +1,5 @@
+.profiles/
+.next/
+node_modules/
+out/
+tsconfig.tsbuildinfo

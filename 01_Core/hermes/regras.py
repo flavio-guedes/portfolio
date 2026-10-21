@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""REGRAS DE DISPARO — aplica limites em fila.json antes de enviar.
+Uso:  python3 regras.py
+"""
+import json, os, random, re
+from datetime import datetime, timedelta
+
+HOME = os.path.expanduser("~")
+FILA = os.path.join(HOME, "hermes/fila.json")
+REG  = os.path.join(HOME, "hermes/regras.json")
+LOG  = os.path.join(HOME, "hermes/regras.log")
+
+def now(): return datetime.now()
+def hh(): return now().strftime("%H:%M:%S")
+def log(m):
+    print(f"[{hh()}] {m}")
+    with open(LOG, "a", encoding="utf-8") as f:
+        f.write(f"[{now().strftime('%Y-%m-%d %H:%M:%S')}] {m}\n")
+
+def load(p):
+    with open(p, encoding="utf-8") as f: return json.load(f)
+def save(p, d):
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(d, f, ensure_ascii=False, indent=2)
+
+def digitos(tel): return re.sub(r"\D", "", str(tel or ""))
+def tel_valido(tel):
+    d = digitos(tel)
+    return len(d) in (12, 13) and d.startswith("55")
+
+def dentro_janela(reg):
+    h, m = map(int, now().strftime("%H:%M").split(":"))
+    h0, m0 = map(int, reg["janela_inicio"].split(":"))
+    h1, m1 = map(int, reg["janela_fim"].split(":"))
+    atual = h * 60 + m
+    return (h0 * 60 + m0) <= atual <= (h1 * 60 + m1)
+
+def proxima_janela(reg):
+    """Retorna o próximo datetime dentro da janela."""
+    h0, m0 = map(int, reg["janela_inicio"].split(":"))
+    alvo = now().replace(hour=h0, minute=m0, second=0, microsecond=0)
+    if alvo <= now():
+        alvo += timedelta(days=1)
+    return alvo
+
+def aplicar():
+    reg = load(REG)
+    d = load(FILA)
+    it = d["itens"]
+
+    log("═══ APLICANDO REGRAS ═══")
+    log(f"  gap: {reg['gap_min_segundos']}-{reg['gap_max_segundos']}s")
+    log(f"  máx/dia: {reg['max_envios_por_dia']}  |  máx/hora: {reg['max_envios_por_hora']}")
+    log(f"  janela: {reg['janela_inicio']} → {reg['janela_fim']}")
+
+    # 1. Filtra inválidos
+    n_inv = 0
+    for i in it:
+        if i["status"] == "AGENDADO" and not tel_valido(i.get("telefone")):
+            i["status"] = "PULADO"
+            i["erro"] = f"numero invalido: {i.get('telefone')}"
+            n_inv += 1
+    if n_inv: log(f"  ⊘ {n_inv} números inválidos → PULADO")
+
+    # 2. Conta quantos já saíram hoje
+    hoje = now().strftime("%Y-%m-%d")
+    ja_hoje = sum(1 for i in it
+                  if i["status"] == "OK"
+                  and (i.get("enviado_em") or "").startswith(hoje))
+    log(f"  já enviados hoje: {ja_hoje}")
+
+    # 3. Reagenda os AGENDADO com cadência segura
+    ag = sorted([i for i in it if i["status"] == "AGENDADO"],
+                key=lambda x: x.get("prazo", ""))
+    if not ag:
+        log("  ✓ nada para reagendar")
+        save(FILA, d)
+        return
+
+    # próxima janela
+    if not dentro_janela(reg):
+        inicio = proxima_janela(reg)
+        log(f"  ⏸ fora da janela → agendando para {inicio.strftime('%Y-%m-%d %H:%M')}")
+        cur = inicio
+    else:
+        cur = now() + timedelta(seconds=30)
+
+    # aplica gap aleatório dentro do range
+    restantes = max(0, reg["max_envios_por_dia"] - ja_hoje)
+    processados = 0
+    for i in ag:
+        # respeita limite diário
+        if processados >= restantes:
+            # empurra o restante para o próximo dia útil
+            dia = (now() + timedelta(days=1)).replace(
+                hour=int(reg["janela_inicio"].split(":")[0]),
+                minute=int(reg["janela_inicio"].split(":")[1]),
+                second=0, microsecond=0)
+            cur = dia
+            restantes += reg["max_envios_por_dia"]
+            log(f"  📅 {processados} agendados — resto vai para {dia.strftime('%Y-%m-%d')}")
+            processados = 0
+
+        # se o cursor sair da janela, pula pro próximo dia
+        h, m = cur.hour, cur.minute
+        h1, m1 = map(int, reg["janela_fim"].split(":"))
+        if h * 60 + m > h1 * 60 + m1:
+            cur = (cur + timedelta(days=1)).replace(
+                hour=int(reg["janela_inicio"].split(":")[0]),
+                minute=int(reg["janela_inicio"].split(":")[1]),
+                second=0, microsecond=0)
+
+        i["prazo"] = cur.strftime("%Y-%m-%d %H:%M:%S")
+        _tipo = i.get("tipo", "novo"); _et = i.get("etapa", "D0")
+        if _tipo == "novo" or _et == "D0":
+            _gap = reg.get("gap_novo_seg", 600)
+        else:
+            _gap = reg.get("gap_base_seg", 360)
+        cur += timedelta(seconds=_gap)
+        processados += 1
+
+    save(FILA, d)
+
+    # resumo
+    from collections import Counter
+    c = Counter(i["status"] for i in it)
+    log(f"  ✓ {len(ag)} leads reagendados")
+    log(f"  fila: {dict(c)}")
+    if ag:
+        log(f"  primeiro: {ag[0]['prazo']}  ({ag[0]['id']} {ag[0].get('empresa','')[:30]})")
+        log(f"  último:   {ag[-1]['prazo']}")
+
+if __name__ == "__main__":
+    aplicar()

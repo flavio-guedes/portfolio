@@ -1,0 +1,23 @@
+{
+  "exportedAt": "2026-09-05T20:10:33.898Z",
+  "prospeccao": {
+    "statusMap": {
+      "omika@giakaa.com": "Enviado",
+      "helton_sants@yahoo.com.br": "Enviado",
+      "guiareinaldo@hotmail.com": "Enviado"
+    },
+    "selected": [
+      554
+    ],
+    "activeTier": null,
+    "activeSubtipo": null,
+    "searchTerm": "",
+    "statusFilter": "",
+    "prioFilter": "",
+    "page": 1
+  },
+  "crm": {
+    "crmMap": {},
+    "crmSearchTerm": ""
+  }
+}

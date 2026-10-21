@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EPQ · Mapeamento Pedagógico</title>
+<style>
+  :root{
+    --bg:#0b0f14;--panel:#11161d;--panel-2:#1a2028;--border:#2a323c;
+    --text:#e6ecf2;--muted:#9aa3ad;--accent:#f5c842;--accent-2:#f59e0b;
+    --danger:#ef4444;--success:#22c55e;--warn:#f59e0b;
+    --font-ui: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
+    --font-display: Georgia,ui-serif,serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--font-ui)}
+  a{color:var(--accent)}
+  .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+  .sidebar{background:var(--panel);border-right:1px solid var(--border);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+  .brand{font-family:var(--font-display);font-size:18px;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .brand small{display:block;color:var(--muted);font-family:var(--font-ui);font-size:11px;margin-top:2px}
+  .nav{display:flex;flex-direction:column;gap:4px}
+  .nav button{background:transparent;border:1px solid transparent;color:var(--muted);padding:8px 10px;border-radius:8px;text-align:left;cursor:pointer;font-size:13px}
+  .nav button:hover{background:#ffffff08;color:#fff}
+  .nav button.active{background:#ffffff0d;border-color:#ffffff18;color:#fff;font-weight:600}
+  .main{overflow:auto;height:100vh;position:sticky;top:0}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 22px 80px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;position:sticky;top:0;background:linear-gradient(to bottom,var(--bg) 70%,transparent);padding:10px 0;z-index:5}
+  .top h1{font-family:var(--font-display);font-size:22px;margin:0}
+  .top .meta{color:var(--muted);font-size:12px}
+  .progress{height:6px;background:#ffffff14;border-radius:999px;overflow:hidden;margin:6px 0 14px}
+  .progress > b{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .2s}
+  .section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+  .section h2{font-size:14px;color:var(--accent);margin:0 0 12px;font-family:var(--font-display);letter-spacing:.3px}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+  .field input,.field select,.field textarea{width:100%;background:#0b0f14;border:1px solid var(--border);color:#fff;padding:10px 12px;border-radius:8px;font-size:14px;outline:none}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+  .field textarea{min-height:90px;resize:vertical}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media (max-width:860px){
+    .app{grid-template-columns:1fr}
+    .sidebar{display:none}
+    .mobile-bar{display:flex !important}
+  }
+  .mobile-bar{display:none;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 14px;align-items:center;justify-content:space-between;z-index:20}
+  .mobile-bar button{background:var(--panel);border:1px solid var(--border);color:#fff;padding:8px 10px;border-radius:8px}
+  .mobile-menu{position:fixed;inset:0;background:#000000aa;z-index:50;display:none}
+  .mobile-menu.open{display:block}
+  .mobile-menu .sheet{position:absolute;left:0;top:0;bottom:0;width:min(320px,85vw);background:var(--panel);border-right:1px solid var(--border);padding:18px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#ffffff0d;border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer;user-select:none}
+  .chip input{display:none}
+  .chip.sel{background:#f5c8421a;border-color:#f5c84266;color:#fff}
+  .chip.confirmed{background:#22c55e1a;border-color:#22c55e66;color:#fff}
+  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+  .btn{background:var(--accent);color:#0b0f14;border:none;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer}
+  .btn.secondary{background:#ffffff14;color:#fff;border:1px solid var(--border)}
+  .toast{position:fixed;right:18px;bottom:18px;background:var(--panel);border:1px solid var(--border);padding:12px 14px;border-radius:10px;color:#fff;box-shadow:0 10px 30px #00000066;display:none;z-index:100}
+  .hidden{display:none}
+  .insight{background:#1a2028;border-left:3px solid var(--accent);padding:10px 12px;border-radius:0 8px 8px 0;color:var(--muted);font-size:12px;margin:8px 0 12px}
+  .insight strong{color:var(--text)}
+  .auto-fill{padding:8px 10px;background:#22c55e0d;border:1px dashed #22c55e66;border-radius:8px;color:var(--muted);font-size:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .auto-fill strong{color:var(--text)}
+  .confirm-btn{background:var(--success);color:#000;border:none;padding:6px 10px;border-radius:6px;font-weight:700;cursor:pointer;font-size:11px}
+  .suggest-field{margin-top:8px;padding:8px;background:#ffffff08;border-radius:8px;border:1px dashed var(--border)}
+  .suggest-field label{color:var(--muted);font-size:11px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">EPQ <small>Mapeamento Pedagógico</small></div>
+    <nav class="nav" id="nav">
+      <button data-target="s-intro" class="active">1. Identificação</button>
+      <button data-target="s-metodologia">2. Metodologia</button>
+      <button data-target="s-pmerj">3. PMERJ</button>
+      <button data-target="s-ses">4. ESA / Militares</button>
+      <button data-target="s-professores">5. Professores</button>
+      <button data-target="s-aluno">6. Acompanhamento</button>
+      <button data-target="s-comercial">7. Comercial</button>
+      <button data-target="s-resultados">8. Resultados</button>
+      <button data-target="s-protocolos">9. Protocolos</button>
+      <button data-target="s-infra">10. Infraestrutura</button>
+      <button data-target="s-final">11. Finalização</button>
+    </nav>
+    <div style="margin-top:14px;color:var(--muted);font-size:11px">
+      Formulário otimizado para preenchimento rápido. Os campos já sugeridos podem ser confirmados em 1 clique.
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="wrap">
+      <div class="top">
+        <div>
+          <h1>Coleta Pedagógica EPQ</h1>
+          <div class="meta">Preenchimento rápido com sugestões automáticas</div>
+        </div>
+        <div class="row">
+          <button class="btn secondary" id="exportBtn">Exportar JSON</button>
+        </div>
+      </div>
+      <div class="progress"><b id="progressBar"></b></div>
+
+      <form id="form">
+
+        <!-- IDENTIFICAÇÃO -->
+        <section class="section" id="s-intro">
+          <h2>1. Identificação e contexto da escola</h2>
+          <div class="grid">
+            <div class="field">
+              <label>Nome da unidade / responsável</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> EPQ Nilópolis <button type="button" class="confirm-btn" data-target="unidade" data-value="EPQ Nilópolis">Confirmar</button></div>
+              <input name="unidade" id="unidade" placeholder="Ex: EPQ Nilópolis" />
+            </div>
+            <div class="field">
+              <label>E-mail pedagógico</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> pedagogicoepq@gmail.com <button type="button" class="confirm-btn" data-target="email_pedagogico" data-value="pedagogicoepq@gmail.com">Confirmar</button></div>
+              <input name="email_pedagogico" id="email_pedagogico" type="email" placeholder="pedagogia@..." />
+            </div>
+            <div class="field">
+              <label>Cidade / bairro principal</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> Nilópolis - RJ <button type="button" class="confirm-btn" data-target="cidade" data-value="Nilópolis - RJ">Confirmar</button></div>
+              <input name="cidade" id="cidade" placeholder="Ex: Nilópolis - RJ" />
+            </div>
+            <div class="field"><label>Ano de fundação</label><input name="ano_fundacao" placeholder="Ex: 2018" /></div>
+          </div>
+          <div class="field">
+            <label>Modelo de operação</label>
+            <div class="row" data-name="modelo">
+              <label class="chip sel"><input type="radio" name="modelo" value="presencial" checked /> Presencial</label>
+              <label class="chip"><input type="radio" name="modelo" value="online" /> Online</label>
+              <label class="chip"><input type="radio" name="modelo" value="hibrido" /> Híbrido</label>
+              <label class="chip"><input type="radio" name="modelo" value="gravado" /> Aulas gravadas</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Concursos atendidos</label>
+            <div class="row" data-name="concursos">
+              <label class="chip sel"><input type="checkbox" name="concursos" value="PMERJ" checked /> PMERJ</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="ESA" checked /> ESA</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="EEAR" checked /> EEAR</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="Colégio Naval" checked /> Colégio Naval</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="EAM" checked /> EAM</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="INSS" checked /> INSS</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="TJ" checked /> TJ</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="MP" checked /> MP</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="Turma Básica" checked /> Turma Básica</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="PMESP" checked /> PMESP</label>
+              <label class="chip sel"><input type="checkbox" name="concursos" value="EPCAR" checked /> EPCAR</label>
+              <label class="chip"><input type="checkbox" name="concursos" value="Outro" /> Outro</label>
+            </div>
+          </div>
+          <div class="field"><label>Outros concursos (se houver)</label><input name="concursos_outros" placeholder="Liste separadamente" /></div>
+        </section>
+
+        <!-- METODOLOGIA -->
+        <section class="section" id="s-metodologia">
+          <h2>2. Metodologia pedagógica oficial</h2>
+          <div class="field">
+            <label>A marca EPQ é só posicionamento ou tem método operacionalizado?</label>
+            <div class="row" data-name="metodo_epq">
+              <label class="chip"><input type="radio" name="metodo_epq" value="branding" /> Só posicionamento</label>
+              <label class="chip sel"><input type="radio" name="metodo_epq" value="operacao" checked /> Operacionalizado</label>
+              <label class="chip"><input type="radio" name="metodo_epq" value="parcial" /> Parcialmente</label>
+            </div>
+            <div class="suggest-field">
+              <label>Sugestão de ajuste:</label><br/>
+              <label class="chip" style="margin-top:6px"><input type="radio" name="metodo_epq" value="parcial" /> Marcar como "Parcialmente" e descrever os passos existentes hoje</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Descreva o método oficial em até 5 passos (se existir)</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Metodologia baseada em resolução de questões de acordo com o edital, com foco na banca. <button type="button" class="confirm-btn" data-target="metodo_descricao" data-value="Metodologia baseada em resolução de questões de acordo com o edital, com foco na banca.">Confirmar</button></div>
+            <textarea name="metodo_descricao" id="metodo_descricao" placeholder="Ex: 1. Diagnóstico → 2. Aula → 3. Questões → 4. Revisão → 5. Simulado"></textarea>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label>O que o aluno recebe ao se matricular?</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> apostila/material impresso, sistema fitware, aula experimental, PAGedubank, contrato digital <button type="button" class="confirm-btn" data-target="onboarding" data-value="apostila/material impresso, sistema fitware, aula experimental, PAGedubank, contrato digital">Confirmar</button></div>
+              <input name="onboarding" id="onboarding" placeholder="Ex: plano, material, login...">
+            </div>
+            <div class="field">
+              <label>Existe diagnóstico inicial do aluno?</label>
+              <div class="row" data-name="diagnostico">
+                <label class="chip"><input type="radio" name="diagnostico" value="sim" /> Sim</label>
+                <label class="chip sel"><input type="radio" name="diagnostico" value="nao" checked /> Não</label>
+              </div>
+              <div class="suggest-field">
+                <label>Sugestão de ajuste:</label><br/>
+                <label class="chip" style="margin-top:6px"><input type="radio" name="diagnostico" value="sim" /> Marcar como "Sim" se houver avaliação inicial informal</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Como é feita a revisão do conteúdo?</label>
+            <div class="row" data-name="revisao">
+              <label class="chip"><input type="checkbox" name="revisao" value="espacada" /> Repetição espaçada</label>
+              <label class="chip"><input type="checkbox" name="revisao" value="semanal" /> Bloco semanal</label>
+              <label class="chip"><input type="checkbox" name="revisao" value="tematica" /> Revisão temática por erro</label>
+              <label class="chip sel"><input type="checkbox" name="revisao" value="manual" checked /> Manual / sem sistema</label>
+            </div>
+            <div class="suggest-field">
+              <label>Sugestão de ajuste:</label><br/>
+              <label class="chip" style="margin-top:6px"><input type="checkbox" name="revisao" value="manual"> Remover "Manual" se houver qualquer revisão orientada</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Simulados: frequência e formato</label>
+            <div class="row" data-name="simulados">
+              <label class="chip"><input type="checkbox" name="simulados" value="quinzenal" /> Quinzenal</label>
+              <label class="chip"><input type="checkbox" name="simulados" value="semanal" /> Semanal</label>
+              <label class="chip"><input type="checkbox" name="simulados" value="cronometrado" /> Cronometrado</label>
+              <label class="chip"><input type="checkbox" name="simulados" value="discursiva" /> Com discursiva</label>
+              <label class="chip sel"><input type="checkbox" name="simulados" value="sem_simulado" checked /> Não há simulados estruturados</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Como é analisado o desempenho do aluno hoje?</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Ainda sem análise estruturada por aluno. <button type="button" class="confirm-btn" data-target="analise_desempenho" data-value="Ainda sem análise estruturada por aluno. O foco atual é matrícula e atendimento comercial.">Confirmar</button></div>
+            <textarea name="analise_desempenho" id="analise_desempenho" placeholder="Relatórios, reuniões, plataforma..."></textarea>
+          </div>
+        </section>
+
+        <!-- PMERJ -->
+        <section class="section" id="s-pmerj">
+          <h2>3. Curso PMERJ</h2>
+          <div class="grid">
+            <div class="field"><label>Edital base atual</label><input name="pmerj_edital" placeholder="Ex: 2024, 2025..."></div>
+            <div class="field">
+              <label>Turmas abertas agora?</label>
+              <div class="row" data-name="pmerj_turmas_abertas">
+                <label class="chip sel"><input type="radio" name="pmerj_turmas_abertas" value="sim" checked /> Sim</label>
+                <label class="chip"><input type="radio" name="pmerj_turmas_abertas" value="nao" /> Não</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Turnos disponíveis</label>
+              <div class="row" data-name="pmerj_turnos">
+                <label class="chip sel"><input type="checkbox" name="pmerj_turnos" value="manha" checked /> Manhã</label>
+                <label class="chip sel"><input type="checkbox" name="pmerj_turnos" value="tarde" checked /> Tarde</label>
+                <label class="chip sel"><input type="checkbox" name="pmerj_turnos" value="noite" checked /> Noite</label>
+                <label class="chip sel"><input type="checkbox" name="pmerj_turnos" value="sabado" checked /> Sábado</label>
+              </div>
+            </div>
+            <div class="field"><label>Carga horária semanal recomendada</label><input name="pmerj_carga" placeholder="Ex: 8h, 12h, 15h..."></div>
+            <div class="field">
+              <label>Valor mensal</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> R$ 300 pix / R$ 330 cartão <button type="button" class="confirm-btn" data-target="pmerj_valor" data-value="R$ 300 pix / R$ 330 cartão">Confirmar</button></div>
+              <input name="pmerj_valor" id="pmerj_valor" placeholder="R$" />
+            </div>
+            <div class="field">
+              <label>Pré-requisito do aluno</label>
+              <div class="row" data-name="pmerj_prerequisito">
+                <label class="chip sel"><input type="radio" name="pmerj_prerequisito" value="zero" checked /> Zero</label>
+                <label class="chip"><input type="radio" name="pmerj_prerequisito" value="base" /> Base</label>
+                <label class="chip"><input type="radio" name="pmerj_prerequisito" value="avancado" /> Avançado</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Disciplinas / assuntos prioritários para PMERJ</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> matérias básicas + conteúdo específico conforme edital; foco em questões por banca. <button type="button" class="confirm-btn" data-target="pmerj_disciplinas" data-value="Matérias básicas + conteúdo específico conforme edital; foco em questões por banca.">Confirmar</button></div>
+            <textarea name="pmerj_disciplinas" id="pmerj_disciplinas" placeholder="Liste separadamente"></textarea>
+          </div>
+          <div class="field">
+            <label>Conteúdos específicos além do básico?</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Conteúdos específicos da banca do PMERJ. <button type="button" class="confirm-btn" data-target="pmerj_conteudo_especifico" data-value="Conteúdos específicos da banca do PMERJ.">Confirmar</button></div>
+            <textarea name="pmerj_conteudo_especifico" id="pmerj_conteudo_especifico" placeholder="Direito Penal, Legislação, etc."></textarea>
+          </div>
+          <div class="field">
+            <label>Diferencial do EPQ para PMERJ</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Acolhimento, método por questões por edital, professores concursados/concurseiros, foco na banca, espaço confortável e treinamento TAF. <button type="button" class="confirm-btn" data-target="pmerj_diferencial" data-value="Acolhimento, método por questões por edital, professores concursados/concurseiros, foco na banca, espaço confortável e treinamento TAF.">Confirmar</button></div>
+            <textarea name="pmerj_diferencial" id="pmerj_diferencial" placeholder="Por que um aluno escolhe a EPQ em vez de outra escola?"></textarea>
+          </div>
+          <div class="field"><label>Resultados / aprovados recentes em PMERJ</label><textarea name="pmerj_aprovados" placeholder="Nomes, classificações, ano..."></textarea></div>
+        </section>
+
+        <!-- ESA/SES -->
+        <section class="section" id="s-ses">
+          <h2>4. Curso ESA / Militares</h2>
+          <div class="grid">
+            <div class="field"><label>Sigla exata usada</label><input name="ses_sigla" value="ESA" placeholder="ESA ou SES?" /></div>
+            <div class="field"><label>Edital base atual</label><input name="ses_edital" placeholder="Ex: 2024, 2025..." /></div>
+            <div class="field">
+              <label>Turmas abertas agora?</label>
+              <div class="row" data-name="ses_turmas_abertas">
+                <label class="chip"><input type="radio" name="ses_turmas_abertas" value="sim" /> Sim</label>
+                <label class="chip sel"><input type="radio" name="ses_turmas_abertas" value="nao" checked /> Não</label>
+              </div>
+            </div>
+            <div class="field"><label>Carga horária semanal recomendada</label><input name="ses_carga" placeholder="Ex: 10h, 15h, 20h..." /></div>
+            <div class="field">
+              <label>Valor mensal</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> R$ 399,99 pix / R$ 449,99 cartão <button type="button" class="confirm-btn" data-target="ses_valor" data-value="R$ 399,99 pix / R$ 449,99 cartão">Confirmar</button></div>
+              <input name="ses_valor" id="ses_valor" placeholder="R$" />
+            </div>
+            <div class="field">
+              <label>Pré-requisito do aluno</label>
+              <div class="row" data-name="ses_prerequisito">
+                <label class="chip sel"><input type="radio" name="ses_prerequisito" value="zero" checked /> Zero</label>
+                <label class="chip"><input type="radio" name="ses_prerequisito" value="base" /> Base</label>
+                <label class="chip"><input type="radio" name="ses_prerequisito" value="avancado" /> Avançado</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Disciplinas / assuntos prioritários para ESA/Militares</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> matérias comuns + conteúdo específico militar; reuso de módulos básicos com PMERJ onde for possível. <button type="button" class="confirm-btn" data-target="ses_disciplinas" data-value="Matérias comuns + conteúdo específico militar; reuso de módulos básicos com PMERJ onde for possível.">Confirmar</button></div>
+            <textarea name="ses_disciplinas" id="ses_disciplinas" placeholder="Liste separadamente"></textarea>
+          </div>
+          <div class="field">
+            <label>Conteúdos específicos além do básico?</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Conteúdos específicos de ESA, EEAR, Colégio Naval e EPCAR. <button type="button" class="confirm-btn" data-target="ses_conteudo_especifico" data-value="Conteúdos específicos de ESA, EEAR, Colégio Naval e EPCAR.">Confirmar</button></div>
+            <textarea name="ses_conteudo_especifico" id="ses_conteudo_especifico" placeholder="Matérias específicas da ESA/SES..."></textarea>
+          </div>
+          <div class="field">
+            <label>Diferencial do EPQ para ESA/Militares</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Mesmo pacote de diferenciais da PMERJ, com módulo unificado para matérias básicas e separação apenas nas específicas. <button type="button" class="confirm-btn" data-target="ses_diferencial" data-value="Mesmo pacote de diferenciais da PMERJ, com módulo unificado para matérias básicas e separação apenas nas específicas.">Confirmar</button></div>
+            <textarea name="ses_diferencial" id="ses_diferencial" placeholder="Por que escolher a EPQ?"></textarea>
+          </div>
+          <div class="field"><label>Resultados / aprovados recentes em ESA/Militares</label><textarea name="ses_aprovados" placeholder="Nomes, classificações, ano..."></textarea></div>
+        </section>
+
+        <!-- PROFESSORES -->
+        <section class="section" id="s-professores">
+          <h2>5. Corpo docente e produção</h2>
+          <div class="grid">
+            <div class="field"><label>Total de professores hoje</label><input name="prof_total" type="number" placeholder="Ex: 12" /></div>
+            <div class="field">
+              <label>Professores exclusivos por concurso?</label>
+              <div class="row" data-name="prof_exclusivo">
+                <label class="chip sel"><input type="radio" name="prof_exclusivo" value="sim" checked /> Sim</label>
+                <label class="chip"><input type="radio" name="prof_exclusivo" value="nao" /> Não</label>
+                <label class="chip"><input type="radio" name="prof_exclusivo" value="parcial" /> Parcial</label>
+              </div>
+            </div>
+          </div>
+          <div class="field"><label>Disciplinas lecionadas e professores responsáveis (lista simples)</label><textarea name="prof_lista" placeholder="Ex: Português - Prof. A / Matemática - Prof. B"></textarea></div>
+          <div class="field">
+            <label>Existe padrão de aula documentado?</label>
+            <div class="row" data-name="prof_padrao">
+              <label class="chip"><input type="radio" name="prof_padrao" value="sim" /> Sim</label>
+              <label class="chip sel"><input type="radio" name="prof_padrao" value="nao" checked /> Não</label>
+            </div>
+            <div class="suggest-field">
+              <label>Sugestão de ajuste:</label><br/>
+              <label class="chip" style="margin-top:6px"><input type="radio" name="prof_padrao" value="sim"> Marcar como "Sim" se houver roteiro mínimo por disciplina</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Como é produzido o material de aula?</label>
+            <div class="row" data-name="prof_material">
+              <label class="chip sel"><input type="checkbox" name="prof_material" value="proprio" checked /> Material próprio</label>
+              <label class="chip"><input type="checkbox" name="prof_material" value="adaptado" /> Adaptado</label>
+              <label class="chip"><input type="checkbox" name="prof_material" value="comprado" /> Comprado</label>
+              <label class="chip sel"><input type="checkbox" name="prof_material" value="pdf" checked /> PDFs / apostilas</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Existe revisão pedagógica do material antes de ir para aula?</label>
+            <div class="row" data-name="prof_revisao">
+              <label class="chip"><input type="radio" name="prof_revisao" value="sim" /> Sim</label>
+              <label class="chip sel"><input type="radio" name="prof_revisao" value="nao" checked /> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Frequência das reuniões pedagógicas</label>
+            <div class="row" data-name="prof_reunioes">
+              <label class="chip"><input type="radio" name="prof_reunioes" value="semanal" /> Semanal</label>
+              <label class="chip"><input type="radio" name="prof_reunioes" value="quinzenal" /> Quinzenal</label>
+              <label class="chip"><input type="radio" name="prof_reunioes" value="mensal" /> Mensal</label>
+              <label class="chip sel"><input type="radio" name="prof_reunioes" value="esporadica" checked /> Esporádica</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACOMPANHAMENTO DO ALUNO -->
+        <section class="section" id="s-aluno">
+          <h2>6. Acompanhamento do aluno</h2>
+          <div class="field">
+            <label>O que é medido hoje?</label>
+            <div class="row" data-name="aluno_mede">
+              <label class="chip sel"><input type="checkbox" name="aluno_mede" value="presenca" checked /> Presença</label>
+              <label class="chip sel"><input type="checkbox" name="aluno_mede" value="questoes" checked /> Questões resolvidas</label>
+              <label class="chip"><input type="checkbox" name="aluno_mede" value="acerto" /> % de acerto</label>
+              <label class="chip"><input type="checkbox" name="aluno_mede" value="simulados" /> Simulados</label>
+              <label class="chip"><input type="checkbox" name="aluno_mede" value="evolucao" /> Evolução histórica</label>
+              <label class="chip"><input type="checkbox" name="aluno_mede" value="revisao" /> Revisões</label>
+              <label class="chip sel"><input type="checkbox" name="aluno_mede" value="nada" checked /> Nada sistêmico</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Existe acompanhamento individual periódico?</label>
+            <div class="row" data-name="aluno_individual">
+              <label class="chip"><input type="radio" name="aluno_individual" value="sim" /> Sim</label>
+              <label class="chip sel"><input type="radio" name="aluno_individual" value="nao" checked /> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Existe protocolo de recuperação para baixo desempenho?</label>
+            <div class="row" data-name="aluno_recuperacao">
+              <label class="chip"><input type="radio" name="aluno_recuperacao" value="sim" /> Sim</label>
+              <label class="chip sel"><input type="radio" name="aluno_recuperacao" value="nao" checked /> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Existe protocolo de reta final (últimas semanas antes da prova)?</label>
+            <div class="row" data-name="aluno_reta">
+              <label class="chip"><input type="radio" name="aluno_reta" value="sim" /> Sim</label>
+              <label class="chip sel"><input type="radio" name="aluno_reta" value="nao" checked /> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Como o erro do aluno é utilizado pedagogicamente?</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Sem sistema de banco de erros ou revisão automática. A correção acontece pontualmente na aula. <button type="button" class="confirm-btn" data-target="aluno_erro" data-value="Sem sistema de banco de erros ou revisão automática. A correção acontece pontualmente na aula.">Confirmar</button></div>
+            <textarea name="aluno_erro" id="aluno_erro" placeholder="Banco de erros, revisão automática, atendimento individual..."></textarea>
+          </div>
+        </section>
+
+        <!-- COMERCIAL -->
+        <section class="section" id="s-comercial">
+          <h2>7. Comercial e experiência do lead</h2>
+          <div class="grid">
+            <div class="field">
+              <label>Valor mensal médio</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> PMERJ: R$ 300 pix / R$ 330 cartão | Militares: R$ 399,99 pix / R$ 449,99 cartão | EAM: R$ 380 pix / R$ 419,99 cartão <button type="button" class="confirm-btn" data-target="comercial_valor" data-value="PMERJ: R$ 300 pix / R$ 330 cartão | Militares: R$ 399,99 pix / R$ 449,99 cartão | EAM: R$ 380 pix / R$ 419,99 cartão">Confirmar</button></div>
+              <input name="comercial_valor" id="comercial_valor" placeholder="R$" />
+            </div>
+            <div class="field">
+              <label>Forma de pagamento</label>
+              <div class="row" data-name="comercial_pagamento">
+                <label class="chip sel"><input type="checkbox" name="comercial_pagamento" value="cartao" checked /> Cartão</label>
+                <label class="chip sel"><input type="checkbox" name="comercial_pagamento" value="boleto" checked /> Boleto</label>
+                <label class="chip sel"><input type="checkbox" name="comercial_pagamento" value="pix" checked /> PIX</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Material incluso na mensalidade?</label>
+              <div class="row" data-name="comercial_material">
+                <label class="chip sel"><input type="radio" name="comercial_material" value="sim" checked /> Sim</label>
+                <label class="chip"><input type="radio" name="comercial_material" value="nao" /> Não</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Existe período de experiência / garantia?</label>
+              <div class="row" data-name="comercial_garantia">
+                <label class="chip"><input type="radio" name="comercial_garantia" value="sim" /> Sim</label>
+                <label class="chip sel"><input type="radio" name="comercial_garantia" value="nao" checked /> Não</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Maiores objeções dos leads no atendimento</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Principalmente valores; em alguns casos, falta de informação no atendimento por mudança de equipe. <button type="button" class="confirm-btn" data-target="comercial_objecoes" data-value="Principalmente valores; em alguns casos, falta de informação no atendimento por mudança de equipe.">Confirmar</button></div>
+            <textarea name="comercial_objecoes" id="comercial_objecoes" placeholder="Liste as objeções mais comuns"></textarea>
+          </div>
+          <div class="field">
+            <label>Quais canais de captação de leads são usados hoje?</label>
+            <div class="row" data-name="comercial_canais">
+              <label class="chip sel"><input type="checkbox" name="comercial_canais" value="instagram" checked /> Instagram</label>
+              <label class="chip"><input type="checkbox" name="comercial_canais" value="facebook" /> Facebook</label>
+              <label class="chip sel"><input type="checkbox" name="comercial_canais" value="google" checked /> Google Ads</label>
+              <label class="chip"><input type="checkbox" name="comercial_canais" value="indicacao" /> Indicação</label>
+              <label class="chip sel"><input type="checkbox" name="comercial_canais" value="whatsapp" checked /> WhatsApp</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULTADOS -->
+        <section class="section" id="s-resultados">
+          <h2>8. Resultados e diferenciais</h2>
+          <div class="field"><label>Taxa de aprovação geral (se houver)</label><input name="resultados_taxa" placeholder="Ex: 35% dos alunos aprovados em 2024" /></div>
+          <div class="field"><label>Aprovados em destaque (concurso / ano / classificação)</label><textarea name="resultados_aprovados" placeholder="Liste os casos que podem ser usados como prova social"></textarea></div>
+          <div class="field">
+            <label>Depoimentos / cases organizados?</label>
+            <div class="row" data-name="resultados_depoimentos">
+              <label class="chip sel"><input type="radio" name="resultados_depoimentos" value="sim" checked /> Sim</label>
+              <label class="chip"><input type="radio" name="resultados_depoimentos" value="nao" /> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Diferenciais declarados do EPQ</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Espaço confortável, treinamento TAF, método por questões, professores concursados/concurseiros, unidade acolhedora e foco na banca do edital. <button type="button" class="confirm-btn" data-target="resultados_diferenciais" data-value="Espaço confortável, treinamento TAF, método por questões, professores concursados/concurseiros, unidade acolhedora e foco na banca do edital.">Confirmar</button></div>
+            <textarea name="resultados_diferenciais" id="resultados_diferenciais" placeholder="O que é único ou relevante na sua proposta?"></textarea>
+          </div>
+        </section>
+
+        <!-- PROTOCOLOS -->
+        <section class="section" id="s-protocolos">
+          <h2>9. Protocolos pedagógicos</h2>
+          <div class="field"><label>Protocolo de recuperação (passo a passo)</label><textarea name="protocolo_recuperacao" placeholder="O que acontece quando o aluno vai mal?"></textarea></div>
+          <div class="field"><label>Protocolo de reta final (passo a passo)</label><textarea name="protocolo_reta" placeholder="O que muda nas últimas semanas?"></textarea></div>
+          <div class="field"><label>Regra de evolução de turma / trilha</label><textarea name="protocolo_evolucao" placeholder="Ex: se acertar >80%, pode subir de nível..."></textarea></div>
+          <div class="field">
+            <label>Existe política de rematrícula ou permanência?</label>
+            <div class="row" data-name="protocolo_rematricula">
+              <label class="chip"><input type="radio" name="protocolo_rematricula" value="sim" /> Sim</label>
+              <label class="chip sel"><input type="radio" name="protocolo_rematricula" value="nao" checked /> Não</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- INFRA -->
+        <section class="section" id="s-infra">
+          <h2>10. Infraestrutura e tecnologia</h2>
+          <div class="grid">
+            <div class="field"><label>Total de salas / unidades físicas</label><input name="infra_salas" placeholder="Ex: 3 salas" /></div>
+            <div class="field">
+              <label>Capacidade por sala</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> até 60 alunos <button type="button" class="confirm-btn" data-target="infra_capacidade" data-value="até 60 alunos">Confirmar</button></div>
+              <input name="infra_capacidade" id="infra_capacidade" placeholder="Ex: 30 alunos" />
+            </div>
+            <div class="field">
+              <label>Plataforma de questões / material digital</label>
+              <div class="auto-fill"><strong>Sugestão:</strong> Fitware + PAGedubank + contratos digitais <button type="button" class="confirm-btn" data-target="infra_plataforma" data-value="Fitware + PAGedubank + contratos digitais">Confirmar</button></div>
+              <input name="infra_plataforma" id="infra_plataforma" placeholder="Nome ou 'não existe'" />
+            </div>
+            <div class="field">
+              <label>Automação / IA aplicada à pedagogia?</label>
+              <div class="row" data-name="infra_ia">
+                <label class="chip"><input type="radio" name="infra_ia" value="sim" /> Sim</label>
+                <label class="chip sel"><input type="radio" name="infra_ia" value="nao" checked /> Não</label>
+              </div>
+            </div>
+          </div>
+          <div class="field"><label>O que pode ser automatizado com IA hoje (se souber)?</label><textarea name="infra_ia_descricao" placeholder="Ex: revisão de redação, análise de desempenho..."></textarea></div>
+        </section>
+
+        <!-- FINAL -->
+        <section class="section" id="s-final">
+          <h2>11. Finalização e próximos passos</h2>
+          <div class="field">
+            <label>Quem é o responsável por revisar e validar esses dados?</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Ronan jorge / Tayná Paulino <button type="button" class="confirm-btn" data-target="final_responsavel" data-value="Ronan jorge / Tayná Paulino">Confirmar</button></div>
+            <input name="final_responsavel" id="final_responsavel" placeholder="Nome / cargo" />
+          </div>
+          <div class="field"><label>Data limite para alimentar o painel pedagógico</label><input name="final_prazo" type="date" /></div>
+          <div class="field">
+            <label>Observações gerais</label>
+            <div class="auto-fill"><strong>Sugestão:</strong> Material de campanha disponível: fotos de alunos, aprovados, depoimentos em vídeo, vídeos de aulas e institucionais. Aprovação de criativos com Ronan em até 1 a 3 dias. <button type="button" class="confirm-btn" data-target="final_obs" data-value="Material de campanha disponível: fotos de alunos, aprovados, depoimentos em vídeo, vídeos de aulas e institucionais. Aprovação de criativos com Ronan em até 1 a 3 dias.">Confirmar</button></div>
+            <textarea name="final_obs" id="final_obs" placeholder="Qualquer detalhe adicional"></textarea>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button type="button" class="btn secondary" id="resetBtn">Limpar confirmações</button>
+          <button type="button" class="btn" id="copyBtn">Copiar dados</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast">Mensagem</div>
+
+<script>
+(function(){
+  const FORM=document.getElementById('form');
+  const BAR=document.getElementById('progressBar');
+  const TOAST=document.getElementById('toast');
+  const EXPORT_BTN=document.getElementById('exportBtn');
+  const COPY_BTN=document.getElementById('copyBtn');
+  const RESET_BTN=document.getElementById('resetBtn');
+
+  function toast(msg){TOAST.textContent=msg;TOAST.style.display='block';setTimeout(()=>TOAST.style.display='none',2200)}
+
+  function toggleChips(){
+    document.querySelectorAll('.chip').forEach(c=>{
+      const input=c.querySelector('input');
+      c.classList.toggle('sel', input.checked);
+      if(input.type==='radio') c.classList.toggle('sel', input.checked);
+    });
+  }
+  document.querySelectorAll('input').forEach(i=>i.addEventListener('change',toggleChips));
+  toggleChips();
+
+  function progress(){
+    const inputs=FORM.querySelectorAll('input,textarea,select');
+    let filled=0;
+    inputs.forEach(i=>{
+      if(i.type==='radio' || i.type==='checkbox'){
+        const name=i.name;
+        if(name && FORM.querySelector(`[name="${name}"]:checked`)) filled++;
+      }else if(i.value && i.value.trim()) filled++;
+    });
+    const total=Math.max(inputs.length,1);
+    const pct=Math.round((filled/total)*100);
+    BAR.style.width=pct+'%';
+    return pct;
+  }
+  FORM.addEventListener('input',progress);
+  FORM.addEventListener('change',progress);
+  progress();
+
+  function getFormData(){
+    const data={};
+    const formData=new FormData(FORM);
+    formData.forEach((value,key)=>{
+      if(data[key]){if(Array.isArray(data[key])) data[key].push(value); else data[key]=[data[key],value];}
+      else data[key]=value;
+    });
+    return data;
+  }
+
+  document.querySelectorAll('.confirm-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const target=document.getElementById(btn.dataset.target);
+      const value=btn.dataset.value;
+      if(target){ target.value=value; target.dispatchEvent(new Event('input',{bubbles:true})); toast('Sugestão aplicada'); }
+    });
+  });
+
+  EXPORT_BTN.addEventListener('click',()=>{
+    const data=getFormData();
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='epq-planejamento-pedagogico.json';
+    a.click();
+    toast('JSON exportado');
+  });
+
+  COPY_BTN.addEventListener('click',async ()=>{
+    const data=getFormData();
+    try{
+      await navigator.clipboard.writeText(JSON.stringify(data,null,2));
+      toast('Dados copiados');
+    }catch(e){
+      toast('Não foi possível copiar');
+    }
+  });
+
+  RESET_BTN.addEventListener('click',()=>{
+    if(confirm('Limpar todos os campos?')) FORM.reset(), toggleChips(), progress();
+  });
+
+  document.querySelectorAll('.nav button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const target=document.getElementById(btn.dataset.target);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  const sections=['s-intro','s-metodologia','s-pmerj','s-ses','s-professores','s-aluno','s-comercial','s-resultados','s-protocolos','s-infra','s-final'];
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id=entry.target.id;
+        document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===id));
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(id=>{const el=document.getElementById(id); if(el) observer.observe(el);});
+})();
+</script>
+</body>
+</html>

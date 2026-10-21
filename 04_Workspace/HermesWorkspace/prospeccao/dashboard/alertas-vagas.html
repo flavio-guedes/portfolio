@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alertas de Vagas — Job Intelligence OS</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #181b22;
+      --line: #2b3140;
+      --text: #e7eaf0;
+      --muted: #8a94a6;
+      --accent: #3b82f6;
+      --high: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --ok: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.4 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 17, 21, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 18px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .field input, .field select {
+      background: #11141a;
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 10px;
+      min-width: 170px;
+      outline: none;
+    }
+
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #11141a;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    main {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 14px;
+    }
+
+    .job {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+
+    .job:hover {
+      border-color: var(--accent);
+      transform: translateY(1px);
+    }
+
+    .job-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .job-name {
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .job-company {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .score {
+      min-width: 60px;
+      text-align: center;
+      padding: 8px;
+      border-radius: 10px;
+      background: #0b0d12;
+      border: 1px solid var(--line);
+      font-weight: 800;
+      font-size: 14px;
+      color: #e7eaf0;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #0b0d12;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tag.status-high { color: #ddf7d6; border-color: #276937; background: #122a18; }
+    .tag.status-strategic { color: #fff1c2; border-color: #5c4a1b; background: #292216; }
+    .tag.status-default { color: #e7eaf0; border-color: #27304a; background: #121622; }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      background: var(--accent);
+      color: #04102a;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .empty {
+      padding: 40px 20px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">Alertas de Vagas</div>
+    <div class="filters">
+      <div class="field">
+        <label>Busca</label>
+        <input id="q" type="text" placeholder="cargo, empresa, remoto..." />
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="status">
+          <option value="">Todos</option>
+          <option value="DISCOVERED">DISCOVERED</option>
+          <option value="ANALYZED">ANALYZED</option>
+          <option value="HIGH_PRIORITY">HIGH_PRIORITY</option>
+          <option value="SAVED">SAVED</option>
+          <option value="READY">READY</option>
+          <option value="APPLIED">APPLIED</option>
+          <option value="FOLLOW_UP">FOLLOW_UP</option>
+          <option value="INTERVIEW">INTERVIEW</option>
+          <option value="OFFER">OFFER</option>
+          <option value="REJECTED">REJECTED</option>
+          <option value="EXPIRED">EXPIRED</option>
+          <option value="BLOCKED">BLOCKED</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Prioridade</label>
+        <select id="priority">
+          <option value="">Todas</option>
+          <option value="PRIORIDADE MÁXIMA">PRIORIDADE MÁXIMA</option>
+          <option value="ALTA">ALTA</option>
+          <option value="MÉDIA">MÉDIA</option>
+          <option value="BAIXA">BAIXA</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Remote</label>
+        <select id="remote">
+          <option value="">Todos</option>
+          <option value="Remote">Remote</option>
+          <option value="Híbrido">Híbrido</option>
+          <option value="Presencial">Presencial</option>
+        </select>
+      </div>
+      <div class="pill" id="count">Carregando...</div>
+    </div>
+  </header>
+
+  <main id="jobs"></main>
+
+  <script>
+    const DATA_PATH = '../data/scored_opportunities.json';
+    const fallbackSearch = 'AI Automation Specialist';
+
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function statusClass(status, priority, fit) {
+      if (status === 'OFFER') return 'status-high';
+      if (status === 'APPLIED' || status === 'INTERVIEW') return 'status-strategic';
+      if ((fit >= 90) || (fit >= 80 && ['PRIORIDADE MÁXIMA', 'ALTA'].includes(priority))) return 'status-high';
+      return 'status-default';
+    }
+
+    function buildSearchLink(item) {
+      const url = item.url;
+      if (url && String(url).trim()) return url;
+      const terms = [item.role, item.company, item.location, 'Remote'].filter(Boolean).map(encodeURIComponent).join('+');
+      return ` || encodeURIComponent(fallbackSearch)}`;
+    }
+
+    function render(items) {
+      const container = document.getElementById('jobs');
+      const countEl = document.getElementById('count');
+      countEl.textContent = `${items.length} oportunidade(s)`;
+
+      if (!items.length) {
+        container.innerHTML = '<div class="empty">Nenhum alerta encontrado para este filtro.</div>';
+        return;
+      }
+
+      const sorted = items.slice().sort((a, b) => {
+        const pa = String(a.priority || '').padStart(20);
+        const pb = String(b.priority || '').padStart(20);
+        if (pa !== pb) return pa < pb ? 1 : -1;
+        return (b.fit_score || 0) - (a.fit_score || 0);
+      });
+
+      container.innerHTML = sorted.map((item) => {
+        const title = item.role || 'Sem título';
+        const company = item.company ? ` · ${item.company}` : '';
+        const location = item.location ? ` · ${item.location}` : '';
+        const salary = item.salary ? `${item.currency || ''} ${item.salary}`.trim() : '';
+        const remote = item.remote_type || '';
+        const url = buildSearchLink(item);
+        const note = item.notes ? `<div style="color: var(--muted); font-size: 12px;">${escapeHtml(item.notes)}</div>` : '';
+
+        return `
+          <article class="job">
+            <div class="job-head">
+              <div style="flex:1; min-width:0;">
+                <div class="job-name">${escapeHtml(title)}</div>
+                <div class="job-company">${escapeHtml(company || location)}</div>
+                ${note}
+              </div>
+              <div class="score">${item.fit_score ?? '—'}</div>
+            </div>
+            <div class="meta">
+              <span class="tag ${statusClass(item.status, item.priority, item.fit_score)}">${escapeHtml(item.status || '—')}</span>
+              ${remote ? `<span class="tag">${escapeHtml(remote)}</span>` : ''}
+              ${salary ? `<span class="tag">${escapeHtml(salary)}</span>` : ''}
+              <span class="tag">${escapeHtml(item.priority || '—')}</span>
+            </div>
+            <div class="actions">
+              <a class="btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">ABRIR VAGA</a>
+              <a class="btn secondary" href="job-radar.html">Job Radar</a>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function load() {
+      try {
+        const response = await fetch(DATA_PATH);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const items = Array.isArray(data) ? data : [];
+        applyFilters(items);
+      } catch (e) {
+        document.getElementById('jobs').innerHTML = `<div class="empty">Falha ao carregar alertas: ${escapeHtml(e.message)}</div>`;
+        document.getElementById('count').textContent = 'Erro';
+      }
+    }
+
+    function matches(item, q, status, priority, remote) {
+      const text = `${item.role} ${item.company} ${item.location} ${item.notes} ${item.status}`.toLowerCase();
+      const hay = text.includes(q.toLowerCase());
+      const sOk = status ? item.status === status : true;
+      const pOk = priority ? item.priority === priority : true;
+      const rOk = remote ? item.remote_type === remote : true;
+      return hay && sOk && pOk && rOk;
+    }
+
+    function applyFilters(items) {
+      const q = document.getElementById('q').value.trim();
+      const status = document.getElementById('status').value;
+      const priority = document.getElementById('priority').value;
+      const remote = document.getElementById('remote').value;
+      const out = items.filter((item) => matches(item, q, status, priority, remote));
+      render(out);
+    }
+
+    document.getElementById('q').addEventListener('input', () => applyFilters(window.__jobData || []));
+    document.getElementById('status').addEventListener('change', () => applyFilters(window.__jobData || []));
+    document.getElementById('priority').addEventListener('change', () => applyFilters(window.__jobData || []));
+    document.getElementById('remote').addEventListener('change', () => applyFilters(window.__jobData || []));
+
+    async function init() {
+      const response = await fetch(DATA_PATH);
+      const data = await response.json();
+      window.__jobData = Array.isArray(data) ? data : [];
+      applyFilters(window.__jobData);
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hunter de Vagas — Pipeline Hermes</title>
+<style>
+  :root {
+    bg:#07090f;
+    panel:rgba(255,255,255,0.03);
+    line:rgba(255,255,255,0.08);
+    text:#e6e8ee;
+    muted:#9ba3b2;
+    ok:#0affb0;
+    warn:#ffd166;
+    err:#ff5b7e;
+    info:#7dc4ff;
+    prio:#b47cff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:radial-gradient(circle at 20% 20%,rgba(123,196,255,.08),transparent 40%),radial-gradient(circle at 80% 80%,rgba(180,124,255,.08),transparent 40%),var(--bg);
+    color:var(--text);
+    font-family:ui-sans-serif,Inter,system-ui;
+    min-height:100vh;
+    padding:24px;
+  }
+  .noise{position:fixed;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .28 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");z-index:0}
+  .wrap{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+  header{display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:16px}
+  h1{font-size:22px;margin:0;letter-spacing:.4px}
+  .sub{color:var(--muted);font-size:13px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+  .kpi .label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+  .kpi .value{font-size:28px;font-weight:700;margin-top:6px}
+  .section{display:grid;gap:14px;margin-top:16px}
+  .section-title{font-size:14px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+  .grid{display:grid;gap:14px}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:860px){
+    .kpis,.grid-2,.grid-3{grid-template-columns:1fr}
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    th,td{padding:10px 6px;font-size:12px}
+    .loop{font-size:11px;padding:10px}
+    header{gap:10px}
+    h1{font-size:18px}
+  }
+  @media(max-width:480px){
+    .kpis{grid-template-columns:1fr 1fr}
+    th,td{padding:8px 4px;font-size:11px}
+    .card{padding:10px}
+    body{padding:16px}
+  }
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;min-width:640px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td{font-size:13px;line-height:1.45}
+  .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.3px;border:1px solid rgba(255,255,255,.12)}
+  .ok{color:var(--ok)}.warn{color:var(--warn)}.err{color:var(--err)}.info{color:var(--info)}.prio{color:var(--prio)}
+  .small{color:var(--muted);font-size:12px}
+  .loop{white-space:pre-wrap;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:14px;color:#cfd3dc;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:12px;line-height:1.6;max-height:420px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Hunter de Vagas</h1>
+      <div class="sub">Fluxo autônomo: prospecção → matching → candidatura → QA → registro</div>
+    </div>
+    <div class="small">Atualização automática conforme Job Hunter</div>
+  </header>
+
+  <div class="kpis">
+    <div class="card kpi"><div class="label">Mapeadas</div><div class="value" id="kpi-mapped">0</div></div>
+    <div class="card kpi"><div class="label">Fila</div><div class="value" id="kpi-queue">0</div></div>
+    <div class="card kpi"><div class="label">Concluídas</div><div class="value" id="kpi-done">0</div></div>
+    <div class="card kpi"><div class="label">Bloqueios</div><div class="value" id="kpi-blocked">0</div></div>
+    <div class="card kpi"><div class="label">Info pendente</div><div class="value" id="kpi-pending">0</div></div>
+    <div class="card kpi"><div class="label">Score médio</div><div class="value" id="kpi-score">0</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Oportunidades mapeadas</div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Cargo</th><th>Empresa</th><th>Plataforma</th><th>Faixa</th><th>Modalidade</th><th>Score</th><th>Classificação</th></tr></thead>
+          <tbody id="tb-mapped"><tr><td colspan="7" class="small">Nenhuma oportunidade registrada.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section grid grid-2">
+    <div>
+      <div class="section-title">Aplicações em fila</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Cargo</th><th>Empresa</th><th>Plataforma</th><th>Prioridade</th><th>Esforço</th><th>Próxima ação</th></tr></thead>
+            <tbody id="tb-queue"><tr><td colspan="6" class="small">Sem entradas na fila.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Bloqueios e limitações</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Plataforma</th><th>Vaga</th><th>Etapa</th><th>Bloqueio</th><th>Impacto</th><th>Alternativa</th></tr></thead>
+            <tbody id="tb-blocked"><tr><td colspan="6" class="small">Nenhum bloqueio registrado.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section grid grid-2">
+    <div>
+      <div class="section-title">Informação pendente</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Vaga / Tema</th><th>O que falta</th><th>Impacto</th><th>Ação necessária</th></tr></thead>
+            <tbody id="tb-pending"><tr><td colspan="4" class="small">Sem pendências.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Concluídas</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Cargo</th><th>Empresa</th><th>Plataforma</th><th>Faixa</th><th>Data</th><th>Resultado</th></tr></thead>
+            <tbody id="tb-done"><tr><td colspan="6" class="small">Nenhuma candidatura concluída.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Operação</div>
+    <div class="loop">
+<span class="ok">LOOP AUTÔNOMO</span>
+Objetivo: maximizar candidaturas de alta aderência × qualidade × autonomia × velocidade.
+
+Faixa salarial
+- Brasil: R$ 10.000/mês padrão; autonomia total até R$ 14.000/mês.
+- Internacional/remoto: US$ 2.500/mês padrão; autonomia total até US$ 3.000/mês.
+- Acima disso: sinalizar como prioritário antes de decisões que exigirem participação.
+
+Orquestração
+- Hermes atua como orquestrador.
+- Delega a agentes especializados: research, matching, application, QA, pipeline, reporting.
+- Nenhum agente inventa informação.
+
+Processo contínuo
+BUSCAR → FILTRAR → VALIDAR → RANKEAR → MATCHING → SELECIONAR CV → PREPARAR CANDIDATURA → QA → APLICAR → REGISTRAR → ANALISAR RESULTADO → APRENDER → BUSCAR NOVAMENTE
+
+Ranking
+- Score de 0 a 100.
+- 90-100 = PRIORIDADE MÁXIMA
+- 80-89  = ALTA
+- 70-79  = BOA
+- 60-69  = AVALIAR
+- <60    = NÃO APLICAR, salvo justificativa excepcional
+
+Esforço
+- A: concluída autonomamente
+- B: quase concluída, pequena intervenção
+- C: bloqueada por autenticação
+- D: bloqueada por ferramenta
+- E: bloqueada por informação
+
+Autonomia
+- Usar somente autenticações já disponíveis.
+- Não contornar CAPTCHA, MFA, bloqueios de segurança, anti-bot.
+- Bloqueio: registrar PLATAFORMA → ETAPA → BLOQUEIO → O QUE É NECESSÁRIO → IMPACTO → ALTERNATIVA DISPONÍVEL.
+- Não pedir nova autenticação automaticamente.
+
+QA obrigatório antes de concluir
+[ ] empresa correta
+[ ] cargo correto
+[ ] vaga ativa
+[ ] remuneração identificada/ausência registrada
+[ ] localização/modalidade
+[ ] CV correto
+[ ] portfólio correto
+[ ] respostas coerentes
+[ ] sem informação inventada
+[ ] sem duplicidade
+[ ] autenticação disponível
+[ ] envio tecnicamente possível
+
+Aprendizado
+- Ajustar busca, palavras-chave, ranking, seleção de CV e priorização por plataforma a cada ciclo.
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function el(id){return document.getElementById(id)}
+  function setKpi(id,n){const e=el(id);if(e)e.textContent=n}
+  function clearTbody(id){const t=el(id);if(t)t.innerHTML='<tr><td colspan="100" class="small">Nenhum registro.</td></tr>'}
+
+  const data={
+    mapped:[],
+    queue:[],
+    blocked:[],
+    pending:[],
+    done:[]
+  };
+
+  function render(){
+    const mappedCount=data.mapped.length;
+    const queueCount=data.queue.length;
+    const blockedCount=data.blocked.length;
+    const pendingCount=data.pending.length;
+    const doneCount=data.done.length;
+    const scores=data.mapped.map(x=>x.score).filter(Boolean);
+    const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):0;
+
+    setKpi('kpi-mapped',String(mappedCount));
+    setKpi('kpi-queue',String(queueCount));
+    setKpi('kpi-done',String(doneCount));
+    setKpi('kpi-blocked',String(blockedCount));
+    setKpi('kpi-pending',String(pendingCount));
+    setKpi('kpi-score',String(avg));
+
+    function fill(id,rows){
+      const t=el(id);if(!t)return;
+      if(!rows.length){clearTbody(id);return}
+      t.innerHTML=rows.map(r=>'<tr>'+r.map(c=>`<td>${c||''}</td>`).join('')+'</tr>').join('');
+    }
+
+    fill('tb-mapped',data.mapped.map(x=>[
+      x.title,x.company,x.platform,x.range,x.modality,x.score?`<span class="prio">${x.score}</span>`:'',
+      x.classification||''
+    ]));
+
+    fill('tb-queue',data.queue.map(x=>[
+      x.title,x.company,x.platform,x.priority,x.effort,x.next
+    ]));
+
+    fill('tb-blocked',data.blocked.map(x=>[
+      x.platform,x.title,x.stage,x.block,x.impact,x.alternative
+    ]));
+
+    fill('tb-pending',data.pending.map(x=>[
+      x.subject,x.missing,x.impact,x.action
+    ]));
+
+    fill('tb-done',data.done.map(x=>[
+      x.title,x.company,x.platform,x.range,x.date,x.result
+    ]));
+  }
+
+  window.app={data,render};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+{
+  "port": 9100,
+  "watchdog_interval_s": 15,
+  "api_cache_s": 8,
+  "snapshot_persist_s": 60,
+  "report_hour": 8,
+  "services": [
+    {
+      "id": "litellm",
+      "tec": "LiteLLM",
+      "cz": "Maître",
+      "port": 4000,
+      "desc_tec": "Proxy OpenAI-compat",
+      "desc_cz": "Recebe pedido",
+      "log": "~/.config/litellm/proxy.log",
+      "icon": "server",
+      "restart": "pkill -f 'litellm.*4000' && cd ~/.config/litellm && set -a && source ~/.hermes_env && set +a && nohup litellm --config ./litellm_config.yaml --port 4000 --host 127.0.0.1 > ./proxy.log 2>&1 &"
+    },
+    {
+      "id": "agent",
+      "tec": "Agent",
+      "cz": "Chef",
+      "port": 8422,
+      "desc_tec": "Orquestrador WhatsApp→LLM",
+      "desc_cz": "Decide prato",
+      "log": "/tmp/hermes-agent.log",
+      "icon": "bolt",
+      "restart": "pkill -9 -f hermes-agent.mjs; sleep 2; cd ~/hermes-bridge/hermes-agent && nohup node hermes-agent.mjs > /tmp/hermes-agent.log 2>&1 &"
+    },
+    {
+      "id": "bridge",
+      "tec": "Bridge",
+      "cz": "Garçom",
+      "port": 8421,
+      "desc_tec": "Envio WhatsApp",
+      "desc_cz": "Leva prato",
+      "log": "/tmp/hermes-bridge.log",
+      "icon": "arrow",
+      "restart": "pkill -9 -f hermes-bridge.mjs; sleep 2; cd ~/hermes-bridge && nohup node hermes-bridge.mjs > /tmp/hermes-bridge.log 2>&1 &"
+    },
+    {
+      "id": "wahook",
+      "tec": "WA-Hook",
+      "cz": "Porta-voz",
+      "port": 8787,
+      "desc_tec": "Baileys sender",
+      "desc_cz": "Canal WhatsApp",
+      "log": null,
+      "icon": "msg",
+      "restart": null
+    },
+    {
+      "id": "ollama",
+      "tec": "Ollama",
+      "cz": "Fogão",
+      "port": 11434,
+      "desc_tec": "Runtime local",
+      "desc_cz": "Cozinha caseira",
+      "log": null,
+      "icon": "flame",
+      "restart": "brew services restart ollama 2>/dev/null || ollama serve &"
+    }
+  ],
+  "providers": [
+    {
+      "id": "groq",
+      "tec": "Groq",
+      "cz": "Mercado rápido",
+      "env": "GROQ_API_KEY",
+      "icon": "bolt"
+    },
+    {
+      "id": "nvidia",
+      "tec": "NVIDIA NIM",
+      "cz": "Mercado pesado",
+      "env": "NVIDIA_API_KEY",
+      "icon": "mountain"
+    },
+    {
+      "id": "openrouter",
+      "tec": "OpenRouter",
+      "cz": "Mercado reserva",
+      "env": "OPENROUTER_API_KEY",
+      "icon": "dice"
+    },
+    {
+      "id": "openai",
+      "tec": "OpenAI",
+      "cz": "Mercado OpenAI",
+      "env": "OPENAI_API_KEY",
+      "icon": "circle"
+    },
+    {
+      "id": "google",
+      "tec": "Google",
+      "cz": "Mercado Google",
+      "env": "GOOGLE_API_KEY",
+      "icon": "hexagon"
+    },
+    {
+      "id": "anthropic",
+      "tec": "Anthropic",
+      "cz": "Mercado Anthropic",
+      "env": "ANTHROPIC_API_KEY",
+      "icon": "diamond"
+    }
+  ],
+  "rules": [
+    {
+      "id": "svc_down",
+      "type": "service_down",
+      "level": "critical",
+      "msg": "{{svc}} fora do ar há {{down_for}}s",
+      "suggest": "Verificar log: {{log_path}}. Tentar restart: {{restart_cmd}}",
+      "auto_heal": true,
+      "cooldown_s": 300,
+      "max_per_day": 5
+    },
+    {
+      "id": "svc_recovered",
+      "type": "service_recovered",
+      "level": "info",
+      "msg": "{{svc}} voltou ao ar após {{down_for}}s"
+    },
+    {
+      "id": "rate_limit",
+      "type": "threshold",
+      "field": "stats.e429_5min",
+      "op": ">",
+      "value": 5,
+      "level": "warn",
+      "msg": "{{value}} rate-limits em 5min",
+      "suggest": "Fallback provavelmente entrou. Se persistir, reduzir concorrência."
+    },
+    {
+      "id": "err_400",
+      "type": "threshold",
+      "field": "stats.e400_5min",
+      "op": ">",
+      "value": 3,
+      "level": "warn",
+      "msg": "{{value}} erros 400 em 5min",
+      "suggest": "Verificar payload do agent — schema pode ter mudado."
+    },
+    {
+      "id": "err_500",
+      "type": "threshold",
+      "field": "stats.e500_5min",
+      "op": ">",
+      "value": 2,
+      "level": "critical",
+      "msg": "{{value}} erros 500 em 5min",
+      "suggest": "Verificar log do LiteLLM e provedores upstream."
+    },
+    {
+      "id": "empty_content",
+      "type": "threshold",
+      "field": "stats.empty_ratio_5min",
+      "op": ">",
+      "value": 0.4,
+      "level": "warn",
+      "msg": "{{value_pct}}% de respostas com content vazio",
+      "suggest": "Modelo de reasoning saturando max_tokens? Ajustar em hermes-agent.mjs."
+    },
+    {
+      "id": "no_traffic",
+      "type": "threshold",
+      "field": "stats.posts_30min",
+      "op": "==",
+      "value": 0,
+      "level": "info",
+      "msg": "Nenhum POST em 30min — sistema ocioso"
+    },
+    {
+      "id": "high_latency",
+      "type": "threshold",
+      "field": "latency.p95_ms",
+      "op": ">",
+      "value": 25000,
+      "level": "warn",
+      "msg": "Latência p95 = {{value}}ms",
+      "suggest": "Provedor upstream lento. Verificar Groq/NVIDIA status."
+    },
+    {
+      "id": "mem_high",
+      "type": "threshold",
+      "field": "system.mem_pct",
+      "op": ">",
+      "value": 85,
+      "level": "warn",
+      "msg": "RAM do sistema em {{value}}%",
+      "suggest": "Verificar processos. Ollama costuma consumir muito."
+    }
+  ],
+  "notify": {
+    "macos": true,
+    "whatsapp": false,
+    "log_file": "data/alerts.jsonl"
+  },
+  "guardrails": {
+    "auto_heal_enabled": true,
+    "kill_switch_file": "data/DISABLE_AUTOHEAL",
+    "global_max_per_hour": 10
+  }
+}

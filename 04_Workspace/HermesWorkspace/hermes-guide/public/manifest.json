@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Hermes Guide",
+  "version": "0.1.0",
+  "description": "Camada inteligente de aprendizagem contextual sobre o Hermes.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["http://localhost:9119/*"],
+  "background": {
+    "service_worker": "src/background/service-worker.ts"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:9119/*"],
+      "js": ["src/content/index.ts"],
+      "css": ["src/styles/hermes-guide.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "icons": {
+    "16": "public/icon-16.png",
+    "48": "public/icon-48.png",
+    "128": "public/icon-128.png"
+  }
+}

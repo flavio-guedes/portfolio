@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follow-up Intelligence · v3 Humanizado</title>
+<style>
+  :root{
+    --accent:#007bff;--accent2:#0056b3;--border:#333;
+    --text:#fff;--text-dim:#aaa;--text-faint:#777;
+    --danger:#dc3545;--warn:#ffc107;--ok:#28a745;
+    --radius:12px;
+  }
+  .stage{border-color:var(--border);}
+  .stage.active{border-color:var(--accent);}
+  .lead-card{animation:pulse 1.5s ease-in-out 1;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,123,255,.4);}70%{box-shadow:0 0 0 10px rgba(0,123,255,0);}100%{box-shadow:0 0 0 0 rgba(0,123,255,0);}}
+  .msg-recebida{border-left:4px solid var(--ok);background:rgba(40,167,69,.05);padding:10px;border-radius:6px;margin:8px 0;}
+  .msg-recebida .recebida-label{font-size:10px;color:var(--ok);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+</style>
+</head>
+<body>
+<script>
+  // Função para marcar que recebeu mensagem
+  function marcarRecebida(id) {
+    const lead = LEADS.find(l => l.id === id);
+    const r = rec(id);
+    if (lead && r) {
+      r.recebeuMsg = true;
+      r.recebid...[truncated]

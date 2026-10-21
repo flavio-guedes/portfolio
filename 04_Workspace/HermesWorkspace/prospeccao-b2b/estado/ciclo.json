@@ -1,0 +1,51 @@
+{
+  "projeto": "PROSPECCAO B2B FLAVIO — captacao de clientes para gestao de marketing, trafego e CRM",
+  "endpoint_bridge": "http://localhost:3000/send",
+  "endpoint_preview": "localhost:3000/send (Baileys bridge local)",
+  "config": {
+    "provider": "nous",
+    "model": "upstage/solar-pro4:free",
+    "batch_size": 5,
+    "janela_ideal": [
+      "09:00-12:00",
+      "14:00-17:00"
+    ],
+    "intervalo_envio_s": 600,
+    "max_tentativas": 5,
+    "cadencia_dias": 2
+  },
+  "lista_ativa": {
+    "id": "01-ZN-MEIER-I",
+    "nome": "01 - Zona Norte / Méier I (LISTA ATIVA — DEFINIDA PARA FRENTE)",
+    "regiao": "Zona Norte",
+    "bairro": "Méier",
+    "segmento": "Preparatórios Militares — GCM/PMERJ/PRF (PROJETO EPQ)",
+    "estado": "READY",
+    "leads_total": 11,
+    "validados": 2,
+    "enviados": 5,
+    "pendentes": 9,
+    "quentes": 2,
+    "mornos": 9,
+    "frios": 0,
+    "oportunidades": 0,
+    "ganhos": 0,
+    "perdas": 0,
+    "historico": [],
+    "proxima_acao": "VALIDAR 9 pendentes → preparar mensagens → ENVIAR 1 a 1, 10min de intervalo (cada lead é 1 disparo, intervalo entre leads)",
+    "arquivo_leads": "/Users/mac/HermesWorkspace/prospeccao-b2b/leads/leads_mei_lier_I.json",
+    "proxima_lista": "02 - Zona Norte / Cachambi I"
+  },
+  "proximas_listas": [
+    {
+      "id": "02-ZN-CACHAMBI-I",
+      "nome": "02 - Zona Norte / Cachambi I (A SER DEFINIDA)",
+      "regiao": "Zona Norte",
+      "bairro": "Cachambi",
+      "estado": "PENDENTE DEFINICAO",
+      "leads_total_previsto": null,
+      "observacao": "Aguarda definicao de segmento e quantidade de leads"
+    }
+  ],
+  "historico_listas": []
+}

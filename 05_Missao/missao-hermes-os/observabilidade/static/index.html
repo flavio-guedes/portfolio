@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Hermes OS</title>
+<link rel="stylesheet" href="/static/style.css">
+</head><body id="body">
+<div id="bg"><div class="bl bl1" data-d="14"></div>
+<div class="bl bl2" data-d="24"></div><div class="nz"></div></div>
+<main>
+ <div class="hd">
+   <div class="brand">
+     <div class="logo" id="logo"></div>
+     <h1 id="ti">HERMES OS</h1>
+     <span class="tag" id="tg">DASHBOARD · carregando</span>
+   </div>
+   <div class="pill">
+     <span class="dot" id="pd" style="background:#6ee7a5;color:#6ee7a5"></span>
+     <span id="pt">—</span>
+     <span style="color:var(--t3);font-size:11px" id="ps">—</span>
+   </div>
+   <div class="tg">
+     <button id="bt" class="on">TÉCNICO</button>
+     <button id="bc">COZINHA</button>
+   </div>
+ </div>
+ <div class="tabs" id="tabs"></div>
+
+
+ <div class="pn">
+   <h2 id="ptitle"></h2>
+   <div class="pb" id="pbody"></div>
+ </div>
+ <div class="ft">
+   <div class="it"><span class="dot" id="fd-l"></span> LiteLLM <span class="mo">:4000</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-a"></span> Agent <span class="mo">:8422</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-b"></span> Bridge <span class="mo">:8421</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-o"></span> Ollama <span class="mo">:11434</span></div>
+   <div class="rt">
+     <span id="fsv">—</span><span class="sep">│</span>
+     <span id="fml">—</span><span class="sep">│</span>
+     <span class="mo" id="fhr">—</span>
+   </div>
+ </div>
+</main>
+<script src="/static/app.js"></script>
+
+
+
+
+
+
+
+<!-- ===== CHAT FLUTUANTE (sobre o painel inteiro) ===== -->
+<style>
+#chat-btn{
+  position:fixed;bottom:20px;right:20px;z-index:9998;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#4da3ff,#2ecc71);
+  color:#0b0c10;border:none;font-size:22px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(77,163,255,.4);
+  transition:transform .15s, box-shadow .15s;
+  display:flex;align-items:center;justify-content:center;
+}
+#chat-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 12px 32px rgba(77,163,255,.6)}
+#chat-btn.on{background:#1c1c22;color:#4da3ff;border:1px solid #4da3ff55}
+
+#chat-pnl{
+  position:fixed;bottom:88px;right:20px;z-index:9999;
+  width:min(440px, calc(100vw - 40px));
+  height:min(620px, calc(100vh - 120px));
+  background:rgba(15,15,20,.97);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.1);border-radius:16px;
+  box-shadow:0 24px 64px rgba(0,0,0,.7);
+  display:none;flex-direction:column;overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+#chat-pnl.on{display:flex}
+
+#chat-hdr{
+  padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;align-items:center;
+}
+#chat-hdr .tit{font-size:14px;font-weight:600;color:#e8e8ec}
+#chat-hdr .sub{font-size:10px;color:#888;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+#chat-x{
+  background:rgba(255,255,255,.06);border:none;color:#aaa;
+  width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;
+}
+
+#chat-short{
+  padding:8px 12px;display:flex;gap:6px;flex-wrap:wrap;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  max-height:78px;overflow-y:auto;
+}
+#chat-short button{
+  background:rgba(77,163,255,.1);color:#4da3ff;
+  border:1px solid rgba(77,163,255,.3);
+  padding:3px 9px;border-radius:6px;font-size:10.5px;cursor:pointer;
+  white-space:nowrap;font-family:inherit;
+}
+#chat-short button:hover{background:rgba(77,163,255,.2)}
+
+#chat-msgs{
+  flex:1;overflow-y:auto;padding:12px;
+  display:flex;flex-direction:column;gap:6px;
+  font-size:12.5px;line-height:1.5;
+}
+.chat-bub{
+  max-width:85%;padding:8px 12px;border-radius:12px;
+  word-wrap:break-word;white-space:pre-wrap;
+}
+.chat-bub.u{align-self:flex-end;background:rgba(77,163,255,.12);
+  border:1px solid rgba(77,163,255,.3);color:#cce4ff;border-bottom-right-radius:4px}
+.chat-bub.b{align-self:flex-start;background:rgba(46,204,113,.08);
+  border:1px solid rgba(46,204,113,.25);color:#e8e8ec;border-bottom-left-radius:4px}
+.chat-bub .tag{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+.chat-bub.u .tag{color:#4da3ff}
+.chat-bub.b .tag{color:#2ecc71}
+.chat-bub b{color:#fff}
+.chat-bub code{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;font-size:11.5px;color:#4da3ff}
+
+#chat-inp-wrap{
+  padding:10px 12px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;gap:8px;background:rgba(0,0,0,.2);
+}
+#chat-inp{
+  flex:1;padding:9px 12px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:#e8e8ec;font-size:12.5px;outline:none;font-family:inherit;
+}
+#chat-inp:focus{border-color:#4da3ff55}
+#chat-send{
+  padding:9px 16px;border-radius:8px;background:#4da3ff;color:#0b0c10;
+  border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
+}
+#chat-send:disabled{opacity:.5;cursor:default}
+
+@media (max-width:600px){
+  #chat-pnl{right:10px;bottom:80px;width:calc(100vw - 20px)}
+  #chat-btn{right:16px;bottom:16px}
+}
+</style>
+
+<button id="chat-btn" title="Assistente do painel">💬</button>
+
+<div id="chat-pnl">
+  <div id="chat-hdr">
+    <div>
+      <div class="tit">Assistente do painel</div>
+      <div class="sub">Pergunte sobre qualquer seção · 100% local</div>
+    </div>
+    <button id="chat-x" title="Fechar">✕</button>
+  </div>
+  <div id="chat-short"></div>
+  <div id="chat-msgs"></div>
+  <div id="chat-inp-wrap">
+    <input id="chat-inp" placeholder="Ex: status · sugestões · escala · reiniciar daemon"/>
+    <button id="chat-send">Enviar</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var BOT = 'http://127.0.0.1:9000';
+  var btn = document.getElementById('chat-btn');
+  var pnl = document.getElementById('chat-pnl');
+  var msgs= document.getElementById('chat-msgs');
+  var inp = document.getElementById('chat-inp');
+  var send= document.getElementById('chat-send');
+  var x   = document.getElementById('chat-x');
+  var shorts = document.getElementById('chat-short');
+
+  if (!btn || !pnl) return;
+
+  var ATALHOS = ['resumo','status','sugestões','escala','uptime','latência','modelos','provedores','alertas','ajuda'];
+  ATALHOS.forEach(function(a){
+    var b = document.createElement('button');
+    b.textContent = a;
+    b.onclick = function(){ enviar(a); };
+    shorts.appendChild(b);
+  });
+
+  function bubble(quem, txt){
+    var d = document.createElement('div');
+    d.className = 'chat-bub ' + (quem === 'u' ? 'u' : 'b');
+    var safe = String(txt)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    safe = safe.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+    safe = safe.replace(/`([^`]+)`/g,'<code>$1</code>');
+    d.innerHTML = '<span class="tag">'+(quem==='u'?'você':'watchdog')+'</span>' + safe;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+
+  function enviar(texto){
+    var t = (texto || inp.value || '').trim();
+    if (!t) return;
+    if (pnl.classList.contains('on') === false) abrir();
+    bubble('u', t);
+    inp.value = '';
+    send.disabled = true;
+    var pend = bubble('b', '…');
+    fetch(BOT + '/api/chat', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({msg: t})
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      pend.remove();
+      bubble('b', (d && d.msg) || '(sem resposta)');
+    })
+    .catch(function(e){
+      pend.remove();
+      bubble('b', '⚠ watchdog :9000 não respondeu — ' + e);
+    })
+    .finally(function(){ send.disabled = false; inp.focus(); });
+  }
+
+  function abrir(){
+    pnl.classList.add('on');
+    btn.classList.add('on');
+    btn.textContent = '✕';
+    inp.focus();
+    if (!abrir._feito){
+      abrir._feito = true;
+      bubble('b', 'Olá! Sou o assistente do painel.\n\nPergunte sobre qualquer seção, peça `resumo`, `status`, `sugestões`, `escala`, ou digite `ajuda` para ver tudo.\n\nTexto livre cai no Ollama local — nunca sai da máquina.');
+      fetch(BOT + '/api/chat/historico?n=6', {cache:'no-store'})
+        .then(function(r){ return r.json(); })
+        .then(function(arr){
+          if (!arr || !arr.length) return;
+          msgs.innerHTML = '';
+          arr.forEach(function(l){
+            if (l.user) bubble('u', l.user);
+            if (l.bot)  bubble('b', l.bot);
+          });
+        })
+        .catch(function(){});
+    }
+  }
+
+  function fechar(){
+    pnl.classList.remove('on');
+    btn.classList.remove('on');
+    btn.textContent = '💬';
+  }
+
+  btn.onclick = function(){ pnl.classList.contains('on') ? fechar() : abrir(); };
+  x.onclick   = fechar;
+  send.onclick= function(){ enviar(); };
+  inp.onkeydown = function(e){
+    if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); enviar(); }
+  };
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && pnl.classList.contains('on')) fechar();
+  });
+})();
+</script>
+<!-- ===== fim CHAT FLUTUANTE ===== -->
+
+</body></html>

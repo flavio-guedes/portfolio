@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missão Hermes OS — Painel de Acompanhamento</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2128; --panel3:#21262d; --border:#30363d;
+    --txt:#e6edf3; --txt2:#8b949e; --txt3:#6e7681;
+    --green:#3fb950; --yellow:#d29922; --red:#f85149; --blue:#58a6ff; --purple:#bc8cff;
+    --gold:#e3b341;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;padding:32px 20px;min-height:100vh}
+  .wrap{max-width:1100px;margin:0 auto}
+  header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+  h1{font-size:28px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  h1 .badge{font-size:11px;padding:3px 10px;border-radius:12px;background:var(--panel2);color:var(--blue);font-weight:500;letter-spacing:.5px}
+  .sub-title{color:var(--txt2);font-size:14px}
+  .meta{margin-top:12px;display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--txt2)}
+  .meta b{color:var(--txt);font-weight:600}
+  .progress-box{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px}
+  .progress-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px}
+  .progress-label .pct{font-size:22px;font-weight:700;color:var(--green)}
+  .bar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .4s}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .stat{background:var(--panel2);padding:12px;border-radius:8px;text-align:center}
+  .stat .n{font-size:22px;font-weight:700}
+  .stat .l{font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+  .stat.done .n{color:var(--green)}.stat.prog .n{color:var(--yellow)}.stat.wait .n{color:var(--txt3)}.stat.fail .n{color:var(--red)}
+  .toolbar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+  .filter{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--txt2);font-size:13px;cursor:pointer;transition:.15s}
+  .filter:hover{border-color:var(--blue);color:var(--txt)}
+  .filter.active{background:var(--blue);border-color:var(--blue);color:#fff}
+  .toolbar .spacer{flex:1}
+  .expand-all{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:12px;cursor:pointer;transition:.15s}
+  .expand-all:hover{border-color:var(--purple);color:var(--purple)}
+  .timeline{position:relative;padding-left:40px}
+  .timeline::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--green),var(--blue),var(--border))}
+  .phase{margin-bottom:28px;border-radius:12px;transition:.2s}
+  .phase-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;cursor:pointer;user-select:none;transition:.15s;margin-bottom:12px}
+  .phase-head:hover{border-color:var(--blue);background:var(--panel3)}
+  .phase-head .chevron{font-size:12px;color:var(--txt2);transition:transform .2s;display:inline-block;width:14px}
+  .phase.collapsed .phase-head .chevron{transform:rotate(-90deg)}
+  .phase-title{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--txt);margin:0;font-weight:600;flex:1}
+  .phase-title .count{color:var(--txt3);font-weight:400;margin-left:6px;text-transform:none;letter-spacing:0}
+  .phase-body{overflow:hidden;transition:max-height .3s ease}
+  .phase.collapsed .phase-body{max-height:0 !important;overflow:hidden}
+  .event{position:relative;margin-bottom:10px;background:var(--panel);border:1px solid var(--border);border-radius:10px;transition:.15s;overflow:hidden}
+  .event:hover{border-color:var(--blue)}
+  .event::before{content:"";position:absolute;left:-33px;top:22px;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg);background:var(--txt3);z-index:2}
+  .event.done::before{background:var(--green)}
+  .event.prog::before{background:var(--yellow);box-shadow:0 0 0 4px rgba(210,153,34,.2);animation:pulse 2s infinite}
+  .event.fail::before{background:var(--red)}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(210,153,34,.2)}50%{box-shadow:0 0 0 8px rgba(210,153,34,.05)}}
+  .ev-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 18px;cursor:pointer;user-select:none;transition:.15s}
+  .ev-head:hover{background:var(--panel2)}
+  .ev-title-box{flex:1;display:flex;align-items:flex-start;gap:10px}
+  .ev-chevron{font-size:11px;color:var(--txt3);margin-top:4px;transition:transform .2s;display:inline-block;width:12px;flex-shrink:0}
+  .event.open .ev-chevron{transform:rotate(90deg);color:var(--blue)}
+  .ev-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ev-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+  .tag-done{background:rgba(63,185,80,.15);color:var(--green)}
+  .tag-prog{background:rgba(210,153,34,.15);color:var(--yellow)}
+  .tag-wait{background:rgba(110,118,129,.15);color:var(--txt2)}
+  .tag-fail{background:rgba(248,81,73,.15);color:var(--red)}
+  .ev-id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--txt3);margin-top:3px}
+  .ev-time{font-size:11px;color:var(--txt3);white-space:nowrap;margin-top:2px}
+  .ev-dropdown{max-height:0;overflow:hidden;transition:max-height .35s ease;border-top:1px solid transparent}
+  .event.open .ev-dropdown{max-height:3000px;border-top-color:var(--border)}
+  .ev-dropdown-inner{padding:16px 18px;background:var(--bg)}
+  .checklist{list-style:none;margin:0;padding:0}
+  .checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;font-size:13px;color:var(--txt2);border-bottom:1px dashed var(--panel2)}
+  .checklist li:last-child{border-bottom:none}
+  .checklist li.done{color:var(--txt)}
+  .checklist .box{flex-shrink:0;width:16px;height:16px;margin-top:2px;border-radius:4px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;line-height:1}
+  .checklist li.done .box{background:var(--green);border-color:var(--green);color:#fff}
+  .checklist li.done .box::before{content:"✓"}
+  .checklist li.active .box{border-color:var(--yellow);background:rgba(210,153,34,.15)}
+  .checklist li.active .box::before{content:"•";color:var(--yellow);font-size:14px}
+  .checklist li.pending .box{background:transparent}
+  .checklist li.fail .box{background:var(--red);border-color:var(--red);color:#fff}
+  .checklist li.fail .box::before{content:"✕"}
+  .checklist .txt{flex:1;line-height:1.5}
+  .checklist .txt code{background:var(--panel2);padding:1px 6px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--blue)}
+  .checklist .sub{display:block;margin-top:5px;font-size:11.5px;color:var(--gold);font-style:italic;padding-left:8px;border-left:2px solid rgba(227,179,65,.3);line-height:1.45}
+  .checklist .sub::before{content:"🍽 ";opacity:.7;margin-right:2px}
+  .ev-evidence{margin-top:12px;padding:10px 14px;background:var(--panel);border-left:3px solid var(--blue);border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--txt);word-break:break-word}
+  .ev-evidence.ok{border-left-color:var(--green)}
+  .ev-evidence.warn{border-left-color:var(--yellow)}
+  .ev-evidence.fail{border-left-color:var(--red)}
+  .ev-evidence .label{display:block;font-family:-apple-system,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);margin-bottom:4px;font-weight:600}
+  footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--txt3);text-align:center}
+  footer b{color:var(--txt2)}
+  footer code{background:var(--panel2);padding:1px 6px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}h1{font-size:22px}.timeline{padding-left:32px}.event::before{left:-25px}.ev-time{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Missão Hermes OS <span class="badge">EM EXECUÇÃO</span></h1>
+    <p class="sub-title">Reestruturação operacional — instalação e reconfiguração do LiteLLM como roteador central</p>
+    <div class="meta">
+      <span><b>Início:</b> 11 Out 2026 · 19:33</span>
+      <span><b>Última atualização:</b> 11 Out 2026 · 23:30</span>
+      <span><b>Host:</b> MacBook-Pro-de-Mac.local</span>
+      <span><b>Pasta:</b> ~/missao-hermes-os/</span>
+    </div>
+  </header>
+
+  <div class="progress-box">
+    <div class="progress-label"><span>Progresso da implementação (Fase 4)</span><span class="pct">40%</span></div>
+    <div class="bar"><div class="bar-fill" style="width:40%"></div></div>
+    <div class="stats">
+      <div class="stat done"><div class="n">2</div><div class="l">Concluídas</div></div>
+      <div class="stat prog"><div class="n">0</div><div class="l">Em andamento</div></div>
+      <div class="stat wait"><div class="n">3</div><div class="l">Aguardando</div></div>
+      <div class="stat fail"><div class="n">0</div><div class="l">Falhas</div></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="filter active" onclick="filterEv(this,'all')">Todos</button>
+    <button class="filter" onclick="filterEv(this,'done')">Concluídos</button>
+    <button class="filter" onclick="filterEv(this,'prog')">Em andamento</button>
+    <button class="filter" onclick="filterEv(this,'wait')">Pendentes</button>
+    <span class="spacer"></span>
+    <button class="expand-all" onclick="toggleAll()">Expandir / Recolher tudo</button>
+  </div>
+
+  <div class="timeline">
+
+    <!-- ============ FASE 1 ============ -->
+    <div class="phase" data-phase="1">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="chevron">▼</span>
+        <div class="phase-title">Fase 1 — Auditoria Somente Leitura <span class="count">(4 eventos · concluída)</span></div>
+      </div>
+      <div class="phase-body">
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Varredura inicial do ambiente <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F1.1 · coleta somente-leitura</div>
+              </div>
+            </div>
+            <div class="ev-time">19:33</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Varredura de diretórios candidatos <code>$HOME</code>, <code>~/.hermes</code>, <code>~/.config</code>, <code>~/.ollama</code>, <code>~/.openclaw</code><span class="sub">É abrir a despensa e a geladeira antes de decidir o prato — nada de temperar às cegas.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Localização de binários no PATH (<code>hermes</code>, <code>atlas</code>, <code>litellm</code>, <code>ollama</code>, <code>openclaw</code>, <code>mercurio</code>)<span class="sub">É checar quais utensílios estão pendurados no gancho da cozinha — faca, colher, fouet.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Listagem de processos ativos filtrando por nome<span class="sub">É ver quais bocas do fogão estão acesas neste momento.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Verificação de portas em escuta<span class="sub">É ouvir quais panelas estão tampando e apitando na cozinha.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Teste de disponibilidade do Ollama (<code>:11434</code>) e LiteLLM (<code>:4000</code>)<span class="sub">É bater na porta dos fornecedores para ver quem atende hoje.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Leitura mascarada de configs (sem expor segredos)<span class="sub">É ler a receita com a mão na frente dos ingredientes secretos.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Varredura de skills e painéis ativos<span class="sub">É ver quais receitas antigas e cadernos ainda estão na prateleira.</span></span></li>
+            </ul>
+            <div class="ev-evidence ok"><span class="label">Evidência</span>~/missao-hermes-os/fase1-auditoria-20261011-193337.log</div>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Identificação de serviços e portas <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F1.2 · portas em escuta confirmadas</div>
+              </div>
+            </div>
+            <div class="ev-time">19:38</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Ollama daemon <code>:11434</code><span class="sub">O fogão de casa: sempre ligado, sempre atendendo.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">OpenClaw gateway <code>:18789</code><span class="sub">O buffet lateral que serve pratos prontos por encomenda.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">EPQ Control <code>:7687</code><span class="sub">A copa de apoio — pequena, mas resolve pedidos internos.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Hermes Bridge <code>:8421</code> e <code>:8787</code><span class="sub">A passagem entre cozinha e salão — dois corredores para não travar.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Hermes Agent (mjs) <code>:8422</code><span class="sub">O maître que recebe o pedido e chama o chef certo.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">WhatsApp bridge <code>:3000</code><span class="sub">A campainha do restaurante — toca quando chega pedido de fora.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Identificado: LiteLLM e OmniRoute instalados mas <b>sem processo ativo</b><span class="sub">Dois chefs contratados, mas ninguém os chamou para o turno ainda.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Identificado: Atlas / Mercúrio são personas, não serviços<span class="sub">"Atlas" e "Mercúrio" não são cozinheiros próprios: são chapéus usados por outros chefs.</span></span></li>
+            </ul>
+            <div class="ev-evidence ok"><span class="label">Evidência</span>~/missao-hermes-os/fase1b-portas-e-omniroute-20261011-193838.log</div>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Análise do backend Hermes OS <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F1.3 · descoberta do desvio de roteamento</div>
+              </div>
+            </div>
+            <div class="ev-time">19:40</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Backend identificado: <code>~/hermes-work/hermes-os/backend/</code><span class="sub">Achamos a cozinha principal: é aqui que a operação de fato acontece.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">WhatsApp (Baileys), IMAP, scheduler e CRM (592 leads) mapeados<span class="sub">Três funcionários fixos: atendente de zap, leitor de cartas e o que organiza os pedidos.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt"><b>Descoberta:</b> backend ignora LiteLLM e fala direto com OpenRouter<span class="sub">O sous-chef estava temperando por conta própria, ignorando a receita do chef.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Perfis <code>operacao</code>, <code>rapido</code>, <code>lucas</code> divergem entre backend (cloud) e LiteLLM (local)<span class="sub">Alguns pedidos simples deveriam sair do fogão de casa, mas estavam indo de avião.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">WhatsApp Baileys em loop de reconexão — falha ativa detectada<span class="sub">O atendente de zap está batendo o ponto a cada 3 segundos — algo errado no crachá dele.</span></span></li>
+            </ul>
+            <div class="ev-evidence warn"><span class="label">Alerta de segurança</span>backend.log contém material Signal sensível — leitura restrita (Regra 5)</div>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Entregáveis da Fase 1 gravados <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F1.4 · documentos de auditoria</div>
+              </div>
+            </div>
+            <div class="ev-time">19:42</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Criar <code>auditoria.md</code> — 3.625 bytes<span class="sub">Anotar o inventário da despensa no caderno — antes de acender o fogo.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Criar <code>arquitetura-atual.md</code> — 2.784 bytes<span class="sub">Desenhar a planta da cozinha no papel, para não se perder no meio do serviço.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Verificar gravação com <code>ls -la</code><span class="sub">Conferir se o caderno está mesmo na prateleira certa.</span></span></li>
+            </ul>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ FASE 2 ============ -->
+    <div class="phase" data-phase="2">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="chevron">▼</span>
+        <div class="phase-title">Fase 2 — Mapa da Arquitetura <span class="count">(1 evento · concluída)</span></div>
+      </div>
+      <div class="phase-body">
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Mapa C/P/A/D consolidado <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F2.1 · marcação de conexões</div>
+              </div>
+            </div>
+            <div class="ev-time">19:42</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Hermes → Ollama: <b>CONFIRMADA</b><span class="sub">O prato sai da cozinha de casa direto para a mesa — rota curta e testada.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Hermes → OmniRoute: <b>PARCIAL</b> (config ativa, endpoint morto)<span class="sub">O fornecedor combinou entrega, mas fechou a porta — receita no papel, nada na mesa.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Hermes → Anthropic: <b>PARCIAL</b> (env presente, uso não observado)<span class="sub">Tem crachá de visitante guardado na gaveta — ninguém viu ele entrar.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">LiteLLM no fluxo: <b>AUSENTE</b> (runtime) / CONFIRMADA (config)<span class="sub">A receita do menu novo está escrita — mas ninguém escalou o chef para executá-la.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Backend → OpenRouter: <b>CONFIRMADA</b><span class="sub">O sous-chef já tem delivery próprio — ignora o balcão comum.</span></span></li>
+            </ul>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ FASE 3 ============ -->
+    <div class="phase" data-phase="3">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="chevron">▼</span>
+        <div class="phase-title">Fase 3 — Plano de Reestruturação <span class="count">(2 eventos · concluída)</span></div>
+      </div>
+      <div class="phase-body">
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Plano priorizado gravado <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F3.1 · plano-reestruturacao.md</div>
+              </div>
+            </div>
+            <div class="ev-time">20:15</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Definir Fase A — correções indispensáveis (A.1 a A.5)<span class="sub">Lista do "sem isso, o restaurante não abre hoje".</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Definir Fase B — verificações antes de cada mudança<span class="sub">Checar a temperatura do forno antes de colocar o bolo.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Definir Fase C — melhorias opcionais<span class="sub">O que dá para temperar melhor depois, sem pressa.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Definir Fase D — fora de escopo (exige aprovação explícita)<span class="sub">Pratos que exigem chef convidado e contrato assinado.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Critérios de aceite globais anexados ao plano<span class="sub">Definir o "está no ponto" antes de servir, não depois da reclamação.</span></span></li>
+            </ul>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Adendo pós-cadastros <span class="ev-tag tag-done">OK</span></div>
+                <div class="ev-id">F3.2 · provedores confirmados</div>
+              </div>
+            </div>
+            <div class="ev-time">21:00</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Provedores confirmados: Ollama (local), Groq, NVIDIA NIM, OpenRouter<span class="sub">Quatro fornecedores com contrato fechado e telefone na agenda.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Gemini: cadastro não concluído → movido para Fase C<span class="sub">Fornecedor não atendeu o telefone — deixamos recado.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Cerebras: exige cartão → movido para Fase C<span class="sub">Só entrega se pagar adiantado — fora do combinado por enquanto.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Alternativas futuras registradas: Together AI, Hyperbolic, Mistral<span class="sub">Anotamos três fornecedores reserva no caderno, para qualquer aperto.</span></span></li>
+            </ul>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ FASE 4 ============ -->
+    <div class="phase" data-phase="4">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="chevron">▼</span>
+        <div class="phase-title">Fase 4 — Implementação Controlada <span class="count">(5 eventos · 4 concluídos · 1 pendente)</span></div>
+      </div>
+      <div class="phase-body">
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">A.1 — ~/.hermes_env com chaves <span class="ev-tag tag-done">CONCLUÍDA</span></div>
+                <div class="ev-id">GROQ + NVIDIA</div>
+              </div>
+            </div>
+            <div class="ev-time">22:45</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Criar backup: <code>~/.hermes_env.bak-1791761126</code><span class="sub">Fotografar a gaveta antes de reorganizar — se bagunçar, sabemos onde tudo estava.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Verificar formato existente do arquivo (formato <code>export VAR=valor</code>)<span class="sub">Ver se as etiquetas antigas são as mesmas que vamos usar.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Adicionar linha <code>export GROQ_API_KEY=</code><span class="sub">Etiquetar o pote do Groq — sem etiqueta ninguém sabe o que tem dentro.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Adicionar linha <code>export NVIDIA_API_KEY=</code><span class="sub">Etiquetar o pote da NVIDIA, logo ao lado, na mesma prateleira.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Comentar <code>GEMINI_API_KEY</code> e <code>CEREBRAS_API_KEY</code> (indisponíveis)<span class="sub">Deixar os potes vazios etiquetados como "acabou" — lembra que faltam comprar.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Aplicar <code>chmod 600</code> (proteção contra leitura externa)<span class="sub">Trancar a gaveta com a chave do chef — só ele abre.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Preencher valores das chaves via <code>nano</code><span class="sub">Colocar o conteúdo real nos potes — com a própria mão, sem intermediário.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Verificar preenchimento com grep <code>^export GROQ_API_KEY=..</code><span class="sub">Conferir se o pote está mesmo cheio — não confiar só na memória.</span></span></li>
+            </ul>
+            <div class="ev-evidence ok"><span class="label">Teste final</span>GROQ = 1 · NVIDIA = 1 (ambas preenchidas com valor válido)</div>
+            <div class="ev-evidence"><span class="label">Reversão</span>cp ~/.hermes_env.bak-1791761126 ~/.hermes_env</div>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">A.2 — LiteLLM ativo em :4000 <span class="ev-tag tag-done">CONCLUÍDA</span></div>
+                <div class="ev-id">proxy rodando · 13 modelos carregados</div>
+              </div>
+            </div>
+            <div class="ev-time">23:15</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="done"><span class="box"></span><span class="txt">Tentativa 1: <code>pipx install 'litellm[proxy]'</code> — falhou (uv + Python 3.15)<span class="sub">Primeira receita queimou — o forno novo era quente demais para o bolo.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Diagnóstico: Homebrew instalou Python 3.15 sem wheels pré-compilados<span class="sub">Descobrimos que o forno tinha um modo que ninguém conhecia ainda.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Tentativa 2: <code>uv tool install --python 3.12 'litellm[proxy]'</code> — sucesso<span class="sub">Trocamos para um forno mais velho e conhecido — bolo no ponto.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Correção de bug: incluído <code>prisma==0.15.0</code> como dependência<span class="sub">Faltava um tempero que não vinha na receita — adicionamos à mão.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Ajuste em <code>litellm_config.yaml</code>: <code>disable_auth: true</code><span class="sub">Tiramos a fechadura da porta — restaurante é só para o chef agora.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Ajuste em <code>litellm_config.yaml</code>: <code>store_model_in_db: false</code><span class="sub">Desligamos o caderno de pedidos — não vamos precisar dele para servir.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Removida a linha <code>master_key:</code> do <code>general_settings</code><span class="sub">Tiramos a chave-mestra do gancho — o chef entra sem senha no próprio restaurante.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Proxy iniciado em background com <code>nohup</code><span class="sub">Deixamos o cozinheiro trabalhando mesmo quando o chef sai da cozinha.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">PID salvo em <code>~/.config/litellm/proxy.pid</code><span class="sub">Anotamos o nome do cozinheiro de plantão no mural da entrada.</span></span></li>
+              <li class="done"><span class="box"></span><span class="txt">Backup do yaml criado antes de cada ajuste<span class="sub">Fotografamos a cozinha antes de trocar cada móvel de lugar.</span></span></li>
+            </ul>
+            <div class="ev-evidence ok"><span class="label">Teste /health/liveliness</span>"I'm alive!"</div>
+            <div class="ev-evidence ok"><span class="label">Teste /v1/models</span>13 modelos: perfil-principal, perfil-projetos, perfil-epq, perfil-pesado, perfil-code-nuvem, perfil-operacao, perfil-rapido, perfil-lucas, perfil-code-local, bk-groq, bk-gemini, bk-ollama, bk-ollama-code</div>
+            <div class="ev-evidence"><span class="label">Reversão</span>pkill -f "litellm.*4000" + restaurar backups em ~/.config/litellm/</div>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">A.3 — Load balancing multi-provedor <span class="ev-tag tag-done">CONCLUÍDA</span></div>
+                <div class="ev-id">largura 4 por perfil</div>
+              </div>
+            </div>
+            <div class="ev-time">—</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="pending"><span class="box"></span><span class="txt">Backup do <code>litellm_config.yaml</code> atual<span class="sub">Fotografar o menu atual antes de reescrever os pratos.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Reescrever <code>model_list</code> para largura 4 por perfil<span class="sub">Colocar 4 chefs na mesma bancada em vez de 1 — se um cansa, outro assume.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Adicionar deployments: Ollama + Groq + NIM + OpenRouter em cada <code>perfil-*</code><span class="sub">Cada prato terá 4 cozinheiros: um caseiro e três de fora.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Definir <code>weight</code> e <code>rpm</code> por deployment<span class="sub">Definir quantos pedidos cada cozinheiro aguenta por hora antes de suar.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Configurar <code>routing_strategy: simple-shuffle</code><span class="sub">Rodízio simples: quem está livre, pega o próximo pedido.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Manter <code>bk-*</code> como fallback final<span class="sub">Manter os cozinheiros de emergência na retaguarda, prontos para entrar.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Reiniciar proxy e validar carregamento dos grupos<span class="sub">Reabrir a cozinha e ver se todo mundo entrou para o turno.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Testar fallback com chave temporariamente inválida<span class="sub">Fingir que um cozinheiro passou mal — ver se outro assume na hora, sem pedido esfriar.</span></span></li>
+            </ul>
+            <div class="ev-evidence"><span class="label">Impacto esperado</span>Vazão ~390 RPM (Groq + NIM + OpenRouter) + ilimitado local (Ollama)</div>
+            <div class="ev-evidence"><span class="label">Risco</span>Médio — reversão por backup se o yaml não subir</div>
+          </div></div>
+        </div>
+
+        <div class="event done" data-state="done">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">A.4 — Reapontar Hermes CLI para LiteLLM <span class="ev-tag tag-done">CONCLUÍDA</span></div>
+                <div class="ev-id">~/.hermes/config.yaml</div>
+              </div>
+            </div>
+            <div class="ev-time">—</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="pending"><span class="box"></span><span class="txt">Backup de <code>~/.hermes/config.yaml</code><span class="sub">Fotografar a receita do chef antes de trocar o fornecedor.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Alterar <code>model.base_url</code> → <code>http://localhost:4000/v1</code><span class="sub">Fazer o chef pedir a comida pelo balcão novo, em vez de ir direto na horta.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Alterar <code>model.default</code> → <code>perfil-principal</code><span class="sub">Dizer ao chef qual prato ele escolhe por padrão — o menu agora tem balcão.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Reiniciar gateway do Hermes<span class="sub">Fazer o chef sair e voltar para aprender o novo balcão.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Testar com <code>hermes "diga olá"</code> e verificar log do LiteLLM<span class="sub">Primeiro pedido de teste — se voltar comida quentinha, balcão está funcionando.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Documentar reversão no registro<span class="sub">Anotar como voltar ao balcão antigo, caso o novo não role.</span></span></li>
+            </ul>
+            <div class="ev-evidence"><span class="label">Bloqueio</span>Aguardando A.3 concluída</div>
+          </div></div>
+        </div>
+
+        <div class="event wait" data-state="wait">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">A.5 — Reapontar backend :8420 para LiteLLM <span class="ev-tag tag-wait">PENDENTE</span></div>
+                <div class="ev-id">perfis.json</div>
+              </div>
+            </div>
+            <div class="ev-time">—</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="pending"><span class="box"></span><span class="txt">Backup de <code>~/hermes-work/hermes-os/backend/perfis.json</code><span class="sub">Fotografar a lista de fornecedores do sous-chef antes de mexer.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Substituir modelos OpenRouter diretos por <code>perfil-*</code><span class="sub">Fazer o sous-chef pedir pelo mesmo balcão do chef — nada de delivery paralelo.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Ativar política local-first para <code>operacao</code>, <code>rapido</code>, <code>lucas</code><span class="sub">Garantir que pratos simples saiam do fogão de casa, não venham de avião.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Reiniciar backend e verificar <code>backend.log</code><span class="sub">Fazer o sous-chef sair e voltar com o caderno novo na mão.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Confirmar requisições chegando ao LiteLLM<span class="sub">Checar se o balcão recebeu de fato o pedido do sous-chef.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Documentar reversão no registro<span class="sub">Anotar como voltar ao jeito antigo se o novo não funcionar.</span></span></li>
+            </ul>
+            <div class="ev-evidence"><span class="label">Bloqueio</span>Aguardando A.4 concluída</div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ FASE 5 ============ -->
+    <div class="phase" data-phase="5">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="chevron">▼</span>
+        <div class="phase-title">Fase 5 — Validação <span class="count">(1 evento · aguardando Fase 4)</span></div>
+      </div>
+      <div class="phase-body">
+
+        <div class="event wait" data-state="wait">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Testes de inferência, fallback e skills <span class="ev-tag tag-wait">PENDENTE</span></div>
+                <div class="ev-id">validacao.md</div>
+              </div>
+            </div>
+            <div class="ev-time">—</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="pending"><span class="box"></span><span class="txt">Testar inferência pelo caminho real (Hermes CLI → LiteLLM → provedor)<span class="sub">É provar a sopa do começo ao fim — da panela ao prato.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Verificar identificação do modelo e provedor efetivos<span class="sub">Confirmar qual chef cozinhou o prato, sem adivinhação.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Simular falha de provedor e validar fallback<span class="sub">É esconder um tempero e ver se a cozinha ainda entrega o mesmo sabor.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Testar seleção e execução de skills<span class="sub">Ver se o chef pega a receita certa na prateleira certa — sem pegar a de outro prato.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Verificar logs, erros e rastreabilidade por tarefa<span class="sub">É anotar quem fez o quê, quando e como — ficha limpa para cada prato.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Validar ausência de regressões nas funções existentes<span class="sub">É garantir que o menu antigo continua saindo igual, mesmo com cozinha nova.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Confirmar ausência de segredos nos relatórios<span class="sub">É não deixar cair gota de molho secreto na mesa do cliente.</span></span></li>
+            </ul>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ FASE 6 ============ -->
+    <div class="phase" data-phase="6">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="chevron">▼</span>
+        <div class="phase-title">Fase 6 — Painel e Aprovação Visual <span class="count">(1 evento · aguardando Fase 5)</span></div>
+      </div>
+      <div class="phase-body">
+
+        <div class="event wait" data-state="wait">
+          <div class="ev-head" onclick="toggleEvent(this)">
+            <div class="ev-title-box"><span class="ev-chevron">▶</span>
+              <div>
+                <div class="ev-title">Validação visual do painel Hermes OS <span class="ev-tag tag-wait">PENDENTE</span></div>
+                <div class="ev-id">aguardando mudanças no painel</div>
+              </div>
+            </div>
+            <div class="ev-time">—</div>
+          </div>
+          <div class="ev-dropdown"><div class="ev-dropdown-inner">
+            <ul class="checklist">
+              <li class="pending"><span class="box"></span><span class="txt">Validar HTML, JavaScript e backend aplicáveis<span class="sub">É checar se a louça está limpa antes de empratar.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Preservar formatação e funções existentes<span class="sub">É manter o desenho do prato original, só trocar o molho por baixo.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Abrir/recarregar painel ativo no navegador<span class="sub">É levar o prato para a mesa e destampar na frente do cliente.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Apresentar resultado visual ao usuário<span class="sub">É perguntar: "o prato está no ponto ou falta tempero?" — antes da próxima fornada.</span></span></li>
+              <li class="pending"><span class="box"></span><span class="txt">Aguardar aprovação visual antes de próxima mudança<span class="sub">É esperar o cliente aprovar o prato antes de servir o próximo.</span></span></li>
+            </ul>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p><b>Missão Hermes OS</b> · painel gerado em 11 Out 2026 · arquivo: <code>~/missao-hermes-os/painel-missao.html</code></p>
+    <p style="margin-top:6px">Documentos-fonte: auditoria.md · arquitetura-atual.md · plano-reestruturacao.md · registro-alteracoes.md</p>
+  </footer>
+
+</div>
+
+<script>
+function toggleEvent(head){head.closest('.event').classList.toggle('open');}
+function togglePhase(head){
+  const ph = head.closest('.phase');
+  ph.classList.toggle('collapsed');
+  const body = ph.querySelector('.phase-body');
+  if(ph.classList.contains('collapsed')){body.style.maxHeight='0px';}
+  else{body.style.maxHeight=body.scrollHeight+'px';setTimeout(()=>{body.style.maxHeight='none';},320);}
+}
+function filterEv(btn, mode){
+  document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.event').forEach(ev => {
+    if(mode === 'all'){ ev.style.display = ''; return; }
+    ev.style.display = (ev.dataset.state === mode) ? '' : 'none';
+  });
+  document.querySelectorAll('.phase').forEach(ph => {
+    const visible = ph.querySelectorAll('.event:not([style*="display: none"])').length;
+    ph.style.display = visible ? '' : 'none';
+  });
+}
+let allExpanded = false;
+function toggleAll(){
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.event').forEach(ev => ev.classList.toggle('open', allExpanded));
+  document.querySelectorAll('.phase').forEach(ph => {
+    ph.classList.toggle('collapsed', !allExpanded);
+    const body = ph.querySelector('.phase-body');
+    body.style.maxHeight = allExpanded ? 'none' : '0px';
+  });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.phase-body').forEach(b => { b.style.maxHeight = 'none'; });
+});
+</script>
+
+</body>
+</html>

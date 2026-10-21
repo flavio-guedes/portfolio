@@ -1,0 +1,228 @@
+// Hermes Bridge — ponte local entre o Painel Hermes Lite e o WhatsApp (Baileys).
+// Roda só na sua máquina (127.0.0.1). A fila de disparo roda AQUI, então o
+// envio continua mesmo com a aba do painel em segundo plano ou fechada.
+import http from 'node:http';
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import makeWASocket, {
+  useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, Browsers
+} from '@whiskeysockets/baileys';
+import QRCode from 'qrcode';
+import pino from 'pino';
+
+const PORT = Number(process.env.PORT || 8787);
+const AUTH_DIR = process.env.AUTH_DIR || './auth';
+const TOKEN = process.env.HERMES_TOKEN || crypto.randomBytes(9).toString('hex');
+const logger = pino({ level: 'silent' });
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rnd = (a, b) => Math.round(a + Math.random() * (b - a));
+
+/* ---------------- WhatsApp ---------------- */
+let sock = null, connecting = false;
+const S = { state: 'starting', me: '', qr: '' }; // starting | qr | connecting | open | closed
+
+async function connect() {
+  if (connecting) return;
+  connecting = true;
+  try {
+    const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
+    let version;
+    try { ({ version } = await fetchLatestBaileysVersion()); } catch { /* usa o padrão da lib */ }
+    sock = makeWASocket({
+      auth: state, version, logger,
+      browser: Browsers.macOS('Hermes'),
+      markOnlineOnConnect: false, syncFullHistory: false
+    });
+    sock.ev.on('creds.update', saveCreds);
+    sock.ev.on('connection.update', async (u) => {
+      const { connection, lastDisconnect, qr } = u;
+      if (qr) {
+        S.state = 'qr';
+        S.qr = await QRCode.toDataURL(qr, { margin: 1, width: 320 });
+        console.log('• QR pronto — escaneie no painel (WhatsApp › Aparelhos conectados).');
+      }
+      if (connection === 'connecting' && !qr && S.state !== 'qr') S.state = 'connecting';
+      if (connection === 'open') {
+        S.state = 'open'; S.qr = '';
+        S.me = String((sock.user && sock.user.id) || '').split(':')[0].split('@')[0];
+        console.log('✓ WhatsApp conectado como', S.me || '(número desconhecido)');
+      }
+      if (connection === 'close') {
+        const code = lastDisconnect && lastDisconnect.error && lastDisconnect.error.output
+          ? lastDisconnect.error.output.statusCode : 0;
+        S.state = 'closed'; S.me = '';
+        connecting = false;
+        if (code === DisconnectReason.loggedOut) {
+          fs.rmSync(AUTH_DIR, { recursive: true, force: true });
+          S.qr = '';
+          console.log('• Sessão encerrada no celular. Gerando novo QR…');
+        }
+        setTimeout(connect, 2000);
+      }
+    });
+  } catch (e) {
+    console.error('Erro ao iniciar o WhatsApp:', e && e.message || e);
+    connecting = false;
+    setTimeout(connect, 5000);
+  }
+}
+
+async function resolveJid(number) {
+  const num = String(number || '').replace(/\D/g, '');
+  if (!num) return null;
+  const r = await sock.onWhatsApp(num);
+  const hit = Array.isArray(r) ? r[0] : null;
+  return hit && hit.exists ? hit.jid : null;
+}
+
+async function sendOne(it, typing) {
+  if (S.state !== 'open') throw new Error('WhatsApp desconectado');
+  const jid = await resolveJid(it.number);
+  if (!jid) return { ok: false, code: 'sem_whatsapp', err: 'Número não está no WhatsApp' };
+  if (typing) {
+    try {
+      await sock.presenceSubscribe(jid);
+      await sock.sendPresenceUpdate('composing', jid);
+      await sleep(Math.min(4000, 600 + String(it.message).length * 25 + rnd(0, 600)));
+      await sock.sendPresenceUpdate('paused', jid);
+    } catch { /* presença é cosmética */ }
+  }
+  const m = await sock.sendMessage(jid, { text: String(it.message) });
+  return { ok: true, id: (m && m.key && m.key.id) || '' };
+}
+
+/* ---------------- Fila de disparo ---------------- */
+const B = { state: 'idle', paused: false, stop: false, items: [], i: 0, results: [], cfg: {}, failStreak: 0 };
+
+function inWindow() {
+  const c = B.cfg;
+  if (c.winStart == null || c.winEnd == null) return true;
+  const h = new Date().getHours();
+  return h >= c.winStart && h < c.winEnd;
+}
+async function napInterruptible(ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end && !B.stop) await sleep(Math.min(250, end - Date.now()));
+}
+async function runBatch() {
+  while (B.i < B.items.length && !B.stop) {
+    if (B.paused) { B.state = 'paused'; await sleep(400); continue; }
+    if (!inWindow()) { B.state = 'janela'; await sleep(15000); continue; }
+    if (S.state !== 'open') { B.state = 'offline'; await sleep(1500); continue; }
+    B.state = 'running';
+    const it = B.items[B.i];
+    let res;
+    try { res = await sendOne(it, !!B.cfg.typing); }
+    catch (e) { res = { ok: false, err: String((e && e.message) || e).slice(0, 160) }; }
+    B.results.push({ id: it.id, ok: !!res.ok, code: res.code || '', err: res.err || '', ts: Date.now() });
+    B.i++;
+    /* "Sem WhatsApp" é dado do lead, não falha da ponte. Erro técnico seguido
+       de erro técnico é sinal de problema: pausa em vez de martelar. */
+    if (res.ok || res.code === 'sem_whatsapp') B.failStreak = 0; else B.failStreak++;
+    if (B.failStreak >= 5) { B.paused = true; B.state = 'paused'; B.failStreak = 0; console.log('! 5 falhas seguidas — fila pausada.'); }
+    if (B.i < B.items.length && !B.stop && !B.paused) await napInterruptible(rnd(B.cfg.minMs, B.cfg.maxMs));
+  }
+  B.state = B.stop ? 'stopped' : 'done';
+}
+function startBatch(body) {
+  const items = (Array.isArray(body.items) ? body.items : [])
+    .filter(x => x && x.id != null && x.number && x.message).slice(0, 5000);
+  if (!items.length) return { code: 400, body: { error: 'Nenhum item válido' } };
+  if (['running', 'paused', 'janela', 'offline'].includes(B.state)) return { code: 409, body: { error: 'Já existe um disparo em andamento' } };
+  const minMs = Math.max(1000, Number(body.minMs) || 10000);
+  const maxMs = Math.max(minMs, Number(body.maxMs) || minMs + 10000);
+  Object.assign(B, {
+    items, i: 0, results: [], paused: false, stop: false, failStreak: 0, state: 'running',
+    cfg: {
+      minMs, maxMs, typing: !!body.typing,
+      winStart: Number.isInteger(body.winStart) ? body.winStart : null,
+      winEnd: Number.isInteger(body.winEnd) ? body.winEnd : null
+    }
+  });
+  runBatch().catch(e => { console.error('runBatch', e); B.state = 'stopped'; });
+  return { code: 200, body: { ok: true, total: items.length } };
+}
+function batchView(since) {
+  const from = Math.max(0, Number(since) || 0);
+  return {
+    state: B.state, paused: B.paused, total: B.items.length, done: B.i,
+    ok: B.results.filter(r => r.ok).length,
+    results: B.results.slice(from), next: B.results.length
+  };
+}
+
+/* ---------------- HTTP ---------------- */
+function send(res, code, obj) {
+  res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify(obj));
+}
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    let n = 0; const chunks = [];
+    req.on('data', c => { n += c.length; if (n > 8e6) { reject(new Error('corpo grande demais')); req.destroy(); } else chunks.push(c); });
+    req.on('end', () => { try { resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {}); } catch (e) { reject(e); } });
+    req.on('error', reject);
+  });
+}
+const server = http.createServer(async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Private-Network', 'true');
+  if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+  const url = new URL(req.url, 'http://x');
+  const p = url.pathname.replace(/\/+$/, '') || '/';
+  try {
+    if (p === '/ping') return send(res, 200, { hermes: 'bridge', v: 1 });
+    /* O token impede que uma página qualquer da web mande mensagens pela sua
+       conta só porque você deixou a ponte ligada. */
+    if ((req.headers.authorization || '') !== 'Bearer ' + TOKEN) return send(res, 401, { error: 'Token inválido' });
+    if (req.method === 'GET' && p === '/status') return send(res, 200, { state: S.state, me: S.me, hasQr: !!S.qr, batch: B.state });
+    if (req.method === 'GET' && p === '/qr') return S.qr ? send(res, 200, { qr: S.qr }) : send(res, 404, { error: 'Sem QR no momento' });
+    if (req.method === 'GET' && p === '/batch') return send(res, 200, batchView(url.searchParams.get('since')));
+    if (req.method === 'POST' && p === '/batch') { const r = startBatch(await readBody(req)); return send(res, r.code, r.body); }
+    if (req.method === 'POST' && p === '/batch/pause') { B.paused = true; return send(res, 200, { ok: true }); }
+    if (req.method === 'POST' && p === '/batch/resume') { B.paused = false; B.failStreak = 0; return send(res, 200, { ok: true }); }
+    if (req.method === 'POST' && p === '/batch/stop') { B.stop = true; B.paused = false; return send(res, 200, { ok: true }); }
+    if (req.method === 'POST' && p === '/check') {
+      if (S.state !== 'open') return send(res, 409, { error: 'WhatsApp desconectado' });
+      const body = await readBody(req);
+      const nums = (Array.isArray(body.numbers) ? body.numbers : [])
+        .map(n => String(n).replace(/\D/g, '')).filter(Boolean).slice(0, 200);
+      const results = [];
+      for (const n of nums) {
+        try { const r = await sock.onWhatsApp(n); results.push({ number: n, exists: !!(r && r[0] && r[0].exists) }); }
+        catch { results.push({ number: n, exists: null }); }
+        await sleep(120);
+      }
+      return send(res, 200, { results });
+    }
+    if (req.method === 'POST' && p === '/logout') {
+      try { if (sock) await sock.logout(); } catch { /* já caiu */ }
+      return send(res, 200, { ok: true });
+    }
+    if (req.method === 'POST' && (p === '/send' || p === '/api/whatsapp/send' || p === '/api/send')) {
+      const body = await readBody(req);
+      const raw = body.chatId || body.number || body.to || body.phone || '';
+      const text = body.message || body.text || body.body || '';
+      if (!raw || !text) return send(res, 400, { error: 'Faltou chatId/number ou message' });
+      try {
+        const r = await sendOne({ number: raw, message: text }, false);
+        return send(res, r.ok ? 200 : 400, r);
+      } catch (e) {
+        return send(res, 500, { error: String((e && e.message) || e).slice(0, 200) });
+      }
+    }
+    return send(res, 404, { error: 'Rota inexistente' });
+  } catch (e) {
+    return send(res, 500, { error: String((e && e.message) || e).slice(0, 200) });
+  }
+});
+
+process.on('unhandledRejection', e => console.error('unhandledRejection:', e && e.message || e));
+server.listen(PORT, '127.0.0.1', () => {
+  console.log('\n  Hermes Bridge no ar → http://127.0.0.1:' + PORT);
+  console.log('  Token: ' + TOKEN + (process.env.HERMES_TOKEN ? '  (o painel já sabe)' : '  (cole no painel)'));
+  console.log('  Volte ao painel e clique em "Conectar WhatsApp".\n');
+  connect();
+});

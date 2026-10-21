@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HERMES HQ</title>
+<style>
+  :root {
+    --bg: #050505;
+    --surface: rgba(255,255,255,0.035);
+    --surface-hover: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.10);
+    --border-active: rgba(255,255,255,0.22);
+    --text: #ffffff;
+    --text-secondary: #888888;
+    --text-tertiary: #555555;
+    --accent: rgba(120,180,255,0.25);
+    --accent-glow: rgba(120,180,255,0.12);
+    --green: #10b981;
+    --yellow: #fbbf24;
+    --red: #ef4444;
+    --offline: #555555;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk','Inter',ui-sans-serif,system-ui,sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  .app {
+    display: grid;
+    grid-template-columns: 260px 1fr 320px;
+    grid-template-rows: 56px 1fr;
+    height: 100vh;
+  }
+  .topbar {
+    grid-column: 1/-1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .topbar-left, .topbar-right { display:flex; align-items:center; gap:14px; }
+  .logo {
+    width:24px; height:24px;
+    border:1px solid var(--border-active);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, rgba(120,180,255,0.2), rgba(120,180,255,0.05));
+    box-shadow: 0 0 20px rgba(120,180,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:500; letter-spacing:0.05em; color: rgba(255,255,255,0.9);
+  }
+  .brand { font-size:13px; font-weight:500; letter-spacing:0.08em; text-transform:lowercase; color: rgba(255,255,255,0.85); }
+  .topbar-status { display:flex; gap:10px; align-items:center; }
+  .status-pill {
+    font-size:10px; padding:4px 10px; border-radius:999px;
+    border:1px solid var(--border); background: var(--surface);
+    color: var(--text-secondary); letter-spacing:0.08em; text-transform:uppercase;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .sidebar {
+    border-right:1px solid var(--border);
+    padding:18px 12px;
+    display:flex; flex-direction:column; gap:6px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    overflow-y:auto;
+  }
+  .sidebar-title {
+    font-size:10px; text-transform:uppercase; letter-spacing:0.14em;
+    color: var(--text-tertiary); padding: 14px 12px 6px; font-weight:500;
+  }
+  .nav-item {
+    display:flex; align-items:center; gap:12px;
+    padding:10px 12px; border-radius: var(--radius-sm);
+    color: var(--text-secondary); font-size:12.5px; font-weight:400;
+    letter-spacing:0.02em; cursor:pointer; transition: all 0.15s ease;
+    border:1px solid transparent;
+  }
+  .nav-item:hover { background: var(--surface); color: var(--text); border-color: var(--border); }
+  .nav-item.active {
+    background: var(--surface); color: var(--text);
+    border-color: var(--border-active);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .nav-icon { width:16px; height:16px; opacity:0.6; }
+  .nav-item.active .nav-icon { opacity:1; }
+
+  .main {
+    overflow-y:auto; padding:24px;
+    display:flex; flex-direction:column; gap:22px;
+  }
+  .section { display:none; }
+  .section.active { display:block; }
+  .panel-header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .panel-controls { display:flex; gap:8px; flex-wrap:wrap; }
+  .input {
+    background: rgba(255,255,255,0.03); border:1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--text); padding:10px 12px;
+    font-family: inherit; font-size:12px; outline:none; min-width:180px;
+  }
+  .input:focus { border-color: var(--border-active); }
+  .chip {
+    font-size:10px; padding:5px 10px; border-radius:999px; cursor:pointer;
+    border:1px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    letter-spacing:0.08em; text-transform:uppercase; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .chip:hover { border-color: var(--border-active); color: var(--text); }
+  .chip.active { border-color: rgba(120,180,255,0.35); color: rgba(180,210,255,0.95); box-shadow: 0 0 18px rgba(120,180,255,0.12); }
+
+  .section-title {
+    font-size:11px; text-transform:uppercase; letter-spacing:0.14em;
+    color: var(--text-tertiary); font-weight:500; margin-bottom:6px;
+  }
+  .grid-agents { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:14px; }
+  .agent {
+    border:1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    padding:14px; cursor:pointer; transition: all 0.2s ease; position:relative; overflow:hidden;
+  }
+  .agent:hover { border-color: var(--border-active); transform: translateY(-2px); }
+  .agent-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .agent-avatar {
+    width:28px; height:28px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.18);
+    background: linear-gradient(135deg, rgba(120,180,255,0.25), rgba(120,180,255,0.08));
+    box-shadow: 0 0 18px rgba(120,180,255,0.18);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:500; letter-spacing:0.04em;
+  }
+  .agent-name { font-size:12px; font-weight:500; letter-spacing:0.04em; }
+  .agent-status {
+    width:8px; height:8px; border-radius:50%; margin-left:auto;
+    box-shadow: 0 0 10px currentColor;
+  }
+  .agent.status-active .agent-status { background: var(--green); color: var(--green); }
+  .agent.status-waiting .agent-status { background: var(--yellow); color: var(--yellow); animation: pulse 2s ease-in-out infinite; }
+  .agent.status-blocked .agent-status { background: var(--red); color: var(--red); }
+  .agent.status-offline .agent-status { background: var(--offline); color: var(--offline); }
+  .agent-meta { font-size:10.5px; color: var(--text-secondary); line-height:1.45; }
+  .agent-progress { margin-top:10px; height:3px; border-radius:999px; background: rgba(255,255,255,0.06); overflow:hidden; }
+  .agent-progress-bar { height:100%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: width 0.4s ease; }
+
+  .projects { display:flex; flex-direction:column; gap:10px; }
+  .project {
+    border:1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    padding:14px 16px; display:flex; align-items:center; gap:14px; cursor:pointer; transition: all 0.15s ease;
+  }
+  .project:hover { border-color: var(--border-active); background: var(--surface-hover); }
+  .project-icon {
+    width:34px; height:34px; border-radius: var(--radius-sm);
+    border:1px solid var(--border-active);
+    background: linear-gradient(180deg, rgba(120,180,255,0.12), rgba(120,180,255,0.03));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 18px rgba(120,180,255,0.08);
+    display:flex; align-items:center; justify-content:center; font-size:14px;
+  }
+  .project-info { flex:1; }
+  .project-name { font-size:13px; font-weight:500; letter-spacing:0.02em; }
+  .project-meta { font-size:11px; color: var(--text-secondary); margin-top:3px; }
+  .project-right { text-align:right; }
+  .project-progress { font-size:12px; color: var(--text); letter-spacing:0.04em; }
+  .project-status { font-size:10px; color: var(--text-secondary); text-transform:uppercase; letter-spacing:0.08em; margin-top:3px; }
+
+  .terminal {
+    border-left:1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  .terminal-header {
+    padding:14px 16px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:10px;
+  }
+  .terminal-title { font-size:11px; text-transform:uppercase; letter-spacing:0.14em; color: var(--text-tertiary); font-weight:500; }
+  .terminal-dot { width:6px; height:6px; border-radius:50%; background: var(--green); box-shadow: 0 0 10px rgba(16,185,129,0.5); }
+  .terminal-body {
+    flex:1; overflow-y:auto; padding:14px 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size:11.5px; line-height:1.55; color: rgba(255,255,255,0.78);
+  }
+  .terminal-line { margin-bottom:10px; }
+  .terminal-line .prefix { color: var(--text-tertiary); margin-right:8px; }
+  .terminal-line .cmd { color: rgba(255,255,255,0.9); }
+  .terminal-line .resp { color: rgba(255,255,255,0.7); }
+  .terminal-composer {
+    padding:12px 14px; border-top:1px solid var(--border);
+    display:flex; gap:10px; align-items:flex-end;
+  }
+  .terminal-input {
+    flex:1; background: rgba(255,255,255,0.03); border:1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--text); padding:10px 12px;
+    font-family: inherit; font-size:12px; outline:none;
+  }
+  .terminal-input:focus { border-color: var(--border-active); }
+  .terminal-send {
+    width:34px; height:34px; border-radius: var(--radius-sm);
+    border:1px solid var(--border); background: var(--surface);
+    color: var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .terminal-send:hover { border-color: var(--border-active); background: var(--surface-hover); }
+
+  .activity { display:flex; flex-direction:column; gap:10px; }
+  .activity-item {
+    display:flex; gap:12px; align-items:flex-start;
+    border:1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); padding:10px 12px;
+  }
+  .activity-time { font-size:10px; color: var(--text-tertiary); min-width:36px; letter-spacing:0.06em; text-transform:uppercase; }
+  .activity-body { font-size:12px; color: rgba(255,255,255,0.78); line-height:1.45; }
+
+  .approvals { display:flex; flex-direction:column; gap:10px; }
+  .approval {
+    border:1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); padding:14px 16px; display:flex; align-items:center; gap:14px;
+  }
+  .approval-dot { width:8px; height:8px; border-radius:50%; background: var(--yellow); box-shadow: 0 0 10px rgba(251,191,36,0.45); animation: pulse 2s ease-in-out infinite; }
+  .approval-info { flex:1; }
+  .approval-title { font-size:13px; font-weight:500; letter-spacing:0.02em; }
+  .approval-agent { font-size:11px; color: var(--text-secondary); margin-top:3px; }
+  .approval-actions { display:flex; gap:8px; }
+  .btn {
+    padding:8px 12px; border-radius: var(--radius-sm);
+    border:1px solid var(--border); background: var(--surface);
+    color: var(--text); cursor:pointer; font-weight:500; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .btn:hover { border-color: var(--border-active); background: var(--surface-hover); }
+  .btn.primary { border-color: rgba(120,180,255,0.35); box-shadow: 0 0 18px rgba(120,180,255,0.12); }
+
+  .modal-backdrop {
+    position:fixed; inset:0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display:none; align-items:center; justify-content:center; z-index:100;
+  }
+  .modal-backdrop.open { display:flex; }
+  .modal {
+    width: min(420px, 92vw); border:1px solid var(--border-active); border-radius: var(--radius);
+    background: rgba(10,12,18,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+    padding:22px;
+  }
+  .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .modal-title { font-size:14px; font-weight:500; letter-spacing:0.06em; }
+  .modal-close { background:none; border:1px solid var(--border); color: var(--text-secondary); border-radius: var(--radius-sm); width:30px; height:30px; cursor:pointer; }
+  .modal-close:hover { border-color: var(--border-active); color: var(--text); }
+  .modal-row { display:flex; flex-direction:column; gap:4px; margin-bottom:12px; }
+  .modal-label { font-size:10px; text-transform:uppercase; letter-spacing:0.14em; color: var(--text-tertiary); }
+  .modal-value { font-size:13px; color: rgba(255,255,255,0.88); line-height:1.5; }
+  .modal-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+
+  @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.5; } }
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:4px; }
+  ::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,0.14); }
+
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 220px 1fr 280px; }
+  }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
+    .sidebar, .terminal { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">h</div>
+      <div class="brand">hermes hq</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-status">
+        <div class="status-pill">sistema operacional</div>
+        <div class="status-pill">v0.2</div>
+        <div class="status-pill" id="clock">--:--</div>
+      </div>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="sidebar-title">navegação</div>
+    <div class="nav-item active" data-target="command">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>centro de comando</span>
+    </div>
+    <div class="nav-item" data-target="agents">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06.06a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>agentes</span>
+    </div>
+    <div class="nav-item" data-target="projects">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <span>projetos</span>
+    </div>
+    <div class="nav-item" data-target="approvals">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      <span>aprovações</span>
+    </div>
+    <div class="nav-item" data-target="activity">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <span>atividades</span>
+    </div>
+
+    <div class="sidebar-title">sistema</div>
+    <div class="nav-item" data-target="terminal">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <span>terminal</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div id="section-command" class="section active">
+      <div class="panel-header">
+        <div class="section-title">comando central</div>
+      </div>
+      <div style="border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:18px 20px; display:flex; align-items:center; gap:18px;">
+        <div class="logo" style="width:34px;height:34px;font-size:14px;">h</div>
+        <div>
+          <div style="font-size:14px; font-weight:500; letter-spacing:0.04em;">Hermes OS — command core</div>
+          <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px);">Orquestrador central • online • 7 agentes registrados</div>
+        </div>
+        <div style="margin-left:auto; display:flex; gap:10px; flex-wrap:wrap;">
+          <div class="status-pill">automações ativas</div>
+          <div class="status-pill" id="approvalBadge">3 aprovações pendentes</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-agents" class="section">
+      <div class="panel-header">
+        <div class="section-title">agentes</div>
+        <div class="panel-controls">
+          <input class="input" id="agentSearch" placeholder="buscar agente..." />
+          <button class="chip active" data-filter="all">todos</button>
+          <button class="chip" data-filter="active">ativos</button>
+          <button class="chip" data-filter="waiting">aguardando</button>
+          <button class="chip" data-filter="blocked">bloqueados</button>
+          <button class="chip" data-filter="offline">offline</button>
+        </div>
+      </div>
+      <div class="grid-agents" id="agentGrid"></div>
+    </div>
+
+    <div id="section-projects" class="section">
+      <div class="panel-header">
+        <div class="section-title">projetos</div>
+      </div>
+      <div class="projects" id="projectList"></div>
+    </div>
+
+    <div id="section-approvals" class="section">
+      <div class="panel-header">
+        <div class="section-title">aprovações</div>
+      </div>
+      <div class="approvals" id="approvalList"></div>
+    </div>
+
+    <div id="section-activity" class="section">
+      <div class="panel-header">
+        <div class="section-title">atividades recentes</div>
+      </div>
+      <div class="activity" id="activityStream"></div>
+    </div>
+  </main>
+
+  <aside class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot"></div>
+      <div class="terminal-title">hermes terminal</div>
+    </div>
+    <div class="terminal-body" id="terminalBody">
+      <div class="terminal-line"><span class="prefix">&gt;</span><span class="resp">Sessão iniciada. Digite um comando.</span></div>
+    </div>
+    <div class="terminal-composer">
+      <input class="terminal-input" id="terminalInput" placeholder="comando..." autocomplete="off">
+      <button class="terminal-send" id="terminalSend" aria-label="enviar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<div class="modal-backdrop" id="agentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">agente</div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">status</div>
+      <div class="modal-value" id="modalStatus">—</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">missão atual</div>
+      <div class="modal-value" id="modalMission">—</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">progresso</div>
+      <div class="modal-value" id="modalProgress">—</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">última atividade</div>
+      <div class="modal-value" id="modalLast">—</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">projeto</div>
+      <div class="modal-value" id="modalProject">—</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn primary">conversar</button>
+      <button class="btn">ver tarefas</button>
+      <button class="btn">ver projeto</button>
+      <button class="btn">ver atividade</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DATA_FALLBACK = {
+    agents: [
+      { id:"hermes", name:"Hermes", status:"active", mission:"Orquestração da operação e rotas de agentes", progress:92, last:"11:02 — rotas atualizadas", project:"Hermes OS" },
+      { id:"master_pm", name:"Master PM", status:"active", mission:"Coordenação de projetos e dependências", progress:76, last:"10:55 — EPQ atualizado", project:"EPQ" },
+      { id:"design", name:"Design Agent", status:"active", mission:"Interface e sistema visual do Hermes OS", progress:81, last:"10:48 — paleta ajustada", project:"Hermes OS" },
+      { id:"dev", name:"Development Agent", status:"waiting", mission:"Aguardando branch para integração", progress:64, last:"10:30 — commit enviado", project:"Sistema de Prospecção" },
+      { id:"research", name:"Research Agent", status:"active", mission:"Benchmarks e referências", progress:57, last:"10:12 — briefing pronto", project:"Hermes OS" },
+      { id:"marketing", name:"Marketing Agent", status:"blocked", mission:"Aguardando aprovação de campanha", progress:45, last:"09:58 — bloqueado", project:"EPQ" },
+      { id:"qa", name:"QA / Review Agent", status:"offline", mission:"Em standby", progress:20, last:"Ontem — sem novas validações", project:"—" }
+    ],
+    projects: [
+      { name:"HERMES OS", progress:68, status:"Ativo", priority:"Alta", agents:["hermes","design","research"], last:"11:02 — ajustes visuais" },
+      { name:"EPQ", progress:82, status:"Ativo", priority:"Alta", agents:["master_pm","marketing"], last:"10:55 — conteúdo aprovado" },
+      { name:"SISTEMA DE PROSPECÇÃO", progress:45, status:"Em desenvolvimento", priority:"Média", agents:["dev","master_pm"], last:"10:30 — commit enviado" },
+      { name:"MASTER PM", progress:72, status:"Ativo", priority:"Alta", agents:["master_pm"], last:"10:40 — planejamento ok" }
+    ],
+    activity: [
+      { time:"11:02", text:"Hermes atualizou rotas de orquestração." },
+      { time:"10:55", text:"Master PM atualizou EPQ." },
+      { time:"10:48", text:"Design Agent ajustou paleta do Hermes OS." },
+      { time:"10:30", text:"Development Agent realizou commit." },
+      { time:"09:58", text:"Marketing Agent bloqueado em aprovação." }
+    ],
+    approvals: [
+      { title:"Nova interface", agent:"Design Agent" },
+      { title:"Estratégia de campanha", agent:"Marketing Agent" },
+      { title:"Arquitetura de integração", agent:"Development Agent" }
+    ]
+  };
+
+  let DATA = DATA_FALLBACK;
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  fetch('./src/data/ai-hub.json').then(r => r.json()).then(json => { if (json && json.agents) { DATA = json; renderAll(); } }).catch(() => { renderAll(); });
+
+  const agentGrid = document.getElementById('agentGrid');
+  const projectList = document.getElementById('projectList');
+  const activityStream = document.getElementById('activityStream');
+  const approvalList = document.getElementById('approvalList');
+  const agentSearch = document.getElementById('agentSearch');
+  const STATUS = { active:'ativo', waiting:'aguardando', blocked:'bloqueado', offline:'offline' };
+
+  function renderAll() {
+    renderAgents();
+    renderProjects();
+    renderActivity();
+    renderApprovals();
+    applyFilters();
+  }
+
+  function renderAgents() {
+    agentGrid.innerHTML = DATA.agents.map(a => `
+      <div class="agent status-${a.status}" data-id="${a.id}">
+        <div class="agent-header">
+          <div class="agent-avatar">${a.name.slice(0,2).toUpperCase()}</div>
+          <div class="agent-name">${a.name}</div>
+          <div class="agent-status" title="${STATUS[a.status]}"></div>
+        </div>
+        <div class="agent-meta">${STATUS[a.status]} • ${a.progress}%</div>
+        <div class="agent-progress"><div class="agent-progress-bar" style="width:${a.progress}%"></div></div>
+      </div>
+    `).join('');
+    agentGrid.querySelectorAll('.agent').forEach(el => el.addEventListener('click', () => openAgent(el.dataset.id)));
+  }
+  function renderProjects() {
+    projectList.innerHTML = DATA.projects.map(p => `
+      <div class="project">
+        <div class="project-icon">◆</div>
+        <div class="project-info">
+          <div class="project-name">${p.name}</div>
+          <div class="project-meta">${(p.agents||[]).join(', ')} • ${p.priority||''}</div>
+        </div>
+        <div class="project-right">
+          <div class="project-progress">${p.progress}%</div>
+          <div class="project-status">${p.status}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  function renderActivity() {
+    activityStream.innerHTML = DATA.activity.map(a => `
+      <div class="activity-item">
+        <div class="activity-time">${a.time}</div>
+        <div class="activity-body">${a.text}</div>
+      </div>
+    `).join('');
+  }
+  function renderApprovals() {
+    approvalList.innerHTML = DATA.approvals.map(a => `
+      <div class="approval">
+        <div class="approval-dot"></div>
+        <div class="approval-info">
+          <div class="approval-title">${a.title}</div>
+          <div class="approval-agent">${a.agent}</div>
+        </div>
+        <div class="approval-actions">
+          <button class="btn primary">aprovar</button>
+          <button class="btn">rejeitar</button>
+          <button class="btn">alterar</button>
+        </div>
+      </div>
+    `).join('');
+    const count = (DATA.approvals||[]).length;
+    const badge = document.getElementById('approvalBadge');
+    if (badge) badge.textContent = count + ' aprovação' + (count===1?'':'ões') + ' pendente' + (count===1?'':'s');
+  }
+
+  function applyFilters() {
+    const term = currentSearch.trim().toLowerCase();
+    const filtered = DATA.agents.filter(a => {
+      const matchStatus = currentFilter === 'all' || a.status === currentFilter;
+      const matchSearch = !term || (a.name + ' ' + (a.project||'') + ' ' + (a.mission||'')).toLowerCase().includes(term);
+      return matchStatus && matchSearch;
+    });
+    agentGrid.innerHTML = filtered.map(a => `
+      <div class="agent status-${a.status}" data-id="${a.id}">
+        <div class="agent-header">
+          <div class="agent-avatar">${a.name.slice(0,2).toUpperCase()}</div>
+          <div class="agent-name">${a.name}</div>
+          <div class="agent-status" title="${STATUS[a.status]}"></div>
+        </div>
+        <div class="agent-meta">${STATUS[a.status]} • ${a.progress}%</div>
+        <div class="agent-progress"><div class="agent-progress-bar" style="width:${a.progress}%"></div></div>
+      </div>
+    `).join('');
+    agentGrid.querySelectorAll('.agent').forEach(el => el.addEventListener('click', () => openAgent(el.dataset.id)));
+  }
+
+  function openAgent(id) {
+    const a = DATA.agents.find(x => x.id === id);
+    if (!a) return;
+    document.getElementById('modalTitle').textContent = a.name;
+    document.getElementById('modalStatus').textContent = STATUS[a.status];
+    document.getElementById('modalMission').textContent = a.mission;
+    document.getElementById('modalProgress').textContent = a.progress + '%';
+    document.getElementById('modalLast').textContent = a.last;
+    document.getElementById('modalProject').textContent = a.project;
+    document.getElementById('agentModal').classList.add('open');
+  }
+  document.getElementById('modalClose').addEventListener('click', () => document.getElementById('agentModal').classList.remove('open'));
+  document.getElementById('agentModal').addEventListener('click', (e) => { if (e.target === document.getElementById('agentModal')) document.getElementById('agentModal').classList.remove('open'); });
+
+  agentSearch.addEventListener('input', (e) => { currentSearch = e.target.value; applyFilters(); });
+  document.querySelectorAll('.chip[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-filter]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  /* navigation */
+  document.querySelectorAll('.nav-item[data-target]').forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.dataset.target;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      const sec = document.getElementById('section-' + target);
+      if (sec) sec.classList.add('active');
+    });
+  });
+
+  /* terminal */
+  const terminalBody = document.getElementById('terminalBody');
+  const terminalInput = document.getElementById('terminalInput');
+  const terminalSend = document.getElementById('terminalSend');
+  function appendTerminal(cmd, text) {
+    const row = document.createElement('div');
+    row.className = 'terminal-line';
+    row.innerHTML = `<span class="prefix">&gt;</span><span class="cmd">${cmd}</span><br><span class="resp">${text}</span>`;
+    terminalBody.appendChild(row);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+  }
+  function runCommand(cmd) {
+    const c = cmd.trim().toLowerCase();
+    appendTerminal(cmd, 'processando...');
+    setTimeout(() => {
+      if (c.includes('bloqueio')) appendTerminal('', 'Bloqueios: Marketing Agent — aprovação de campanha.');
+      else if (c.includes('aprovação') || c.includes('aprov')) appendTerminal('', 'Pendentes: Nova interface, Estratégia de campanha, Arquitetura de integração.');
+      else if (c.includes('epq')) appendTerminal('', 'EPQ está ativo com 82% de progresso. Agentes: Master PM, Marketing.');
+      else if (c.includes('hoje')) appendTerminal('', 'Hoje: ajustes visuais no Hermes OS, commit no Sistema de Prospecção e revisão de campanha.');
+      else if (c.includes('priorize')) appendTerminal('', 'Prioridade definida: Hermes OS em primeiro lugar.');
+      else appendTerminal('', 'Comando reconhecido. Em breve essa área será conectada ao Hermes real.');
+    }, 400);
+  }
+  terminalSend.addEventListener('click', () => { const v = terminalInput.value; if (!v.trim()) return; runCommand(v); terminalInput.value=''; });
+  terminalInput.addEventListener('keydown', (e) => { if (e.key==='Enter') { const v = terminalInput.value; if (!v.trim()) return; runCommand(v); terminalInput.value=''; }});
+
+  /* clock */
+  function tick() {
+    const d = new Date();
+    document.getElementById('clock').textContent = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+  }
+  tick(); setInterval(tick, 1000);
+
+  renderAll();
+</script>
+</body>
+</html>

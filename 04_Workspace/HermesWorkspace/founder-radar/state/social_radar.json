@@ -1,0 +1,23 @@
+[
+  {
+    "id": "social-001",
+    "autor": "Exemplo",
+    "empresa": "Exemplo Foods",
+    "cargo": "CEO",
+    "link_post": null,
+    "tema": "Crescimento de marca",
+    "por_que_interagir": "",
+    "prioridade": "BAIXA",
+    "acoes": [
+      "CURTIR",
+      "COMENTAR",
+      "SEGUIR"
+    ],
+    "comentario_v1": "",
+    "comentario_v2": "",
+    "comentario_v3": "",
+    "status": "NOVO",
+    "criado_em": "2026-09-03T00:00:00-03:00",
+    "atualizado_em": "2026-09-03T00:00:00-03:00"
+  }
+]

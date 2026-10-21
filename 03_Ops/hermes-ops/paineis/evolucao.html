@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hermes OS · Evolução da Missão</title>
+<style>
+:root{
+  --bg:#0a0d12; --bg2:#0f141b; --card:#141a23; --card2:#1a2130;
+  --fg:#e6edf3; --mut:#7d8590; --bd:#21262d; --bd2:#30363d;
+  --ok:#3fb950; --ok2:#56d364; --warn:#d29922; --err:#f85149;
+  --acc:#58a6ff; --acc2:#79c0ff; --pur:#bc8cff;
+  --shadow:0 8px 24px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--fg);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Menlo,monospace;
+  min-height:100vh; padding-bottom:60px;
+}
+header{
+  position:sticky; top:0; z-index:50;
+  padding:16px 32px;
+  background:rgba(10,13,18,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bd);
+  display:flex; justify-content:space-between; align-items:center;
+}
+h1{
+  font-size:16px; font-weight:600; letter-spacing:-.01em;
+  display:flex; align-items:center; gap:10px;
+}
+h1 .dot{
+  width:8px;height:8px;border-radius:50%;background:var(--ok);
+  box-shadow:0 0 12px var(--ok); animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.meta{display:flex;gap:20px;align-items:center;font-size:12px;color:var(--mut)}
+.meta b{color:var(--fg);font-weight:600}
+
+.wrap{max-width:1440px;margin:0 auto;padding:24px 32px}
+
+/* ─── KPIs ─── */
+.kpis{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px; margin-bottom:24px;
+}
+.kpi{
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:10px; padding:14px 16px;
+  position:relative; overflow:hidden;
+}
+.kpi::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--acc);
+}
+.kpi.ok::before{background:var(--ok)}
+.kpi.warn::before{background:var(--warn)}
+.kpi.err::before{background:var(--err)}
+.kpi .lbl{
+  font-size:11px; color:var(--mut); text-transform:uppercase;
+  letter-spacing:.08em; margin-bottom:6px;
+}
+.kpi .val{font-size:22px; font-weight:700; letter-spacing:-.02em}
+.kpi .sub{font-size:11px; color:var(--mut); margin-top:4px}
+
+/* ─── Progress global ─── */
+.progress-wrap{
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:10px; padding:16px 20px; margin-bottom:24px;
+}
+.progress-head{
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom:10px; font-size:12px; color:var(--mut);
+}
+.progress-head b{color:var(--fg); font-size:16px; font-weight:700}
+.bar{height:6px; background:var(--bd); border-radius:3px; overflow:hidden}
+.bar>i{
+  display:block; height:100%;
+  background:linear-gradient(90deg,var(--ok),var(--ok2));
+  width:0%; transition:width .8s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 12px rgba(63,185,80,.4);
+}
+
+/* ─── Timeline ─── */
+.grid{display:grid;grid-template-columns:1fr 380px;gap:24px}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+
+.timeline-title{
+  font-size:12px;color:var(--mut);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+  content:''; position:absolute; left:9px; top:12px; bottom:12px;
+  width:2px; background:linear-gradient(180deg,var(--bd),var(--bd2),var(--bd));
+}
+.etapa{
+  position:relative; margin-bottom:10px;
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:10px; padding:14px 16px;
+  transition:all .25s ease;
+  cursor:pointer;
+}
+.etapa:hover{border-color:var(--bd2); transform:translateX(2px)}
+.etapa::before{
+  content:''; position:absolute; left:-24px; top:20px;
+  width:12px; height:12px; border-radius:50%;
+  background:var(--bg); border:2px solid var(--bd2);
+  transition:all .3s ease;
+}
+.etapa.ok::before{
+  background:var(--ok); border-color:var(--ok);
+  box-shadow:0 0 12px var(--ok);
+}
+.etapa.run::before{
+  background:var(--warn); border-color:var(--warn);
+  box-shadow:0 0 12px var(--warn);
+  animation:pulse 1.5s infinite;
+}
+.etapa.err::before{
+  background:var(--err); border-color:var(--err);
+  box-shadow:0 0 12px var(--err);
+}
+.etapa.ok{border-color:rgba(63,185,80,.3)}
+.etapa.err{border-color:rgba(248,81,73,.3)}
+
+.etapa-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.etapa-num{
+  font-size:11px; color:var(--mut); font-weight:700;
+  font-family:Menlo,monospace; letter-spacing:.05em;
+}
+.etapa-name{font-weight:600; font-size:14px; flex:1}
+.badge{
+  font-size:10px; font-weight:700; padding:3px 8px;
+  border-radius:20px; text-transform:uppercase; letter-spacing:.08em;
+}
+.badge.ok{background:rgba(63,185,80,.15); color:var(--ok); border:1px solid rgba(63,185,80,.3)}
+.badge.run{background:rgba(210,153,34,.15); color:var(--warn); border:1px solid rgba(210,153,34,.3)}
+.badge.err{background:rgba(248,81,73,.15); color:var(--err); border:1px solid rgba(248,81,73,.3)}
+.badge.pend{background:rgba(125,133,144,.1); color:var(--mut); border:1px solid var(--bd2)}
+
+.etapa-desc{
+  font-size:12px; color:var(--mut); margin-top:6px; line-height:1.5;
+}
+.etapa-body{
+  max-height:0; overflow:hidden;
+  transition:max-height .35s ease;
+}
+.etapa.open .etapa-body{max-height:600px}
+.checklist{
+  margin-top:12px; padding-top:12px;
+  border-top:1px solid var(--bd);
+  display:flex; flex-direction:column; gap:6px;
+}
+.check{
+  display:flex; align-items:flex-start; gap:8px;
+  font-size:12px; color:var(--mut);
+}
+.check .box{
+  width:14px;height:14px;border-radius:3px;border:1.5px solid var(--bd2);
+  flex-shrink:0;margin-top:2px;position:relative;
+}
+.check.done .box{background:var(--ok);border-color:var(--ok)}
+.check.done .box::after{
+  content:'✓'; color:var(--bg); font-size:10px; font-weight:900;
+  position:absolute; left:1px; top:-3px;
+}
+.check.done{color:var(--fg)}
+.check.run .box{border-color:var(--warn);animation:pulse 1.5s infinite}
+.check.err .box{background:var(--err);border-color:var(--err)}
+.check.err .box::after{
+  content:'✕';color:var(--bg);font-size:10px;font-weight:900;
+  position:absolute;left:1px;top:-3px;
+}
+
+/* ─── Sidebar ─── */
+.side{display:flex;flex-direction:column;gap:12px}
+.card{
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:10px; padding:14px 16px;
+}
+.card h3{
+  font-size:11px; color:var(--mut); text-transform:uppercase;
+  letter-spacing:.1em; margin-bottom:10px;
+  display:flex; align-items:center; gap:6px;
+}
+.card pre{
+  font:12px/1.6 Menlo,Consolas,monospace; color:var(--fg);
+  white-space:pre-wrap; word-break:break-word;
+}
+.stat{display:flex;justify-content:space-between;font-size:12px;padding:4px 0}
+.stat .k{color:var(--mut)}
+.stat .v{font-weight:600}
+.stat .v.ok{color:var(--ok)}
+.stat .v.err{color:var(--err)}
+.stat .v.warn{color:var(--warn)}
+
+/* ─── Tabs ─── */
+.tabs{
+  display:flex; gap:4px; margin-bottom:20px;
+  background:var(--card); padding:4px; border-radius:10px;
+  border:1px solid var(--bd); width:fit-content;
+}
+.tab{
+  padding:8px 18px; border-radius:6px; cursor:pointer;
+  font-size:12px; font-weight:600; color:var(--mut);
+  transition:all .2s;
+}
+.tab.on{background:var(--card2); color:var(--fg)}
+.tab:hover:not(.on){color:var(--fg)}
+
+/* ─── Privacy ─── */
+.privacy-hero{
+  background:linear-gradient(135deg,rgba(63,185,80,.08),rgba(88,166,255,.05));
+  border:1px solid rgba(63,185,80,.25); border-radius:12px;
+  padding:24px; margin-bottom:20px;
+}
+.privacy-hero h2{
+  font-size:18px; margin-bottom:8px;
+  display:flex; align-items:center; gap:10px;
+}
+.privacy-hero p{color:var(--mut); font-size:13px; line-height:1.6}
+.privacy-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:12px;margin-top:16px;
+}
+.pcard{
+  background:rgba(0,0,0,.2); border:1px solid var(--bd);
+  border-radius:8px; padding:12px;
+}
+.pcard .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+.pcard .v{margin-top:6px;font-size:13px;font-weight:600}
+
+.footer{
+  text-align:center; margin-top:40px; padding:20px;
+  color:var(--mut); font-size:11px; border-top:1px solid var(--bd);
+}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="dot"></span> Hermes OS · Evolução da Missão</h1>
+  <div class="meta">
+    <span>última leitura <b id="lastread">—</b></span>
+    <span>uptime <b id="uptime">—</b></span>
+    <span id="conn" style="color:var(--ok)">● conectado</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="tabs">
+    <div class="tab on" data-t="op">📋 Operação</div>
+    <div class="tab" data-t="privacy">🔒 Privacidade</div>
+    <div class="tab" data-t="arch">🏗️ Arquitetura</div>
+  </div>
+
+  <!-- ═══════════ OPERAÇÃO ═══════════ -->
+  <div id="view-op">
+
+    <div class="kpis">
+      <div class="kpi ok">
+        <div class="lbl">Etapas concluídas</div>
+        <div class="val" id="k-etapas">0/11</div>
+        <div class="sub" id="k-etapas-sub">aguardando</div>
+      </div>
+      <div class="kpi" id="kpi-srv">
+        <div class="lbl">Backend :8420</div>
+        <div class="val" id="k-srv">—</div>
+        <div class="sub" id="k-srv-sub">PID —</div>
+      </div>
+      <div class="kpi" id="kpi-wa">
+        <div class="lbl">WhatsApp</div>
+        <div class="val" id="k-wa">—</div>
+        <div class="sub" id="k-wa-sub">—</div>
+      </div>
+      <div class="kpi" id="kpi-ram">
+        <div class="lbl">RAM total</div>
+        <div class="val" id="k-ram">—</div>
+        <div class="sub" id="k-ram-sub">Ollama lazy</div>
+      </div>
+      <div class="kpi" id="kpi-fila">
+        <div class="lbl">Fila</div>
+        <div class="val" id="k-fila">—</div>
+        <div class="sub" id="k-fila-sub">—</div>
+      </div>
+      <div class="kpi" id="kpi-priv">
+        <div class="lbl">Privacidade</div>
+        <div class="val" id="k-priv">—</div>
+        <div class="sub" id="k-priv-sub">auditoria</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-head">
+        <span>Progresso da missão</span>
+        <span><b id="prog-pct">0%</b></span>
+      </div>
+      <div class="bar"><i id="prog-bar"></i></div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="timeline-title">
+          <span>📋 Timeline · 11 etapas</span>
+          <span style="color:var(--mut);font-weight:400">(clique para expandir)</span>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <h3>🖥️ Baseline</h3>
+          <div id="baseline-stats">
+            <div class="stat"><span class="k">RAM antes</span><span class="v">—</span></div>
+            <div class="stat"><span class="k">RAM agora</span><span class="v ok" id="b-ram">—</span></div>
+            <div class="stat"><span class="k">Ollama ocioso</span><span class="v ok" id="b-ollama">—</span></div>
+            <div class="stat"><span class="k">.baileys</span><span class="v" id="b-baileys">—</span></div>
+            <div class="stat"><span class="k">Processos</span><span class="v" id="b-procs">—</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📡 Live</h3>
+          <div class="stat"><span class="k">Servidor</span><span class="v" id="l-srv">—</span></div>
+          <div class="stat"><span class="k">Ollama</span><span class="v" id="l-ollama">—</span></div>
+          <div class="stat"><span class="k">WhatsApp</span><span class="v" id="l-wa">—</span></div>
+          <div class="stat"><span class="k">Fila</span><span class="v" id="l-fila">—</span></div>
+        </div>
+
+        <div class="card">
+          <h3>🔐 Lock · Singleton</h3>
+          <div class="stat"><span class="k">Arquivo</span><span class="v" id="lock-file">—</span></div>
+          <div class="stat"><span class="k">PID</span><span class="v" id="lock-pid">—</span></div>
+        </div>
+
+        <div class="card">
+          <h3>⚙️ Endpoints</h3>
+          <div class="stat"><span class="k">Backend</span><span class="v ok">:8420</span></div>
+          <div class="stat"><span class="k">Painel</span><span class="v ok">:8430</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ═══════════ PRIVACIDADE ═══════════ -->
+  <div id="view-privacy" class="hidden">
+    <div class="privacy-hero">
+      <h2>🔒 Auditoria de Privacidade</h2>
+      <p>O painel exibe <b>apenas metadados operacionais</b>. Leads (592), telefones, campanhas e conteúdo de conversa <b>nunca aparecem aqui</b>. Os dados ficam exclusivos do CRM local e são processados somente no Ollama local (KEEP_ALIVE=0).</p>
+      <div class="privacy-grid">
+        <div class="pcard">
+          <div class="l">Leads no CRM</div>
+          <div class="v" id="p-leads">—</div>
+        </div>
+        <div class="pcard">
+          <div class="l">Leads → prompt</div>
+          <div class="v ok">Nunca</div>
+        </div>
+        <div class="pcard">
+          <div class="l">Campanhas → prompt</div>
+          <div class="v ok">Nunca</div>
+        </div>
+        <div class="pcard">
+          <div class="l">Processamento</div>
+          <div class="v ok">Ollama local</div>
+        </div>
+        <div class="pcard">
+          <div class="l">Última violação</div>
+          <div class="v" id="p-last">—</div>
+        </div>
+        <div class="pcard">
+          <div class="l">Status auditoria</div>
+          <div class="v" id="p-status">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Log de auditoria (últimas 20 leituras)</h3>
+      <pre id="p-log">Aguardando privacy-hook…</pre>
+    </div>
+  </div>
+
+  <!-- ═══════════ ARQUITETURA ═══════════ -->
+  <div id="view-arch" class="hidden">
+    <div class="card" style="margin-bottom:16px">
+      <h3>🏗️ Topologia atual</h3>
+      <pre style="font-size:12px;line-height:1.7">
+┌──────────────────────────────────────────────────────────────┐
+│  com.hermes.supervisor  (ÚNICO launchd · KeepAlive)          │
+│  └─ hermesctl start   ·  lock /tmp/hermes-8420.lock          │
+└──────────────────────────────────────────────────────────────┘
+                          │
+        ┌─────────────────┼─────────────────┐
+        ▼                 ▼                 ▼
+   ┌─────────┐      ┌──────────┐      ┌──────────┐
+   │ :8420   │      │ Ollama   │      │ :8430    │
+   │ Backend │─────▶│ local    │      │ Painel   │
+   │ CRM+fila│      │ KEEP_ALIVE=0     │ v10.1    │
+   │ Baileys │      │ lazy load        │ + Oper.  │
+   └─────────┘      └──────────┘      └──────────┘
+        │                                   ▲
+        │ logs JSONL                        │ SSE
+        ▼                                   │
+   ~/hermes-ops/logs/*.jsonl ──────▶ state/*.json
+        │
+        ▼
+   agent-watchdog.mjs (60s)  ·  privacy-hook.mjs (120s)
+      </pre>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>🎯 Agentes ativos</h3>
+        <div class="stat"><span class="k">supervisor (launchd)</span><span class="v ok">1 único</span></div>
+        <div class="stat"><span class="k">agent-watchdog.mjs</span><span class="v" id="a-wd">—</span></div>
+        <div class="stat"><span class="k">privacy-hook.mjs</span><span class="v" id="a-ph">—</span></div>
+      </div>
+      <div class="card">
+        <h3>🛡️ Regras de ouro</h3>
+        <p style="font-size:12px;color:var(--mut);line-height:1.8">
+        • 1 supervisor · 1 backend · 1 lock<br>
+        • Leads nunca viram prompt<br>
+        • Painel só metadados<br>
+        • Ollama KEEP_ALIVE=0<br>
+        • Backoff exponencial no reconnect<br>
+        • Fila idempotente (lock_pid)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Hermes OS · painel de evolução · lê state/*.json a cada 3s · sem expor dados de lead
+  </div>
+</div>
+
+<script>
+/* ─────────────────────────────────────────
+   Definição das 11 etapas + checklist
+   ───────────────────────────────────────── */
+const ETAPAS = [
+  {n:'01', name:'Baseline snapshot', desc:'Registra RAM, Ollama, .baileys e processos sem matar nada.',
+   checks:['Ler RAM total','Ler Ollama ocioso','Contar .baileys','Listar processos','Listar plists']},
+  {n:'02', name:'Auditar supervisores', desc:'Só age se houver mais de 1 launchd hermes/bridge.',
+   checks:['Contar launchctl','Comparar com baseline','Remover excedentes','Mover plists p/ attic']},
+  {n:'03', name:'Singleton lock', desc:'Impede 2 instâncias na :8420 via /tmp/hermes-8420.lock.',
+   checks:['Injetar HERMES-SINGLETON','Validar sintaxe','Testar 2ª instância']},
+  {n:'04', name:'Auditar backoff', desc:'Verifica se o "loop corrigido" tem backoff exponencial real.',
+   checks:['Contar setTimeout(3000)','Contar Math.pow(2)','Aplicar patch se preciso']},
+  {n:'05', name:'Sessão .baileys', desc:'Backup diário, rotação de lixo >7 dias, limite de arquivos.',
+   checks:['Backup creds.json','Mover .lixo >7d','Limpar backups >14d','Contar arquivos']},
+  {n:'06', name:'Watchdog único', desc:'Um único launchd com KeepAlive p/ backend.',
+   checks:['Criar plist','Bootout antigo','Bootstrap novo']},
+  {n:'07', name:'Logs JSONL', desc:'Rotação 10MB × 5 arquivos em ~/hermes-ops/logs/.',
+   checks:['Criar rotate-logs.sh','chmod +x','Testar rotação']},
+  {n:'08', name:'Fila idempotente', desc:'Reabre itens "enviando" sem lock_pid.',
+   checks:['Backup fila.json','Varrer itens enviando','Reabrir sem lock','Salvar']},
+  {n:'09', name:'Painel v10.1', desc:'Aba Operação + Privacidade, sem expor leads.',
+   checks:['Subir :8430','Verificar HTTP 200','Ler state/*.json']},
+  {n:'10', name:'Runbook + agente', desc:'hermesctl + agent-watchdog.mjs (tick 60s).',
+   checks:['Criar agent-watchdog.mjs','Iniciar em background','Verificar live.json']},
+  {n:'11', name:'Auditoria privacidade', desc:'privacy-hook.mjs varre logs em busca de vazamento.',
+   checks:['Criar privacy-hook.mjs','Tick 120s','Detectar fone+prompt','Escrever privacy.json']},
+];
+
+/* ─────────────────────────────────────────
+   Leitura de state (com fallback demo)
+   ───────────────────────────────────────── */
+const BASE = 'http://127.0.0.1:8430/state/';
+async function readTxt(f){ try{const r=await fetch(BASE+f);return r.ok?await r.text():'';}catch{return'';} }
+async function readJson(f){ try{const r=await fetch(BASE+f);return r.ok?await r.json():null;}catch{return null;} }
+
+/* ─────────────────────────────────────────
+   Render timeline
+   ───────────────────────────────────────── */
+function renderTimeline(status){
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = ETAPAS.map((e,i)=>{
+    const s = status[e.n] || '—';
+    const cls = s==='ok' ? 'ok' : (s===''||s==='000'||s==='—' ? 'pend' : 'run');
+    const badgeCls = cls==='ok' ? 'ok' : cls==='pend' ? 'pend' : 'run';
+    const badgeTxt = cls==='ok' ? 'concluída' : cls==='pend' ? 'pendente' : s;
+    const checks = e.checks.map((c,ci)=>{
+      const done = cls==='ok' || (cls==='run' && ci < 2);
+      const ccls = done ? 'done' : (cls==='run' && ci===2 ? 'run' : '');
+      return `<div class="check ${ccls}"><div class="box"></div><div>${c}</div></div>`;
+    }).join('');
+    return `
+      <div class="etapa ${cls}" data-n="${e.n}">
+        <div class="etapa-head">
+          <span class="etapa-num">ETAPA ${e.n}</span>
+          <span class="etapa-name">${e.name}</span>
+          <span class="badge ${badgeCls}">${badgeTxt}</span>
+        </div>
+        <div class="etapa-desc">${e.desc}</div>
+        <div class="etapa-body">
+          <div class="checklist">${checks}</div>
+        </div>
+      </div>`;
+  }).join('');
+  tl.querySelectorAll('.etapa').forEach(el=>{
+    el.onclick = ()=> el.classList.toggle('open');
+  });
+}
+
+/* ─────────────────────────────────────────
+   Tick principal
+   ───────────────────────────────────────── */
+let firstLoad = Date.now();
+async function tick(){
+  // lê todas as etapas
+  const status = {};
+  let done = 0;
+  for(const e of ETAPAS){
+    const v = (await readTxt('etapa-'+e.n)).trim();
+    status[e.n] = v || '—';
+    if(v === 'ok') done++;
+  }
+
+  // progresso
+  const pct = Math.round(done / ETAPAS.length * 100);
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('k-etapas').textContent = done + '/' + ETAPAS.length;
+  document.getElementById('k-etapas-sub').textContent = done===ETAPAS.length ? 'missão completa ✓' : 'em andamento';
+
+  renderTimeline(status);
+
+  // baseline
+  const base = await readJson('baseline.json');
+  if(base){
+    document.getElementById('b-ram').textContent = base.ram || '—';
+    document.getElementById('b-ollama').textContent = (base.ollama || '—').slice(0,30);
+    document.getElementById('b-baileys').textContent = base.baileys_files ?? '—';
+    document.getElementById('b-procs').textContent = (base.procs||[]).length;
+    document.getElementById('k-ram').textContent = base.ram || '—';
+  }
+
+  // live
+  const live = await readJson('live.json');
+  if(live){
+    const srv = live.srv ? '✓ rodando' : '✗ parado';
+    const srvCls = live.srv ? 'ok' : 'err';
+    document.getElementById('l-srv').textContent = srv;
+    document.getElementById('l-srv').className = 'v ' + srvCls;
+    document.getElementById('k-srv').textContent = live.srv ? 'online' : 'offline';
+    document.getElementById('kpi-srv').className = 'kpi ' + srvCls;
+
+    document.getElementById('l-ollama').textContent = live.ollama ? '✓ ativo' : '○ ocioso';
+    document.getElementById('l-ollama').className = 'v ' + (live.ollama ? 'ok' : 'warn');
+
+    let waOk = false;
+    try{ waOk = JSON.parse(live.wa||'{}').conectado === true; }catch{}
+    document.getElementById('l-wa').textContent = waOk ? '✓ conectado' : '✗ desconectado';
+    document.getElementById('l-wa').className = 'v ' + (waOk ? 'ok' : 'err');
+    document.getElementById('k-wa').textContent = waOk ? 'conectado' : 'offline';
+    document.getElementById('kpi-wa').className = 'kpi ' + (waOk ? 'ok' : 'err');
+
+    // fila
+    try{
+      const f = JSON.parse(live.fila||'{}');
+      const p = f.pendente ?? f.pend ?? '—';
+      const e = f.enviado ?? f.env ?? '—';
+      document.getElementById('l-fila').textContent = `pend ${p} · env ${e}`;
+      document.getElementById('k-fila').textContent = String(p);
+      document.getElementById('k-fila-sub').textContent = `enviados: ${e}`;
+    }catch{}
+  }
+
+  // lock
+  const lock = (await readTxt('/tmp/hermes-8420.lock')).trim();
+  if(lock){
+    const [pid, ts] = lock.split('\n');
+    document.getElementById('lock-file').textContent = '✓ presente';
+    document.getElementById('lock-pid').textContent = pid || '—';
+    document.getElementById('k-srv-sub').textContent = 'PID ' + (pid||'—');
+  } else {
+    document.getElementById('lock-file').textContent = '○ ausente';
+    document.getElementById('lock-pid').textContent = '—';
+  }
+
+  // privacy
+  const priv = await readJson('privacy.json');
+  if(priv){
+    const ok = !priv.violacao;
+    document.getElementById('k-priv').textContent = ok ? '✓ ok' : '⚠ falha';
+    document.getElementById('kpi-priv').className = 'kpi ' + (ok ? 'ok' : 'err');
+    document.getElementById('p-status').textContent = ok ? '✓ nenhuma violação' : '⚠ violação detectada';
+    document.getElementById('p-status').className = 'v ' + (ok ? 'ok' : 'err');
+    document.getElementById('p-last').textContent = priv.t ? new Date(priv.t).toLocaleString('pt-BR') : '—';
+    document.getElementById('p-log').textContent =
+      priv.violacao ? '⚠️ VIOLAÇÃO\n\n' + (priv.amostra||'') : '✓ limpo · ' + (priv.t||'');
+  } else {
+    document.getElementById('p-status').textContent = 'aguardando hook';
+  }
+
+  // leads (só contagem, sem dado)
+  document.getElementById('p-leads').textContent = '592 (local)';
+
+  // agentes
+  document.getElementById('a-wd').textContent = live ? '✓ ativo' : 'aguardando';
+  document.getElementById('a-wd').className = 'v ' + (live ? 'ok' : 'warn');
+  document.getElementById('a-ph').textContent = priv ? '✓ ativo' : 'aguardando';
+  document.getElementById('a-ph').className = 'v ' + (priv ? 'ok' : 'warn');
+
+  // header
+  document.getElementById('lastread').textContent = new Date().toLocaleTimeString('pt-BR');
+  const up = Math.floor((Date.now()-firstLoad)/1000);
+  document.getElementById('uptime').textContent = up + 's';
+}
+
+/* ─────────────────────────────────────────
+   Tabs
+   ───────────────────────────────────────── */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    const v = t.dataset.t;
+    document.getElementById('view-op').classList.toggle('hidden', v!=='op');
+    document.getElementById('view-privacy').classList.toggle('hidden', v!=='privacy');
+    document.getElementById('view-arch').classList.toggle('hidden', v!=='arch');
+  };
+});
+
+/* ─────────────────────────────────────────
+   Loop
+   ───────────────────────────────────────── */
+tick();
+setInterval(tick, 3000);
+
+// marca conexão
+window.addEventListener('offline', ()=> {
+  document.getElementById('conn').textContent = '● offline';
+  document.getElementById('conn').style.color = 'var(--err)';
+});
+window.addEventListener('online', ()=> {
+  document.getElementById('conn').textContent = '● conectado';
+  document.getElementById('conn').style.color = 'var(--ok)';
+});
+</script>
+</body>
+</html>

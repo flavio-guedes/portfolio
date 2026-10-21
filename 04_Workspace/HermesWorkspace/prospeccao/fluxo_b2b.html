@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo B2B — Founder/Head + Design/Produto</title>
+<style>
+  :root {
+    --bg: #0f0f11;
+    --surface: #18181c;
+    --surface2: #222228;
+    --border: #2a2a32;
+    --accent: #5b6ef7;
+    --accent-dim: #3b4db040;
+    --green: #3ecf8e;
+    --yellow: #f5c842;
+    --red: #f56b6b;
+    --blue: #6ba4f5;
+    --text: #e8e8f0;
+    --text-muted: #6e6e85;
+    --text-dim: #9999b0;
+    --radius: 10px;
+    --mono: 'JetBrains Mono', 'Fira Mono', monospace;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 14px; }
+
+  .logo-mark {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; color: #fff; letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+
+  .header-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .header-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+  .pill {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 99px;
+    background: var(--accent-dim); color: var(--accent);
+    border: 1px solid var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .progress-bar-wrap {
+    padding: 14px 28px 0;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .prog-label { font-size: 11px; color: var(--text-muted); width: 80px; }
+  .prog-track {
+    flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease;
+  }
+  .prog-count { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+
+  .filter-bar {
+    display: flex; gap: 6px;
+    padding: 14px 28px 0;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); font-size: 12px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 0;
+    height: calc(100vh - 130px);
+    min-height: 600px;
+  }
+
+  .lead-list {
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 14px 0;
+    background: var(--surface);
+  }
+
+  .lead-list::-webkit-scrollbar { width: 4px; }
+  .lead-list::-webkit-scrollbar-track { background: transparent; }
+  .lead-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .lead-card {
+    padding: 14px 20px;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.12s;
+    border-bottom: 1px solid var(--border);
+  }
+  .lead-card:hover { background: var(--surface2); }
+  .lead-card.active { border-left-color: var(--accent); background: var(--surface2); }
+  .lead-card.done { opacity: 0.45; }
+
+  .lead-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .lead-name { font-weight: 600; font-size: 13px; color: var(--text); line-height: 1.3; }
+  .lead-empresa { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .lead-cargo { font-size: 11px; color: var(--text-dim); margin-top: 4px; font-style: italic; }
+
+  .lead-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+  .tag {
+    font-size: 10px; font-weight: 600; padding: 2px 7px;
+    border-radius: 99px; letter-spacing: 0.03em;
+  }
+  .tag-email { background: #1e3a2f; color: var(--green); }
+  .tag-wa { background: #1a3320; color: #5bd07a; }
+  .tag-li { background: #1a2240; color: #7b9ef7; }
+  .tag-ctx { background: #2a2010; color: var(--yellow); }
+  .tag-sent { background: #222; color: var(--text-muted); }
+
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 4px;
+  }
+  .status-dot.pending { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .status-dot.done { background: var(--green); }
+  .status-dot.waiting { background: var(--yellow); }
+
+  .detail {
+    overflow-y: auto;
+    padding: 28px;
+    background: var(--bg);
+  }
+  .detail::-webkit-scrollbar { width: 4px; }
+  .detail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .detail-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 24px; gap: 16px;
+  }
+
+  .detail-name {
+    font-size: 22px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.5px; line-height: 1.2;
+  }
+  .detail-cargo { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+  .detail-empresa { font-size: 13px; color: var(--accent); margin-top: 2px; font-weight: 500; }
+
+  .contact-row {
+    display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;
+  }
+
+  .contact-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 8px;
+    font-size: 12px; font-weight: 500; text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .contact-chip:hover { opacity: 0.8; }
+  .chip-email { background: #1e3a2f; color: var(--green); }
+  .chip-wa { background: #1a3320; color: #5bd07a; }
+  .chip-li { background: #1a2240; color: #7b9ef7; }
+
+  .msg-section { margin-top: 28px; }
+
+  .msg-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-muted);
+    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .msg-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .step-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+  .step-tab {
+    padding: 5px 14px; border-radius: 6px;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .step-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .step-tab.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+  .step-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+
+  .msg-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    font-size: 13.5px; line-height: 1.65;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 600;
+    background: var(--surface2); color: var(--text-muted);
+    border: 1px solid var(--border); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green); background: #1e3a2f; }
+
+  .rationale-box {
+    margin-top: 16px;
+    border-left: 2px solid var(--accent);
+    padding: 10px 14px;
+    background: var(--accent-dim);
+    border-radius: 0 8px 8px 0;
+    font-size: 12px; color: var(--text-dim); line-height: 1.6;
+  }
+  .rationale-box strong { color: var(--accent); }
+
+  .action-row {
+    display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 9px 18px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.15); }
+  .btn-secondary {
+    background: var(--surface); color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-done { background: #1e3a2f; color: var(--green); border: 1px solid var(--green); }
+
+  .status-select {
+    padding: 9px 12px; border-radius: 8px;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; gap: 12px; color: var(--text-muted);
+  }
+  .empty-icon { font-size: 40px; opacity: 0.3; }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; height: auto; }
+    .lead-list { height: 260px; }
+    .detail { min-height: 500px; padding: 18px; }
+    header { padding: 14px 16px; }
+    .filter-bar, .progress-bar-wrap { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo-mark">FG</div>
+    <div>
+      <div class="header-title">Fluxo B2B — Founder/Head + Design/Produto</div>
+      <div class="header-sub">Mensagens personalizadas e acompanhamento por status</div>
+    </div>
+  </div>
+  <span class="pill" id="pill-count">...</span>
+</header>
+
+<div class="progress-bar-wrap">
+  <span class="prog-label">Progresso</span>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <span class="prog-count" id="prog-count">0 / 0</span>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="setFilter('all',this)">Todos</button>
+  <button class="filter-btn" onclick="setFilter('pending',this)">Pendentes</button>
+  <button class="filter-btn" onclick="setFilter('respondido',this)">Respondidos</button>
+  <button class="filter-btn" onclick="setFilter('em andamento',this)">Em andamento</button>
+  <button class="filter-btn" onclick="setFilter('encerrado',this)">Encerrados</button>
+  <button class="filter-btn" onclick="setFilter('descarte',this)">Descarte</button>
+</div>
+
+<div class="grid">
+  <div class="lead-list" id="lead-list"></div>
+  <div class="detail" id="detail">
+    <div class="empty-state">
+      <div class="empty-icon">→</div>
+      <div>Selecione um lead para ver a mensagem personalizada</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FLAVIO = {
+  nome: "Flávio",
+  email: "flaviooguedesmkt@gmail.com",
+  wa: "(21) 99971-9474",
+  links: {
+    design: "https://flavio-guedes.github.io/portfolio/designhead.html",
+    produto: "https://flavio-guedes.github.io/portfolio/produto.html"
+  }
+};
+
+const STATUS_OPTIONS = ["pendente","respondido","em andamento","encerrado","descarte"];
+const STATUS_COLORS = {
+  pendente: "var(--accent)",
+  respondido: "var(--blue)",
+  "em andamento": "var(--yellow)",
+  encerrado: "var(--green)",
+  descarte: "var(--red)"
+};
+
+let leads = [];
+let activeId = null;
+let activeStep = 0;
+let filter = 'all';
+
+async function loadLeads() {
+  const res = await fetch('./data/fluxo_b2b_leads.json');
+  leads = await res.json();
+  document.getElementById('pill-count').textContent = leads.length + ' leads';
+  updateProgress();
+  renderList();
+}
+
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function updateProgress() {
+  const done = leads.filter(l => l.status === 'encerrado' || l.status === 'descarte').length;
+  const pct = leads.length ? (done / leads.length) * 100 : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-count').textContent = `${done} / ${leads.length}`;
+}
+
+function renderList() {
+  const list = document.getElementById('lead-list');
+  const visible = leads.filter(l => {
+    if (filter === 'all') return true;
+    return l.status === filter;
+  });
+
+  list.innerHTML = visible.map(l => {
+    const initials = (l.nome||'').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    const tags = [];
+    if (l.email) tags.push(`<span class="tag tag-email">✉ email</span>`);
+    if (l.wa) tags.push(`<span class="tag tag-wa">💬 WA</span>`);
+    if (l.linkedin) tags.push(`<span class="tag tag-li">in</span>`);
+    const status = l.status || 'pendente';
+    return `<div class="lead-card ${status==='encerrado' || status==='descarte' ? 'done' : ''} ${activeId===l.id ? 'active' : ''}"
+                 onclick="selectLead(${l.id})">
+      <div class="lead-top">
+        <div>
+          <div class="lead-name">${l.nome}</div>
+          <div class="lead-empresa">${l.empresa || ''}</div>
+          <div class="lead-cargo">${l.cargo || ''}</div>
+        </div>
+        <div class="status-dot ${status==='pendente' ? 'pending' : status==='respondido' ? 'waiting' : status==='em andamento' ? 'waiting' : status==='encerrado' ? 'done' : 'done'}" title="${status}"></div>
+      </div>
+      <div class="lead-tags">${tags.join('')}<span class="tag" style="background:#222;color:var(--text-muted)">${l.angle_label || ''}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function selectLead(id) {
+  activeId = id;
+  activeStep = 0;
+  renderList();
+  renderDetail();
+}
+
+function selectStep(i) {
+  activeStep = i;
+  renderDetail();
+}
+
+function setStatus(id, status) {
+  const l = leads.find(x => x.id === id);
+  if (l) {
+    l.status = status;
+    updateProgress();
+    renderList();
+    renderDetail();
+  }
+}
+
+function copyMsg(id) {
+  const l = leads.find(x => x.id === id);
+  if (!l) return;
+  const msg = l.steps[activeStep].msg;
+  navigator.clipboard.writeText(msg).then(() => {
+    const btn = document.getElementById('copy-btn-' + id);
+    if (btn) {
+      btn.textContent = '✓ copiado';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copiar'; btn.classList.remove('copied'); }, 2000);
+    }
+  });
+}
+
+function renderDetail() {
+  const detail = document.getElementById('detail');
+  const l = leads.find(x => x.id === activeId);
+  if (!l) return;
+
+  const step = l.steps[activeStep];
+  const contacts = [];
+  if (l.email) contacts.push(`<a href="mailto:${l.email}" class="contact-chip chip-email">✉ ${l.email}</a>`);
+  if (l.wa) contacts.push(`<a href="https://wa.me/${l.wa.replace(/\\D/g,'')}" target="_blank" class="contact-chip chip-wa">💬 ${l.wa}</a>`);
+  if (l.linkedin) contacts.push(`<a href="${l.linkedin}" target="_blank" class="contact-chip chip-li">in LinkedIn</a>`);
+
+  const stepTabs = l.steps.map((s, i) =>
+    `<button class="step-tab ${i === activeStep ? 'active' : ''}" onclick="selectStep(${i})">${s.label}</button>`
+  ).join('');
+
+  const statusOptions = STATUS_OPTIONS.map(s =>
+    `<option value="${s}" ${l.status===s ? 'selected' : ''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+  ).join('');
+
+  detail.innerHTML = `
+    <div class="detail-header">
+      <div>
+        <div class="detail-name">${l.nome}</div>
+        <div class="detail-cargo">${l.cargo || ''}</div>
+        <div class="detail-empresa">${l.empresa || ''}</div>
+      </div>
+      <span style="font-size:12px;color:var(--text-muted);background:var(--surface);padding:5px 10px;border-radius:6px;border:1px solid var(--border);white-space:nowrap;">${l.angle_label || ''}</span>
+    </div>
+
+    <div class="contact-row">${contacts.join('')}</div>
+
+    <div class="action-row">
+      <select class="status-select" onchange="setStatus(${l.id}, this.value)">
+        ${statusOptions}
+      </select>
+      <button class="btn btn-secondary" onclick="copyMsg(${l.id})">Copiar mensagem</button>
+      ${l.linkedin ? `<a href="${l.linkedin}" target="_blank" class="btn btn-secondary">Abrir LinkedIn →</a>` : ''}
+    </div>
+
+    <div class="msg-section">
+      <div class="msg-label">Sequência de mensagens</div>
+      <div class="step-tabs">${stepTabs}</div>
+      <div class="step-meta">${step.dia} · via ${l.channel === 'wa' ? 'WhatsApp' : l.channel === 'email' ? 'E-mail' : 'LinkedIn'}</div>
+      <div class="msg-box" style="position:relative;">
+        <button class="copy-btn" id="copy-btn-${l.id}" onclick="copyMsg(${l.id})">copiar</button>
+        ${step.msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
+      </div>
+    </div>
+  `;
+}
+
+loadLeads();
+</script>
+</body>
+</html>

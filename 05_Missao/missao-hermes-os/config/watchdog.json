@@ -1,0 +1,47 @@
+{
+  "intervalo_segundos": 15,
+  "snapshot_segundos": 60,
+  "porta_api": 9000,
+  "servicos": [
+    {
+      "nome": "Ollama",
+      "host": "127.0.0.1",
+      "porta": 11434
+    },
+    {
+      "nome": "OpenClaw",
+      "host": "127.0.0.1",
+      "porta": 18789
+    },
+    {
+      "nome": "EPQ Control",
+      "host": "127.0.0.1",
+      "porta": 7687
+    },
+    {
+      "nome": "Hermes Bridge",
+      "host": "127.0.0.1",
+      "porta": 8421
+    },
+    {
+      "nome": "Hermes Bridge2",
+      "host": "127.0.0.1",
+      "porta": 8787
+    },
+    {
+      "nome": "Hermes Agent",
+      "host": "127.0.0.1",
+      "porta": 8422
+    },
+    {
+      "nome": "WhatsApp Bridge",
+      "host": "127.0.0.1",
+      "porta": 8787
+    },
+    {
+      "nome": "LiteLLM",
+      "host": "127.0.0.1",
+      "porta": 4000
+    }
+  ]
+}

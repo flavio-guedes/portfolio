@@ -1,0 +1,125 @@
+=== 1. BACKUPS DISPONÍVEIS ===
+-rw-r--r--@ 1 mac  staff  71440 12 Out 20:42 /Users/mac/missao-hermes-os/painel-evolucao.html
+-rw-r--r--  1 mac  staff  71048 12 Out 20:42 /Users/mac/missao-hermes-os/painel-evolucao.html.quebrado-204228
+-rw-r--r--@ 1 mac  staff  69908 12 Out 20:38 /Users/mac/missao-hermes-os/painel-evolucao.html.bak-20261012-203800
+-rw-r--r--  1 mac  staff  65073 12 Out 20:20 /Users/mac/missao-hermes-os/painel-evolucao.html.bak
+
+=== 2. TAMANHO E LINHAS ===
+    1223   71440 /Users/mac/missao-hermes-os/painel-evolucao.html
+
+=== 3. ESTRUTURA DOS CARDS (primeiras 40 linhas com marcadores) ===
+329:  <div class="etapa done" data-status="done">
+371:  <div class="etapa done" data-status="done">
+419:  <div class="etapa done" data-status="done">
+466:  <div class="etapa done" data-status="done">
+512:  <div class="etapa done" data-status="done">
+558:  <div class="etapa done" data-status="done">
+605:  <div class="etapa done" data-status="done">
+653:  <div class="etapa done" data-status="done">
+699:  <div class="etapa done" data-status="done">
+746:  <div class="etapa done active" data-status="done">
+815:  <div class="etapa active" data-status="run">
+856:  <div class="etapa" data-status="wait">
+897:  <div class="etapa" data-status="wait">
+937:  <div class="etapa" data-status="wait">
+977:  <div class="etapa" data-status="wait">
+1083:<div class="etapa concluida" data-version="v15">
+1084:  <div class="etapa-header">
+1089:  <p class="etapa-desc">
+1094:  <ul class="etapa-checklist">
+1191:<div class="etapa concluida" data-version="v16">
+1192:  <div class="etapa-header">
+1197:  <p class="etapa-desc">Polling de /api/health a cada 15s, semáforo por serviço, sparkline de latência e fallback silencioso se a API estiver offline.</p>
+1198:  <ul class="etapa-checklist">
+1207:<div class="etapa concluida" data-version="v17">
+1208:  <div class="etapa-header">
+1213:  <p class="etapa-desc">Otimização 100% local, sem nuvem. Zero dado de lead sai da máquina.</p>
+1214:  <ul class="etapa-checklist">
+
+=== 4. TRECHO DE UM CARD EXISTENTE (v13 ou v14) ===
+936:  <!-- v13 -->
+937-  <div class="etapa" data-status="wait">
+938-    <div class="head" onclick="toggleEtapa(this)">
+939:      <span class="num">v13</span>
+940-      <span class="tit">SSE para alertas em tempo real</span>
+941-      <span class="status wait">PENDENTE</span>
+942-      <span class="chev">›</span>
+943-    </div>
+944-    <div class="body">
+945-      <div class="body-inner">
+946-        <div class="chk-title">
+947-          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+948-          Checklist
+949-          <span class="count">0/4</span>
+950-        </div>
+951-        <ul class="chk">
+--
+976:  <!-- v14 -->
+977-  <div class="etapa" data-status="wait">
+978-    <div class="head" onclick="toggleEtapa(this)">
+979:      <span class="num">v14</span>
+980-      <span class="tit">WhatsApp crítico + auditoria de custos</span>
+981-      <span class="status wait">PENDENTE</span>
+982-      <span class="chev">›</span>
+983-    </div>
+984-    <div class="body">
+985-      <div class="body-inner">
+986-        <div class="chk-title">
+987-          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+988-          Checklist
+989-          <span class="count">0/4</span>
+990-        </div>
+991-        <ul class="chk">
+
+=== 5. ÚLTIMAS 40 LINHAS DO ARQUIVO ===
+  tick();
+})();
+</script>
+
+</body>
+</html>
+
+<div class="etapa concluida" data-version="v16">
+  <div class="etapa-header">
+    <span class="badge">v16</span>
+    <h3>Monitoramento ao vivo no painel</h3>
+    <span class="status ok">CONCLUÍDA · ATUAL</span>
+  </div>
+  <p class="etapa-desc">Polling de /api/health a cada 15s, semáforo por serviço, sparkline de latência e fallback silencioso se a API estiver offline.</p>
+  <ul class="etapa-checklist">
+    <li>✓ Polling /api/health a cada 15s com backoff</li>
+    <li>✓ Semáforo por serviço (Agent, Bridge, LiteLLM, Ollama, Baileys)</li>
+    <li>✓ Sparkline de latência (últimos 20 pontos)</li>
+    <li>✓ Fallback silencioso se API offline</li>
+    <li>✓ Zero dependência externa — usa o mesmo JSON do v9</li>
+  </ul>
+</div>
+
+<div class="etapa concluida" data-version="v17">
+  <div class="etapa-header">
+    <span class="badge">v17</span>
+    <h3>Reconfiguração Local — Ollama + Baileys</h3>
+    <span class="status ok">CONCLUÍDA · ATUAL</span>
+  </div>
+  <p class="etapa-desc">Otimização 100% local, sem nuvem. Zero dado de lead sai da máquina.</p>
+  <ul class="etapa-checklist">
+    <li>✓ Ollama: KEEP_ALIVE=0, NUM_PARALLEL=1, MAX_LOADED_MODELS=1</li>
+    <li>✓ Modelos descarregados — on-demand, não residentes</li>
+    <li>✓ Backend/Baileys reiniciado — loop estancado</li>
+    <li>✓ Bind check — serviços só em 127.0.0.1</li>
+    <li>✓ Backups: painel, .hermes_env, litellm_config.yaml</li>
+    <li>✓ Dados de leads permanecem exclusivamente locais</li>
+  </ul>
+</div>
+
+
+=== 6. ONDE ESTÃO v15/v16? ===
+1082:<!-- v15 — Monitoramento ao vivo no painel -->
+1083:<div class="etapa concluida" data-version="v15">
+1085:    <span class="badge">v15</span>
+1104:<!-- ===== MONITORAMENTO AO VIVO v15 ===== -->
+1191:<div class="etapa concluida" data-version="v16">
+1193:    <span class="badge">v16</span>
+
+=== FIM ===
+Salvo em: ~/missao-hermes-os/diagnostico-painel.txt

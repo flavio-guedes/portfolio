@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes — Design DNA Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.035);
+    --surface-hover: rgba(255, 255, 255, 0.06);
+    --border: rgba(255, 255, 255, 0.10);
+    --border-active: rgba(255, 255, 255, 0.22);
+    --text: #ffffff;
+    --text-secondary: #888888;
+    --text-tertiary: #555555;
+    --accent: rgba(120, 180, 255, 0.25);
+    --accent-glow: rgba(120, 180, 255, 0.15);
+    --shadow-float: 0 24px 80px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255,255,255,0.06);
+    --shadow-inner: inset 0 1px 0 rgba(255,255,255,0.04);
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --sidebar-w: 280px;
+    --topbar-h: 64px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --agent-estrategia: #60a5fa;
+    --agent-criacao: #a78bfa;
+    --agent-dados: #22d3ee;
+    --agent-execucao: #34d399;
+    --agent-inteligencia: #c084fc;
+    --agent-interface: #fbbf24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    grid-template-rows: var(--topbar-h) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  .topbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-6);
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .topbar-left { display: flex; align-items: center; gap: var(--space-3); }
+  .logo {
+    width: 26px; height: 26px;
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, rgba(120,180,255,0.2), rgba(120,180,255,0.05));
+    box-shadow: 0 0 24px rgba(120,180,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.9);
+  }
+  .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: rgba(255,255,255,0.85);
+  }
+  .topbar-right { display: flex; gap: var(--space-4); align-items: center; }
+  .topbar-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 12px rgba(16,185,129,0.5), 0 0 4px rgba(255,255,255,0.2);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .cmd-trigger {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: all 150ms ease;
+  }
+  .cmd-trigger:hover { border-color: var(--border-active); color: var(--text); }
+  .kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-secondary);
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: var(--space-5) var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-tertiary);
+    padding: var(--space-4) var(--space-3) var(--space-2);
+    font-weight: 500;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 150ms ease;
+    border: 1px solid transparent;
+  }
+  .nav-item:hover {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .nav-item.active {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-inner), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .nav-icon {
+    width: 16px; height: 16px;
+    opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-8);
+  }
+
+  .page-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-1);
+  }
+  .page-sub {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: var(--space-6);
+  }
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-5);
+  }
+  .col-12 { grid-column: span 12; }
+  .col-8 { grid-column: span 8; }
+  .col-6 { grid-column: span 6; }
+  .col-4 { grid-column: span 4; }
+  .col-3 { grid-column: span 3; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    box-shadow: var(--shadow-float), var(--shadow-inner);
+    padding: var(--space-5);
+    transition: all 150ms ease;
+  }
+  .card:hover {
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-float), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    display: flex; align-items: flex-start; gap: var(--space-3);
+    transition: all 150ms ease;
+  }
+  .agent-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
+  .agent-avatar {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px;
+    color: #000;
+    flex-shrink: 0;
+    box-shadow: 0 0 18px rgba(255,255,255,0.08);
+  }
+  .agent-meta { flex: 1; }
+  .agent-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .agent-role {
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .agent-status {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px rgba(16,185,129,0.5);
+    animation: pulse 3s ease-in-out infinite;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 18vh;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+  .overlay.open { display: flex; opacity: 1; }
+  .palette {
+    width: 100%; max-width: 560px;
+    background: rgba(10,10,10,0.95);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-float);
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: transform 150ms ease;
+  }
+  .overlay.open .palette { transform: translateY(0); }
+  .palette-input {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+  }
+  .palette-input::placeholder { color: var(--text-tertiary); }
+  .palette-list {
+    padding: var(--space-2);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .palette-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 13px;
+    transition: all 100ms ease;
+  }
+  .palette-item:hover, .palette-item.selected {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+  .palette-item .icon { opacity: 0.6; width: 18px; text-align: center; }
+  .palette-group {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-tertiary);
+    padding: var(--space-3) var(--space-3) var(--space-1);
+    font-weight: 500;
+  }
+  .palette-footer {
+    padding: var(--space-2) var(--space-4);
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: var(--text-tertiary);
+  }
+
+  .mobile-toggle {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 8px;
+    cursor: pointer;
+  }
+  .sidebar-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 500;
+  }
+
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed;
+      left: calc(-1 * var(--sidebar-w));
+      top: 0; bottom: 0;
+      width: var(--sidebar-w);
+      z-index: 501;
+      transition: left 200ms ease;
+      background: rgba(5,5,5,0.98);
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-backdrop.open { display: block; }
+    .main { margin-left: 0 !important; }
+    .mobile-toggle { display: block; }
+    .grid-12 { grid-template-columns: 1fr; }
+    .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+    .agent-grid { grid-template-columns: 1fr; }
+    .content { padding: var(--space-5); }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+        <div class="logo">H</div>
+        <div class="brand">hermes</div>
+      </div>
+      <div class="topbar-right">
+        <button class="cmd-trigger" id="cmdTrigger">
+          <span>Buscar</span>
+          <span class="kbd">⌘K</span>
+        </button>
+        <div class="topbar-dot" title="Online"></div>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">Agentes</div>
+      <div class="nav-item active" data-target="home">
+        <span class="nav-icon">⌂</span>
+        <span>Home</span>
+      </div>
+      <div class="nav-item" data-target="prospeccao">
+        <span class="nav-icon">◎</span>
+        <span>Prospecção</span>
+      </div>
+      <div class="nav-item" data-target="epq">
+        <span class="nav-icon">◧</span>
+        <span>EPQ</span>
+      </div>
+      <div class="nav-item" data-target="conteudo">
+        <span class="nav-icon">▤</span>
+        <span>Conteúdo</span>
+      </div>
+
+      <div class="sidebar-section">Ferramentas</div>
+      <div class="nav-item" data-target="imagens">
+        <span class="nav-icon">◈</span>
+        <span>Imagens</span>
+      </div>
+      <div class="nav-item" data-target="audio">
+        <span class="nav-icon">♪</span>
+        <span>Áudio</span>
+      </div>
+      <div class="nav-item" data-target="automacoes">
+        <span class="nav-icon">⚡</span>
+        <span>Automações</span>
+      </div>
+
+      <div class="sidebar-section">Sistema</div>
+      <div class="nav-item" data-target="config">
+        <span class="nav-icon">⊛</span>
+        <span>Config</span>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <main class="main">
+      <div class="content">
+        <div class="page-title">Visão geral</div>
+        <div class="page-sub">Status dos agentes, ações rápidas e contexto do ecossistema Hermes.</div>
+
+        <div class="grid-12" style="margin-bottom: var(--space-6);">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Agentes</div>
+                <div class="badge"><span class="badge-dot" style="background:#10b981"></span> 6 ativos</div>
+              </div>
+              <div class="agent-grid">
+                <div class="agent-card">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-estrategia), rgba(96,165,250,0.6))">E</div>
+                  <div class="agent-meta">
+                    <div class="agent-name">Estratégia</div>
+                    <div class="agent-role">Planejamento e priorização</div>
+                  </div>
+                  <div class="agent-status" title="Online"></div>
+                </div>
+                <div class="agent-card">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-criacao), rgba(167,139,250,0.6))">C</div>
+                  <div class="agent-meta">
+                    <div class="agent-name">Criação</div>
+                    <div class="agent-role">Conteúdo e formato</div>
+                  </div>
+                  <div class="agent-status" title="Online"></div>
+                </div>
+                <div class="agent-card">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-dados), rgba(34,211,238,0.6))">D</div>
+                  <div class="agent-meta">
+                    <div class="agent-name">Dados</div>
+                    <div class="agent-role">Números e análise</div>
+                  </div>
+                  <div class="agent-status" title="Online"></div>
+                </div>
+                <div class="agent-card">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-execucao), rgba(52,211,153,0.6))">X</div>
+                  <div class="agent-meta">
+                    <div class="agent-name">Execução</div>
+                    <div class="agent-role">Automação e fluxo</div>
+                  </div>
+                  <div class="agent-status" title="Online"></div>
+                </div>
+                <div class="agent-card">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-inteligencia), rgba(192,132,252,0.6))">I</div>
+                  <div class="agent-meta">
+                    <div class="agent-name">Inteligência</div>
+                    <div class="agent-role">IA, pesquisa e síntese</div>
+                  </div>
+                  <div class="agent-status" title="Online"></div>
+                </div>
+                <div class="agent-card">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-interface), rgba(251,191,36,0.7))">U</div>
+                  <div class="agent-meta">
+                    <div class="agent-name">Interface</div>
+                    <div class="agent-role">UX e comunicação visual</div>
+                  </div>
+                  <div class="agent-status" title="Online"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Prospecção</div>
+                <span class="badge" style="color: var(--agent-dados)">● em andamento</span>
+              </div>
+              <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                Pipeline ativo com 3 campanhas e 128 leads qualificados.
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">EPQ</div>
+                <span class="badge" style="color: var(--agent-interface)">● playbook</span>
+              </div>
+              <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                12 aulas republicáveis em agosto e setembro.
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Conteúdo</div>
+                <span class="badge" style="color: var(--agent-criacao)">● criativo</span>
+              </div>
+              <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                5 peças em revisão e 2 jobs de imagem na fila.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-12">
+          <div class="col-8">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Atividade recente</div>
+                <span class="badge">últimas 24h</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap: var(--space-3);">
+                <div style="display:flex; align-items:center; gap: var(--space-3); padding: 10px 0; border-bottom: 1px solid var(--border);">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-execucao), rgba(52,211,153,0.6)); width:28px; height:28px; font-size:11px;">X</div>
+                  <div style="flex:1; font-size:13px; color: var(--text-secondary);">Deploy publicado: sistema-prospeccao</div>
+                  <div style="font-size:11px; color: var(--text-tertiary);">há 2h</div>
+                </div>
+                <div style="display:flex; align-items:center; gap: var(--space-3); padding: 10px 0; border-bottom: 1px solid var(--border);">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-inteligencia), rgba(192,132,252,0.6)); width:28px; height:28px; font-size:11px;">I</div>
+                  <div style="flex:1; font-size:13px; color: var(--text-secondary);">Pesquisa concluída: 18 referências curadas</div>
+                  <div style="font-size:11px; color: var(--text-tertiary);">há 4h</div>
+                </div>
+                <div style="display:flex; align-items:center; gap: var(--space-3); padding: 10px 0;">
+                  <div class="agent-avatar" style="background: linear-gradient(135deg, var(--agent-criacao), rgba(167,139,250,0.6)); width:28px; height:28px; font-size:11px;">C</div>
+                  <div style="flex:1; font-size:13px; color: var(--text-secondary);">Nova peça de criativo aprovada</div>
+                  <div style="font-size:11px; color: var(--text-tertiary);">há 6h</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Insights</div>
+                <span class="badge" style="color: var(--agent-inteligencia)">IA</span>
+              </div>
+              <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                Ações frequentes esta semana: deploy, curadoria e aprovação de conteúdo.
+              </div>
+              <div style="margin-top: var(--space-3); display:flex; gap: var(--space-2); flex-wrap: wrap;">
+                <span class="badge">Deploy</span>
+                <span class="badge">Curadoria</span>
+                <span class="badge">Aprovação</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="overlay" id="cmdOverlay">
+    <div class="palette">
+      <input class="palette-input" id="cmdInput" placeholder="Digite um comando ou busca..." autocomplete="off">
+      <div class="palette-list" id="cmdList"></div>
+      <div class="palette-footer">
+        <span>↑↓ navegar</span>
+        <span>↵ abrir</span>
+        <span>esc fechar</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const COMMANDS = [
+      { group: 'Navegação', items: [
+        { label: 'Ir para Home', target: 'home' },
+        { label: 'Ir para Prospecção', target: 'prospeccao' },
+        { label: 'Ir para EPQ', target: 'epq' },
+        { label: 'Ir para Conteúdo', target: 'conteudo' },
+        { label: 'Ir para Imagens', target: 'imagens' },
+        { label: 'Ir para Áudio', target: 'audio' },
+        { label: 'Ir para Automações', target: 'automacoes' },
+        { label: 'Ir para Config', target: 'config' },
+      ]},
+      { group: 'Ações', items: [
+        { label: 'Novo deploy', action: 'Deploy iniciado' },
+        { label: 'Nova curadoria', action: 'Curadoria iniciada' },
+        { label: 'Gerar relatório', action: 'Relatório gerado' },
+        { label: 'Buscar referência', action: 'Busca iniciada' },
+      ]},
+      { group: 'Agentes', items: [
+        { label: 'Abrir Estratégia', action: 'Agente Estratégia' },
+        { label: 'Abrir Criação', action: 'Agente Criação' },
+        { label: 'Abrir Dados', action: 'Agente Dados' },
+        { label: 'Abrir Execução', action: 'Agente Execução' },
+        { label: 'Abrir Inteligência', action: 'Agente Inteligência' },
+        { label: 'Abrir Interface', action: 'Agente Interface' },
+      ]},
+    ];
+
+    const overlay = document.getElementById('cmdOverlay');
+    const input = document.getElementById('cmdInput');
+    const list = document.getElementById('cmdList');
+    const trigger = document.getElementById('cmdTrigger');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    let selectedIndex = 0;
+    let flatItems = [];
+
+    function openPalette() {
+      overlay.classList.add('open');
+      input.value = '';
+      renderList('');
+      input.focus();
+    }
+    function closePalette() {
+      overlay.classList.remove('open');
+    }
+    function renderList(query) {
+      const q = query.toLowerCase();
+      flatItems = [];
+      let html = '';
+      COMMANDS.forEach(group => {
+        const matched = group.items.filter(it => it.label.toLowerCase().includes(q));
+        if (!matched.length) return;
+        html += `<div class="palette-group">${group.group}</div>`;
+        matched.forEach(item => {
+          html += `<div class="palette-item" data-index="${flatItems.length}">
+            <span class="icon">›</span>
+            <span>${item.label}</span>
+          </div>`;
+          flatItems.push(item);
+        });
+      });
+      if (!flatItems.length) {
+        html += `<div class="palette-item" style="cursor:default; opacity:0.6">Nenhum resultado</div>`;
+      }
+      list.innerHTML = html;
+      selectedIndex = 0;
+      updateSelection();
+    }
+    function updateSelection() {
+      const items = list.querySelectorAll('.palette-item');
+      items.forEach((el, i) => el.classList.toggle('selected', i === selectedIndex));
+      if (items[selectedIndex]) items[selectedIndex].scrollIntoView({ block: 'nearest' });
+    }
+    function activate(item) {
+      closePalette();
+      if (!item) return;
+      if (item.target) {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.target === item.target));
+      }
+      if (item.action) {
+        alert(item.action);
+      }
+    }
+
+    trigger.addEventListener('click', openPalette);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closePalette(); });
+    input.addEventListener('input', () => renderList(input.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex + 1) % flatItems.length;
+        updateSelection();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex - 1 + flatItems.length) % flatItems.length;
+        updateSelection();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        activate(flatItems[selectedIndex]);
+      } else if (e.key === 'Escape') {
+        closePalette();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openPalette();
+      }
+    });
+    list.addEventListener('click', (e) => {
+      const item = e.target.closest('.palette-item');
+      if (!item) return;
+      const idx = parseInt(item.dataset.index, 10);
+      activate(flatItems[idx]);
+    });
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebarBackdrop.classList.toggle('open');
+    });
+    sidebarBackdrop.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarBackdrop.classList.remove('open');
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+        sidebar.classList.remove('open');
+        sidebarBackdrop.classList.remove('open');
+      });
+    });
+  </script>
+</body>
+</html>

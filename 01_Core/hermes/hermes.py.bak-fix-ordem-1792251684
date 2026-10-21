@@ -1,0 +1,658 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""HERMES — Fila WhatsApp no terminal."""
+import os, sys, json, time, curses, threading, urllib.request, urllib.error, subprocess
+from datetime import datetime, timedelta
+from collections import Counter
+
+HOME   = os.path.expanduser("~")
+LEADS  = os.path.join(HOME, "hermes/leads.json")
+FILA   = os.path.join(HOME, "hermes/fila.json")
+INTERVALO_ENVIO = 30  # segundos entre envios (countdown)
+CRM    = "/Users/mac/Desktop/HermesWorkspace/crm_final.json"
+BRIDGE = "http://127.0.0.1:3000"
+
+GAP_NOVO, GAP_BASE, GAP_HOT = 10, 4, 3
+
+ETAPAS = {
+    "Q":  ("Qualificação","Oi {primeiro}, tudo bem? Vi que você está à frente da {empresa}. Você trabalha com captação de clientes? Trabalho com tráfego pago + automação comercial no WhatsApp — faz sentido conversar 15 min?"),
+    "D0": ("1º contato",  "Oi {primeiro}, tudo bem? Estava vendo a {empresa} e reparei que as avaliações mencionam demora no retorno e orçamento que esfria. A gente resolve isso com tráfego pago qualificado + automação comercial no WhatsApp. Faz sentido te mostrar em 15 min?"),
+    "F1": ("Follow-up 1", "{primeiro}, retomando o que te falei sobre a {empresa}. Vi que continua aparecendo reclamação de demora no atendimento nas avaliações. A automação comercial resolve exatamente isso. Vale 15 min essa semana?"),
+    "F2": ("Follow-up 2", "{primeiro}, última passada por aqui sobre a {empresa}. Se o gargalo de atendimento ainda estiver aberto, é só me chamar — te mostro em 15 min como o tráfego pago + automação resolve."),
+    "F3": ("Follow-up 3", "{primeiro}, encerro por aqui pra não insistir. Deixo o contato aberto: quando fizer sentido olhar automação comercial, me chama. Boa semana!"),
+    "ENC":("Encerramento","{primeiro}, vou parar de aparecer por aqui. Se em algum momento fizer sentido falar sobre automação de atendimento, responde esse chat. Deixo o convite em aberto."),
+}
+ORDEM = ["Q","D0","F1","F2","F3","ENC"]
+
+EST = {"env_novo":False,"env_base":False,"env_hot":False,"autocv":False,
+       "msg":"", "ok":0, "err":0, "lock": threading.Lock()}
+
+def now(): return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def load(p):
+    try:
+        with open(p, encoding="utf-8") as f: return json.load(f)
+    except: return None
+def save(p, d):
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(d, f, ensure_ascii=False, indent=2)
+def health():
+    try: return json.loads(urllib.request.urlopen(BRIDGE+"/health", timeout=2).read().decode())
+    except: return None
+def send1(cid, msg):
+    body = json.dumps({"chatId":cid,"message":msg}).encode()
+    req = urllib.request.Request(BRIDGE+"/send", data=body, method="POST",
+                                 headers={"Content-Type":"application/json"})
+    try:
+        r = urllib.request.urlopen(req, timeout=20)
+        return json.loads(r.read().decode())
+    except Exception as e: return {"success":False,"error":str(e)[:80]}
+
+def msg_etapa(et, nome, empresa):
+    primeiro = (nome or "tudo bem").split()[0]
+    emp = empresa or "sua empresa"
+    tpl = ETAPAS.get(et, ETAPAS["D0"])[1]
+    return tpl.format(primeiro=primeiro, empresa=emp)
+
+def prox_etapa(et):
+    try: i = ORDEM.index(et)
+    except: i = 0
+    return ORDEM[(i+1) % len(ORDEM)]
+
+# ───── import/build ─────
+def importar():
+    if not os.path.exists(CRM): return 0
+    d = json.load(open(CRM, encoding="utf-8"))
+    out = []
+    for l in d:
+        tel = (l.get("whatsapp_digits") or "").strip()
+        if len(tel) < 10: continue
+        nome = (l.get("nome") or "").strip()
+        emp = (l.get("empresa") or "").strip()
+        if not nome and not emp and not l.get("trecho"): continue
+        out.append({"id":f"C{len(out)+1:05d}","nome":nome or "(sem nome)",
+                    "empresa":emp or nome or "(sem empresa)","telefone":tel,
+                    "score":int(l.get("score") or 0),
+                    "score_composto":int(l.get("score_composto") or 0),
+                    "prioridade":(l.get("priority") or "Baixa").strip(),
+                    "tentativas":0,"ultimo_contato":""})
+    save(LEADS, out); return len(out)
+
+def construir(maxl=200):
+    leads = load(LEADS) or []
+    if not leads: return 0,0
+    ord_p = {"alta":0,"média":1,"media":1,"baixa":2}
+    leads.sort(key=lambda l:(ord_p.get(l["prioridade"].lower(),9), -l["score"]))
+    f = leads[:maxl]
+    ja_env = _ja_enviados()
+    def virgem(l):
+        t = l["telefone"].replace("+","")
+        return t not in ja_env and not l.get("tentativas") and not l.get("ultimo_contato")
+    novos = [l for l in f if virgem(l)]
+    base  = [l for l in f if not virgem(l)]
+    itens = []
+    def add(lst, tipo, gap):
+        cur = (datetime.now() + timedelta(seconds=20)).replace(microsecond=0)
+        for l in lst:
+            itens.append({
+                "id": f"{tipo[0].upper()}{len(itens)+1:03d}",
+                "nome":l["nome"],"empresa":l["empresa"],"telefone":l["telefone"],
+                "chatId":l["telefone"]+"@s.whatsapp.net","tipo":tipo,"etapa":"D0",
+                "mensagem":msg_etapa("D0", l["nome"], l["empresa"]),
+                "prazo":cur.strftime("%Y-%m-%d %H:%M:%S"),
+                "status":"AGENDADO","enviado_em":None,"erro":None})
+            cur += timedelta(minutes=gap)
+    add(novos,"novo",GAP_NOVO); add(base,"base",GAP_BASE)
+    save(FILA,{"gerado_em":now(),"total":len(itens),"novos":len(novos),
+               "base":len(base),"itens":itens})
+    return len(novos), len(base)
+
+def _ja_enviados():
+    s = set()
+    for path in [os.path.join(HOME,"hermes/disparos.json"), FILA]:
+        if not os.path.exists(path): continue
+        try:
+            d = json.load(open(path, encoding="utf-8"))
+            arr = d if isinstance(d,list) else d.get("itens",[])
+            for x in arr:
+                t = (x.get("telefone") or "").replace("+","").strip()
+                if t: s.add(t)
+        except: pass
+    return s
+
+def construir_hot(n=3):
+    leads = load(LEADS) or []
+    ja = _ja_enviados()
+    disp = [l for l in leads if l["telefone"].replace("+","") not in ja
+            and not l.get("tentativas") and not l.get("ultimo_contato")]
+    disp.sort(key=lambda l:(-l.get("score_composto",0), -l.get("score",0)))
+    hot = disp[:n]
+    if not hot: return 0
+    d = load(FILA) or {"itens":[], "total":0, "novos":0, "base":0}
+    d["itens"] = [i for i in d["itens"] if not i["id"].startswith("H")]
+    cur = (datetime.now() + timedelta(seconds=15)).replace(microsecond=0)
+    c = 0
+    for l in hot:
+        d["itens"].append({
+            "id":f"H{c+1:03d}","nome":l["nome"],"empresa":l["empresa"],
+            "telefone":l["telefone"],"chatId":l["telefone"]+"@s.whatsapp.net",
+            "tipo":"hot","etapa":"D0",
+            "mensagem":msg_etapa("D0", l["nome"], l["empresa"]),
+            "prazo":cur.strftime("%Y-%m-%d %H:%M:%S"),
+            "status":"AGENDADO","enviado_em":None,"erro":None})
+        c += 1
+        cur += timedelta(minutes=GAP_HOT)
+    d["total"] = len(d["itens"]); d["hot"] = c
+    save(FILA, d); return c
+
+
+# ══════════ DETECTAR DESPEDIDA (lead disse não) ══════════
+PALAVRAS_NAO = [
+    "não quero","nao quero","sem interesse","não é o momento","nao e o momento",
+    "não precisa","nao precisa","depois","agora não","agora nao","ocupado",
+    "sem tempo","fora do perfil","não trabalho","nao trabalho","já resolvi",
+    "ja resolvi","obrigado","obg","valeu","não faz sentido","nao faz sentido",
+    "deixa pra lá","deixa pra la","tira meu contato","não me chame"
+]
+
+def detectar_despedida():
+    """Lê /messages e marca como DESPEDIDA quem respondeu negativamente."""
+    try:
+        r = urllib.request.urlopen(BRIDGE+"/messages", timeout=5)
+        msgs = json.loads(r.read().decode())
+    except: return 0
+    d = load(FILA)
+    if not d: return 0
+    respostas = {}
+    for m in msgs[-800:]:
+        if m.get("fromMe"): continue
+        jid = (m.get("chatId") or m.get("senderId") or "")
+        tel = jid.replace("@s.whatsapp.net","").replace("@c.us","").replace("+","").strip()
+        txt = (m.get("text") or m.get("message") or "").lower()
+        if tel and txt: respostas[tel] = txt
+    marcados = 0
+    for i in d["itens"]:
+        tel = i["telefone"].replace("+","").strip()
+        if tel in respostas:
+            txt = respostas[tel]
+            if any(p in txt for p in PALAVRAS_NAO):
+                if i["status"] not in ("DESPEDIDA","BLOQUEADO"):
+                    i["status"] = "DESPEDIDA"
+                    i["erro"] = f"resposta negativa: {txt[:60]}"
+                    i["despedida_em"] = now()
+                    marcados += 1
+    if marcados: save(FILA, d)
+    return marcados
+
+def adicionar_menor_cadencia(n=30, gap=GAP_BASE):
+    """Adiciona N leads com cadência menor (4min) no fim da fila. Tipo 'base' (amarelo)."""
+    leads = load(LEADS) or []
+    if not leads: return 0
+    d = load(FILA) or {"itens":[], "total":0, "novos":0, "base":0}
+    ja_na_fila = set(i["telefone"].replace("+","") for i in d["itens"])
+    ja_env = _ja_enviados()
+    disp = [l for l in leads
+            if l["telefone"].replace("+","") not in ja_na_fila
+            and l["telefone"].replace("+","") not in ja_env]
+    disp.sort(key=lambda l:(-l.get("score_composto",0), -l.get("score",0)))
+    sel = disp[:n]
+    if not sel: return 0
+    # continua a partir do último prazo agendado
+    agendados = [i for i in d["itens"] if i.get("status")=="AGENDADO"]
+    if agendados:
+        try:
+            ult = max(datetime.strptime(i["prazo"],"%Y-%m-%d %H:%M:%S") for i in agendados)
+            cur = ult + timedelta(minutes=gap)
+        except:
+            cur = datetime.now() + timedelta(minutes=5)
+    else:
+        cur = datetime.now() + timedelta(minutes=5)
+    cur = cur.replace(second=0, microsecond=0)
+    c = 0
+    for l in sel:
+        d["itens"].append({
+            "id": f"M{c+1:03d}",
+            "nome":l["nome"],"empresa":l["empresa"],"telefone":l["telefone"],
+            "chatId":l["telefone"]+"@s.whatsapp.net",
+            "tipo":"base","etapa":"F1",
+            "mensagem": msg_etapa("F1", l["nome"], l["empresa"]),
+            "prazo": cur.strftime("%Y-%m-%d %H:%M:%S"),
+            "status":"AGENDADO","enviado_em":None,"erro":None})
+        c += 1
+        cur += timedelta(minutes=gap)
+    d["total"] = len(d["itens"])
+    save(FILA, d)
+    return c
+
+# ───── envio ─────
+
+
+def send_loop_unica():
+    """Uma única thread: pega o próximo AGENDADO de QUALQUER tipo, respeita cadência,
+       e se falhar, pula pro próximo imediatamente."""
+    estado_ativo = False
+    falhas_seguidas = 0
+    while True:
+        time.sleep(0.4)
+        if not (EST["env_novo"] or EST["env_base"] or EST["env_hot"]):
+            estado_ativo = False
+            continue
+        if not EST["lock"].acquire(blocking=False):
+            continue
+        try:
+            d = load(FILA)
+            if not d:
+                continue
+            pend = [i for i in d["itens"] if i["status"]=="AGENDADO"]
+            if not pend:
+                EST["env_novo"]=EST["env_base"]=EST["env_hot"]=False
+                EST["msg"] = "fila concluída"
+                continue
+            p = min(pend, key=lambda x: x["prazo"])
+
+            # espera prazo (a menos que venha de uma falha — burst)
+            if falhas_seguidas == 0:
+                try:
+                    alvo = datetime.strptime(p["prazo"], "%Y-%m-%d %H:%M:%S")
+                    seg = (alvo - datetime.now()).total_seconds()
+                    if seg > 0:
+                        EST["msg"] = f"aguardando {int(seg)}s → {p['empresa'][:30]}"
+                        continue
+                except: pass
+
+            # bridge ok?
+            hh = health()
+            if not hh or hh.get("status")!="connected":
+                EST["msg"] = "bridge desconectado"
+                continue
+
+            # enviar
+            r = send1(p["chatId"], p["mensagem"])
+            for i in d["itens"]:
+                if i["id"]==p["id"]:
+                    if r.get("success"):
+                        i["status"]="OK"; i["enviado_em"]=now()
+                        i["etapa"]=prox_etapa(i.get("etapa","D0"))
+                        EST["ok"] += 1
+                        EST["msg"] = f"✓ {p['empresa'][:30]}"
+                        falhas_seguidas = 0
+                    else:
+                        err = str(r)[:80]
+                        i["status"]="ERRO"; i["erro"]=err
+                        EST["err"] += 1
+                        if any(t in err.lower() for t in ["not registered","no whatsapp","invalid number","not on whatsapp"]):
+                            i["erro"] = "sem WhatsApp"
+                            EST["msg"] = f"⊘ {p['empresa'][:26]} sem WhatsApp"
+                        else:
+                            EST["msg"] = f"✗ {p['empresa'][:26]}"
+                        falhas_seguidas += 1
+                        if falhas_seguidas > 10:
+                            falhas_seguidas = 0  # reset após 10 pulos
+            save(FILA, d)
+        finally:
+            EST["lock"].release()
+
+
+
+def send_loop(tipo):
+    """(legado — não é mais usada)"""
+    pass
+
+def send_loop(tipo):
+    """Loop com burst: se um envio falha, tenta o próximo IMEDIATAMENTE (sem esperar cadência)."""
+    k_ativ = f"env_{tipo}"
+    burst = 0            # tentativas imediatas seguidas
+    BURST_MAX = 20       # limite por rajada, pra não varrer a fila toda de uma vez
+    while True:
+        time.sleep(0.4 if burst > 0 else 1)
+        if not EST[k_ativ]: 
+            burst = 0
+            continue
+        if not EST["lock"].acquire(blocking=False): continue
+        try:
+            d = load(FILA)
+            if not d: continue
+            pend = sorted([i for i in d["itens"]
+                           if i["status"]=="AGENDADO" and i["tipo"]==tipo],
+                          key=lambda x:x["prazo"])
+            if not pend:
+                EST[k_ativ] = False; EST["msg"] = f"{tipo} concluída"; continue
+            p = pend[0]
+
+            # burst ativo pula a espera do prazo
+            if burst == 0:
+                try:
+                    alvo_dt = datetime.strptime(p["prazo"], "%Y-%m-%d %H:%M:%S")
+                    esp = (alvo_dt - datetime.now()).total_seconds()
+                    if esp > 0:
+                        EST["msg"] = f"aguardando {int(esp)}s → {p['empresa'][:30]}"
+                        continue
+                except: pass
+
+            h = health()
+            if not h or h.get("status")!="connected":
+                EST["msg"] = "bridge desconectado"; continue
+
+            r = send1(p["chatId"], p["mensagem"])
+
+            for i in d["itens"]:
+                if i["id"]==p["id"]:
+                    if r.get("success"):
+                        i["status"]="OK"; i["enviado_em"]=now()
+                        i["etapa"]=prox_etapa(i.get("etapa","D0"))
+                        EST["ok"] += 1
+                        EST["msg"] = f"✓ {p['empresa'][:30]}"
+                        burst = 0    # sucesso volta à cadência normal
+                    else:
+                        # ERRO: marca e dispara próximo imediatamente
+                        err = str(r)[:80]
+                        i["status"]="ERRO"; i["erro"]=err
+                        EST["err"] += 1
+                        # guarda o motivo pra mostrar "sem WhatsApp" quando for o caso
+                        if any(t in err.lower() for t in ["not registered","no whatsapp","invalid number","not on whatsapp"]):
+                            i["erro"] = "sem WhatsApp: " + err
+                            EST["msg"] = f"⊘ {p['empresa'][:24]} sem WhatsApp — pulando"
+                        else:
+                            EST["msg"] = f"✗ {p['empresa'][:24]} — pulando"
+                        # ativa burst: próximo imediato
+                        burst += 1
+                        if burst >= BURST_MAX:
+                            burst = 0
+                            EST["msg"] = f"⏸ pausa anti-loop ({BURST_MAX} erros seguidos)"
+            save(FILA, d)
+        finally:
+            EST["lock"].release()
+
+
+
+def ordenada(fila):
+    _all = EST.get('mostrar_todos', False) if 'EST' in globals() else False
+    if not fila: return []
+    it = fila["itens"]
+    p = sorted([i for i in it if i["status"]=="AGENDADO"], key=lambda x:x["prazo"])
+    f = sorted([i for i in it if i["status"]!="AGENDADO"],
+               key=lambda x:x.get("enviado_em") or "", reverse=True)
+    return p + f
+
+# ───── TUI ─────
+def cores():
+    curses.start_color(); curses.use_default_colors()
+    curses.init_pair(1, curses.COLOR_WHITE, -1)
+    curses.init_pair(2, curses.COLOR_GREEN, -1)
+    curses.init_pair(3, curses.COLOR_RED, -1)
+    curses.init_pair(4, curses.COLOR_CYAN, -1)
+    curses.init_pair(5, curses.COLOR_YELLOW, -1)
+    curses.init_pair(6, 8, -1)
+    curses.init_pair(7, curses.COLOR_MAGENTA, -1)
+
+def barra(pct, w):
+    pct = max(0, min(100, int(pct)))
+    n = int(w*pct/100)
+    return "█"*n + "░"*(w-n)
+
+def draw(scr):
+    """TUI leve — só visualiza. Comandos são escritos em ~/hermes/cmd para o runner processar."""
+    cores(); curses.curs_set(0); scr.nodelay(1); scr.timeout(500)
+    aba = 1; cur_fila = 0; off_fila = 0; ult = 0; d = None
+
+    while True:
+        c = scr.getch()
+        h, w = scr.getmaxyx()
+        if c == ord('q') or c == 27: break
+        elif c == ord('\t'): aba = (aba+1)%3
+        elif c == ord('1'): aba=0
+        elif c == ord('2'): aba=1
+        elif c == ord('3'): aba=2
+        elif c in (ord('t'), ord('T')):
+            EST['mostrar_todos'] = not EST.get('mostrar_todos', False)
+            EST['msg'] = 'modo: ' + ('TODOS' if EST['mostrar_todos'] else 'SO AGENDADO')
+        elif c in (curses.KEY_DOWN, ord('j')): cur_fila += 1
+        elif c in (curses.KEY_UP, ord('k')): cur_fila = max(0, cur_fila-1)
+        elif c == ord('r'): ult = 0
+        elif c in (ord('s'),ord('S'), ord('p'),ord('P'), ord('b'),ord('B'),
+                   ord('d'),ord('D'), ord('f'),ord('F'), ord('x'),ord('X'),
+                   curses.KEY_DC, curses.KEY_ENTER, ord('\n'), ord('\r')):
+            # executa acao direto no fila.json + avanca cursor
+            item_sel = None
+            if aba == 1 and d and d.get("fila"):
+                ordn = ordenada(d["fila"])
+                if 0 <= cur_fila < len(ordn): item_sel = ordn[cur_fila]
+
+            acao = {
+                ord('s'):'start', ord('S'):'start',
+                ord('p'):'pause', ord('P'):'pause',
+                ord('b'):'bloquear', ord('B'):'bloquear',
+                ord('d'):'pular', ord('D'):'pular',
+                ord('f'):'etapa', ord('F'):'etapa',
+                ord('x'):'despedida', ord('X'):'despedida',
+                curses.KEY_DC:'remover',
+                curses.KEY_ENTER:'enviar', ord('\n'):'enviar', ord('\r'):'enviar'
+            }.get(c, '?')
+
+            status_novo = {'pular':'PULADO','bloquear':'BLOQUEADO','despedida':'DESPEDIDA'}.get(acao)
+            avancou = False
+            try:
+                if item_sel and status_novo:
+                    ff = load(FILA) or {"itens":[]}
+                    for it in ff.get("itens", []):
+                        if it.get("id") == item_sel.get("id"):
+                            it["status"] = status_novo
+                            it["motivo_manual"] = acao + "_" + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                            break
+                    save(FILA, ff)
+                    avancou = True
+                    EST["msg"] = "OK " + str(item_sel.get("id")) + " -> " + status_novo
+                elif item_sel and acao == 'remover':
+                    ff = load(FILA) or {"itens":[]}
+                    ff["itens"] = [it for it in ff.get("itens", []) if it.get("id") != item_sel.get("id")]
+                    save(FILA, ff)
+                    avancou = True
+                    EST["msg"] = "OK " + str(item_sel.get("id")) + " removido"
+                else:
+                    EST["msg"] = "> " + acao + (" " + str(item_sel.get("id")) if item_sel else "")
+            except Exception as e:
+                EST["msg"] = "ERRO: " + str(e)
+
+            # compat: ainda escreve cmd
+            try:
+                cmd = {"cmd": acao, "id": item_sel.get("id") if item_sel else None,
+                       "ts": datetime.now().isoformat()}
+                with open(os.path.join(HOME,"hermes/cmd"), "w") as f: json.dump(cmd, f)
+            except: pass
+
+            # avanca cursor na lista atualizada
+            if avancou:
+                try:
+                    ordn2 = ordenada(load(FILA))
+                    if cur_fila >= len(ordn2) - 1:
+                        cur_fila = max(0, len(ordn2) - 1)
+                    else:
+                        cur_fila += 1
+                except: pass
+
+            ult = 0
+
+        if time.time() - ult > 1.0:
+            d = {"fila": load(FILA), "bridge": health(), "agora": datetime.now(),
+                 "runner": load(os.path.join(HOME,"hermes/runner.state")) or {}}
+            ult = time.time()
+
+        scr.erase()
+        fila = (d or {}).get("fila")
+        bst = ((d or {}).get("bridge") or {}).get("status","?")
+        bcor = curses.color_pair(2) if bst=="connected" else curses.color_pair(3)
+        rst = ((d or {}).get("runner") or {}).get("status","?")
+        rcor = curses.color_pair(2) if rst in ("ativo","running") else curses.A_DIM
+
+        scr.addstr(0, 2, "HERMES", curses.A_BOLD | curses.color_pair(4))
+        scr.addstr(0, 10, datetime.now().strftime("%H:%M:%S"), curses.A_DIM)
+        scr.addstr(0, 20, "bridge", curses.A_DIM)
+        scr.addstr(0, 27, f"●{bst}", bcor | curses.A_BOLD)
+        scr.addstr(0, 40, f"runner:{rst}", rcor | curses.A_BOLD)
+        nomes = ["1 Campanha","2 Fila","3 Funil"]
+        pos = w - 30
+        for i, n in enumerate(nomes):
+            if aba==i: scr.addstr(0, pos, f" {n} ", curses.A_REVERSE | curses.A_BOLD)
+            else: scr.addstr(0, pos, f" {n} ", curses.A_DIM)
+            pos += len(n) + 2
+        scr.addstr(1, 2, (EST["msg"] or "s ativa · p pausa · ENTER envia · B bloq · d pula · F etapa · X desped")[:w-4], curses.color_pair(4))
+        scr.addstr(2, 0, "─"*w, curses.A_DIM)
+
+        top = 4
+        painel_h = max(10, int(h/3))
+        bot_lista = h - painel_h - 1
+
+        if aba == 0:
+            lin = top+1
+            scr.addstr(lin, 2, "CAMPANHAS", curses.A_BOLD | curses.color_pair(4)); lin += 2
+            if fila:
+                for tipo, gap in [("novo",GAP_NOVO),("base",GAP_BASE),("hot",GAP_HOT)]:
+                    sub = [i for i in fila["itens"] if i.get("tipo")==tipo]
+                    ok = sum(1 for i in sub if i["status"]=="OK")
+                    er = sum(1 for i in sub if i["status"]=="ERRO")
+                    pd = sum(1 for i in sub if i["status"]=="AGENDADO")
+                    pct = int((ok+er)*100/len(sub)) if sub else 0
+                    cor = curses.color_pair(7) if tipo=="novo" else (curses.color_pair(5) if tipo=="base" else curses.color_pair(3))
+                    scr.addstr(lin, 2, f"● {tipo.upper():5s} · {gap}min", curses.A_BOLD | cor); lin += 1
+                    b = barra(pct, 40)
+                    scr.addstr(lin, 4, "[")
+                    scr.addstr(lin, 5, b[:int(40*pct/100)], cor)
+                    scr.addstr(lin, 5+int(40*pct/100), b[int(40*pct/100):], curses.color_pair(6))
+                    scr.addstr(lin, 45, f"] {pct:3d}%  {len(sub)} itens"); lin += 1
+                    scr.addstr(lin, 4, f"✓{ok}  ✗{er}  ⏳{pd}", curses.A_DIM); lin += 2
+        elif aba == 1:
+            if not fila: scr.addstr(top+1, 2, "sem fila", curses.A_DIM)
+            else:
+                it = fila["itens"]
+                ok = sum(1 for i in it if i["status"]=="OK")
+                pd = sum(1 for i in it if i["status"]=="AGENDADO")
+                er = sum(1 for i in it if i["status"]=="ERRO")
+                scr.addstr(top, 2, "FILA", curses.A_BOLD | curses.color_pair(4))
+                scr.addstr(top, 8, f"{len(it)}", curses.A_DIM)
+                scr.addstr(top, 14, f"✓{ok}", curses.color_pair(2))
+                scr.addstr(top, 22, f"✗{er}", curses.color_pair(3) if er else curses.A_DIM)
+                scr.addstr(top, 30, f"⏳{pd}", curses.color_pair(7))
+                lin = top+2
+                scr.addstr(lin, 3, "TEMPO", curses.A_DIM)
+                scr.addstr(lin, 11, "TIPO", curses.A_DIM)
+                scr.addstr(lin, 18, "NOME", curses.A_DIM)
+                scr.addstr(lin, 41, "EMPRESA", curses.A_DIM)
+                scr.addstr(lin, 68, "ETAPA", curses.A_DIM)
+                scr.addstr(lin, 82, "STATUS", curses.A_DIM)
+                lin += 2
+                ordn = ordenada(fila)
+                altura = bot_lista - lin
+                if altura < 3: altura = 3
+                cur_fila = min(cur_fila, max(0, len(ordn)-1))
+                if cur_fila < off_fila: off_fila = cur_fila
+                if cur_fila >= off_fila + altura: off_fila = cur_fila - altura + 1
+                _ags = [it for it in ordn if it.get("status") == "AGENDADO"]
+                _ags_pos = {id(it): j for j, it in enumerate(_ags)}
+                if _ags:
+                    try:
+                        _p0 = datetime.strptime(_ags[0]["prazo"], "%Y-%m-%d %H:%M:%S")
+                        _base_ts = max(_p0.timestamp(), d["agora"].timestamp())
+                    except Exception:
+                        _base_ts = d["agora"].timestamp()
+                else:
+                    _base_ts = d["agora"].timestamp()
+                for idx in range(off_fila, min(len(ordn), off_fila+altura)):
+                    i = ordn[idx]
+                    st = i["status"]; tipo = i.get("tipo","novo"); et = i.get("etapa","D0")
+                    sel = (idx == cur_fila)
+                    if st == "AGENDADO":
+                        try:
+                            _pos = _ags_pos.get(id(i), 0)
+                            seg = (_base_ts + _pos * INTERVALO_ENVIO) - d["agora"].timestamp()
+                            if seg < 0: seg = 0
+                            tstr = f"{int(seg//60):02d}:{int(seg%60):02d}"
+                            if _pos == 0 and seg < 1: tstr = "agora"
+                        except Exception: tstr = i["prazo"][11:16]
+                    else: tstr = (i.get("enviado_em") or i["prazo"])[11:16]
+                    nome = (i.get("nome") or "—")[:22]
+                    empresa = (i.get("empresa") or "—")[:26]
+                    et_nome = ETAPAS.get(et, ("?",""))[0][:10]
+                    if st == "OK":          mc, marc = curses.color_pair(2), "✓"
+                    elif st == "ERRO":      mc, marc = curses.color_pair(3), "✗"
+                    elif st == "PULADO":    mc, marc = curses.color_pair(5), "→"
+                    elif st == "BLOQUEADO": mc, marc = curses.color_pair(6), "⊘"
+                    elif st == "DESPEDIDA": mc, marc = curses.color_pair(6), "⊗"
+                    else:                   mc, marc = curses.color_pair(7), "·"
+                    ct = curses.color_pair(7) if tipo=="novo" else (curses.color_pair(5) if tipo=="base" else curses.color_pair(3))
+                    ce = curses.color_pair(4) if et in ("Q","D0") else (curses.color_pair(5) if et.startswith("F") else curses.A_DIM)
+                    at = curses.A_REVERSE | curses.A_BOLD if sel else curses.A_NORMAL
+                    scr.addstr(lin, 0, " " * (w-1), at if sel else curses.A_NORMAL)
+                    scr.addstr(lin, 0, " ▶ " if sel else "   ", at if sel else curses.A_DIM)
+                    scr.addstr(lin, 3, f"{tstr:>6}", (mc | curses.A_BOLD) | at)
+                    scr.addstr(lin, 11, f"{tipo:>5}", ct | at)
+                    scr.addstr(lin, 18, f"{nome:22s}", at)
+                    scr.addstr(lin, 41, f"{empresa:26s}", at)
+                    scr.addstr(lin, 68, f"{et:4s}{et_nome:10s}", ce | at)
+                    scr.addstr(lin, 82, f"{marc}{st:10s}", mc | at)
+                    lin += 1
+                scr.addstr(bot_lista, 2, f"cursor: {cur_fila+1}/{len(ordn)}", curses.A_DIM)
+        elif aba == 2:
+            lin = top+1
+            it = (fila or {}).get("itens") or []
+            env = sum(1 for i in it if i["status"]=="OK")
+            scr.addstr(lin, 2, "FUNIL", curses.A_BOLD | curses.color_pair(4)); lin += 2
+            for nome, n in [("Enviados",env),("Respondidos",0),("Conversas",0),("Reuniões",0),("Propostas",0),("Ganhos",0)]:
+                pct = int(n*100/(env or 1))
+                b = barra(pct, 40)
+                scr.addstr(lin, 2, f"{nome:12s}", curses.A_BOLD)
+                scr.addstr(lin, 15, "[")
+                scr.addstr(lin, 16, b[:int(40*pct/100)], curses.color_pair(2))
+                scr.addstr(lin, 16+int(40*pct/100), b[int(40*pct/100):], curses.color_pair(6))
+                scr.addstr(lin, 56, f"] {n:>4} ({pct:>3}%)"); lin += 1
+
+        # painel msg
+        painel_ini = h - painel_h
+        scr.addstr(painel_ini, 0, "─"*w, curses.A_DIM)
+        item_sel = None
+        if aba == 1 and fila:
+            ordn = ordenada(fila)
+            if 0 <= cur_fila < len(ordn): item_sel = ordn[cur_fila]
+        if item_sel:
+            et = item_sel.get("etapa","D0")
+            et_nome = ETAPAS.get(et, ("?",""))[0]
+            st = item_sel.get("status","?")
+            cabec = f" {item_sel['id']}  ·  {item_sel.get('nome','—')[:26]}  ·  {item_sel['empresa'][:26]}  ·  {item_sel['telefone']}  ·  {et}({et_nome})  ·  {st}"
+            scr.addstr(painel_ini+1, 2, cabec[:w-4], curses.A_BOLD | curses.color_pair(4))
+            texto = (item_sel.get("mensagem") or "").strip()
+            larg = w - 6
+            linhas = []
+            for par in texto.split("\n"):
+                linha = ""
+                for pal in par.split():
+                    if len(linha) + len(pal) + 1 <= larg:
+                        linha = (linha + " " + pal).strip()
+                    else:
+                        if linha: linhas.append(linha)
+                        linha = pal
+                if linha: linhas.append(linha)
+                linhas.append("")
+            for k, lm in enumerate(linhas[:painel_h-3]):
+                scr.addstr(painel_ini+2+k, 3, lm[:larg], curses.color_pair(6) if lm else curses.A_DIM)
+
+        scr.addstr(h-1, 2, "↑↓ navega ENTER envia DEL remove B bloq d pula F etapa X desped s ativa p pausa q sai", curses.A_DIM)
+        scr.refresh()
+
+
+def main():
+    # MODO READ-ONLY: nunca rebuilda nem popula nada.
+    # Só abre a TUI com o que já existe em fila.json.
+    if not os.path.exists(FILA):
+        print("fila.json não existe. Rode manualmente o build se quiser.")
+        return
+    # varredura leve na abertura (só lê, marca despedidas se houver)
+    try:
+        n = detectar_despedida()
+        if n: print(f"⊗ {n} lead(s) marcados como DESPEDIDA")
+    except: pass
+    time.sleep(0.3)
+    try: curses.wrapper(draw)
+    except KeyboardInterrupt: pass
+    EST["env_novo"]=EST["env_base"]=EST["env_hot"]=False
+    print("\nhermes encerrado.")
+
+if __name__ == "__main__":
+    main()

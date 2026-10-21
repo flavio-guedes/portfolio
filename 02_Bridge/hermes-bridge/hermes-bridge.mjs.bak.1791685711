@@ -1,0 +1,349 @@
+import { handleBuscar } from './buscar.mjs';
+import { salvar as waSalvar, handleHistorico } from './historico.mjs';
+// Hermes Bridge — ponte local entre o Painel Hermes Lite e o WhatsApp (Baileys).
+// Roda só na sua máquina (127.0.0.1). A fila de disparo roda AQUI, então o
+// envio continua mesmo com a aba do painel em segundo plano ou fechada.
+import http from 'node:http';
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import makeWASocket, {
+  useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, Browsers
+} from '@whiskeysockets/baileys';
+import QRCode from 'qrcode';
+import pino from 'pino';
+
+const PORT = Number(process.env.PORT || 8787);
+const AUTH_DIR = process.env.AUTH_DIR || './auth';
+const TOKEN = process.env.HERMES_TOKEN || crypto.randomBytes(9).toString('hex');
+const logger = pino({ level: 'silent' });
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rnd = (a, b) => Math.round(a + Math.random() * (b - a));
+
+/* ---------------- WhatsApp ---------------- */
+let sock = null, connecting = false;
+const S = { state: 'starting', me: '', qr: '' }; // starting | qr | connecting | open | closed
+
+async function connect() {
+  if (connecting) return;
+  connecting = true;
+  try {
+    const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
+    let version;
+    try { ({ version } = await fetchLatestBaileysVersion()); } catch { /* usa o padrão da lib */ }
+    sock = makeWASocket({
+      auth: state, version, logger,
+      browser: Browsers.macOS('Hermes'),
+      markOnlineOnConnect: false, syncFullHistory: false
+    });
+    sock.ev.on('creds.update', saveCreds);
+    sock.ev.on('connection.update', async (u) => {
+      const { connection, lastDisconnect, qr } = u;
+      if (qr) {
+        S.state = 'qr';
+        S.qr = await QRCode.toDataURL(qr, { margin: 1, width: 320 });
+        console.log('• QR pronto — escaneie no painel (WhatsApp › Aparelhos conectados).');
+      }
+      if (connection === 'connecting' && !qr && S.state !== 'qr') S.state = 'connecting';
+      if (connection === 'open') {
+        S.state = 'open'; S.qr = '';
+        S.me = String((sock.user && sock.user.id) || '').split(':')[0].split('@')[0];
+        console.log('✓ WhatsApp conectado como', S.me || '(número desconhecido)');
+      }
+      if (connection === 'close') {
+        const code = lastDisconnect && lastDisconnect.error && lastDisconnect.error.output
+          ? lastDisconnect.error.output.statusCode : 0;
+        S.state = 'closed'; S.me = '';
+        connecting = false;
+        if (code === DisconnectReason.loggedOut) {
+          fs.rmSync(AUTH_DIR, { recursive: true, force: true });
+          S.qr = '';
+          console.log('• Sessão encerrada no celular. Gerando novo QR…');
+        }
+        setTimeout(connect, 2000);
+      }
+    });
+  } catch (e) {
+    console.error('Erro ao iniciar o WhatsApp:', e && e.message || e);
+    connecting = false;
+    setTimeout(connect, 5000);
+  }
+}
+
+async function resolveJid(input) {
+  const str = String(input || '').trim();
+  if (!str) return null;
+  if (str.includes('@')) return str; // já é JID
+  const num = str.replace(/\D/g, '');
+  if (!num) return null;
+  const r = await sock.onWhatsApp(num);
+  const hit = Array.isArray(r) ? r[0] : null;
+  return hit && hit.exists ? hit.jid : null;
+}
+
+async function sendOne(it, typing) {
+  if (S.state !== 'open') throw new Error('WhatsApp desconectado');
+  const jid = await resolveJid(it.number);
+  if (!jid) return { ok: false, code: 'sem_whatsapp', err: 'Número não está no WhatsApp' };
+  if (typing) {
+    try {
+      await sock.presenceSubscribe(jid);
+      await sock.sendPresenceUpdate('composing', jid);
+      await sleep(Math.min(4000, 600 + String(it.message).length * 25 + rnd(0, 600)));
+      await sock.sendPresenceUpdate('paused', jid);
+    } catch { /* presença é cosmética */ }
+  }
+  const m = await sock.sendMessage(jid, { text: String(it.message) });
+  return { ok: true, id: (m && m.key && m.key.id) || '' };
+}
+
+/* ---------------- Fila de disparo ---------------- */
+const B = { state: 'idle', paused: false, stop: false, items: [], i: 0, results: [], cfg: {}, failStreak: 0 };
+
+function inWindow() {
+  const c = B.cfg;
+  if (c.winStart == null || c.winEnd == null) return true;
+  const h = new Date().getHours();
+  return h >= c.winStart && h < c.winEnd;
+}
+async function napInterruptible(ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end && !B.stop) await sleep(Math.min(250, end - Date.now()));
+}
+async function runBatch() {
+  while (B.i < B.items.length && !B.stop) {
+    if (B.paused) { B.state = 'paused'; await sleep(400); continue; }
+    if (!inWindow()) { B.state = 'janela'; await sleep(15000); continue; }
+    if (S.state !== 'open') { B.state = 'offline'; await sleep(1500); continue; }
+    B.state = 'running';
+    const it = B.items[B.i];
+    let res;
+    try { res = await sendOne(it, !!B.cfg.typing); }
+    catch (e) { res = { ok: false, err: String((e && e.message) || e).slice(0, 160) }; }
+    B.results.push({ id: it.id, ok: !!res.ok, code: res.code || '', err: res.err || '', ts: Date.now() });
+    B.i++;
+    /* "Sem WhatsApp" é dado do lead, não falha da ponte. Erro técnico seguido
+       de erro técnico é sinal de problema: pausa em vez de martelar. */
+    if (res.ok || res.code === 'sem_whatsapp') B.failStreak = 0; else B.failStreak++;
+    if (B.failStreak >= 5) { B.paused = true; B.state = 'paused'; B.failStreak = 0; console.log('! 5 falhas seguidas — fila pausada.'); }
+    if (B.i < B.items.length && !B.stop && !B.paused) await napInterruptible(rnd(B.cfg.minMs, B.cfg.maxMs));
+  }
+  B.state = B.stop ? 'stopped' : 'done';
+}
+function startBatch(body) {
+  const items = (Array.isArray(body.items) ? body.items : [])
+    .filter(x => x && x.id != null && x.number && x.message).slice(0, 5000);
+  if (!items.length) return { code: 400, body: { error: 'Nenhum item válido' } };
+  if (['running', 'paused', 'janela', 'offline'].includes(B.state)) return { code: 409, body: { error: 'Já existe um disparo em andamento' } };
+  const minMs = Math.max(1000, Number(body.minMs) || 10000);
+  const maxMs = Math.max(minMs, Number(body.maxMs) || minMs + 10000);
+  Object.assign(B, {
+    items, i: 0, results: [], paused: false, stop: false, failStreak: 0, state: 'running',
+    cfg: {
+      minMs, maxMs, typing: !!body.typing,
+      winStart: Number.isInteger(body.winStart) ? body.winStart : null,
+      winEnd: Number.isInteger(body.winEnd) ? body.winEnd : null
+    }
+  });
+  runBatch().catch(e => { console.error('runBatch', e); B.state = 'stopped'; });
+  return { code: 200, body: { ok: true, total: items.length } };
+}
+function batchView(since) {
+  const from = Math.max(0, Number(since) || 0);
+  return {
+    state: B.state, paused: B.paused, total: B.items.length, done: B.i,
+    ok: B.results.filter(r => r.ok).length,
+    results: B.results.slice(from), next: B.results.length
+  };
+}
+
+/* ---------------- HTTP ---------------- */
+function send(res, code, obj) {
+  res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify(obj));
+}
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    let n = 0; const chunks = [];
+    req.on('data', c => { n += c.length; if (n > 8e6) { reject(new Error('corpo grande demais')); req.destroy(); } else chunks.push(c); });
+    req.on('end', () => { try { resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {}); } catch (e) { reject(e); } });
+    req.on('error', reject);
+  });
+}
+const server = http.createServer(async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Private-Network', 'true');
+  if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+  const url = new URL(req.url, 'http://x');
+  const p = url.pathname.replace(/\/+$/, '') || '/';
+  try {
+    if (p === '/ping') return send(res, 200, { hermes: 'bridge', v: 1 });
+    /* O token impede que uma página qualquer da web mande mensagens pela sua
+       conta só porque você deixou a ponte ligada. */
+    if ((req.headers.authorization || '') !== 'Bearer ' + TOKEN) return send(res, 401, { error: 'Token inválido' });
+    if (req.method === 'GET' && p === '/status') return send(res, 200, { state: S.state, me: S.me, hasQr: !!S.qr, batch: B.state });
+    if (req.method === 'GET' && p === '/qr') return S.qr ? send(res, 200, { qr: S.qr }) : send(res, 404, { error: 'Sem QR no momento' });
+    if (req.method === 'GET' && p === '/batch') return send(res, 200, batchView(url.searchParams.get('since')));
+    if (req.method === 'POST' && p === '/batch') { const r = startBatch(await readBody(req)); return send(res, r.code, r.body); }
+    if (req.method === 'POST' && p === '/batch/pause') { B.paused = true; return send(res, 200, { ok: true }); }
+    if (req.method === 'POST' && p === '/batch/resume') { B.paused = false; B.failStreak = 0; return send(res, 200, { ok: true }); }
+    if (req.method === 'POST' && p === '/batch/stop') { B.stop = true; B.paused = false; return send(res, 200, { ok: true }); }
+    if (req.method === 'POST' && p === '/check') {
+      if (S.state !== 'open') return send(res, 409, { error: 'WhatsApp desconectado' });
+      const body = await readBody(req);
+      const nums = (Array.isArray(body.numbers) ? body.numbers : [])
+        .map(n => String(n).replace(/\D/g, '')).filter(Boolean).slice(0, 200);
+      const results = [];
+      for (const n of nums) {
+        try { const r = await sock.onWhatsApp(n); results.push({ number: n, exists: !!(r && r[0] && r[0].exists) }); }
+        catch { results.push({ number: n, exists: null }); }
+        await sleep(120);
+      }
+      return send(res, 200, { results });
+    }
+    if (req.method === 'POST' && p === '/logout') {
+      try { if (sock) await sock.logout(); } catch { /* já caiu */ }
+      return send(res, 200, { ok: true });
+    }
+    if (req.method === 'POST' && (p === '/send' || p === '/api/whatsapp/send' || p === '/api/send')) {
+      const body = await readBody(req);
+      const raw = body.chatId || body.number || body.to || body.phone || '';
+      const text = body.message || body.text || body.body || '';
+      if (!raw || !text) return send(res, 400, { error: 'Faltou chatId/number ou message' });
+      try {
+        const r = await sendOne({ number: raw, message: text }, false);
+        return send(res, r.ok ? 200 : 400, r);
+      } catch (e) {
+        return send(res, 500, { error: String((e && e.message) || e).slice(0, 200) });
+      }
+    }
+    if(req.method==='POST' && p==='/api/buscar'){ handleBuscar(req,res,SNAP); return; }
+    if(req.method==='GET' && p==='/api/historico'){ handleHistorico(req,res); return; }
+    return send(res, 404, { error: 'Rota inexistente' });
+  } catch (e) {
+    return send(res, 500, { error: String((e && e.message) || e).slice(0, 200) });
+  }
+});
+
+process.on('unhandledRejection', e => console.error('unhandledRejection:', e && e.message || e));
+server.listen(PORT, '127.0.0.1', () => {
+  console.log('\n  Hermes Bridge no ar → http://127.0.0.1:' + PORT);
+  console.log('  Token: ' + TOKEN + (process.env.HERMES_TOKEN ? '  (o painel já sabe)' : '  (cole no painel)'));
+  console.log('  Volte ao painel e clique em "Conectar WhatsApp".\n');
+  connect();
+});
+
+/* HERMES WHATSAPP COMMANDS — patch */
+let SNAP = null;
+function wa2Num(n){ return Number(n||0).toLocaleString('pt-BR'); }
+function wa2Ago(iso){ const s=Math.round((Date.now()-new Date(iso).getTime())/1000); return s<60?'há '+s+'s':s<3600?'há '+Math.floor(s/60)+'min':'há '+Math.floor(s/3600)+'h'; }
+function waStatus(){
+  if(!SNAP) return '📊 *Status Hermes*\n\n⚠️ Painel ainda não enviou dados.\nAbra o painel no navegador para sincronizar.';
+  return ['📊 *Status Hermes*','_atualizado '+wa2Ago(SNAP.at)+'_','',
+    '🎯 Fila: *'+wa2Num(SNAP.fila)+'*','⏰ Atrasadas: *'+wa2Num(SNAP.atrasadas)+'*',
+    '❌ Erros: *'+wa2Num(SNAP.erros)+'*','🔒 Bloqueadas: *'+wa2Num(SNAP.bloqueadas)+'*',
+    '✅ Enviadas hoje: *'+wa2Num(SNAP.enviadas_hoje)+'*','',
+    '🔥 Quentes: *'+wa2Num(SNAP.quentes)+'*','💬 A responder: *'+wa2Num(SNAP.conversas_pendentes)+'*',
+    '✨ Recomendações: *'+wa2Num(SNAP.recomendadas)+'*','','📁 Leads: *'+wa2Num(SNAP.leads)+'*'].join('\n');
+}
+function waRelatorio(){
+  if(!SNAP) return '📊 Sem dados ainda. Abra o painel no navegador.';
+  const L=['📊 *RELATÓRIO HERMES*','_'+new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+'_',''];
+  L.push('━━━ *OPERAÇÃO* ━━━','• Fila: '+wa2Num(SNAP.fila),'• Atrasadas: '+wa2Num(SNAP.atrasadas),
+    '• Erros: '+wa2Num(SNAP.erros),'• Bloqueadas: '+wa2Num(SNAP.bloqueadas),
+    '• Enviadas hoje: '+wa2Num(SNAP.enviadas_hoje),'');
+  if(SNAP.campanhas && SNAP.campanhas.length){
+    L.push('━━━ *CAMPANHAS* ━━━');
+    SNAP.campanhas.forEach(c=>{ L.push('• *'+c.nome+'*'); L.push('   '+wa2Num(c.enviados)+' env · '+wa2Num(c.respostas)+' resp · '+wa2Num(c.reunioes)+' reun'); });
+    L.push('');
+  }
+  L.push('━━━ *OPORTUNIDADES* ━━━','• Quentes: '+wa2Num(SNAP.quentes));
+  (SNAP.quentes_top||[]).forEach(q=>L.push('   · '+q.empresa+' (score '+q.score+')'));
+  L.push('','━━━ *CONVERSAS* ━━━','• A responder: '+wa2Num(SNAP.conversas_pendentes));
+  (SNAP.conversas_top||[]).forEach(c=>L.push('   · '+c.contato+' via '+c.canal));
+  L.push('','━━━ *BASE* ━━━','• Leads: '+wa2Num(SNAP.leads),'• Recomendações: '+wa2Num(SNAP.recomendadas));
+  return L.join('\n');
+}
+function waAjuda(){ return ['🤖 *Hermes WhatsApp*','','Manda no *chat consigo mesmo*:','',
+  '/status — resumo','/relatorio — completo','/fila — fila ativa','/atrasadas','/erros',
+  '/quentes — oportunidades quentes','/campanhas','/leads','/recomendadas','/ajuda'].join('\n'); }
+async function waHandle(msg){
+  try{ waSalvar(msg, typeof sock!=='undefined'?sock:null); }catch(_){}
+  if(!sock) return;
+  const jid=msg.key.remoteJid;
+  const myJid=String((sock.user&&sock.user.id)||'').replace(/:.*@/,'@');
+  const isSelf=msg.key.fromMe && jid===myJid;
+  const admins=(process.env.HERMES_ADMIN||'').split(',').map(s=>s.trim()).filter(Boolean);
+  const from=String(jid||'').split('@')[0].replace(/\D/g,'');
+  const participant=String(msg.key.participant||'').split('@')[0].replace(/\D/g,'');
+  const authorized=msg.key.fromMe || isSelf || admins.indexOf(from)>=0 || admins.indexOf(participant)>=0;
+  if(!authorized) return;
+  const m=msg.message||{};
+  const text=(m.conversation||(m.extendedTextMessage&&m.extendedTextMessage.text)||'').trim();
+  if(!text||text.charAt(0)!=='/') return;
+  const cmd=text.toLowerCase().split(/\s+/)[0];
+  let reply='';
+  if(cmd==='/ajuda'||cmd==='/help') reply=waAjuda();
+  else if(cmd==='/status') reply=waStatus();
+  else if(cmd==='/relatorio') reply=waRelatorio();
+  else if(cmd==='/fila') reply=SNAP?'🎯 *Fila:* '+wa2Num(SNAP.fila):'⚠️ Sem dados.';
+  else if(cmd==='/atrasadas') reply=SNAP?'⏰ *Atrasadas:* '+wa2Num(SNAP.atrasadas):'⚠️ Sem dados.';
+  else if(cmd==='/erros') reply=SNAP?'❌ *Erros:* '+wa2Num(SNAP.erros):'⚠️ Sem dados.';
+  else if(cmd==='/leads') reply=SNAP?'📁 *Leads:* '+wa2Num(SNAP.leads):'⚠️ Sem dados.';
+  else if(cmd==='/recomendadas') reply=SNAP?'✨ *Recomendações:* '+wa2Num(SNAP.recomendadas)+'\n\n_Abra o painel para autorizar._':'⚠️ Sem dados.';
+  else if(cmd==='/quentes'){ if(!SNAP) reply='⚠️ Sem dados.'; else { const L=['🔥 *Quentes:* '+wa2Num(SNAP.quentes),''];(SNAP.quentes_top||[]).forEach(q=>L.push('• '+q.empresa+' — score '+q.score+' · '+q.canal)); reply=L.join('\n'); } }
+  else if(cmd==='/campanhas'){ if(!SNAP||!SNAP.campanhas.length) reply='📭 Nenhuma campanha ativa.'; else { const L=['📢 *Campanhas*',''];(SNAP.campanhas||[]).forEach(c=>{L.push('*'+c.nome+'*');L.push('  '+wa2Num(c.enviados)+' env · '+wa2Num(c.respostas)+' resp · '+wa2Num(c.reunioes)+' reun');}); reply=L.join('\n'); } }
+  else reply='❓ Comando não reconhecido: '+cmd+'\n\n/ajuda pra ver a lista.';
+  try{ await sock.sendMessage(jid,{text:reply}); }catch(e){ console.error('wa reply:',e.message); }
+}
+http.createServer(function(req,res){
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Headers','*');
+  res.setHeader('Access-Control-Allow-Methods','POST,OPTIONS');
+  if(req.method==='OPTIONS'){ res.writeHead(204); return res.end(); }
+  
+    if(req.method==='POST' && req.url.split('?')[0]==='/snapshot'){
+    let body='';
+    req.on('data',c=>body+=c);
+    req.on('end',function(){
+      try{ SNAP=JSON.parse(body); SNAP.at=SNAP.at||new Date().toISOString(); res.writeHead(200); res.end('{"ok":true}'); }
+      catch(e){ res.writeHead(400); res.end('bad json'); }
+    });
+    return;
+  }
+  res.writeHead(404); res.end();
+}).listen(8421,'127.0.0.1',function(){ console.log('• Snapshot em 127.0.0.1:8421'); });
+let _hooked=null;
+setInterval(function(){
+  if(sock && sock!==_hooked){
+    _hooked=sock;
+    sock.ev.on('messages.upsert', async function(ev){
+      /* HERMES_AGENT_HOOK */
+      (async function(){
+        if(!ev || ev.type!=='notify') return;
+        const myJid = String((sock&&sock.user&&sock.user.id)||'').replace(/:.*@/,'@');
+        for(const m of ev.messages){
+          try{
+            const jid = m && m.key && m.key.remoteJid;
+            const fromMe = !!(m && m.key && m.key.fromMe);
+            if(!jid) continue;
+            if(fromMe && jid===myJid) continue; // self-chat = comandos /status etc
+            const mm = m.message||{};
+            const texto = (mm.conversation || (mm.extendedTextMessage&&mm.extendedTextMessage.text) || '').trim();
+            if(!texto) continue;
+            if(texto.startsWith('/')) continue; // comandos vão pro waHandle
+            fetch('http://127.0.0.1:8422/hermes',{
+              method:'POST', headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ jid, texto, meta: { nome:'', empresa:'', cargo:'', segmento:'', score:'' } })
+            }).catch(function(){});
+          }catch(e){}
+        }
+      })();
+      
+      if(ev.type!=='notify' && ev.type!=='append') return;
+      for(const m of ev.messages){ try{ await waHandle(m); }catch(e){ console.error('wa:',e.message); } }
+    });
+    console.log('• Comandos WhatsApp ativos — manda /ajuda no chat consigo mesmo.');
+  }
+},2000);

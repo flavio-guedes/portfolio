@@ -1,0 +1,379 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+R="$HOME/hermes-ops"
+B="$HOME/hermes-work/hermes-os/backend"
+S="$R/state"
+L="$R/logs"
+LOCK="/tmp/hermes-8420.lock"
+D="/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Planejamento profissional /_Prospecçao/00 - Setup Comercial/00 - Painel/01 - Automacao"
+TOK="hk_dev_local_troque_depois"
+
+mkdir -p "$S" "$L" "$R/attic" "$R/trash"
+
+ts(){ date '+%Y-%m-%d %H:%M:%S'; }
+say(){ printf "[%s] %s\n" "$(ts)" "$*"; }
+S1(){ printf '%s' "$2" > "$S/$1"; }
+
+# ─── 01 · baseline ───────────────────────────────────────
+cmd_baseline(){
+  say "01 · SNAPSHOT DO BASELINE"
+  node - <<'NODE' > "$HOME/hermes-ops/state/baseline.json"
+const cp=require('node:child_process'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const o={ts:new Date().toISOString()};
+try{ o.ram=cp.execSync("ps -A -o rss= | awk '{s+=$1} END {print int(s/1024)}'",{encoding:'utf8'}).trim()+"MB"; }catch{ o.ram="?"; }
+try{ o.ollama=cp.execSync('pgrep -fl ollama 2>/dev/null || true',{encoding:'utf8'}).trim()||"—"; }catch{ o.ollama="—"; }
+try{ o.baileys_files=fs.readdirSync(path.join(os.homedir(),'hermes-work','hermes-os','backend','.baileys')).length; }catch{ o.baileys_files=0; }
+try{ o.procs=cp.execSync('pgrep -fl "src/server.js|hermes-bridge|hermes-agent" || true',{encoding:'utf8'}).trim().split('\n').filter(Boolean); }catch{ o.procs=[]; }
+try{ o.plists=fs.readdirSync(path.join(os.homedir(),'Library','LaunchAgents')).filter(f=>/hermes|bridge/i.test(f)); }catch{ o.plists=[]; }
+console.log(JSON.stringify(o,null,2));
+NODE
+  node -e 'const d=require(process.argv[1]);console.log("  RAM:",d.ram,"| Ollama:",d.ollama.slice(0,40),"| .baileys:",d.baileys_files,"| procs:",d.procs.length,"| plists:",d.plists.length)' "$S/baseline.json"
+  S1 etapa-01 ok
+}
+
+# ─── 02 · audit supervisores ─────────────────────────────
+cmd_unsupervise(){
+  say "02 · AUDITAR SUPERVISORES"
+  local u; u="$(id -u)"
+  local n; n=$(launchctl list 2>/dev/null | grep -icE 'hermes|bridge' || true)
+  say "launchctl hermes/bridge: $n"
+  if [ "$n" -gt 1 ]; then
+    for svc in com.hermes.bridge com.hermes.agent com.hermes.iniciar \
+               com.hermes.whatsapp com.hermes.job-intelligence \
+               ai.hermes.gateway ai.hermes.epq-control \
+               ai.hermes.watchdog-os ai.hermes.whatsapp-bridge; do
+      launchctl bootout "gui/$u/$svc" 2>/dev/null || true
+      launchctl disable "gui/$u/$svc" 2>/dev/null || true
+    done
+    for f in "$HOME"/Library/LaunchAgents/*hermes*.plist "$HOME"/Library/LaunchAgents/*bridge*.plist; do
+      [ -f "$f" ] || continue
+      mv "$f" "$R/attic/$(basename "$f").$(date +%s)" 2>/dev/null || true
+    done
+    say "removidos"
+  else
+    say "já limpo · nada a fazer"
+  fi
+  S1 etapa-02 ok
+}
+
+# ─── 03 · singleton lock ─────────────────────────────────
+cmd_lock(){
+  say "03 · SINGLETON LOCK"
+  local srv="$B/src/server.js"
+  [ -f "$srv" ] || { say "server.js não existe em $srv"; S1 etapa-03 err; return; }
+  if grep -q 'HERMES-SINGLETON' "$srv" 2>/dev/null; then
+    say "já aplicado"
+  else
+    cp "$srv" "$srv.bak.$(date +%s)"
+    node - <<'NODE'
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const F=path.join(os.homedir(),'hermes-work','hermes-os','backend','src','server.js');
+let s=fs.readFileSync(F,'utf8');
+if(!s.includes('HERMES-SINGLETON')){
+  const patch = [
+    "// HERMES-SINGLETON",
+    "(function(){",
+    "  const fs=require('fs'); const L='/tmp/hermes-8420.lock';",
+    "  try{",
+    "    if(fs.existsSync(L)){",
+    "      const p=parseInt(fs.readFileSync(L,'utf8').split('\\n')[0],10);",
+    "      try{ process.kill(p,0); console.error('HERMES-SINGLETON: já rodando pid',p); process.exit(1); }catch(_){}",
+    "    }",
+    "    fs.writeFileSync(L, process.pid+'\\n'+new Date().toISOString());",
+    "    process.on('exit',()=>{ try{ if(fs.readFileSync(L,'utf8').startsWith(String(process.pid))) fs.unlinkSync(L); }catch(_){} });",
+    "  }catch(e){ console.error('lock erro', e.message); }",
+    "})();",
+    ""
+  ].join('\n');
+  fs.writeFileSync(F, patch + s);
+}
+NODE
+    say "aplicado"
+  fi
+  S1 etapa-03 ok
+}
+
+# ─── 04 · auditar backoff ────────────────────────────────
+cmd_backoff(){
+  say "04 · AUDITORIA BACKOFF"
+  local srv="$B/src/server.js"
+  [ -f "$srv" ] || { S1 etapa-04 err; return; }
+  local n3 nx
+  n3=$(grep -cE 'setTimeout\([^,]+,\s*3000\s*\)' "$srv" 2>/dev/null) || n3=0
+  nx=$(grep -cE 'Math\.pow\(2|__hbN|__hermesBackoff' "$srv" 2>/dev/null) || nx=0
+  say "setTimeout(…,3000) hardcoded: $n3"
+  say "backoff exponencial detectado: $nx"
+  if [ "$n3" -gt 0 ] && [ "$nx" -eq 0 ]; then
+    say "→ loop SEM backoff · aplicando patch"
+    cp "$srv" "$srv.bak.backoff"
+    node - <<'NODE'
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const F=path.join(os.homedir(),'hermes-work','hermes-os','backend','src','server.js');
+let s=fs.readFileSync(F,'utf8'), n=0;
+s = s.replace(/setTimeout\(\s*([^,]+),\s*3000\s*\)/g, (m,fn)=>{
+  n++;
+  return 'setTimeout(' + fn + ', Math.min(300000, Math.pow(2,(global.__hbN=(global.__hbN||0)+1))*1000) + Math.floor(Math.random()*3000))';
+});
+s = s.replace(/(✓ WhatsApp conectado)/g, 'global.__hbN=0; $1');
+fs.writeFileSync(F,s);
+console.log('  substituições:',n);
+NODE
+    node --check "$srv" && say "sintaxe OK"
+  else
+    say "→ já tem backoff ou não há padrão · nada a fazer"
+  fi
+  S1 etapa-04 ok
+}
+
+# ─── 05 · sessão .baileys ────────────────────────────────
+cmd_session(){
+  say "05 · SESSÃO .baileys"
+  local b="$B/.baileys"
+  mkdir -p "$b/backup"
+  [ -f "$b/creds.json" ] && cp -n "$b/creds.json" "$b/backup/creds-$(date +%Y%m%d).json" 2>/dev/null || true
+  find "$B" -maxdepth 1 -type d -name ".baileys.*" -mtime +7 -exec mv {} "$R/trash/" \; 2>/dev/null || true
+  find "$b/backup" -type f -mtime +14 -delete 2>/dev/null || true
+  local n
+  n=$(ls "$b" 2>/dev/null | wc -l | tr -d ' ')
+  say "arquivos em .baileys: $n"
+  S1 etapa-05 ok
+}
+
+# ─── 06 · supervisor único ───────────────────────────────
+cmd_supervise(){
+  say "06 · SUPERVISOR ÚNICO"
+  local u; u="$(id -u)"
+  local plist="$HOME/Library/LaunchAgents/com.hermes.supervisor.plist"
+  cat > "$plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.hermes.supervisor</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>$R/bin/hermesctl</string>
+    <string>start</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>StandardOutPath</key><string>$L/supervisor.out.log</string>
+  <key>StandardErrorPath</key><string>$L/supervisor.err.log</string>
+</dict></plist>
+PLIST
+  launchctl bootout "gui/$u/com.hermes.supervisor" 2>/dev/null || true
+  launchctl bootstrap "gui/$u" "$plist" 2>/dev/null || true
+  say "supervisor carregado"
+  S1 etapa-06 ok
+}
+
+# ─── 07 · logs JSONL ─────────────────────────────────────
+cmd_logs(){
+  say "07 · LOGS ESTRUTURADOS"
+  mkdir -p "$L"
+  cat > "$R/bin/rotate-logs.sh" <<'SH'
+#!/usr/bin/env bash
+set -eu
+LOG="${1:-}"
+[ -n "$LOG" ] || { echo "uso: rotate-logs.sh ARQUIVO"; exit 1; }
+MAX=$((10*1024*1024))
+[ -f "$LOG" ] || exit 0
+sz=$(stat -f%z "$LOG" 2>/dev/null || echo 0)
+if [ "$sz" -gt "$MAX" ]; then
+  for i in 5 4 3 2; do
+    [ -f "$LOG.$i" ] && mv "$LOG.$i" "$LOG.$((i+1))"
+  done
+  mv "$LOG" "$LOG.1"
+  : > "$LOG"
+fi
+SH
+  chmod +x "$R/bin/rotate-logs.sh"
+  say "rotate-logs.sh pronto"
+  S1 etapa-07 ok
+}
+
+# ─── 08 · fila idempotente ───────────────────────────────
+cmd_fila(){
+  say "08 · FILA IDEMPOTENTE"
+  local f="$HOME/hermes-work/fila.json"
+  [ -f "$f" ] || { say "fila.json ausente · pulando"; S1 etapa-08 ok; return; }
+  cp "$f" "$f.bak.$(date +%s)"
+  node - <<'NODE'
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const F=path.join(os.homedir(),'hermes-work','fila.json');
+const d=JSON.parse(fs.readFileSync(F,'utf8'));
+let n=0;
+for(const it of (d.itens||[])){
+  if(it.status==='enviando' && !it.lock_pid){ it.status='pendente'; n++; }
+}
+fs.writeFileSync(F, JSON.stringify(d,null,2));
+console.log('  reabertos:',n);
+NODE
+  S1 etapa-08 ok
+}
+
+# ─── 09 · painel :8430 ───────────────────────────────────
+cmd_painel(){
+  say "09 · PAINEL :8430"
+  pkill -f "http.server 8430" 2>/dev/null || true
+  cd "$R/paineis"
+  nohup python3 -m http.server 8430 --bind 127.0.0.1 > "$L/painel.log" 2>&1 &
+  disown
+  sleep 1
+  local code
+  code=$(curl -s -m2 -o /dev/null -w '%{http_code}' http://127.0.0.1:8430/ || echo 000)
+  say "painel :8430 → HTTP $code"
+  S1 etapa-09 "$code"
+}
+
+# ─── 10 · runbook + agente ───────────────────────────────
+cmd_runbook(){
+  say "10 · AGENTE WATCHDOG"
+  cat > "$R/bin/agent-watchdog.mjs" <<'JS'
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const S = path.join(os.homedir(),'hermes-ops','state');
+const L = path.join(os.homedir(),'hermes-ops','logs','agent.jsonl');
+const TOK = 'hk_dev_local_troque_depois';
+
+const tick = () => {
+  const t = new Date().toISOString();
+  let srv=false, wa='?', fila='?', ollama=false;
+  try { srv = !!execSync('pgrep -f "hermes-work/hermes-os/backend/src/server.js" || true',{encoding:'utf8'}).trim(); } catch{}
+  try { ollama = !!execSync('pgrep -fl ollama 2>/dev/null || true',{encoding:'utf8'}).trim(); } catch{}
+  try { wa = execSync('curl -s -m2 -H "Authorization: Bearer ' + TOK + '" http://127.0.0.1:8420/api/whatsapp/status || echo "{}"',{encoding:'utf8'}).trim(); } catch{}
+  try { fila = execSync('curl -s -m2 -H "Authorization: Bearer ' + TOK + '" http://127.0.0.1:8420/api/fila/status || echo "{}"',{encoding:'utf8'}).trim(); } catch{}
+  const linha = { t, srv, ollama, wa: wa.slice(0,200), fila: fila.slice(0,200) };
+  try { fs.appendFileSync(L, JSON.stringify(linha)+'\n'); } catch {}
+  try { fs.writeFileSync(path.join(S,'live.json'), JSON.stringify(linha,null,2)); } catch {}
+};
+tick();
+setInterval(tick, 60000);
+console.log('agent-watchdog ativo · tick 60s');
+JS
+  pkill -f "agent-watchdog.mjs" 2>/dev/null || true
+  nohup node "$R/bin/agent-watchdog.mjs" > "$L/agent.out.log" 2>&1 &
+  disown
+  say "agent-watchdog iniciado"
+  S1 etapa-10 ok
+}
+
+# ─── 11 · auditoria de privacidade ───────────────────────
+cmd_privacy(){
+  say "11 · PRIVACY HOOK"
+  cat > "$R/bin/privacy-hook.mjs" <<'JS'
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const L = path.join(os.homedir(),'hermes-ops','logs');
+const OUT = path.join(os.homedir(),'hermes-ops','state','privacy.json');
+const RE_FONE = /\b\d{10,13}\b/;
+const RE_LEAD = /(Alexsandro|Robson|Wagner|Jean|Leandro|Aline)/i;
+
+const check = () => {
+  let violacao = false, amostra = null;
+  try {
+    const f = path.join(L, 'backend.out.log');
+    if (fs.existsSync(f)) {
+      const tail = fs.readFileSync(f,'utf8').slice(-50000);
+      if (RE_FONE.test(tail) && /prompt|ollama|llm/i.test(tail)) {
+        violacao = true;
+        amostra = tail.slice(-300);
+      }
+    }
+  } catch {}
+  try {
+    fs.writeFileSync(OUT, JSON.stringify({ t: new Date().toISOString(), violacao, amostra }, null, 2));
+  } catch {}
+};
+check();
+setInterval(check, 120000);
+console.log('privacy-hook ativo · tick 120s');
+JS
+  pkill -f "privacy-hook.mjs" 2>/dev/null || true
+  nohup node "$R/bin/privacy-hook.mjs" > "$L/privacy.out.log" 2>&1 &
+  disown
+  say "privacy-hook iniciado"
+  S1 etapa-11 ok
+}
+
+# ─── START / STOP ────────────────────────────────────────
+cmd_start(){
+  if [ -f "$LOCK" ]; then
+    local p; p=$(head -1 "$LOCK" 2>/dev/null || echo 0)
+    if kill -0 "$p" 2>/dev/null; then
+      say "já rodando pid $p · abortando"
+      exit 1
+    fi
+  fi
+  cd "$B" || { say "backend não existe: $B"; exit 1; }
+  HTML_FILE="$D/Painel_Hermes_V10.html" RAG_DIR="$D/01 - Apoio" \
+    nohup node src/server.js >> "$L/backend.out.log" 2>&1 &
+  disown
+  say "backend iniciado pid $!"
+}
+
+cmd_stop(){
+  pkill -f "hermes-work/hermes-os/backend/src/server.js" 2>/dev/null || true
+  rm -f "$LOCK"
+  say "parado"
+}
+
+cmd_status(){
+  echo
+  echo "── ETAPAS ──"
+  for i in 01 02 03 04 05 06 07 08 09 10 11; do
+    s=$(cat "$S/etapa-$i" 2>/dev/null || echo "—")
+    printf "  etapa %s: %s\n" "$i" "$s"
+  done
+  echo
+  echo "── PORTAS ──"
+  for p in 8420 8430; do
+    lsof -nP -iTCP:$p -sTCP:LISTEN 2>/dev/null | tail -n +2 | awk -v P=$p '{print "  :"P" pid="$2}' || true
+  done
+  echo
+  echo "── LIVE ──"
+  cat "$S/live.json" 2>/dev/null || echo "  (sem live.json ainda)"
+}
+
+# ─── MISSION ─────────────────────────────────────────────
+cmd_mission(){
+  say "═══ MISSÃO WHATSAPP ESTÁVEL · v2 ═══"
+  cmd_baseline
+  cmd_unsupervise
+  cmd_lock
+  cmd_backoff
+  cmd_session
+  cmd_logs
+  cmd_fila
+  cmd_supervise
+  cmd_painel
+  cmd_runbook
+  cmd_privacy
+  say "═══ MISSÃO CONCLUÍDA ═══"
+  cmd_status
+}
+
+case "${1:-status}" in
+  baseline)     cmd_baseline ;;
+  unsupervised) cmd_unsupervise ;;
+  lock)         cmd_lock ;;
+  backoff)      cmd_backoff ;;
+  session)      cmd_session ;;
+  supervise)    cmd_supervise ;;
+  logs)         cmd_logs ;;
+  fila)         cmd_fila ;;
+  painel)       cmd_painel ;;
+  runbook)      cmd_runbook ;;
+  privacy)      cmd_privacy ;;
+  start)        cmd_start ;;
+  stop)         cmd_stop ;;
+  mission)      cmd_mission ;;
+  status)       cmd_status ;;
+  *) echo "uso: hermesctl {baseline|unsupervised|lock|backoff|session|supervise|logs|fila|painel|runbook|privacy|start|stop|mission|status}"; exit 1 ;;
+esac

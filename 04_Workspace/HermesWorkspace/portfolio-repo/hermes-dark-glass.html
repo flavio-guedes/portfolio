@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes Dark Glass Interface</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.035);
+    --surface-hover: rgba(255, 255, 255, 0.06);
+    --border: rgba(255, 255, 255, 0.10);
+    --border-active: rgba(255, 255, 255, 0.22);
+    --text: #ffffff;
+    --text-secondary: #888888;
+    --text-tertiary: #555555;
+    --accent: rgba(120, 180, 255, 0.25);
+    --accent-glow: rgba(120, 180, 255, 0.15);
+    --shadow-float: 0 24px 80px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255,255,255,0.06);
+    --shadow-inner: inset 0 1px 0 rgba(255,255,255,0.04);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMicgdmlld0JveD0nMCAwIDMyIDMyJz4KICA8ZGVmcz4KICAgIDwhLS0gR2xhc3MgYm9keSBncmFkaWVudCAtLT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0nZ2xhc3MnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz4KICAgICAgPHN0b3Agb2Zmc2V0PScwJScgc3RvcC1jb2xvcj0nI2ZmZmZmZicgc3RvcC1vcGFjaXR5PScwLjIyJy8+CiAgICAgIDxzdG9wIG9mZnNldD0nNDAlJyBzdG9wLWNvbG9yPScjZTBmMmZlJyBzdG9wLW9wYWNpdHk9JzAuMDgnLz4KICAgICAgPHN0b3Agb2Zmc2V0PScxMDAlJyBzdG9wLWNvbG9yPScjMGVhNWU5JyBzdG9wLW9wYWNpdHk9JzAuMDQnLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CgogICAgPCEtLSBJcmlkZXNjZW50IHJhaW5ib3cgZWRnZSBvbiBsZWZ0IC0tPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSdyYWluYm93JyB4MT0nMCcgeTE9JzAnIHgyPScxJyB5Mj0nMSc+CiAgICAgIDxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyMyMmQzZWUnIHN0b3Atb3BhY2l0eT0nMC45Jy8+CiAgICAgIDxzdG9wIG9mZnNldD0nMjUlJyBzdG9wLWNvbG9yPScjM2I4MmY2JyBzdG9wLW9wYWNpdHk9JzAuOCcvPgogICAgICA8c3RvcCBvZmZzZXQ9JzUwJScgc3RvcC1jb2xvcj0nI2E4NTVmNycgc3RvcC1vcGFjaXR5PScwLjc1Jy8+CiAgICAgIDxzdG9wIG9mZnNldD0nNzUlJyBzdG9wLWNvbG9yPScjZWFiMzA4JyBzdG9wLW9wYWNpdHk9JzAuNicvPgogICAgICA8c3RvcCBvZmZzZXQ9JzEwMCUnIHN0b3AtY29sb3I9JyNmOTczMTYnIHN0b3Atb3BhY2l0eT0nMC4wJy8+CiAgICA8L2xpbmVhckdyYWRpZW50PgoKICAgIDwhLS0gUmltIGxpZ2h0IHRvcC1yaWdodCAtLT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ncmltJyB4MT0nMCcgeTE9JzAnIHgyPScxJyB5Mj0nMSc+CiAgICAgIDxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyNmZmZmZmYnIHN0b3Atb3BhY2l0eT0nMC4wJy8+CiAgICAgIDxzdG9wIG9mZnNldD0nNjAlJyBzdG9wLWNvbG9yPScjZmZmZmZmJyBzdG9wLW9wYWNpdHk9JzAuMCcvPgogICAgICA8c3RvcCBvZmZzZXQ9Jzg1JScgc3RvcC1jb2xvcj0nI2ZmZmZmZicgc3RvcC1vcGFjaXR5PScwLjknLz4KICAgICAgPHN0b3Agb2Zmc2V0PScxMDAlJyBzdG9wLWNvbG9yPScjZmZmZmZmJyBzdG9wLW9wYWNpdHk9JzAuNScvPgogICAgPC9saW5lYXJHcmFkaWVudD4KCiAgICA8IS0tIERlcHRoIHNoYWRvdyAtLT4KICAgIDxmaWx0ZXIgaWQ9J3NoYWRvdycgeD0nLTMwJScgeT0nLTMwJScgd2lkdGg9JzE2MCUnIGhlaWdodD0nMTYwJSc+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9JzEnIGR5PScyJyBzdGREZXZpYXRpb249JzEuNScgZmxvb2QtY29sb3I9JyMwMDAwMDAnIGZsb29kLW9wYWNpdHk9JzAuNycvPgogICAgPC9maWx0ZXI+CgogICAgPCEtLSBTb2Z0IGdsb3cgLS0+CiAgICA8ZmlsdGVyIGlkPSdnbG93JyB4PSctNTAlJyB5PSctNTAlJyB3aWR0aD0nMjAwJScgaGVpZ2h0PScyMDAlJz4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0nMi41JyByZXN1bHQ9J2JsdXInLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSdibHVyJy8+PGZlTWVyZ2VOb2RlIGluPSdTb3VyY2VHcmFwaGljJy8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CgogICAgPCEtLSBTcGVjdWxhciBoaWdobGlnaHQgLS0+CiAgICA8ZmlsdGVyIGlkPSdzcGVjJyB4PSctMjAlJyB5PSctMjAlJyB3aWR0aD0nMTQwJScgaGVpZ2h0PScxNDAlJz4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0nMC42JyByZXN1bHQ9J2InLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSdiJy8+PGZlTWVyZ2VOb2RlIGluPSdTb3VyY2VHcmFwaGljJy8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CgogICAgPCEtLSBTY3JhdGNoIHRleHR1cmUgLS0+CiAgICA8ZmlsdGVyIGlkPSdzY3JhdGNoJyB4PScwJyB5PScwJyB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJz4KICAgICAgPGZlVHVyYnVsZW5jZSB0eXBlPSdmcmFjdGFsTm9pc2UnIGJhc2VGcmVxdWVuY3k9JzAuOCcgbnVtT2N0YXZlcz0nMicgc3RpdGNoVGlsZXM9J3N0aXRjaCcgcmVzdWx0PSduJy8+CiAgICAgIDxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnIGluPSduJyByZXN1bHQ9J2duJy8+CiAgICAgIDxmZUJsZW5kIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2duJyBtb2RlPSdzY3JlZW4nIHJlc3VsdD0ncycvPgogICAgICA8ZmVDb21wb25lbnRUcmFuc2ZlciBpbj0ncyc+CiAgICAgICAgPGZlRnVuY0EgdHlwZT0nbGluZWFyJyBzbG9wZT0nMC4xMicvPgogICAgICA8L2ZlQ29tcG9uZW50VHJhbnNmZXI+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CgogIDwhLS0gQ3Vyc29yIHNoYWRvdyB1bmRlcm5lYXRoIC0tPgogIDxwYXRoIGQ9J002IDIgTDE0IDE2IEwxMSAxNiBMMTEgMjYgTDkgMjYgTDkgMTYgTDYgMTYgWicKICAgICAgICBmaWxsPSdyZ2JhKDAsMCwwLDAuNTUpJyBmaWx0ZXI9J3VybCgjc2hhZG93KScgdHJhbnNmb3JtPSd0cmFuc2xhdGUoMS4yLDIuMiknLz4KCiAgPCEtLSBNYWluIGdsYXNzIGJvZHkgLS0+CiAgPHBhdGggZD0nTTYgMiBMMTQgMTYgTDExIDE2IEwxMSAyNiBMOSAyNiBMOSAxNiBMNiAxNiBaJwogICAgICAgIGZpbGw9J3VybCgjZ2xhc3MpJyBzdHJva2U9J3JnYmEoMjU1LDI1NSwyNTUsMC4xOCknIHN0cm9rZS13aWR0aD0nMScgZmlsdGVyPSd1cmwoI3NwZWMpJy8+CgogIDwhLS0gSXJpZGVzY2VudCBsZWZ0IGVkZ2UgLS0+CiAgPHBhdGggZD0nTTYgMiBMMTQgMTYgTDExIDE2IEwxMSAyNiBMOSAyNiBMOSAxNiBMNiAxNiBaJwogICAgICAgIGZpbGw9J25vbmUnIHN0cm9rZT0ndXJsKCNyYWluYm93KScgc3Ryb2tlLXdpZHRoPScyLjInIHN0cm9rZS1saW5lam9pbj0ncm91bmQnIGZpbHRlcj0ndXJsKCNnbG93KScvPgoKICA8IS0tIFJpbSBsaWdodCBoaWdobGlnaHQgdG9wLXJpZ2h0IC0tPgogIDxwYXRoIGQ9J002IDIgTDE0IDE2IEwxMSAxNiBMMTEgMjYgTDkgMjYgTDkgMTYgTDYgMTYgWicKICAgICAgICBmaWxsPSdub25lJyBzdHJva2U9J3VybCgjcmltKScgc3Ryb2tlLXdpZHRoPScxLjQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnLz4KCiAgPCEtLSBJbm5lciByZWZsZWN0aW9uIGxpbmUgLS0+CiAgPHBhdGggZD0nTTguNSA2IEwxMS41IDE0JyBzdHJva2U9J3JnYmEoMjU1LDI1NSwyNTUsMC4zNSknIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz4KICA8cGF0aCBkPSdNMTAgNS41IEwxMiAxMCcgc3Ryb2tlPSdyZ2JhKDI1NSwyNTUsMjU1LDAuMjUpJyBzdHJva2Utd2lkdGg9JzAuNicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+CgogIDwhLS0gU3VidGxlIHNjcmF0Y2ggb3ZlcmxheSAtLT4KICA8cGF0aCBkPSdNNiAyIEwxNCAxNiBMMTEgMTYgTDExIDI2IEw5IDI2IEw5IDE2IEw2IDE2IFonCiAgICAgICAgZmlsbD0ncmdiYSgyNTUsMjU1LDI1NSwwLjA2KScgZmlsdGVyPSd1cmwoI3NjcmF0Y2gpJyBwb2ludGVyLWV2ZW50cz0nbm9uZScvPgo8L3N2Zz4=") 4 4, auto;
+  }
+
+  /* Noise texture overlay for material depth */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Abstract light particles background layer */
+  .ambient-visuals {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.35;
+  }
+  .ambient-visuals svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Low-opacity reference imagery */
+  .ref-image {
+    position: fixed;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.055;
+    filter: grayscale(100%) contrast(1.1);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ref-image-1 {
+    top: -120px;
+    right: -80px;
+    width: 520px;
+    height: 520px;
+    background-image: url('https://i.pinimg.com/736x/9d/fb/ae/9dfbae5e91524f3a58912ec51756b7fd.jpg');
+  }
+  .ref-image-2 {
+    bottom: -160px;
+    left: -80px;
+    width: 480px;
+    height: 480px;
+    background-image: url('https://i.pinimg.com/736x/8d/54/7e/8d547eeed99e12413c4d58780b33c9cd.jpg');
+  }
+
+  /* Layout */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 64px 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Rim-light top bar */
+  .topbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo {
+    width: 26px; height: 26px;
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, rgba(120,180,255,0.2), rgba(120,180,255,0.05));
+    box-shadow: 0 0 24px rgba(120,180,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.9);
+  }
+  .brand {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: rgba(255,255,255,0.85);
+  }
+  .topbar-right {
+    display: flex; gap: 18px; align-items: center;
+  }
+  .topbar-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 12px rgba(16,185,129,0.5), 0 0 4px rgba(255,255,255,0.2);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Sidebar */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    overflow-y: auto;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+  }
+  .nav-item:hover {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .nav-item.active {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-inner), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .nav-icon {
+    width: 16px; height: 16px;
+    opacity: 0.6;
+  }
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  .sidebar-section {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-tertiary);
+    padding: 18px 12px 6px;
+    font-weight: 500;
+  }
+
+  /* Main chat area */
+  .main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* Message bubbles - glass cards */
+  .msg {
+    max-width: 68%;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    box-shadow: var(--shadow-float), var(--shadow-inner);
+    position: relative;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.14);
+  }
+  .msg.assistant {
+    align-self: flex-start;
+  }
+  /* Rim light on hover */
+  .msg:hover {
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-float), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .msg-avatar {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(120,180,255,0.35), rgba(120,180,255,0.1));
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 0 18px rgba(120,180,255,0.2);
+    flex-shrink: 0;
+  }
+  .msg-role {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .msg-time {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    margin-left: auto;
+    letter-spacing: 0.04em;
+  }
+  .msg-body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.88);
+    font-weight: 300;
+  }
+  .msg-body strong {
+    font-weight: 500;
+    color: #fff;
+  }
+
+  /* Status badges */
+  .status-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.15s;
+  }
+  .badge.active {
+    border-color: rgba(120,180,255,0.35);
+    color: rgba(180,210,255,0.95);
+    box-shadow: 0 0 20px rgba(120,180,255,0.15);
+  }
+  .badge.success {
+    border-color: rgba(16,185,129,0.35);
+    color: rgba(110,231,183,0.95);
+    box-shadow: 0 0 20px rgba(16,185,129,0.15);
+  }
+
+  /* Input area */
+  .composer {
+    padding: 18px 40px 24px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.03));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .composer-inner {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.025);
+    box-shadow: var(--shadow-inner), 0 20px 60px rgba(0,0,0,0.5);
+    transition: border-color 0.15s;
+  }
+  .composer-inner:focus-within {
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-inner), 0 0 0 1px rgba(255,255,255,0.05), 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .composer textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 300;
+    resize: none;
+    outline: none;
+    min-height: 22px;
+    max-height: 120px;
+    line-height: 1.5;
+  }
+  .composer textarea::placeholder {
+    color: var(--text-tertiary);
+    font-weight: 300;
+  }
+  .composer button {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .composer button:hover {
+    border-color: var(--border-active);
+    background: var(--surface-hover);
+    box-shadow: 0 0 20px rgba(120,180,255,0.15);
+  }
+
+  /* Ambient glow lines (reflecting the ESC light streaks) */
+  .ambient {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient-1 {
+    top: -200px; left: -100px;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(120,180,255,0.06), transparent 70%);
+    filter: blur(40px);
+  }
+  .ambient-2 {
+    bottom: -200px; right: -100px;
+    width: 500px; height: 400px;
+    background: radial-gradient(ellipse, rgba(100,140,255,0.04), transparent 70%);
+    filter: blur(50px);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+
+  @media (max-width: 840px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .messages { padding: 24px 20px; }
+    .composer { padding: 14px 20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient-visuals">
+  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="p1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#93c5fd" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="p2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="18" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <!-- Soft bokeh -->
+    <circle cx="18%" cy="28%" r="120" fill="url(#p1)" filter="url(#glow)"/>
+    <circle cx="78%" cy="22%" r="90" fill="url(#p2)" filter="url(#glow)"/>
+    <circle cx="62%" cy="72%" r="140" fill="url(#p1)" opacity="0.6" filter="url(#glow)"/>
+    <circle cx="24%" cy="76%" r="100" fill="url(#p2)" opacity="0.5" filter="url(#glow)"/>
+    <!-- Tiny specks -->
+    <g opacity="0.55">
+      <circle cx="32%" cy="18%" r="1.2" fill="#e0f2fe"/>
+      <circle cx="48%" cy="24%" r="0.9" fill="#e0f2fe"/>
+      <circle cx="71%" cy="16%" r="1.1" fill="#e0f2fe"/>
+      <circle cx="84%" cy="41%" r="0.8" fill="#e0f2fe"/>
+      <circle cx="19%" cy="62%" r="1.0" fill="#e0f2fe"/>
+      <circle cx="55%" cy="48%" r="1.3" fill="#e0f2fe"/>
+      <circle cx="91%" cy="78%" r="0.9" fill="#e0f2fe"/>
+      <circle cx="38%" cy="85%" r="1.1" fill="#e0f2fe"/>
+    </g>
+    <!-- Subtle light streaks -->
+    <g opacity="0.12" stroke="#93c5fd" stroke-width="1.2" fill="none" stroke-linecap="round">
+      <path d="M -20,120 Q 180,110 360,140 T 720,130" />
+      <path d="M 920,60 Q 1120,100 1320,80 T 1620,90" />
+      <path d="M 200,720 Q 420,700 620,740 T 980,730" />
+    </g>
+  </svg>
+</div>
+
+<!-- Low-opacity reference imagery behind UI -->
+<div class="ref-image ref-image-1" aria-hidden="true"></div>
+<div class="ref-image ref-image-2" aria-hidden="true"></div>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">h</div>
+      <div class="brand">hermes</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-dot" title="Local model ativo"></div>
+      <span style="font-size:11px; color:var(--text-secondary); letter-spacing:0.08em; text-transform:uppercase;">ollama</span>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="nav-item active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>conversas</span>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>configurar</span>
+    </div>
+
+    <div class="sidebar-section">workspace</div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <span>drive</span>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      <span>kanban</span>
+    </div>
+    <div class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <span>agenda</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="messages">
+
+      <div class="msg user">
+        <div class="msg-meta">
+          <div class="msg-avatar" style="background:linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border-color: rgba(255,255,255,0.25)"></div>
+          <span class="msg-role">você</span>
+          <span class="msg-time">agora</span>
+        </div>
+        <div class="msg-body">quero que você use o estilo daquela tecla preta de vidro para redesenhar o Hermes. bem minimalista, sem brilhos exagerados.</div>
+      </div>
+
+      <div class="msg assistant">
+        <div class="msg-meta">
+          <div class="msg-avatar"></div>
+          <span class="msg-role">hermes</span>
+          <span class="msg-time">agora</span>
+        </div>
+        <div class="msg-body">
+          entendi. vou aplicar a linguagem <strong>vidro preto</strong>: fundo quase preto, cartões translúcidos com bordas finas, blur baixo, textura de ruído muito sutil e tipografia leve. nada de gradientes coloridos — só luz ambiente fria e reflexos de borda.
+        </div>
+        <div class="status-row">
+          <span class="badge active">glassmorphism</span>
+          <span class="badge success">dark mode</span>
+          <span class="badge">minimal</span>
+        </div>
+      </div>
+
+      <div class="msg assistant">
+        <div class="msg-meta">
+          <div class="msg-avatar"></div>
+          <span class="msg-role">hermes</span>
+          <span class="msg-time">agora</span>
+        </div>
+        <div class="msg-body">
+          o campo de entrada usa apenas uma borda inferior sutil ou uma caixa com <strong>1px</strong> de borda branca translúcida, igual a tecla esc. — sem sombras pesadas, sem gradientes, sem “efeito marketing”.
+        </div>
+      </div>
+
+      <div class="msg user">
+        <div class="msg-meta">
+          <div class="msg-avatar" style="background:linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border-color: rgba(255,255,255,0.25)"></div>
+          <span class="msg-role">você</span>
+          <span class="msg-time">agora</span>
+        </div>
+        <div class="msg-body">pode deixar tudo lowercase também? e espaçamento generoso entre os elementos.</div>
+      </div>
+
+      <div class="msg assistant">
+        <div class="msg-meta">
+          <div class="msg-avatar"></div>
+          <span class="msg-role">hermes</span>
+          <span class="msg-time">agora</span>
+        </div>
+        <div class="msg-body">
+          feito. <strong>space grotesk</strong> em peso 300–500, caixa baixa, margens largas e muito espaço vazio preto. aqui o modelo local continua em execução — conectado e silencioso.
+        </div>
+        <div class="status-row">
+          <span class="badge success">ollama ativo</span>
+          <span class="badge">sem ruído</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="composer">
+      <div class="composer-inner">
+        <textarea rows="1" placeholder="mensagem para hermes..." oninput="this.style.height='auto'; this.style.height=this.scrollHeight+'px'"></textarea>
+        <button title="Enviar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Auto-focus textarea
+  document.querySelector('textarea').focus();
+</script>
+
+</body>
+</html>

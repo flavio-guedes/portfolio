@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central Prospecção</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0a0a0c;
+    --panel:#131317;
+    --panel-2:#18181d;
+    --line:#26262c;
+    --steel:#c9cdd3;
+    --steel-dim:#8b8f96;
+    --red:#e0212b;
+    --red-glow:#ff3b46;
+    --red-dim:#5c1418;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--void);
+    color:var(--steel);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- HERO (uncropped) ---------- */
+  .hero{
+    width:100%;
+    background:#000;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .hero .scan{
+    position:absolute; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, transparent, rgba(224,33,43,0.85), transparent);
+    box-shadow:0 0 12px 2px rgba(224,33,43,0.5);
+    animation:sweep 6s linear infinite;
+    opacity:0.8;
+  }
+  @keyframes sweep{
+    0%{ top:0%; opacity:0;}
+    8%{ opacity:0.8;}
+    50%{ top:100%; opacity:0.8;}
+    58%{ opacity:0;}
+    100%{ top:100%; opacity:0;}
+  }
+
+  /* ---------- LIST ---------- */
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:44px 24px 60px;
+  }
+  .kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    color:var(--red-glow);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:28px;
+  }
+  .kicker .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--red-glow);
+    box-shadow:0 0 8px 2px rgba(255,59,70,0.7);
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  .list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .action{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:20px 22px;
+    text-decoration:none;
+    color:var(--steel);
+    transition:border-color .18s ease, background .18s ease, transform .18s ease;
+  }
+  .action::before, .action::after{
+    content:"";
+    position:absolute;
+    width:12px; height:12px;
+    border:1.5px solid var(--red-dim);
+    transition:border-color .18s ease;
+  }
+  .action::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .action::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .action:hover{
+    background:var(--panel-2);
+    border-color:#333338;
+    transform:translateX(3px);
+  }
+  .action:hover::before, .action:hover::after{ border-color:var(--red-glow); }
+
+  .action .txt h3{
+    font-family:'Oswald', sans-serif;
+    font-weight:500;
+    font-size:18px;
+    color:var(--steel);
+    margin-bottom:5px;
+  }
+  .action .txt p{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--steel-dim);
+    max-width:480px;
+  }
+  .action .go{
+    flex-shrink:0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    color:var(--red-glow);
+    border:1px solid var(--red);
+    padding:9px 14px;
+    white-space:nowrap;
+    transition:background .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .action:hover .go{
+    background:var(--red);
+    color:#fff;
+    box-shadow:0 0 16px rgba(224,33,43,0.35);
+  }
+
+  @media (max-width:560px){
+    .action{ flex-direction:column; align-items:flex-start; }
+    .action .go{ align-self:flex-start; }
+  }
+
+  footer{
+    max-width:760px;
+    margin:0 auto;
+    padding:10px 24px 50px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--steel-dim);
+    letter-spacing:0.03em;
+  }
+
+  /* ---------- AUTOMATIONS ---------- */
+  .automation{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .automation .meta{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .automation .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:#0affa0;
+    border:1px solid #0affa0;
+    padding:6px 10px;
+    text-transform:uppercase;
+  }
+  .automation .pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--red-glow);
+    border:1px dashed var(--red);
+    padding:6px 10px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <img src="data:image/png;base64,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" alt="">
+    <div class="scan"></div>
+  </div>
+
+  <div class="wrap">
+    <div class="kicker"><span class="dot"></span>PAINEL DE ACESSO · 7 FERRAMENTAS</div>
+    <div class="list">
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/rotina-vagas_plus.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Career OS</h3>
+          <p>Hub principal: funil de candidaturas, CRM, pitches, CV com IA e histórico de envios.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/hunter_vagas.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Hunter de Vagas</h3>
+          <p>Pipeline autônomo ponta a ponta: prospecção, matching, candidatura e QA.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/dashboard/index.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Hermes — Painel Geral</h3>
+          <p>Panorama de mercado: vagas novas, alta aderência, remotas e inteligência de tendências.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/dashboard/alertas-vagas.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Alertas de Vagas</h3>
+          <p>Status de cada vaga da descoberta até oferta, com filtro por prioridade.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/dashboard/job-radar.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Job Radar</h3>
+          <p>Coleta pública de vagas e contatos explícitos por área, sem dados inventados.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/linkedin/linkedin_jobs_dashboard.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>LinkedIn Job Hunter</h3>
+          <p>Busca autenticada no LinkedIn com filtro de score e conexão de 1º grau.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/fluxo_b2b.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Fluxo B2B</h3>
+          <p>Outreach para leads de Founder/Head em Design e Produto, com status de resposta.</p>
+        </div>
+        <span class="go">ABRIR</span>
+      </a>
+
+    </div>
+
+    <div class="kicker" style="margin-top:34px;"><span class="dot"></span>AUTOMAÇÕES E LOOPS</div>
+    <div class="list">
+
+      <div class="action">
+        <div class="txt">
+          <h3>Treinamento Noturno Master</h3>
+          <p>Varre o dia e treina os agentes relevantes conforme desempenho.</p>
+        </div>
+        <div class="automation">
+          <span class="badge">ATIVO</span>
+          <span class="go"><input type="checkbox" checked disabled></span>
+        </div>
+      </div>
+
+      <div class="action">
+        <div class="txt">
+          <h3>Hermes GitHub Mirror Sync</h3>
+          <p>Espelha diariamente o repositório Hermes no Drive para manter a arquitetura sincronizada.</p>
+        </div>
+        <div class="automation">
+          <span class="badge">ATIVO</span>
+          <span class="go"><input type="checkbox" checked disabled></span>
+        </div>
+      </div>
+
+      <a class="action" href="https://flavio-guedes.github.io/prospeccao/dashboard/index.html" target="_blank" rel="noopener">
+        <div class="txt">
+          <h3>Monitoramento — WhatsApp / Sales Enablement</h3>
+          <p>Acompanhamento do fluxo de WhatsApp pelo agente de sales enablement.</p>
+        </div>
+        <span class="go">MONITORAR</span>
+      </a>
+
+    </div>
+  </div>
+
+  <footer>CENTRAL PROSPECÇÃO · flavio-guedes.github.io/prospeccao</footer>
+</body>
+</html>

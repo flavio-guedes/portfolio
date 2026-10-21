@@ -1,0 +1,957 @@
+{
+  "cycle": "cycle-1",
+  "generated_at": "2026-08-31T04:22:24.367903+00:00",
+  "areas": {
+    "MARKETING": [
+      {
+        "title": "View Company Profile",
+        "company": "Senior Content Marketer, SEO",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/animalz",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.571735+00:00",
+        "published_date": "2026-08-31T04:22:01.571787+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Content Marketing Coordinator",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/designfiles",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.571808+00:00",
+        "published_date": "2026-08-31T04:22:01.571814+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Events & Field Marketing Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/toggl",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.571849+00:00",
+        "published_date": "2026-08-31T04:22:01.571855+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Manager, Content & Community Marketing",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/headway",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.571887+00:00",
+        "published_date": "2026-08-31T04:22:01.571894+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Video Editor (LinkedIn Content)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/spiralyze",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.571966+00:00",
+        "published_date": "2026-08-31T04:22:01.571973+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Compliance Manager, Marketing",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/brex",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572146+00:00",
+        "published_date": "2026-08-31T04:22:01.572158+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Performance Creative Strategist and AI Producer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/icarus-digital-marketing",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572186+00:00",
+        "published_date": "2026-08-31T04:22:01.572192+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Creative Strategist",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/eyr-holistic",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572210+00:00",
+        "published_date": "2026-08-31T04:22:01.572216+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "[PT/FT] Senior Roblox Developer & Game Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/toptal",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572245+00:00",
+        "published_date": "2026-08-31T04:22:01.572250+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Product Content Specialist",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/tractian",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572367+00:00",
+        "published_date": "2026-08-31T04:22:01.572383+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Designer - ShareGate Migrate",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/sharegate-migrate-chezworkleap",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572409+00:00",
+        "published_date": "2026-08-31T04:22:01.572415+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Designer - ShareGate Migrate",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/workleap",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572430+00:00",
+        "published_date": "2026-08-31T04:22:01.572436+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Head of Marketing",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/zapiet",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572506+00:00",
+        "published_date": "2026-08-31T04:22:01.572512+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Marketing Automation SaaS + Services Line of Business Owner",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/new-law-business-model",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572529+00:00",
+        "published_date": "2026-08-31T04:22:01.572535+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Graphic Design Assistant",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/blue-whale-lending-llc",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572553+00:00",
+        "published_date": "2026-08-31T04:22:01.572559+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Staff Product Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/rho",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572579+00:00",
+        "published_date": "2026-08-31T04:22:01.572584+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Google Ads Media Buyer / Performance Marketing Lead",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/egear",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572697+00:00",
+        "published_date": "2026-08-31T04:22:01.572705+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Staff Brand Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/webflow",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572900+00:00",
+        "published_date": "2026-08-31T04:22:01.572913+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "iGaming UI/UX Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/ondeckglobal",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572929+00:00",
+        "published_date": "2026-08-31T04:22:01.572934+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/ingenious-build",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572954+00:00",
+        "published_date": "2026-08-31T04:22:01.572959+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Graphic Design instructor - Project Based",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/ischool",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572972+00:00",
+        "published_date": "2026-08-31T04:22:01.572977+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Product Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/thatch",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.572988+00:00",
+        "published_date": "2026-08-31T04:22:01.572993+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Precast Design Engineer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/fisher-associates-p-e-l-s-l-a-d",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573005+00:00",
+        "published_date": "2026-08-31T04:22:01.573009+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Head of Design",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/garden3d",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573021+00:00",
+        "published_date": "2026-08-31T04:22:01.573026+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Designer (Clinical Education Platform)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/fullscript",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573039+00:00",
+        "published_date": "2026-08-31T04:22:01.573044+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Junior Designer (Part-Time Contract)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/loosegrip",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573058+00:00",
+        "published_date": "2026-08-31T04:22:01.573062+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Visual designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/pixel-one",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573072+00:00",
+        "published_date": "2026-08-31T04:22:01.573076+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Brand & Creative Designer (Freelance, 100% Remote)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/kazaar-fragrances",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573105+00:00",
+        "published_date": "2026-08-31T04:22:01.573156+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Art Director Performance Creatives (m/w/d)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/performancepixel-gmbh",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573177+00:00",
+        "published_date": "2026-08-31T04:22:01.573183+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Electrical Engineer - Substation Design",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/hanson-professional-services",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573210+00:00",
+        "published_date": "2026-08-31T04:22:01.573215+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "UX Designer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/pressw",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573240+00:00",
+        "published_date": "2026-08-31T04:22:01.573245+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Transit and Rail Signals Design Lead",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/systra",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573258+00:00",
+        "published_date": "2026-08-31T04:22:01.573263+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "AI Transformation Owner, Product & Design",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/gitlab",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573281+00:00",
+        "published_date": "2026-08-31T04:22:01.573286+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Principal Product Manager (Content Authoring, Delivery & CMS)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/great-minds",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573322+00:00",
+        "published_date": "2026-08-31T04:22:01.573327+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Growth Marketing Manager, B2B SaaS",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/power-digital",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573402+00:00",
+        "published_date": "2026-08-31T04:22:01.573407+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Part-Time Brand & Outreach Assistant - B2B SaaS VC (Remote)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/uptalent-io",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:01.573423+00:00",
+        "published_date": "2026-08-31T04:22:01.573427+00:00",
+        "notes": ""
+      }
+    ],
+    "PRODUTO": [
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Manager, Consumer Payments",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/toast",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966483+00:00",
+        "published_date": "2026-08-31T04:22:07.966501+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Manager/ Sr. Manager - Data Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/tiger-analytics-inc",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966519+00:00",
+        "published_date": "2026-08-31T04:22:07.966522+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Platform Product Manager (Contract Position)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/pindrop",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966554+00:00",
+        "published_date": "2026-08-31T04:22:07.966557+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Staff Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/brightwheel",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966564+00:00",
+        "published_date": "2026-08-31T04:22:07.966567+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Technical Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/simprints",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966576+00:00",
+        "published_date": "2026-08-31T04:22:07.966579+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Manager, Global Equity",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/faire",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966612+00:00",
+        "published_date": "2026-08-31T04:22:07.966615+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Associate Product Manager (Remote)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/lifecheq",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966632+00:00",
+        "published_date": "2026-08-31T04:22:07.966635+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Manager, Payments",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/versapay",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966652+00:00",
+        "published_date": "2026-08-31T04:22:07.966655+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Manager, Platform",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/payabli",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966664+00:00",
+        "published_date": "2026-08-31T04:22:07.966666+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Course Director: UX, UI, and AI",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/ixdf-interaction-design-foundation",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966835+00:00",
+        "published_date": "2026-08-31T04:22:07.966838+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Director, Customer Growth & Lifecycle",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/pendo",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966933+00:00",
+        "published_date": "2026-08-31T04:22:07.966936+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Product Owner",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/duel-com",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966945+00:00",
+        "published_date": "2026-08-31T04:22:07.966948+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Product Owner (m/w/d) Tools & Systeme Customer Service // remote möglich",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/e-breuninger-co",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966959+00:00",
+        "published_date": "2026-08-31T04:22:07.966962+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/nucs-ai",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966981+00:00",
+        "published_date": "2026-08-31T04:22:07.966984+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Staff / Principal Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/ethos-life",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.966992+00:00",
+        "published_date": "2026-08-31T04:22:07.966995+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Junior Product Manager*in (alle Identitäten)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/caspar-health",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.967005+00:00",
+        "published_date": "2026-08-31T04:22:07.967008+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Upstream Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/medisca",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.967016+00:00",
+        "published_date": "2026-08-31T04:22:07.967018+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Technical Product Manager",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/mailerlite",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:07.967026+00:00",
+        "published_date": "2026-08-31T04:22:07.967029+00:00",
+        "notes": ""
+      }
+    ],
+    "DESIGN": [],
+    "IA": [
+      {
+        "title": "View Company Profile",
+        "company": "Senior Software AI Engineer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/collaboration-ai",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.668779+00:00",
+        "published_date": "2026-08-31T04:22:19.668803+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Ruby on Rails Developer (AI-Augmented Engineering)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/proxify-ab",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.668852+00:00",
+        "published_date": "2026-08-31T04:22:19.668865+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior AI Engineer",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/lemon-io",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.668901+00:00",
+        "published_date": "2026-08-31T04:22:19.668906+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Business Development Representative, Commercial",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/fivetran",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669032+00:00",
+        "published_date": "2026-08-31T04:22:19.669040+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Account Executive, Commercial (West)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/zscaler",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669059+00:00",
+        "published_date": "2026-08-31T04:22:19.669062+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Independent AI Engineer / Architect",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/a-team",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669125+00:00",
+        "published_date": "2026-08-31T04:22:19.669128+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Software Development Engineer II Full Stack - Business (Remote @ Colombia)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/offerup",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669145+00:00",
+        "published_date": "2026-08-31T04:22:19.669148+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Medical Licensing Specialist (Contract)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/galileo",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669158+00:00",
+        "published_date": "2026-08-31T04:22:19.669161+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Technical Product Marketer - K0rdent AI",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/mirantis",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669202+00:00",
+        "published_date": "2026-08-31T04:22:19.669205+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Sr. Finance Mgr, Partnerships and Special Projects",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/thumbtack",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669229+00:00",
+        "published_date": "2026-08-31T04:22:19.669231+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Deal Operations Manager - Canada, Europe",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/storyblok",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669289+00:00",
+        "published_date": "2026-08-31T04:22:19.669292+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Revenue Operations Strategist",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/kuno-creative-group-inc",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669306+00:00",
+        "published_date": "2026-08-31T04:22:19.669308+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Global Immigration Specialist",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/nvidia",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669332+00:00",
+        "published_date": "2026-08-31T04:22:19.669335+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "FT/PT Remote AI Prompt Engineering & Evaluation - Will Train",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/dataannotation-tech",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669351+00:00",
+        "published_date": "2026-08-31T04:22:19.669354+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "AI Data Annotator - Remote",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/argos-multilingual-inc",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669364+00:00",
+        "published_date": "2026-08-31T04:22:19.669366+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Behavioral Health Integration Specialist",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/carelock-com",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669384+00:00",
+        "published_date": "2026-08-31T04:22:19.669386+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Customs Associate",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/flexport",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669396+00:00",
+        "published_date": "2026-08-31T04:22:19.669398+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Commercial Counsel",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/launchdarkly",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669416+00:00",
+        "published_date": "2026-08-31T04:22:19.669418+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Manager, Security Operations Center - EMEA",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/huntress",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669441+00:00",
+        "published_date": "2026-08-31T04:22:19.669443+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Associate Account Manager, SLED",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/keeper-security",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669453+00:00",
+        "published_date": "2026-08-31T04:22:19.669455+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "DevOps & Security Engineer - AI-Native Healthcare SaaS",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/zenara-health",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669475+00:00",
+        "published_date": "2026-08-31T04:22:19.669478+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Client Success Manager ( $4,000-$5,000/mo Potential )",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/ucm-practice-growth-systems",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669497+00:00",
+        "published_date": "2026-08-31T04:22:19.669499+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Associate Observability Architect | PST | Remote",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/grafana-labs",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669513+00:00",
+        "published_date": "2026-08-31T04:22:19.669515+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Affiliate BD Manager (Taiwan)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/okx",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669553+00:00",
+        "published_date": "2026-08-31T04:22:19.669555+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Automation QA Engineer (Lead)",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/algaecal",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669622+00:00",
+        "published_date": "2026-08-31T04:22:19.669624+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Director, People Operations",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/crb",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669644+00:00",
+        "published_date": "2026-08-31T04:22:19.669646+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Forward Deployed Engineer, Compliance [Office of the CTO]",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/coinbase",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669714+00:00",
+        "published_date": "2026-08-31T04:22:19.669717+00:00",
+        "notes": ""
+      },
+      {
+        "title": "View Company Profile",
+        "company": "Senior Software Architect (C#/Angular/AI First) - GovTech SaaS company",
+        "location": "Remote",
+        "link": "https://weworkremotely.com/company/truelogic",
+        "platform": "weworkremotely",
+        "source": "public:weworkremotely",
+        "discovered_date": "2026-08-31T04:22:19.669744+00:00",
+        "published_date": "2026-08-31T04:22:19.669747+00:00",
+        "notes": ""
+      }
+    ]
+  },
+  "stats": {
+    "MARKETING": {
+      "found": 6,
+      "kept": 204,
+      "rejected": 3,
+      "reason": [
+        "indeed:err",
+        "indeed:err",
+        "indeed:err"
+      ]
+    },
+    "PRODUTO": {
+      "found": 6,
+      "kept": 66,
+      "rejected": 3,
+      "reason": [
+        "indeed:err",
+        "indeed:err",
+        "indeed:err"
+      ]
+    },
+    "DESIGN": {
+      "found": 6,
+      "kept": 0,
+      "rejected": 3,
+      "reason": [
+        "indeed:err",
+        "indeed:err",
+        "indeed:err"
+      ]
+    },
+    "IA": {
+      "found": 6,
+      "kept": 84,
+      "rejected": 3,
+      "reason": [
+        "indeed:err",
+        "indeed:err",
+        "indeed:err"
+      ]
+    }
+  }
+}

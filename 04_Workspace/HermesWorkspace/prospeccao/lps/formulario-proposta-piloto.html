@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedido de Proposta · Pipe de Prospecção</title>
+<style>
+  :root{
+    --bg:#0d0f14; --card:#151922; --line:#232a38;
+    --txt:#e8edf5; --mut:#8b97ad; --acc:#4c8dff; --wpp:#25d366;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    padding:32px 16px;display:flex;justify-content:center}
+  form{width:100%;max-width:680px;background:var(--card);
+    border:1px solid var(--line);border-radius:16px;padding:28px}
+  h1{margin:0 0 4px;font-size:20px}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:24px}
+  fieldset{border:0;padding:0;margin:0 0 22px}
+  legend{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--mut);margin-bottom:10px}
+  label{display:block;font-size:13px;margin:0 0 6px;color:#c3ccdc}
+  input,select,textarea{width:100%;background:#0e131c;color:var(--txt);
+    border:1px solid var(--line);border-radius:9px;padding:10px 12px;
+    font:inherit;font-size:14px;outline:none;transition:border .15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+  textarea{resize:vertical;min-height:70px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+  .check{display:flex;align-items:center;gap:9px;font-size:14px;margin-bottom:8px}
+  .check input{width:16px;height:16px;accent-color:var(--acc)}
+  .hint{font-size:12px;color:var(--mut);margin-top:5px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  button{flex:1 1 180px;padding:13px;border:0;border-radius:10px;
+    font:600 15px/1 inherit;cursor:pointer;transition:filter .15s}
+  button:hover{filter:brightness(1.1)}
+  .primary{background:var(--wpp);color:#062b14}
+  .secondary{background:#232a38;color:var(--txt);border:1px solid var(--line)}
+  pre{background:#0e131c;border:1px solid var(--line);border-radius:9px;
+    padding:12px;font-size:12px;color:#9fb0c9;max-height:180px;overflow:auto;
+    white-space:pre-wrap;word-break:break-word;margin-top:16px}
+  .foot{font-size:12px;color:var(--mut);text-align:center;margin-top:14px}
+  @media(max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<form id="propostaForm">
+  <h1>Pedido de Proposta — Pipe de Prospecção</h1>
+  <p class="sub">Preencha os dados e clique em <b>Enviar pedido no WhatsApp</b>. A mensagem já vai pronta para o 21 999719474.</p>
+
+  <fieldset>
+    <legend>1. Quem está pedindo</legend>
+    <div class="row">
+      <div class="field">
+        <label for="nome">Nome do solicitante *</label>
+        <input id="nome" name="nome" required placeholder="Ex.: Carlos Brasil">
+      </div>
+      <div class="field">
+        <label for="empresa">Empresa *</label>
+        <input id="empresa" name="empresa" required placeholder="Ex.: BR Shopper">
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="email">E-mail *</label>
+        <input id="email" name="email" type="email" required placeholder="voce@empresa.com">
+      </div>
+      <div class="field">
+        <label for="whatsapp">WhatsApp</label>
+        <input id="whatsapp" name="whatsapp" placeholder="+55 11 9.....">
+      </div>
+    </div>
+    <div class="field">
+      <label for="cargo">Cargo / função</label>
+      <input id="cargo" name="cargo" placeholder="Ex.: Head de Marketing">
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>2. Contexto da proposta</legend>
+    <div class="row">
+      <div class="field">
+        <label for="segmento">Segmento principal</label>
+        <select id="segmento" name="segmento">
+          <option value="">Selecione...</option>
+          <option>Gestão / Marketing</option>
+          <option>Indicação</option>
+          <option>TI / Tecnologia</option>
+          <option>Educação</option>
+          <option>Saúde</option>
+          <option>Varejo / E-commerce</option>
+          <option>Indústria</option>
+          <option>Serviços</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="objetivo">Objetivo principal</label>
+        <select id="objetivo" name="objetivo">
+          <option value="">Selecione...</option>
+          <option>Prospecção B2B</option>
+          <option>Recrutamento / vagas</option>
+          <option>Parcerias estratégicas</option>
+          <option>Eventos / comunidades</option>
+          <option>Pesquisa de mercado</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="publicoAlvo">Público-alvo / ICP</label>
+        <input id="publicoAlvo" name="publicoAlvo" placeholder="Ex.: gestores de marketing em SC">
+      </div>
+      <div class="field">
+        <label for="regiao">Região / abrangência</label>
+        <input id="regiao" name="regiao" placeholder="Ex.: Sul do Brasil">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>3. Escopo desejado</legend>
+    <div class="field">
+      <label for="qtdLeads">Quantidade de leads</label>
+      <select id="qtdLeads" name="qtdLeads">
+        <option>25 leads</option>
+        <option selected>50 leads</option>
+        <option>100 leads</option>
+        <option>114 leads (base completa)</option>
+        <option>Personalizado</option>
+      </select>
+    </div>
+
+    <label>Módulos inclusos</label>
+    <label class="check"><input type="checkbox" name="modulos" value="Leads B2B" checked> Leads B2B (nome, cargo, empresa, contato)</label>
+    <label class="check"><input type="checkbox" name="modulos" value="Mensagens de abordagem"> Mensagens de abordagem / follow-up</label>
+    <label class="check"><input type="checkbox" name="modulos" value="Painel do pipe"> Painel do pipe por etapa</label>
+    <label class="check"><input type="checkbox" name="modulos" value="Grupos / comunidades"> Grupos / comunidades relevantes</label>
+    <label class="check"><input type="checkbox" name="modulos" value="Vagas"> Vagas em aberto do setor</label>
+    <label class="check"><input type="checkbox" name="modulos" value="Relatório de diagnóstico"> Relatório de diagnóstico</label>
+
+    <div class="row" style="margin-top:12px">
+      <div class="field">
+        <label for="formato">Formato de entrega</label>
+        <select id="formato" name="formato">
+          <option>CSV / Planilha</option>
+          <option>PDF resumo</option>
+          <option>Link do painel</option>
+          <option>WhatsApp (texto)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="prazo">Prazo desejado</label>
+        <select id="prazo" name="prazo">
+          <option>24h</option>
+          <option selected>48h</option>
+          <option>7 dias</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="investimento">Investimento previsto (opcional)</label>
+      <select id="investimento" name="investimento">
+        <option value="">Prefiro não informar</option>
+        <option>Até R$ 500</option>
+        <option>R$ 500 – R$ 1.500</option>
+        <option>R$ 1.500 – R$ 3.000</option>
+        <option>Acima de R$ 3.000</option>
+      </select>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>4. Observações</legend>
+    <div class="field">
+      <label for="observacoes">Recorte específico, restrições ou detalhes</label>
+      <textarea id="observacoes" name="observacoes" placeholder="Ex.: só leads de Santa Catarina com cargo de gestão e sem contato prévio."></textarea>
+      <p class="hint">Quanto mais específico, mais precisa fica a proposta.</p>
+    </div>
+  </fieldset>
+
+  <div class="actions">
+    <button type="submit" class="primary">Enviar pedido no WhatsApp</button>
+    <button type="button" id="exportarBtn" class="secondary">Exportar .json</button>
+    <button type="button" id="copiarBtn" class="secondary">Copiar dados</button>
+  </div>
+
+  <pre id="preview">A prévia do pedido aparecerá aqui após preencher.</pre>
+  <p class="foot">Base: Pipe de Oportunidades · 114 leads B2B · atualizado em 23/09/2026</p>
+</form>
+
+<script>
+(function(){
+  const form = document.getElementById('propostaForm');
+  const preview = document.getElementById('preview');
+  const copiarBtn = document.getElementById('copiarBtn');
+  const exportarBtn = document.getElementById('exportarBtn');
+  const WHATSAPP_NUMERO = '5521999719474'; // 21 999719474
+
+  function coletarDados() {
+    return {
+      nome: document.getElementById('nome').value.trim(),
+      empresa: document.getElementById('empresa').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      whatsapp: document.getElementById('whatsapp').value.trim(),
+      cargo: document.getElementById('cargo').value.trim(),
+      segmento: document.getElementById('segmento').value,
+      objetivo: document.getElementById('objetivo').value,
+      publicoAlvo: document.getElementById('publicoAlvo').value.trim(),
+      regiao: document.getElementById('regiao').value.trim(),
+      qtdLeads: document.getElementById('qtdLeads').value,
+      modulos: Array.from(document.querySelectorAll('input[name="modulos"]:checked')).map(c => c.value),
+      formato: document.getElementById('formato').value,
+      prazo: document.getElementById('prazo').value,
+      investimento: document.getElementById('investimento').value,
+      observacoes: document.getElementById('observacoes').value.trim(),
+      exportadoEm: new Date().toLocaleString('pt-BR')
+    };
+  }
+
+  function formatarMensagem(dados) {
+    const linhas = [
+      '*Pedido de Proposta — Pipe de Prospecção*',
+      '',
+      '*1. Solicitante*',
+      `Nome: ${dados.nome || '-'}`,
+      `Empresa: ${dados.empresa || '-'}`,
+      `E-mail: ${dados.email || '-'}`,
+      `WhatsApp: ${dados.whatsapp || '-'}`,
+      `Cargo: ${dados.cargo || '-'}`,
+      '',
+      '*2. Contexto*',
+      `Segmento: ${dados.segmento || '-'}`,
+      `Objetivo: ${dados.objetivo || '-'}`,
+      `Público-alvo: ${dados.publicoAlvo || '-'}`,
+      `Região: ${dados.regiao || '-'}`,
+      '',
+      '*3. Escopo*',
+      `Quantidade de leads: ${dados.qtdLeads || '-'}`,
+      `Módulos: ${dados.modulos.length ? dados.modulos.join(', ') : '-'}`,
+      `Formato: ${dados.formato || '-'}`,
+      `Prazo: ${dados.prazo || '-'}`,
+      `Investimento: ${dados.investimento || 'Prefiro não informar'}`,
+      '',
+      '*4. Observações*',
+      dados.observacoes || '-',
+      '',
+      `_Pedido gerado em ${dados.exportadoEm}_`
+    ];
+    return linhas.join('\n');
+  }
+
+  function atualizarPreview() {
+    const dados = coletarDados();
+    preview.textContent = JSON.stringify(dados, null, 2);
+  }
+
+  form.addEventListener('input', atualizarPreview);
+  form.addEventListener('change', atualizarPreview);
+
+  // CTA principal: envia para o WhatsApp
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const dados = coletarDados();
+    const mensagem = formatarMensagem(dados);
+    const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, '_blank');
+  });
+
+  // Exportar JSON (opcional)
+  exportarBtn.addEventListener('click', function(){
+    const dados = coletarDados();
+    const json = JSON.stringify(dados, null, 2);
+    const blob = new Blob([json], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const nomeArquivo = 'pedido_proposta_' + (dados.empresa || 'cliente').replace(/\s+/g,'_').toLowerCase() + '.json';
+    a.href = url;
+    a.download = nomeArquivo;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Copiar dados
+  copiarBtn.addEventListener('click', function(){
+    const dados = coletarDados();
+    const texto = JSON.stringify(dados, null, 2);
+    navigator.clipboard.writeText(texto).then(() => {
+      copiarBtn.textContent = 'Copiado!';
+      setTimeout(() => copiarBtn.textContent = 'Copiar dados', 1500);
+    }).catch(() => {
+      alert('Não foi possível copiar automaticamente. Use a prévia abaixo.');
+    });
+  });
+
+  atualizarPreview();
+})();
+</script>
+
+</body>
+</html>

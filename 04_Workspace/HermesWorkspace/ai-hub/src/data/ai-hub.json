@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "name": "AI Hub",
+    "subtitle": "AI Agent Command Center",
+    "owner": "Flávio",
+    "version": "0.3.0"
+  },
+  "humans": [
+    {
+      "id": "pixelion",
+      "name": "Pixelion",
+      "role": "Human Operator / Command & Coordination",
+      "emoji": "🧑‍💼",
+      "status": "ONLINE",
+      "department": "Command",
+      "project": "AI Hub",
+      "task": "Governar operação",
+      "progress": 100,
+      "lastActivity": "12:30",
+      "nextAction": "Aprovar próxima fase",
+      "coordinator": "—",
+      "isHired": true,
+      "location": "Command Desk",
+      "color": "#FFC247",
+      "monitor": true
+    }
+  ],
+  "agents": [
+    {
+      "id": "logix",
+      "name": "Logi-X",
+      "role": "AI Operations Coordinator",
+      "emoji": "🤖",
+      "status": "WORKING",
+      "department": "Operations",
+      "project": "AI Hub",
+      "task": "Distribuir tarefas",
+      "progress": 72,
+      "lastActivity": "12:28",
+      "nextAction": "Review bloqueios",
+      "coordinator": "Pixelion",
+      "isHired": true,
+      "location": "Operations Station",
+      "color": "#36D8F0",
+      "monitor": true
+    },
+    {
+      "id": "visiona",
+      "name": "Visiona",
+      "role": "Creative Director / Brand & Content",
+      "emoji": "🎨",
+      "status": "WORKING",
+      "department": "Creative",
+      "project": "EPQ",
+      "task": "Creative System",
+      "progress": 68,
+      "lastActivity": "12:25",
+      "nextAction": "Format Guide",
+      "coordinator": "Pixelion",
+      "isHired": true,
+      "location": "Creative Studio",
+      "color": "#B87CFF"
+    },
+    {
+      "id": "uxel",
+      "name": "Uxel",
+      "role": "Product Designer / UX UI",
+      "emoji": "🧩",
+      "status": "ANALYZING",
+      "department": "Product",
+      "project": "AI Hub",
+      "task": "Dashboard UX",
+      "progress": 44,
+      "lastActivity": "12:22",
+      "nextAction": "Prototype v1",
+      "coordinator": "Pixelion",
+      "isHired": true,
+      "location": "Product Lab",
+      "color": "#69AFFF"
+    },
+    {
+      "id": "stratego",
+      "name": "Stratego",
+      "role": "Strategist / Planning & Analysis",
+      "emoji": "♟️",
+      "status": "WAITING",
+      "department": "Strategy",
+      "project": "AI Hub",
+      "task": "Aguardando alocação",
+      "progress": 0,
+      "lastActivity": "11:58",
+      "nextAction": "Definir prioridades",
+      "coordinator": "Pixelion",
+      "isHired": true,
+      "location": "Strategy Room",
+      "color": "#FFC247",
+      "monitor": false
+    }
+  ],
+  "talentPool": [
+    { "id": "data", "name": "Data Analyst", "role": "Data", "emoji": "📊", "status": "WAITING" },
+    { "id": "copywriter", "name": "Copywriter", "role": "Copy", "emoji": "✍️", "status": "WAITING" },
+    { "id": "social-media", "name": "Social Media", "role": "Social", "emoji": "📣", "status": "WAITING" },
+    { "id": "operations", "name": "Operations", "role": "Operations", "emoji": "⚙️", "status": "WAITING" }
+  ],
+  "projects": [
+    {
+      "id": "epq",
+      "name": "EPQ",
+      "agents": ["visiona"],
+      "status": "Ativo",
+      "progress": 68,
+      "priority": "Alta",
+      "lastUpdate": "12:25",
+      "milestones": [
+        { "title": "Brand System", "status": "Concluído" },
+        { "title": "Playbook HTML", "status": "Em andamento" },
+        { "title": "Automação de Posts", "status": "Pendente" }
+      ]
+    },
+    {
+      "id": "aihub",
+      "name": "AI Hub",
+      "agents": ["logix", "uxel"],
+      "status": "Ativo",
+      "progress": 44,
+      "priority": "Alta",
+      "lastUpdate": "12:22",
+      "milestones": [
+        { "title": "Dashboard MVP", "status": "Em andamento" },
+        { "title": "Integração JSON", "status": "Concluído" },
+        { "title": "Conexão Hermes", "status": "Pendente" }
+      ]
+    },
+    {
+      "id": "intern",
+      "name": "Projetos Internos",
+      "agents": ["stratego"],
+      "status": "Backlog",
+      "progress": 0,
+      "priority": "Média",
+      "lastUpdate": "11:58",
+      "milestones": [
+        { "title": "Módulo Financeiro", "status": "Pendente" }
+      ]
+    }
+  ],
+  "tasks": [
+    { "id": "t1", "agentId": "logix", "project": "AI Hub", "title": "Distribuir tarefas", "status": "WORKING", "progress": 72, "milestones": [
+      { "title": "Plano de semana", "status": "Concluído" },
+      { "title": "Alocação por projeto", "status": "Concluído" },
+      { "title": "Ajuste de bloqueios", "status": "Em andamento" }
+    ]},
+    { "id": "t2", "agentId": "visiona", "project": "EPQ", "title": "Creative System", "status": "WORKING", "progress": 68, "milestones": [
+      { "title": "Paleta e tom de voz", "status": "Concluído" },
+      { "title": "Format guide", "status": "Em andamento" },
+      { "title": "Biblioteca de peças", "status": "Pendente" }
+    ]},
+    { "id": "t3", "agentId": "uxel", "project": "AI Hub", "title": "Dashboard UX", "status": "ANALYZING", "progress": 44, "milestones": [
+      { "title": "Wireframes", "status": "Concluído" },
+      { "title": "Prototype v1", "status": "Em andamento" }
+    ]},
+    { "id": "t4", "agentId": "logix", "project": "AI Hub", "title": "Review bloqueios", "status": "WAITING", "progress": 0, "milestones": [
+      { "title": "Coletar bloqueios", "status": "Em andamento" },
+      { "title": "Propor solução", "status": "Pendente" }
+    ]},
+    { "id": "t5", "agentId": "visiona", "project": "EPQ", "title": "Format Guide", "status": "WAITING", "progress": 0, "milestones": [
+      { "title": "Definir templates", "status": "Pendente" },
+      { "title": "Validar exemplos", "status": "Pendente" }
+    ]},
+    { "id": "t6", "agentId": "uxel", "project": "AI Hub", "title": "Prototype v1", "status": "WAITING", "progress": 0, "milestones": [
+      { "title": "Layout mobile", "status": "Pendente" },
+      { "title": "Layout desktop", "status": "Pendente" }
+    ]}
+  ],
+  "feed": [
+    { "time": "12:30", "msg": "Pixelion aprovou abertura do AI Hub.", "color": "#FFC247" },
+    { "time": "12:28", "msg": "Logi-X iniciou nova tarefa: Distribuir tarefas.", "color": "#36D8F0" },
+    { "time": "12:25", "msg": "Visiona analisando Brand System.", "color": "#B87CFF" },
+    { "time": "12:22", "msg": "Uxel iniciou protótipo.", "color": "#69AFFF" },
+    { "time": "12:20", "msg": "Logi-X distribuiu tarefa para Visiona.", "color": "#36D8F0" },
+    { "time": "12:18", "msg": "Operação sincronizada.", "color": "#46D89C" }
+  ]
+}

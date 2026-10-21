@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI HUB — AI AGENT COMMAND CENTER</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #0f172a;
+      --border: #1e293b;
+      --accent: #22d3ee;
+      --accent-2: #818cf8;
+      --green: #34d399;
+      --blue: #60a5fa;
+      --purple: #c084fc;
+      --yellow: #fbbf24;
+      --orange: #f97316;
+      --red: #f87171;
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(34,211,238,0.07), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(129,140,248,0.07), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      image-rendering: pixelated;
+      overflow-x: hidden;
+    }
+
+    /* Utilities */
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.45), 0 14px 30px rgba(0,0,0,0.35);
+    }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .text-sm { font-size: 0.8rem; }
+    .text-xs { font-size: 0.7rem; }
+    .text-dim { color: var(--text-dim); }
+    .w-full { width: 100%; }
+    .h-full { height: 100%; }
+    .overflow-auto { overflow: auto; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .hidden { display: none !important; }
+
+    /* Animations */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34,211,238,0.35); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34,211,238,0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34,211,238,0); }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    @keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glow-border {
+      0%,100% { border-color: rgba(34,211,238,0.25); }
+      50% { border-color: rgba(34,211,238,0.85); }
+    }
+    @keyframes scanmove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 8px; }
+    }
+    @keyframes typing {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+    @keyframes walk-x {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+    @keyframes chair-idle {
+      0%,100% { transform: rotate(0deg); }
+      50% { transform: rotate(1.2deg); }
+    }
+
+    /* Layout */
+    .app {
+      display: grid;
+      grid-template-columns: 280px 1fr 360px;
+      grid-template-rows: 64px 1fr 220px;
+      grid-template-areas:
+        "header header header"
+        "nav    office  right"
+        "nav    right2  right";
+      height: 100vh;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    /* Header */
+    .header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(34,211,238,0.25);
+    }
+    .header .kpis { display: flex; gap: 8px; }
+    .kpi {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      min-width: 72px;
+    }
+    .kpi .label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.14em; }
+    .kpi .value { font-size: 18px; font-weight: 700; }
+
+    /* Nav */
+    .nav {
+      grid-area: nav;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: auto;
+    }
+    .nav-section {
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+    }
+    .nav-section h3 {
+      margin: 0 0 8px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .agent-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .1s ease, background .2s ease, border-color .2s ease;
+      border: 1px solid transparent;
+    }
+    .agent-row:hover { background: rgba(255,255,255,0.03); border-color: var(--border); }
+    .agent-row.active { border-color: var(--accent); background: rgba(34,211,238,0.06); }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: grid; place-items: center;
+      font-size: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.00));
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 999px;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.25);
+    }
+    .status-ONLINE { background: var(--green); }
+    .status-WORKING { background: var(--green); animation: pulse-ring 2s infinite; }
+    .status-ANALYZING { background: var(--blue); }
+    .status-IN_MEETING { background: var(--purple); }
+    .status-WAITING { background: var(--yellow); }
+    .status-BLOCKED { background: var(--orange); }
+    .status-ERROR { background: var(--red); }
+    .status-OFFLINE { background: var(--muted); }
+
+    /* Office */
+    .office {
+      grid-area: office;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(15,23,42,0.85), rgba(15,23,42,0.95)),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 16px);
+    }
+    .office-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0));
+      z-index: 5;
+      pointer-events: none;
+    }
+    .office-header > * { pointer-events: auto; }
+    .office-title { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
+    .office-floor {
+      position: absolute; left: 24px; right: 24px; bottom: 18px; height: 8px;
+      background: linear-gradient(90deg, rgba(34,211,238,0.08), rgba(129,140,248,0.14));
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Agents as pixel sprites */
+    .stage {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      gap: 14px;
+      padding: 52px 18px 28px;
+      z-index: 2;
+    }
+    .agent-spot {
+      position: relative;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      border: 2px dashed rgba(255,255,255,0.08);
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 10px),
+        rgba(255,255,255,0.01);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      cursor: pointer;
+    }
+    .agent-spot:hover { transform: translateY(-4px); border-color: rgba(34,211,238,0.45); box-shadow: 0 18px 40px rgba(0,0,0,0.4); }
+    .agent-spot.selected { border-color: var(--accent); animation: glow-border 2.4s infinite; }
+    .sprite {
+      width: 90px; height: 110px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .sprite .char {
+      width: 60px; height: 60px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      font-size: 26px;
+      border: 2px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.00));
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.6),
+        0 10px 20px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+      position: relative;
+    }
+    .sprite .monitor {
+      position: absolute; right: -16px; top: 6px;
+      width: 34px; height: 26px;
+      border-radius: 4px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: linear-gradient(180deg, rgba(96,165,250,0.25), rgba(96,165,250,0.05));
+      overflow: hidden;
+    }
+    .sprite .monitor::after {
+      content: "";
+      position: absolute; inset: 3px;
+      background: linear-gradient(180deg, rgba(96,165,250,0.7), rgba(96,165,250,0.1));
+      animation: typing 1.4s infinite steps(2);
+    }
+    .sprite .desk {
+      position: absolute; left: -18px; right: -18px; bottom: -10px; height: 12px;
+      background: rgba(255,255,255,0.08);
+      border-top: 2px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+    }
+    .sprite .chair {
+      position: absolute; left: 50%; bottom: -20px; transform: translateX(-50%);
+      width: 34px; height: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 6px 6px 3px 3px;
+    }
+    .sprite .chair::after {
+      content: "";
+      position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%);
+      width: 22px; height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-top: none;
+    }
+    .sprite .status-badge {
+      position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+    }
+    .sprite .project-tag {
+      position: absolute; top: -8px; right: -8px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Pixel sprite system */
+    .sprite-pixel {
+      position: relative;
+      width: 56px; height: 72px;
+      image-rendering: pixelated;
+    }
+    .sprite-pixel canvas { display: block; width: 100%; height: 100%; }
+    .pixel-office-grid {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(0deg, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0.6;
+    }
+
+    /* Floating / behavior */
+    .agent-spot[data-status="WORKING"] .char { animation: float 3.2s ease-in-out infinite; }
+    .agent-spot[data-status="ANALYZING"] .char { animation: float 3.8s ease-in-out infinite; }
+    .agent-spot[data-status="IN_MEETING"] .char { animation: float 4.4s ease-in-out infinite; }
+    .agent-spot[data-status="WAITING"] .char { animation: none; transform: translateY(2px); }
+    .agent-spot[data-status="WAITING"] .chair { animation: chair-idle 3s ease-in-out infinite; }
+    .agent-spot[data-status="BLOCKED"] .char { animation: blink 1.6s infinite; }
+
+    /* Right panel */
+    .right {
+      grid-area: right;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .right2 {
+      grid-area: right2;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .panel {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      padding: 12px;
+    }
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* Live feed */
+    .feed { display: flex; flex-direction: column; gap: 8px; }
+    .feed-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      animation: fadein .4s ease both;
+    }
+    .feed-item .time {
+      font-variant-numeric: tabular-nums;
+      color: var(--text-dim);
+      font-size: 11px;
+      min-width: 42px;
+    }
+    .feed-item .msg { font-size: 13px; color: var(--text); line-height: 1.35; }
+    .feed-item .dot { width: 6px; height: 6px; border-radius: 999px; margin-top: 6px; flex-shrink: 0; }
+
+    /* Sidebar detail */
+    .detail {
+      position: fixed;
+      right: 12px; top: 84px; bottom: 12px;
+      width: 340px;
+      z-index: 20;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(17,24,39,0.96), rgba(15,23,42,0.98)),
+        rgba(0,0,0,0.6);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      display: none;
+      flex-direction: column;
+      overflow: auto;
+    }
+    .detail.open { display: flex; }
+    .detail .hero {
+      position: relative;
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(34,211,238,0.08), rgba(129,140,248,0.06), transparent);
+    }
+    .detail .hero .avatar {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: grid; place-items: center; font-size: 26px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.00));
+    }
+    .detail .fields { display: flex; flex-direction: column; gap: 10px; padding: 14px; }
+    .field {
+      display: flex; flex-direction: column; gap: 2px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.015);
+    }
+    .field .k { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); }
+    .field .v { font-size: 13px; }
+
+    /* Talent pool */
+    .talent-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .talent-card {
+      border-radius: 12px;
+      border: 2px dashed rgba(255,255,255,0.1);
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 10px),
+        rgba(255,255,255,0.01);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .talent-card:hover { transform: translateY(-3px); border-color: rgba(251,191,36,0.5); }
+    .talent-card .avatar { opacity: 0.9; }
+    .talent-card .name { font-size: 12px; color: var(--text-dim); }
+    .talent-card .role { font-size: 10px; color: var(--text-dim); opacity: 0.75; }
+    .talent-card .chair {
+      width: 36px; height: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid rgba(255,255,255,0.14);
+      border-radius: 6px 6px 3px 3px;
+      margin-top: 6px;
+      animation: chair-idle 3s ease-in-out infinite;
+    }
+
+    /* Hierarchy map */
+    .hierarchy {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .h-node {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      font-size: 12px;
+      text-align: center;
+      min-width: 140px;
+    }
+    .h-branch {
+      width: 1px; height: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
+    }
+    .h-row { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        grid-template-areas:
+          "header"
+          "office"
+          "nav"
+          "right2"
+          "right";
+      }
+      .detail { left: 12px; right: 12px; width: auto; top: auto; bottom: 12px; max-height: 45vh; }
+      .talent-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header glass" style="grid-area:header">
+      <div class="flex items-center gap-3">
+        <div class="avatar">🤖</div>
+        <div>
+          <div class="text-xs text-dim">COMMAND CENTER</div>
+          <h1>AI HUB</h1>
+        </div>
+      </div>
+      <div class="kpis" id="kpis">
+        <div class="kpi"><span class="label">Agents</span><span class="value" id="kpi-agents">3</span></div>
+        <div class="kpi"><span class="label">Online</span><span class="value" id="kpi-online">3</span></div>
+        <div class="kpi"><span class="label">Working</span><span class="value" id="kpi-working">2</span></div>
+        <div class="kpi"><span class="label">Waiting</span><span class="value" id="kpi-waiting">10</span></div>
+        <div class="kpi"><span class="label">Projects</span><span class="value" id="kpi-projects">3</span></div>
+        <div class="kpi"><span class="label">Tasks</span><span class="value" id="kpi-tasks">12</span></div>
+        <div class="kpi"><span class="label">Alerts</span><span class="value" id="kpi-alerts">0</span></div>
+      </div>
+    </header>
+
+    <!-- Nav -->
+    <nav class="nav" id="nav">
+      <div class="nav-section">
+        <h3>Operação</h3>
+        <div id="agent-list"></div>
+      </div>
+      <div class="nav-section">
+        <h3>Talent Pool</h3>
+        <div id="talent-list"></div>
+      </div>
+      <div class="nav-section">
+        <h3>Projetos</h3>
+        <div id="project-list"></div>
+      </div>
+      <div class="nav-section">
+        <h3>Estrutura</h3>
+        <div class="hierarchy" id="hierarchy"></div>
+      </div>
+    </nav>
+
+    <!-- Office -->
+    <section class="office glass" id="office">
+      <div class="office-header">
+        <div class="office-title">Escritório Virtual · AI HUB</div>
+        <div class="flex items-center gap-2">
+          <span class="status-dot status-ONLINE"></span>
+          <span class="text-xs text-dim">Sincronizado</span>
+        </div>
+      </div>
+      <div class="stage" id="stage"></div>
+      <div class="office-floor"></div>
+    </section>
+
+    <!-- Right panels -->
+    <aside class="right">
+      <div class="panel">
+        <h3>Live Activity</h3>
+        <div class="feed" id="feed"></div>
+      </div>
+      <div class="panel">
+        <h3>Evolução</h3>
+        <div class="flex gap-2 text-xs">
+          <div class="field"><span class="k">Level</span><span class="v">03</span></div>
+          <div class="field"><span class="k">Maturidade</span><span class="v">32%</span></div>
+          <div class="field"><span class="k">Missions</span><span class="v">127</span></div>
+          <div class="field"><span class="k">Automações</span><span class="v">24</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <aside class="right2">
+      <div class="panel">
+        <h3>Talent Pool</h3>
+        <div class="talent-grid" id="talent-grid"></div>
+      </div>
+      <div class="panel">
+        <h3>Hire Agent</h3>
+        <div class="text-sm text-dim" style="margin-bottom:8px">Selecione um agente da pool para contratar.</div>
+        <div class="flex gap-2">
+          <button id="btn-hire" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer">Contratar Selecionado</button>
+        </div>
+        <div id="hire-status" class="text-xs text-dim" style="margin-top:8px"></div>
+      </div>
+    </aside>
+
+    <!-- Detail sidebar -->
+    <aside class="detail" id="detail">
+      <div class="hero">
+        <div class="flex items-center gap-3">
+          <div class="avatar" id="detail-avatar"></div>
+          <div>
+            <div style="font-size:18px;font-weight:700" id="detail-name"></div>
+            <div class="text-xs text-dim" id="detail-role"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fields" id="detail-fields"></div>
+    </aside>
+  </div>
+
+  <script>
+    // 1. DATA LAYER — carrega de JSON externo
+    let data = {};
+    async function loadData() {
+      try {
+        const res = await fetch('./src/data/ai-hub.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Falha ao carregar dados');
+        data = await res.json();
+      } catch (e) {
+        console.error(e);
+        data = { humans: [], agents: [], talentPool: [], projects: [], tasks: [], feed: [] };
+      }
+      refresh();
+    }
+
+    // -----------------------
+    // 2. STATE
+    // -----------------------
+    let selectedAgentId = null;
+    let selectedTalentId = null;
+
+    // -----------------------
+    // 3. RENDER HELPERS
+    // -----------------------
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    function statusClass(status) {
+      return "status-" + status.replace(" ", "_").replace("/", "_");
+    }
+
+    function renderKPIs() {
+      const agents = [...data.humans, ...data.agents];
+      const online = agents.filter(a => a.status !== "OFFLINE").length;
+      const working = agents.filter(a => a.status === "WORKING").length;
+      const waiting = data.talentPool.length + agents.filter(a => a.status === "WAITING" || a.status === "OFFLINE").length;
+      $("#kpi-agents").textContent = String(agents.length).padStart(2, "0");
+      $("#kpi-online").textContent = String(online).padStart(2, "0");
+      $("#kpi-working").textContent = String(working).padStart(2, "0");
+      $("#kpi-waiting").textContent = String(waiting).padStart(2, "0");
+      $("#kpi-projects").textContent = String(data.projects.length).padStart(2, "0");
+      $("#kpi-tasks").textContent = String(data.tasks.length).padStart(2, "0");
+      $("#kpi-alerts").textContent = "00";
+    }
+
+    function renderAgentList() {
+      const container = $("#agent-list");
+      container.innerHTML = "";
+      data.humans.forEach(h => container.appendChild(rowFor(h, true)));
+      data.agents.forEach(a => container.appendChild(rowFor(a, false)));
+    }
+
+    function rowFor(entity, isHuman) {
+      const row = document.createElement("div");
+      row.className = "agent-row" + (selectedAgentId === entity.id ? " active" : "");
+      row.dataset.id = entity.id;
+      row.innerHTML = `
+        <div class="avatar" style="border-color:${entity.color || 'var(--border)'}">${entity.emoji}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${entity.name}</div>
+          <div class="text-xs text-dim">${entity.role}</div>
+        </div>
+        <div class="status-dot ${statusClass(entity.status)}"></div>
+      `;
+      row.addEventListener("click", () => openDetail(entity));
+      return row;
+    }
+
+    function renderTalentList() {
+      const container = $("#talent-list");
+      container.innerHTML = "";
+      data.talentPool.slice(0, 4).forEach(t => {
+        const row = document.createElement("div");
+        row.className = "agent-row" + (selectedTalentId === t.id ? " active" : "");
+        row.dataset.id = t.id;
+        row.innerHTML = `
+          <div class="avatar">${t.emoji}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600">${t.name}</div>
+            <div class="text-xs text-dim">${t.role} · ⏳ Waiting</div>
+          </div>
+        `;
+        row.addEventListener("click", () => { selectedTalentId = t.id; renderTalentList(); renderTalentGrid(); });
+        container.appendChild(row);
+      });
+    }
+
+    function renderProjectList() {
+      const container = $("#project-list");
+      container.innerHTML = "";
+      data.projects.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "agent-row";
+        row.innerHTML = `
+          <div class="avatar">📁</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600">${p.name}</div>
+            <div class="text-xs text-dim">${p.agents.length} agentes · ${p.progress}%</div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderHierarchy() {
+      const el = $("#hierarchy");
+      const humans = data.humans.map(h => ({ ...h, children: [] }));
+      const agents = data.agents.map(a => ({ ...a, children: [] }));
+      const master = agents.find(a => a.id === "master");
+      const flavio = humans[0];
+      const creatives = agents.filter(a => a.department === "Creative");
+      const products = agents.filter(a => a.department === "Product");
+
+      const buildNode = (n) => `<div class="h-node"><div style="font-weight:700">${n.emoji} ${n.name}</div><div class="text-xs text-dim">${n.role}</div></div>`;
+      el.innerHTML = `
+        ${buildNode(flavio)}
+        <div class="h-branch"></div>
+        ${buildNode(master)}
+        <div class="h-row">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            ${creatives.map(c => `<div>${buildNode(c)}</div>`).join("")}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            ${products.map(p => `<div>${buildNode(p)}</div>`).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function drawPixelSprite(canvas, rows, palette) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = rows[0].length;
+      canvas.height = rows.length;
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      rows.forEach((row, y) => {
+        [...row].forEach((ch, x) => {
+          const color = palette[ch];
+          if (!color || color === 'transparent') return;
+          ctx.fillStyle = color;
+          ctx.fillRect(x, y, 1, 1);
+        });
+      });
+    }
+
+    const PX = {
+      '.': 'transparent',
+      '#': '#0b1020',
+      'W': '#e2e8f0',
+      'S': '#1f2937',
+      'B': '#334155',
+      'Y': '#fbbf24',
+      'G': '#34d399',
+      'R': '#f87171',
+      'C': '#c084fc',
+      'M': '#60a5fa',
+      'O': '#f97316',
+      'P': '#22d3ee',
+      'D': '#fde68a'
+    };
+
+    const CHAR = {
+      master: [
+        '..DWW.',
+        '.DWWWD',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ],
+      'creative-director': [
+        '..CWW.',
+        '.CWWWC',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ],
+      'product-designer': [
+        '..MWM.',
+        '.MWWWM',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ],
+      flavio: [
+        '..YWW.',
+        '.YWWWY',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ]
+    };
+
+    function spriteHTMLFor(entity) {
+      const color = entity.color || '#22d3ee';
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='80' viewBox='0 0 64 80' shape-rendering='crispEdges'><rect x='20' y='4' width='24' height='6' fill='${color}' /><rect x='12' y='10' width='40' height='10' fill='${color}' /><rect x='4' y='20' width='56' height='12' fill='${color}' /><rect x='8' y='32' width='48' height='12' fill='${color}' /><rect x='4' y='44' width='56' height='12' fill='${color}' /><rect x='16' y='56' width='32' height='10' fill='${color}' /><rect x='24' y='66' width='16' height='6' fill='${color}' /><rect x='20' y='4' width='24' height='6' fill='white' opacity='.15' /><rect x='12' y='10' width='40' height='10' fill='white' opacity='.1' /><rect x='20' y='14' width='24' height='2' fill='white' opacity='.2' /></svg>`;
+      const desk = entity.monitor ? '<div class="desk"></div>' : '';
+      const monitor = entity.monitor ? '<div class="monitor"></div>' : '';
+      return `<div class="sprite-pixel">${desk}${monitor}${svg}<div class="status-badge">${entity.status.replace('_',' ')}</div></div>`;
+    }
+
+    function renderStage() {
+      const stage = $("#stage");
+      stage.innerHTML = "";
+      const slots = [
+        { x: 3, y: 1, w: 3, h: 3, entity: data.agents.find(a => a.id === "master") },
+        { x: 8, y: 1, w: 3, h: 3, entity: data.agents.find(a => a.id === "creative-director") },
+        { x: 2, y: 4, w: 3, h: 3, entity: data.agents.find(a => a.id === "product-designer") },
+        { x: 6, y: 4, w: 3, h: 3, entity: data.humans[0] }
+      ];
+      slots.forEach(s => {
+        if (!s.entity) return;
+        const spot = document.createElement("div");
+        spot.className = "agent-spot";
+        spot.dataset.status = s.entity.status;
+        spot.style.gridColumn = `${s.x} / span ${s.w}`;
+        spot.style.gridRow = `${s.y} / span ${s.h}`;
+        const isWaiting = s.entity.status === "WAITING";
+        spot.innerHTML = `<div class="sprite">${spriteHTMLFor(s.entity)}</div>`;
+        spot.addEventListener("click", () => openDetail(s.entity));
+        stage.appendChild(spot);
+      });
+    }
+
+    function renderFeed() {
+      const feed = $("#feed");
+      feed.innerHTML = "";
+      data.feed.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "feed-item";
+        el.innerHTML = `
+          <div class="dot" style="background:${item.color}"></div>
+          <div class="time">${item.time}</div>
+          <div class="msg">${item.msg}</div>
+        `;
+        feed.appendChild(el);
+      });
+    }
+
+    function renderTalentGrid() {
+      const grid = $("#talent-grid");
+      grid.innerHTML = "";
+      data.talentPool.forEach(t => {
+        const card = document.createElement("div");
+        card.className = "talent-card";
+        card.innerHTML = `
+          <div class="avatar">${t.emoji}</div>
+          <div class="name">${t.name}</div>
+          <div class="role">${t.role}</div>
+          <div class="chair"></div>
+        `;
+        card.addEventListener("click", () => { selectedTalentId = t.id; renderTalentList(); renderTalentGrid(); $("#hire-status").textContent = `Selecionado: ${t.name}`; });
+        grid.appendChild(card);
+      });
+    }
+
+    function renderDetail(entity) {
+      $("#detail-avatar").textContent = entity.emoji;
+      $("#detail-name").textContent = entity.name;
+      $("#detail-role").textContent = entity.role;
+      const fields = $("#detail-fields");
+      fields.innerHTML = "";
+      const map = [
+        { k: "STATUS", v: entity.status, color: true },
+        { k: "PROJECT", v: entity.project || "—" },
+        { k: "CURRENT TASK", v: entity.task || "—" },
+        { k: "PROGRESS", v: (entity.progress ?? 0) + "%" },
+        { k: "LAST ACTIVITY", v: entity.lastActivity || "—" },
+        { k: "NEXT ACTION", v: entity.nextAction || "—" },
+        { k: "COORDINATOR", v: entity.coordinator || "—" },
+        { k: "LOCATION", v: entity.location || "—" }
+      ];
+      map.forEach(item => {
+        const f = document.createElement("div");
+        f.className = "field";
+        f.innerHTML = `<div class="k">${item.k}</div><div class="v" ${item.color ? `style="color:var(--accent)"` : ''}>${item.v}</div>`;
+        fields.appendChild(f);
+      });
+      $$(".agent-spot").forEach(el => el.classList.remove("selected"));
+      const stageCard = Array.from($$(".agent-spot")).find(el => el.textContent.trim().startsWith(entity.emoji));
+      if (stageCard) stageCard.classList.add("selected");
+    }
+
+    function openDetail(entity) {
+      selectedAgentId = entity.id;
+      renderDetail(entity);
+      $("#detail").classList.add("open");
+      renderAgentList();
+    }
+
+    function closeDetail() {
+      selectedAgentId = null;
+      $("#detail").classList.remove("open");
+      $$(".agent-spot").forEach(el => el.classList.remove("selected"));
+      renderAgentList();
+    }
+
+    // -----------------------
+    // 4. INTERACTIONS
+    // -----------------------
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
+    document.getElementById("btn-hire").addEventListener("click", () => {
+      if (!selectedTalentId) { $("#hire-status").textContent = "Selecione um agente na Talent Pool."; return; }
+      const idx = data.talentPool.findIndex(t => t.id === selectedTalentId);
+      if (idx < 0) return;
+      const talent = data.talentPool[idx];
+      const statusEl = $("#hire-status");
+      statusEl.textContent = `Contratando ${talent.name}...`;
+      setTimeout(() => {
+        const newAgent = {
+          id: talent.id, name: talent.name, role: talent.role, emoji: talent.emoji,
+          status: "WORKING", department: talent.role, project: "AI Hub", task: "Onboarding",
+          progress: 0, lastActivity: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          nextAction: "Receber tarefa", coordinator: "Master", isHired: true, location: "Escritório",
+          color: "#fbbf24", monitor: false
+        };
+        data.agents.push(newAgent);
+        data.tasks.push({ id: "t" + Date.now(), agentId: newAgent.id, project: "AI Hub", title: "Onboarding", status: "WORKING", progress: 0 });
+        data.feed.unshift({ time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), msg: `${talent.name} foi contratado e entrou em operação.`, color: "#34d399" });
+        data.talentPool.splice(idx, 1);
+        selectedTalentId = null;
+        refresh();
+        statusEl.textContent = `${talent.name} contratado com sucesso!`;
+      }, 900);
+    });
+
+    document.addEventListener("click", (e) => {
+      const detail = $("#detail");
+      const office = $("#office");
+      const nav = $("#nav");
+      const right = document.querySelector(".right");
+      const right2 = document.querySelector(".right2");
+      if (!detail.contains(e.target) && !office.contains(e.target) && !nav.contains(e.target) && !right.contains(e.target) && !right2.contains(e.target)) closeDetail();
+    });
+
+    // -----------------------
+    // 5. LIVE ACTIVITY SIMULATOR
+    // -----------------------
+    function simulateActivity() {
+      const events = [
+        () => { const a = data.agents[Math.floor(Math.random()*data.agents.length)]; return `${a.name} está atualizando progresso.`; },
+        () => `Master redistribuiu prioridades.`,
+        () => `Novo evento sincronizado em ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}.`,
+        () => `Diretor Criativo finalizou revisão.`
+      ];
+      const colors = ["#22d3ee", "#c084fc", "#60a5fa", "#34d399", "#fbbf24"];
+      const msg = events[Math.floor(Math.random()*events.length)]();
+      data.feed.unshift({ time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), msg, color: colors[Math.floor(Math.random()*colors.length)] });
+      if (data.feed.length > 30) data.feed.pop();
+      renderFeed();
+    }
+    setInterval(simulateActivity, 7000);
+
+    // -----------------------
+    // 6. INIT + REFRESH
+    // -----------------------
+    function refresh() {
+      renderKPIs();
+      renderAgentList();
+      renderTalentList();
+      renderProjectList();
+      renderHierarchy();
+      renderStage();
+      renderFeed();
+      renderTalentGrid();
+      if (selectedAgentId) {
+        const all = [...data.humans, ...data.agents];
+        const found = all.find(a => a.id === selectedAgentId);
+        if (found) renderDetail(found); else closeDetail();
+      }
+    }
+    loadData();
+  </script>
+</body>
+</html>

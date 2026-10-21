@@ -1,0 +1,643 @@
+{
+  "automations": [
+    {
+      "id": "62aff27eb213",
+      "name": "hermes-architecture-audit-v2",
+      "status": "ATIVA",
+      "schedule_display": "0 3 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 3 * * *",
+      "next_iso": "2026-09-16T03:00:00-03:00",
+      "next_br": "16/09 03:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "15/09 03:00",
+      "last_iso": "2026-09-15T03:00:13.177626-03:00",
+      "last_status": "error",
+      "dur": "1s",
+      "runs_today": true,
+      "exec_count": 8,
+      "error_count": 7,
+      "err_summary": "Configuração de modelo desatualizada — job não executou para evitar gasto não autorizado. Precisa de re-pinagem.",
+      "objective": "Auditoria de arquitetura do Hermes (v2).",
+      "audience": "Painel arquitetura Hermes",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "local",
+      "enabled": true,
+      "state": "scheduled",
+      "created_br": "07/09 15:57",
+      "paused_br": "—",
+      "timeline": [
+        {
+          "t": "15/09 03:00",
+          "event": "Falhou"
+        },
+        {
+          "t": "14/09 09:02",
+          "event": "Falhou"
+        },
+        {
+          "t": "13/09 03:00",
+          "event": "Falhou"
+        },
+        {
+          "t": "12/09 03:00",
+          "event": "Falhou"
+        },
+        {
+          "t": "11/09 14:57",
+          "event": "Falhou"
+        },
+        {
+          "t": "10/09 05:26",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 8,
+      "deliver": "local",
+      "origin_platform": null,
+      "origin_chat": null
+    },
+    {
+      "id": "fa194a8fb6a2",
+      "name": "EPQ · BRIEFING DIÁRIO DE ATENDIMENTO",
+      "status": "PAUSADA",
+      "schedule_display": "0 9 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 9 * * *",
+      "next_iso": "2026-09-06T09:00:00-03:00",
+      "next_br": "06/09 09:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "05/09 09:15",
+      "last_iso": "2026-09-05T09:15:09.100336-03:00",
+      "last_status": "ok",
+      "dur": "14.8min",
+      "runs_today": false,
+      "exec_count": 1,
+      "error_count": 0,
+      "err_summary": null,
+      "objective": "Briefing diário de atendimento EPQ para o grupo WhatsApp.",
+      "audience": "Equipe EPQ (WhatsApp)",
+      "skills": [
+        "hermes-send-messaging",
+        "hermes-send-messaging"
+      ],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "local",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "04/09 23:13",
+      "paused_br": "06/09 00:35",
+      "timeline": [
+        {
+          "t": "05/09 09:00",
+          "event": "Concluído em 05/09 09:15"
+        }
+      ],
+      "repeat_completed": 1,
+      "deliver": "origin",
+      "origin_platform": null,
+      "origin_chat": null
+    },
+    {
+      "id": "42db2020a0de",
+      "name": "Checkpoint Master 18h",
+      "status": "PAUSADA",
+      "schedule_display": "0 18 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 18 * * *",
+      "next_iso": "2026-09-06T18:00:00-03:00",
+      "next_br": "06/09 18:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "05/09 18:07",
+      "last_iso": "2026-09-05T18:07:03.379197-03:00",
+      "last_status": "ok",
+      "dur": "6.5min",
+      "runs_today": false,
+      "exec_count": 16,
+      "error_count": 5,
+      "err_summary": null,
+      "objective": "Checkpoint diário das áreas do Master: Drive EPQ, Gerador de Imagens, Painel Command Center, IA Hib e Cérebro. Status, próximos passos, links atualizados, commit/push/publish.",
+      "audience": "Master / Espaço EPQ",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "telegram / Flavio Guedes",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "21/08 17:22",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "05/09 18:00",
+          "event": "Concluído em 05/09 18:07"
+        },
+        {
+          "t": "04/09 18:00",
+          "event": "Concluído em 04/09 18:14"
+        },
+        {
+          "t": "03/09 18:00",
+          "event": "Concluído em 03/09 18:05"
+        },
+        {
+          "t": "02/09 18:00",
+          "event": "Falhou"
+        },
+        {
+          "t": "01/09 18:00",
+          "event": "Falhou"
+        },
+        {
+          "t": "31/08 23:26",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 16,
+      "deliver": "origin",
+      "origin_platform": "telegram",
+      "origin_chat": "Flavio Guedes"
+    },
+    {
+      "id": "595e78f42898",
+      "name": "Lembrete diário — Reestruturação do portfolio/GitHub",
+      "status": "PAUSADA",
+      "schedule_display": "0 22 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 22 * * *",
+      "next_iso": "2026-09-06T22:00:00-03:00",
+      "next_br": "06/09 22:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "05/09 23:17",
+      "last_iso": "2026-09-05T23:17:37.283647-03:00",
+      "last_status": "ok",
+      "dur": "49s",
+      "runs_today": false,
+      "exec_count": 9,
+      "error_count": 1,
+      "err_summary": null,
+      "objective": "Lembrete diário para Flávio avançar com a reestruturação do portfolio/GitHub. Micro-compromisso de 15–30 min.",
+      "audience": "Flávio Guedes",
+      "skills": [],
+      "tools": [
+        "file"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "telegram / Flavio Guedes",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "27/08 22:36",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "05/09 23:16",
+          "event": "Concluído em 05/09 23:17"
+        },
+        {
+          "t": "04/09 22:00",
+          "event": "Concluído em 04/09 22:00"
+        },
+        {
+          "t": "03/09 22:00",
+          "event": "Concluído em 03/09 22:00"
+        },
+        {
+          "t": "03/09 09:12",
+          "event": "Concluído em 03/09 11:56"
+        },
+        {
+          "t": "01/09 22:00",
+          "event": "Concluído em 01/09 22:09"
+        },
+        {
+          "t": "31/08 23:26",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 9,
+      "deliver": "origin",
+      "origin_platform": "telegram",
+      "origin_chat": "Flavio Guedes"
+    },
+    {
+      "id": "31c3391c1c76",
+      "name": "Treinamento Noturno Master",
+      "status": "PAUSADA",
+      "schedule_display": "0 0 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 0 * * *",
+      "next_iso": "2026-09-07T00:00:00-03:00",
+      "next_br": "07/09 00:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "06/09 00:07",
+      "last_iso": "2026-09-06T00:07:05.251093-03:00",
+      "last_status": "ok",
+      "dur": "6.2min",
+      "runs_today": false,
+      "exec_count": 15,
+      "error_count": 3,
+      "err_summary": null,
+      "objective": "Treinamento noturno dos agentes do Master: revisão do trabalho do dia, desafios, críticas, correções e consolidação de aprendizado até às 08:30.",
+      "audience": "Agentes Master",
+      "skills": [
+        "master-nightly-training",
+        "master-nightly-training"
+      ],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "telegram / Flavio Guedes",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "22/08 01:41",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "06/09 00:00",
+          "event": "Concluído em 06/09 00:07"
+        },
+        {
+          "t": "05/09 00:00",
+          "event": "Concluído em 05/09 00:10"
+        },
+        {
+          "t": "04/09 00:12",
+          "event": "Falhou"
+        },
+        {
+          "t": "03/09 09:12",
+          "event": "Concluído em 03/09 12:05"
+        },
+        {
+          "t": "02/09 00:00",
+          "event": "Concluído em 02/09 00:28"
+        },
+        {
+          "t": "01/09 04:27",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 15,
+      "deliver": "origin",
+      "origin_platform": "telegram",
+      "origin_chat": "Flavio Guedes"
+    },
+    {
+      "id": "ce6e9c129a79",
+      "name": "Hermes GitHub Mirror Sync",
+      "status": "PAUSADA",
+      "schedule_display": "0 4 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 4 * * *",
+      "next_iso": "2026-09-07T04:00:00-03:00",
+      "next_br": "07/09 04:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "06/09 04:01",
+      "last_iso": "2026-09-06T04:01:45.114113-03:00",
+      "last_status": "ok",
+      "dur": "1.6min",
+      "runs_today": false,
+      "exec_count": 2,
+      "error_count": 1,
+      "err_summary": null,
+      "objective": "Sincronização de espelhamento do repositório Hermes no GitHub.",
+      "audience": "Repositório Hermes (local/GitHub)",
+      "skills": [],
+      "tools": [
+        "terminal",
+        "file"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "local",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "04/09 22:09",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "06/09 04:00",
+          "event": "Concluído em 06/09 04:01"
+        },
+        {
+          "t": "05/09 04:00",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 2,
+      "deliver": "local",
+      "origin_platform": null,
+      "origin_chat": null
+    },
+    {
+      "id": "ad2e783b7e10",
+      "name": "Founder Radar Daily 10h",
+      "status": "PAUSADA",
+      "schedule_display": "0 10 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 10 * * *",
+      "next_iso": "2026-09-07T10:00:00-03:00",
+      "next_br": "07/09 10:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "06/09 10:38",
+      "last_iso": "2026-09-06T10:38:01.520071-03:00",
+      "last_status": "ok",
+      "dur": "2.6min",
+      "runs_today": false,
+      "exec_count": 3,
+      "error_count": 2,
+      "err_summary": null,
+      "objective": "Founder Radar diário às 10h.",
+      "audience": "Painel Founder Radar",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "local",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "03/09 13:54",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "06/09 10:35",
+          "event": "Concluído em 06/09 10:38"
+        },
+        {
+          "t": "05/09 10:00",
+          "event": "Falhou"
+        },
+        {
+          "t": "04/09 10:25",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 3,
+      "deliver": "local",
+      "origin_platform": null,
+      "origin_chat": null
+    },
+    {
+      "id": "a49ff2bf0763",
+      "name": "HERMES — MISSÃO DIÁRIA: RELATÓRIO EPQ + AVISO AO G",
+      "status": "CONCLUÍDA",
+      "schedule_display": "0 8 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 8 * * *",
+      "next_iso": "2026-09-16T08:00:00-03:00",
+      "next_br": "16/09 08:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "15/09 08:12",
+      "last_iso": "2026-09-15T08:12:02.006360-03:00",
+      "last_status": "ok",
+      "dur": "11.5min",
+      "runs_today": true,
+      "exec_count": 4,
+      "error_count": 0,
+      "err_summary": null,
+      "objective": "Missão diária Hermes: relatório EPQ + aviso ao grupo.",
+      "audience": "Equipe EPQ (WhatsApp)",
+      "skills": [
+        "hermes-send-messaging",
+        "hermes-send-messaging"
+      ],
+      "tools": [
+        "—"
+      ],
+      "model": "upstage/solar-pro4:free (snapshot)",
+      "channel": "local",
+      "enabled": true,
+      "state": "scheduled",
+      "created_br": "11/09 20:45",
+      "paused_br": "—",
+      "timeline": [
+        {
+          "t": "15/09 08:00",
+          "event": "Concluído em 15/09 08:12"
+        },
+        {
+          "t": "14/09 09:02",
+          "event": "Concluído em 14/09 09:13"
+        },
+        {
+          "t": "13/09 10:28",
+          "event": "Concluído em 13/09 10:33"
+        },
+        {
+          "t": "12/09 10:33",
+          "event": "Concluído em 12/09 10:50"
+        }
+      ],
+      "repeat_completed": 4,
+      "deliver": "origin",
+      "origin_platform": null,
+      "origin_chat": null
+    },
+    {
+      "id": "c503f0d82160",
+      "name": "Lembrete leads email amanhã 12h",
+      "status": "PAUSADA",
+      "schedule_display": "0 12 29 8 *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 12 29 8 *",
+      "next_iso": "2027-08-29T12:00:00-03:00",
+      "next_br": "29/08 12:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "29/08 12:07",
+      "last_iso": "2026-08-29T12:07:46.515463-03:00",
+      "last_status": "ok",
+      "dur": "7.3min",
+      "runs_today": false,
+      "exec_count": 1,
+      "error_count": 0,
+      "err_summary": null,
+      "objective": "Lembrete do follow-up dos leads de email no dia 29/08 às 12h.",
+      "audience": "Flávio Guedes",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "telegram / Flavio Guedes",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "29/08 01:04",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "29/08 12:00",
+          "event": "Concluído em 29/08 12:07"
+        }
+      ],
+      "repeat_completed": 1,
+      "deliver": "origin",
+      "origin_platform": "telegram",
+      "origin_chat": "Flavio Guedes"
+    },
+    {
+      "id": "350449c4f959",
+      "name": "Lembrete leads email domingo 12h",
+      "status": "PAUSADA",
+      "schedule_display": "0 12 31 8 *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 12 31 8 *",
+      "next_iso": "2027-08-31T12:00:00-03:00",
+      "next_br": "31/08 12:00",
+      "has_next": true,
+      "next_in_past": false,
+      "last_br": "31/08 12:02",
+      "last_iso": "2026-08-31T12:02:16.548224-03:00",
+      "last_status": "ok",
+      "dur": "2.0min",
+      "runs_today": false,
+      "exec_count": 1,
+      "error_count": 0,
+      "err_summary": null,
+      "objective": "Lembrete do follow-up dos leads de email no domingo 31/08 às 12h.",
+      "audience": "Flávio Guedes",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "telegram / Flavio Guedes",
+      "enabled": false,
+      "state": "paused",
+      "created_br": "29/08 01:04",
+      "paused_br": "06/09 14:07",
+      "timeline": [
+        {
+          "t": "31/08 12:00",
+          "event": "Concluído em 31/08 12:02"
+        }
+      ],
+      "repeat_completed": 1,
+      "deliver": "origin",
+      "origin_platform": "telegram",
+      "origin_chat": "Flavio Guedes"
+    },
+    {
+      "id": "f718bf77fa10",
+      "name": "Job Hunter Telegram Update",
+      "status": "PAUSADA",
+      "schedule_display": "0 * * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 * * * *",
+      "next_iso": null,
+      "next_br": "—",
+      "has_next": false,
+      "next_in_past": false,
+      "last_br": "01/09 19:45",
+      "last_iso": "2026-09-01T19:45:14.939745-03:00",
+      "last_status": "ok",
+      "dur": "44.6min",
+      "runs_today": false,
+      "exec_count": 24,
+      "error_count": 3,
+      "err_summary": null,
+      "objective": "Atualização do painel de Job Hunter no Telegram.",
+      "audience": "Painel Telegram Job Hunter",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "stepfun/step-3.7-flash:free (snapshot)",
+      "channel": "local",
+      "enabled": false,
+      "state": "completed",
+      "created_br": "31/08 00:52",
+      "paused_br": "—",
+      "timeline": [
+        {
+          "t": "01/09 19:00",
+          "event": "Concluído em 01/09 19:45"
+        },
+        {
+          "t": "01/09 18:00",
+          "event": "Concluído em 01/09 18:17"
+        },
+        {
+          "t": "01/09 17:00",
+          "event": "Concluído em 01/09 17:13"
+        },
+        {
+          "t": "01/09 16:00",
+          "event": "Concluído em 01/09 16:20"
+        },
+        {
+          "t": "01/09 14:00",
+          "event": "Concluído em 01/09 15:07"
+        },
+        {
+          "t": "01/09 13:00",
+          "event": "Concluído em 01/09 13:22"
+        }
+      ],
+      "repeat_completed": 24,
+      "deliver": "telegram",
+      "origin_platform": null,
+      "origin_chat": null
+    },
+    {
+      "id": "a172f8586d31",
+      "name": "EBD escala record",
+      "status": "PAUSADA",
+      "schedule_display": "0 8 * * *",
+      "schedule_kind": "cron",
+      "cron_expr": "0 8 * * *",
+      "next_iso": null,
+      "next_br": "—",
+      "has_next": false,
+      "next_in_past": false,
+      "last_br": "09/09 08:00",
+      "last_iso": "2026-09-09T08:00:25.135502-03:00",
+      "last_status": "error",
+      "dur": "1s",
+      "runs_today": false,
+      "exec_count": 1,
+      "error_count": 1,
+      "err_summary": "Script/arquivo referenciado não existe no hermes — corrigir caminho do job.",
+      "objective": "Escala record EBD (5° andar).",
+      "audience": "EBD / Grupo Telegram",
+      "skills": [],
+      "tools": [
+        "—"
+      ],
+      "model": "?",
+      "channel": "telegram / Flavio Guedes",
+      "enabled": false,
+      "state": "completed",
+      "created_br": "08/09 14:26",
+      "paused_br": "—",
+      "timeline": [
+        {
+          "t": "09/09 08:00",
+          "event": "Falhou"
+        }
+      ],
+      "repeat_completed": 1,
+      "deliver": "origin",
+      "origin_platform": "telegram",
+      "origin_chat": "Flavio Guedes"
+    }
+  ],
+  "generated_at": "2026-09-15T11:24:56.435784"
+}

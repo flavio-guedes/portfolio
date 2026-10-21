@@ -1,0 +1,187 @@
+{
+  "patterns": {
+    "navigation": [
+      {
+        "id": "navigation-0",
+        "name": "Command Palette Central",
+        "description": "Paleta de comandos como centro de navegação e ações.",
+        "problem": "Navegação profunda exige muitos cliques para alcançar ações.",
+        "when_to_use": "Sistemas com muitas telas/ações, power users, ferramentas de produtividade.",
+        "when_not_to_use": "Sistemas simples com poucas ações, usuários iniciantes.",
+        "efficiency_impact": "Alto — reduz cliques de N para 1-2.",
+        "adaptation": "Adaptável para dashboards, CRMs, ferramentas de IA.",
+        "examples": ["Linear", "Raycast", "Resend"],
+        "added_at": "2026-08-21T00:00:00"
+      },
+      {
+        "id": "navigation-1",
+        "name": "Spatial Navigation / Spaces",
+        "description": "Agrupamento espacial de contextos de trabalho.",
+        "problem": "Muitas abas/telas simultâneas geram desorganização cognitiva.",
+        "when_to_use": "Ferramentas com múltiplos projetos/contextos simultâneos.",
+        "when_not_to_use": "Sistemas de tarefa única, fluxos lineares.",
+        "efficiency_impact": "Alto — reduz troca de contexto.",
+        "adaptation": "Adaptável para workspaces multi-projeto, CRMs.",
+        "examples": ["Arc Browser"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "dashboard_layouts": [
+      {
+        "id": "dashboard_layouts-0",
+        "name": "Bento Grid Modular",
+        "description": "Grid de containers modulares reorganizáveis.",
+        "problem": "Dashboards rígidos não se adaptam a diferentes necessidades.",
+        "when_to_use": "Dashboards personalizáveis, home screens de produtos.",
+        "when_not_to_use": "Relatórios fixos com estrutura obrigatória.",
+        "efficiency_impact": "Alto — usuário organiza conforme seu fluxo.",
+        "adaptation": "Adaptável para qualquer dashboard moderno.",
+        "examples": ["Notion Dashboard Kit"],
+        "added_at": "2026-08-21T00:00:00"
+      },
+      {
+        "id": "dashboard_layouts-1",
+        "name": "KPI-First Stack",
+        "description": "KPIs no topo, visualizações no meio, detalhes no fundo.",
+        "problem": "Usuário precisa cavar para encontrar métricas principais.",
+        "when_to_use": "Dashboards executivos, centros de comando.",
+        "when_not_to_use": "Relatórios detalhados sem necessidade de overview.",
+        "efficiency_impact": "Alto — visão instantânea do estado do sistema.",
+        "adaptation": "Universal para dashboards operacionais.",
+        "examples": ["Linear", "Stripe Dashboard", "AI Command Center"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "saas_layouts": [
+      {
+        "id": "saas_layouts-0",
+        "name": "Hero-Feature-Proof-CTA",
+        "description": "Landing page clássica com hero, features, social proof e CTA.",
+        "problem": "Landing pages sem estrutura confundem o visitante.",
+        "when_to_use": "Qualquer landing page de produto SaaS.",
+        "when_not_to_use": "Landing pages experimentais ou one-pagers.",
+        "efficiency_impact": "Alto — conversão otimizada por hierarquia.",
+        "adaptation": "Universal para produtos digitais.",
+        "examples": ["Vercel", "Resend", "Loom"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "ai_interfaces": [
+      {
+        "id": "ai_interfaces-0",
+        "name": "Command-Driven AI Center",
+        "description": "Interface de IA centrada em comando + contexto + resultado.",
+        "problem": "Interfaces de IA genéricas não guiam o usuário.",
+        "when_to_use": "Ferramentas de IA, copilots, assistentes.",
+        "when_not_to_use": "Interfaces puramente visuais ou de lazer.",
+        "efficiency_impact": "Alto — reduz tentativa e erro.",
+        "adaptation": "Adaptável para qualquer produto com IA.",
+        "examples": ["AI Command Center"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "filter_systems": [
+      {
+        "id": "filter_systems-0",
+        "name": "Chip + Facet Filters",
+        "description": "Filtros por chips e facets em linha.",
+        "problem": "Filtros em dropdowns ocultam opções e exigem cliques extras.",
+        "when_to_use": "Tabelas, listas, galerias com múltiplas dimensões.",
+        "when_not_to_use": "Filtros com poucas opções binárias.",
+        "efficiency_impact": "Médio-alto — visibilidade e velocidade.",
+        "adaptation": "Universal para interfaces de dados.",
+        "examples": ["LottieFiles"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "command_centers": [
+      {
+        "id": "command_centers-0",
+        "name": "Central Command Bar",
+        "description": "Barra de comando no topo com ações rápidas e busca.",
+        "problem": "Ações frequentes espalhadas pela interface.",
+        "when_to_use": "Centros de operações, ferramentas de produtividade.",
+        "when_not_to_use": "Interfaces de leitura ou consumo.",
+        "efficiency_impact": "Alto — acesso universal a ações.",
+        "adaptation": "Adaptável para dashboards, CRMs, ferramentas operacionais.",
+        "examples": ["Linear", "AI Command Center", "Raycast"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "cards": [
+      {
+        "id": "cards-0",
+        "name": "Bento Card",
+        "description": "Card modular com conteúdo específico e ações inline.",
+        "problem": "Cards genéricos não comunicam propósito.",
+        "when_to_use": "Dashboards, home screens, galerias.",
+        "when_not_to_use": "Conteúdo linear, fluxos sequenciais.",
+        "efficiency_impact": "Médio — escaneabilidade rápida.",
+        "adaptation": "Universal para conteúdo modular.",
+        "examples": ["Notion Dashboard Kit", "Linear"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "kpis": [
+      {
+        "id": "kpis-0",
+        "name": "KPI com Contexto",
+        "description": "KPI com valor principal + tendência + contexto temporal.",
+        "problem": "KPIs puros não explicam o que o número significa.",
+        "when_to_use": "Dashboards executivos, operacionais.",
+        "when_not_to_use": "Relatórios detalhados com espaço para explicação.",
+        "efficiency_impact": "Alto — decisão instantânea.",
+        "adaptation": "Universal para qualquer dashboard.",
+        "examples": ["Stripe Dashboard", "Linear", "AI Command Center"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "data_visualizations": [
+      {
+        "id": "data_visualizations-0",
+        "name": "Chart com Insight Overlay",
+        "description": "Gráfico com insight automático destacado em overlay.",
+        "problem": "Gráficos puros exigem interpretação manual.",
+        "when_to_use": "Dashboards, relatórios automáticos.",
+        "when_not_to_use": "Análise detalhada onde o usuário explora dados.",
+        "efficiency_impact": "Alto — transforma dado em informação.",
+        "adaptation": "Universal para dashboards data-driven.",
+        "examples": ["Stripe Dashboard", "AI Command Center"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "motion_techniques": [
+      {
+        "id": "motion_techniques-0",
+        "name": "Micro-interactions Contextuais",
+        "description": "Animações sutis que confirmam ações e guiam atenção.",
+        "problem": "Interfaces estáticas não fornecem feedback tátil.",
+        "when_to_use": "Qualquer interface com interações.",
+        "when_not_to_use": "Interfaces de baixa interação ou acessibilidade prioritária.",
+        "efficiency_impact": "Médio — clareza e confirmação.",
+        "adaptation": "Universal, com cuidado para performance.",
+        "examples": ["Linear", "Vercel", "LottieFiles"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ],
+    "design_systems": [
+      {
+        "id": "design_systems-0",
+        "name": "Dark-First System",
+        "description": "Design system com dark mode como padrão.",
+        "problem": "Modos claro/escuro inconsistente cansa usuários.",
+        "when_to_use": "Ferramentas de produtividade, dashboards, uso prolongado.",
+        "when_not_to_use": "Interfaces de leitura prolongada em papel.",
+        "efficiency_impact": "Médio — reduz fadiga visual.",
+        "adaptation": "Universal para interfaces profissionais.",
+        "examples": ["Linear", "Vercel", "Stripe Dashboard"],
+        "added_at": "2026-08-21T00:00:00"
+      }
+    ]
+  },
+  "meta": {
+    "version": "1.0.0",
+    "last_updated": "2026-08-21",
+    "total_patterns": 14
+  }
+}

@@ -1,0 +1,571 @@
+#!/usr/bin/env python3
+"""Watchdog Hermes OS — coleta 15s, snapshot 60s, HTTP :9000."""
+import json, os, socket, threading, time, urllib.request
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from urllib.parse import urlparse, parse_qs
+from datetime import datetime, timedelta
+
+BASE = Path(__file__).resolve().parent
+CFG  = json.loads((BASE/"config/watchdog.json").read_text())
+DATA = BASE/"data"; DATA.mkdir(exist_ok=True)
+INTERVALO = CFG.get("intervalo_segundos", 15)
+
+ANALISE_HORAS = CFG.get("analise_evolucao_horas", 24)   # roda 1x a cada N horas
+DOWN_GRAVE_SEG = CFG.get("down_grave_seg", 300)          # 5 min down = urgente
+SUG_PATH = DATA / "sugestoes.jsonl"
+_ultimo_analise = 0.0
+_servico_down_desde = {}
+SNAPSHOT  = CFG.get("snapshot_segundos", 60)
+PORTA     = CFG.get("porta_api", 9000)
+SERVICOS  = CFG["servicos"]
+
+BRIDGE_SEND  = "http://127.0.0.1:8787/send"
+BRIDGE_TOKEN = os.environ.get("HERMES_BRIDGE_TOKEN", "hermes123")
+FLAVIO_JID   = os.environ.get("FLAVIO_JID", "").strip()
+_ultimo_estado = {}
+estado = {"ts": "", "servicos": {}}
+lock   = threading.Lock()
+_ultimo_snap = 0.0
+
+
+def _post(url, body, headers=None):
+    try:
+        data = json.dumps(body).encode()
+        h = {"Content-Type": "application/json"}; h.update(headers or {})
+        req = urllib.request.Request(url, data=data, headers=h)
+        with urllib.request.urlopen(req, timeout=3) as r:
+            return r.status, r.read().decode()[:200]
+    except Exception as e:
+        return 0, str(e)
+
+
+def alertar(nome, de, para):
+    if not FLAVIO_JID: return
+    if para != "down" or de == "down": return
+    msg = f"⚠️ Hermes OS — {nome} caiu ({de} → {para}) às {datetime.now().strftime('%H:%M:%S')}"
+    st, _ = _post(BRIDGE_SEND, {"number": FLAVIO_JID, "message": msg},
+                  {"Authorization": f"Bearer {BRIDGE_TOKEN}"})
+    print(f"[alerta] {nome} down → bridge HTTP {st}", flush=True)
+
+
+def coletar_custos():
+    """Desativado — /spend/logs retorna 500 neste LiteLLM."""
+    return
+
+
+
+def _ler_metrics(horas=24):
+    corte = datetime.now() - timedelta(hours=horas)
+    out = []
+    if not (DATA / "metrics.jsonl").exists():
+        return out
+    for ln in (DATA / "metrics.jsonl").read_text().splitlines()[-5000:]:
+        try:
+            o = json.loads(ln)
+            if datetime.fromisoformat(o["ts"]) >= corte:
+                out.append(o)
+        except Exception:
+            pass
+    return out
+
+
+def _uptime(amostras, nome):
+    if not amostras: return 0.0
+    ok = sum(1 for a in amostras if a.get("servicos", {}).get(nome, {}).get("status") == "ok")
+    return ok / len(amostras)
+
+
+def _lat(amostras, nome):
+    vals = [a["servicos"][nome].get("latencia_ms") for a in amostras
+            if a.get("servicos", {}).get(nome, {}).get("latencia_ms") is not None]
+    return sum(vals) / len(vals) if vals else 0.0
+
+
+def _gravar_sugestoes(lista, origem="agendada"):
+    linha = {
+        "ts": datetime.now().isoformat(timespec="seconds"),
+        "origem": origem,
+        "sugestoes": lista,
+    }
+    with SUG_PATH.open("a") as f:
+        f.write(json.dumps(linha, ensure_ascii=False) + "\n")
+
+
+def analisar_evolucao():
+    """Roda 1x/dia (ou intervalo configurado). Escreve sugestões."""
+    sugestoes = []
+    am24 = _ler_metrics(24)
+    am1  = _ler_metrics(1)
+    n24  = len(am24)
+
+    # v11 preditiva
+    alvo = 1440
+    if n24 < alvo:
+        eta_h = round((alvo - n24) / 60, 1)
+        sugestoes.append({"fase":"4","pri":"info",
+            "msg": f"v11 preditiva: {n24}/{alvo} amostras · ETA ~{eta_h}h",
+            "msg_cz": f"Prato do dia (previsão): faltam ~{eta_h}h de anotações para servir"})
+    else:
+        sugestoes.append({"fase":"4","pri":"pronto",
+            "msg": f"v11 PRONTA para implementar ({n24} amostras/24h)",
+            "msg_cz": f"Caderno cheio ({n24} anotações/24h) — pode criar o prato do dia"})
+
+    # uptime e latência degradando
+    if am24:
+        servicos = list(am24[-1].get("servicos", {}).keys())
+        for s in servicos:
+            up = _uptime(am24, s)
+            if up < 0.95:
+                sugestoes.append({"fase":"1","pri":"alta",
+                    "msg": f"{s}: uptime {round(up*100,1)}% em 24h",
+                    "msg_cz": f"{s}: ficou fora do posto {round((1-up)*100,1)}% do dia"})
+            l1  = _lat(am1, s)
+            l24 = _lat(am24, s)
+            if l24 > 0 and l1 > l24 * 2 and l1 > 20:
+                sugestoes.append({"fase":"1","pri":"média",
+                    "msg": f"{s}: latência 2× acima da média ({round(l1,1)} vs {round(l24,1)} ms)",
+                    "msg_cz": f"{s}: preparo lento hoje ({round(l1,1)}ms) — 2× mais que o normal"})
+
+    # leads
+    lp = Path.home() / "hermes-bridge" / "leads-autorizados.json"
+    n_leads = 0
+    if lp.exists():
+        try: n_leads = len(json.loads(lp.read_text()).get("leads", []))
+        except Exception: pass
+    if 500 <= n_leads < 5000:
+        sugestoes.append({"fase":"2","pri":"info",
+            "msg": f"{n_leads} leads no CRM — integrar no painel (limite ~5000)",
+            "msg_cz": f"{n_leads} clientes VIP cadastrados — hora de expor no salão"})
+    elif n_leads >= 5000:
+        sugestoes.append({"fase":"2","pri":"alta",
+            "msg": f"⚠ {n_leads} leads — RAM do CRM em risco",
+            "msg_cz": f"⚠ {n_leads} clientes — o caderno não cabe mais na bancada"})
+
+    # número de serviços
+    n_sv = len(am24[-1].get("servicos", {})) if am24 else 0
+    if 12 <= n_sv < 15:
+        sugestoes.append({"fase":"3","pri":"info",
+            "msg": f"{n_sv} serviços — perto do limite de VM (~15)",
+            "msg_cz": f"{n_sv} funcionários no turno — quase hora de abrir 2ª cozinha"})
+    elif n_sv >= 15:
+        sugestoes.append({"fase":"3","pri":"média",
+            "msg": f"{n_sv} serviços — considerar VM standby",
+            "msg_cz": f"{n_sv} funcionários — precisa de filial (VM) para não apertar"})
+
+    if not sugestoes:
+        sugestoes.append({"fase":"1","pri":"info",
+            "msg":"Sistema estável — próximo passo: fix /static/ do daemon",
+            "msg_cz":"Cozinha calma — só falta consertar o quadro do mural (alertas)"})
+
+    ordem = {"alta":0,"pronto":1,"média":2,"info":3}
+    sugestoes.sort(key=lambda x: ordem.get(x["pri"], 9))
+    _gravar_sugestoes(sugestoes, origem="agendada")
+
+
+def loop_evolucao():
+    """Thread separada: roda análise no boot + a cada ANALISE_HORAS."""
+    global _ultimo_analise
+    # primeira análise 30s após o boot
+    time.sleep(30)
+    try:
+        analisar_evolucao()
+        _ultimo_analise = time.time()
+    except Exception as e:
+        try:
+            with (DATA/"watchdog.log").open("a") as f:
+                f.write(f"[evolucao] {e}\n")
+        except Exception: pass
+    while True:
+        time.sleep(300)  # verifica a cada 5 min
+        if time.time() - _ultimo_analise >= ANALISE_HORAS * 3600:
+            try:
+                analisar_evolucao()
+                _ultimo_analise = time.time()
+            except Exception:
+                pass
+
+
+def checar_down_grave(nome, st):
+    """Detecção em tempo real: serviço down por > DOWN_GRAVE_SEG gera sugestão urgente."""
+    agora = time.time()
+    if st["status"] == "down":
+        if nome not in _servico_down_desde:
+            _servico_down_desde[nome] = agora
+        elif agora - _servico_down_desde[nome] >= DOWN_GRAVE_SEG:
+            # evita duplicar (só grava se o último alerta urgente não foi nos últimos 10 min)
+            chave = f"{nome}-urgente"
+            if _servico_down_desde.get(chave, 0) < agora - 600:
+                _gravar_sugestoes([{
+                    "fase":"1","pri":"alta",
+                    "msg": f"🔴 {nome} down há {int((agora-_servico_down_desde[nome])/60)} min",
+                    "msg_cz": f"🔴 {nome} saiu do posto há {int((agora-_servico_down_desde[nome])/60)} min"
+                }], origem="tempo-real")
+                _servico_down_desde[chave] = agora
+    else:
+        _servico_down_desde.pop(nome, None)
+
+
+def checar(s):
+    t0 = time.perf_counter()
+    try:
+        with socket.create_connection((s["host"], s["porta"]), timeout=1.5):
+            return {"status": "ok", "latencia_ms": round((time.perf_counter()-t0)*1000, 2)}
+    except Exception as e:
+        return {"status": "down", "erro": type(e).__name__}
+
+
+def coletar():
+    global _ultimo_snap
+    while True:
+        t = datetime.now().isoformat(timespec="seconds")
+        snap = {s["nome"]: checar(s) for s in SERVICOS}
+        for nome, st in snap.items():
+            try: checar_down_grave(nome, st)
+            except Exception: pass
+        for nome, st in snap.items():
+            ant = _ultimo_estado.get(nome, {}).get("status")
+            if ant == "ok" and st["status"] == "down":
+                alertar(nome, ant, st["status"])
+            _ultimo_estado[nome] = st
+        with lock:
+            estado["ts"], estado["servicos"] = t, snap
+        (DATA/"health.json").write_text(json.dumps(estado, ensure_ascii=False))
+        if time.time() - _ultimo_snap >= SNAPSHOT:
+            with (DATA/"metrics.jsonl").open("a") as f:
+                f.write(json.dumps({"ts": t, "servicos": snap}, ensure_ascii=False) + "\n")
+            _ultimo_snap = time.time()
+        time.sleep(INTERVALO)
+
+
+
+
+    def do_POST(self):
+        u = urlparse(self.path)
+        if u.path == "/api/chat":
+            ln = int(self.headers.get("Content-Length", 0))
+            try:
+                body = json.loads(self.rfile.read(ln).decode() or "{}")
+            except Exception:
+                return self._json({"ok": False, "msg": "JSON inválido"}, 400)
+            return self._json(chat_handler(body))
+        if u.path == "/api/chat/historico":
+            lim = int(parse_qs(u.query).get("n", ["30"])[0])
+            out = []
+            if CHAT_HIST.exists():
+                for ln in CHAT_HIST.read_text().splitlines()[-lim:]:
+                    try: out.append(json.loads(ln))
+                    except: pass
+            return self._json(out)
+
+        self._json({"erro": "not found"}, 404)
+
+
+# ═══════════════ CHAT DO PAINEL (assistente geral) ═══════════════
+CHAT_HIST = DATA / "chat.jsonl"
+
+def _chat_ok(msg, dados=None):  return {"ok": True,  "msg": msg, "dados": dados or {}}
+def _chat_erro(msg):            return {"ok": False, "msg": msg}
+
+# ─── seções do painel (conhecimento base) ───
+SECOES = {
+  "visao":        "Visão Geral — resumo: pipeline, contadores, alertas recentes",
+  "alertas":      "Alertas — problemas detectados pelo watchdog (com sugestão)",
+  "servicos":     "Serviços — os 8 processos monitorados com latência",
+  "modelos":      "Modelos — 14 modelos LLM no LiteLLM",
+  "provedores":   "Provedores — Groq, NVIDIA, OpenRouter, Ollama (chaves)",
+  "logs":         "Logs — tail de arquivos operacionais (watchdog, litellm, agente)",
+  "testes":       "Testes — dispara inferências para validar caminho",
+  "escala":       "Escala — plano em 4 fases com checklist",
+  "sugestoes":    "Sugestões — análise diária do agente de evolução",
+  "watchdog":     "Watchdog :9000 — coleta 15s, snapshot 60s, análise 24h",
+  "daemon":       "Daemon :9100 — painel web operacional",
+  "litellm":      "LiteLLM :4000 — router de modelos",
+  "ollama":       "Ollama :11434 — fogão local",
+  "leads":        "592 leads no CRM (nunca saem da máquina)",
+}
+
+# ─── comandos ───
+def _cmd_resumo():
+    with lock: sv = dict(estado.get("servicos") or {})
+    ok  = sum(1 for v in sv.values() if v.get("status")=="ok")
+    tot = len(sv)
+    n24 = len(_ler_metrics(24))
+    linhas = [
+        f"📊 *Painel Hermes OS* — {tot} serviços · {ok}/{tot} ok · {n24} amostras/24h",
+        "",
+        "Seções: " + " · ".join(SECOES.keys()),
+        "",
+        "Peça: `status`, `sugestões`, `escala`, `modelos`, `provedores`, `logs`, `uptime`, `latência`, `alertas`, `seção <nome>`, `reiniciar <svc>`",
+    ]
+    return _chat_ok("\n".join(linhas))
+
+def _cmd_status():
+    with lock: sv = dict(estado.get("servicos") or {})
+    if not sv: return _chat_ok("Ainda sem dados — aguarde 15s.")
+    linhas = []
+    for n, v in sv.items():
+        e = "🟢" if v.get("status")=="ok" else "🔴"
+        lat = f" · {v.get('latencia_ms','—')} ms" if v.get("latencia_ms") else ""
+        linhas.append(f"{e} {n}{lat}")
+    return _chat_ok("Serviços:\n" + "\n".join(linhas), {"total": len(sv)})
+
+def _cmd_modelos():
+    try:
+        req = urllib.request.Request("http://127.0.0.1:4000/v1/models")
+        with urllib.request.urlopen(req, timeout=3) as r:
+            d = json.loads(r.read())
+        ids = [m.get("id","") for m in d.get("data",[])]
+        return _chat_ok(f"{len(ids)} modelos no LiteLLM:\n" + "\n".join(f"· {i}" for i in ids[:20]))
+    except Exception as e:
+        return _chat_erro(f"Não consegui listar modelos: {e}")
+
+def _cmd_provedores():
+    env = Path.home() / ".hermes_env"
+    chaves = ["GROQ_API_KEY","NVIDIA_API_KEY","OPENROUTER_API_KEY",
+              "ANTHROPIC_API_KEY","GEMINI_API_KEY","CEREBRAS_API_KEY"]
+    linhas = []
+    if env.exists():
+        txt = env.read_text()
+        for k in chaves:
+            ativa = bool(re.search(rf'^export\s+{k}=.+', txt, re.M))
+            linhas.append(f"{'🟢' if ativa else '⚪'} {k}")
+    return _chat_ok("Provedores:\n" + "\n".join(linhas))
+
+def _cmd_alertas():
+    if not (DATA/"alerts.jsonl").exists():
+        return _chat_ok("Sem alertas gravados.")
+    linhas = (DATA/"alerts.jsonl").read_text().splitlines()[-10:]
+    out = []
+    for ln in linhas:
+        try:
+            o = json.loads(ln)
+            ts = (o.get("ts","") or "")[11:16]
+            out.append(f"· [{ts}] {o.get('msg','')[:70]}")
+        except: pass
+    return _chat_ok(f"Últimos {len(out)} alertas:\n" + "\n".join(out) if out else "Sem alertas.")
+
+def _cmd_sugestoes():
+    if not SUG_PATH.exists(): return _chat_ok("Análise roda em ~30s pós-boot.")
+    ultima = None
+    for ln in SUG_PATH.read_text().splitlines()[-5:]:
+        try: ultima = json.loads(ln)
+        except: pass
+    if not ultima: return _chat_ok("Sem sugestões.")
+    arr = ultima.get("sugestoes", [])
+    linhas = [f"• [{s['pri']}] Fase {s['fase']}: {s['msg']}" for s in arr]
+    return _chat_ok(f"{len(arr)} sugestões · origem {ultima.get('origem','—')}:\n" + "\n".join(linhas))
+
+def _cmd_uptime(h=24):
+    am = _ler_metrics(h)
+    if not am: return _chat_ok(f"Sem métricas nas últimas {h}h.")
+    sv = list(am[-1].get("servicos", {}).keys())
+    linhas = []
+    for s in sv:
+        u = _uptime(am, s)
+        e = "🟢" if u >= 0.99 else "🟡" if u >= 0.95 else "🔴"
+        linhas.append(f"{e} {s}: {round(u*100,1)}%")
+    return _chat_ok(f"Uptime {h}h ({len(am)} amostras):\n" + "\n".join(linhas))
+
+def _cmd_latencia():
+    am = _ler_metrics(1)
+    if not am: return _chat_ok("Sem amostras na última hora.")
+    sv = list(am[-1].get("servicos", {}).keys())
+    linhas = [f"· {s}: {round(_lat(am, s),1)} ms" for s in sv]
+    return _chat_ok("Latência média 1h:\n" + "\n".join(linhas))
+
+def _cmd_escala():
+    n24 = len(_ler_metrics(24)); alvo = 1440; pct = round(n24/alvo*100, 1)
+    return _chat_ok(
+        f"Progresso v11: {n24}/{alvo} ({pct}%)\n"
+        "Fase 1 (Endurecer): fix /static/ do daemon\n"
+        "Fase 2 (Integrar): endpoints /api/leads + /api/campanhas\n"
+        "Fase 3 (Distribuir): VM standby — só quando serviços ≥15\n"
+        "Fase 4 (Observar): v11 preditiva em " + str(pct) + "%"
+    )
+
+def _cmd_logs(alvo="watchdog", n=15):
+    mapa = {
+        "watchdog": Path("/tmp/hermes-watchdog.log"),
+        "watchdog.err": Path("/tmp/hermes-watchdog.err"),
+        "litellm": Path.home()/".config/litellm/proxy.log",
+        "agente": DATA/"agente.log",
+        "daemon": BASE/"logs/daemon-stdout.log",
+    }
+    f = mapa.get(alvo)
+    if not f or not f.exists(): return _chat_ok(f"Sem log '{alvo}'. Opções: {list(mapa.keys())}")
+    linhas = f.read_text(errors="ignore").splitlines()[-n:]
+    return _chat_ok(f"Log '{alvo}' ({len(linhas)} linhas):\n" + "\n".join(linhas))
+
+def _cmd_secao(nome):
+    n = nome.lower().strip()
+    for k, v in SECOES.items():
+        if n in k or k in n:
+            return _chat_ok(f"*{k}* → {v}\n\nPara ver: clique na aba correspondente no topo do painel.")
+    return _chat_ok("Seções: " + ", ".join(SECOES.keys()))
+
+def _cmd_ajuda():
+    return _chat_ok(
+        "*Chat do painel* — pergunte qualquer coisa\n\n"
+        "*Atalhos:*\n"
+        "  resumo · status · sugestões · escala\n"
+        "  uptime [24] · latência · alertas · modelos · provedores\n"
+        "  logs [watchdog|litellm|daemon|agente]\n"
+        "  seção <nome>  → explica a aba\n"
+        "  reiniciar <svc>  → daemon · watchdog · litellm · ollama\n"
+        "  ajuda\n\n"
+        "*Texto livre* cai no Ollama local (nunca sai da máquina)."
+    )
+
+def _cmd_reanalisar():
+    try:
+        analisar_evolucao(); return _cmd_sugestoes()
+    except Exception as e:
+        return _chat_erro(f"Falha: {e}")
+
+def _cmd_reiniciar(sv):
+    sv = (sv or "").strip().lower()
+    mapa = {
+        "daemon":   ("cmd", f"pkill -9 -f daemon.py; sleep 1; cd {BASE} && nohup python3 -u daemon.py > logs/daemon-stdout.log 2>&1 &"),
+        "watchdog": ("launchd", "ai.hermes.watchdog-os"),
+        "litellm":  ("cmd", "kill $(cat ~/.config/litellm/proxy.pid 2>/dev/null) 2>/dev/null; sleep 2; nohup litellm --config ~/.config/litellm/litellm_config.yaml --port 4000 > ~/.config/litellm/proxy.log 2>&1 & echo $! > ~/.config/litellm/proxy.pid"),
+        "ollama":   ("cmd", "pkill -x ollama; sleep 2; nohup ollama serve > /tmp/ollama.log 2>&1 &"),
+    }
+    if sv not in mapa: return _chat_erro(f"'{sv}' não mapeado. Opções: {list(mapa.keys())}")
+    tipo, cmd = mapa[sv]
+    try:
+        if tipo == "launchd":
+            subprocess.Popen(["launchctl","kickstart","-k", f"gui/{os.getuid()}/{cmd}"])
+        else:
+            subprocess.Popen(["bash","-lc", cmd])
+        return _chat_ok(f"Reinício de '{sv}' disparado. Digite 'status' em 5s.")
+    except Exception as e:
+        return _chat_erro(f"Falha: {e}")
+
+
+def _chat_dispatch(texto):
+    t = (texto or "").strip()
+    if not t: return _chat_erro("Mensagem vazia.")
+    low = t.lower()
+
+    if any(k in low for k in ("ajuda","help","comandos","?")):          return _cmd_ajuda()
+    if any(k in low for k in ("resumo","visão","visao","overview","painel")): return _cmd_resumo()
+    if any(k in low for k in ("status","saúde","saude","serviços","servicos")): return _cmd_status()
+    if "modelo" in low:                                                 return _cmd_modelos()
+    if "provedor" in low:                                               return _cmd_provedores()
+    if "alerta" in low:                                                 return _cmd_alertas()
+    if "sugest" in low or "o que fazer" in low:                         return _cmd_sugestoes()
+    if "reanal" in low:                                                 return _cmd_reanalisar()
+    if "uptime" in low:
+        m = re.search(r"(\d+)", low); return _cmd_uptime(int(m.group(1)) if m else 24)
+    if "latên" in low or "laten" in low:                                return _cmd_latencia()
+    if "escala" in low or "fase" in low or "progresso" in low:          return _cmd_escala()
+    if "log" in low:
+        partes = low.split(); return _cmd_logs(partes[1] if len(partes)>1 else "watchdog")
+    if "seção" in low or "secao" in low or low.startswith("aba "):
+        partes = t.split(maxsplit=1)
+        return _cmd_secao(partes[1] if len(partes)>1 else "")
+    if low.startswith("reiniciar") or low.startswith("restart"):
+        partes = low.replace("reiniciar","").replace("restart","").strip().split()
+        return _cmd_reiniciar(partes[0] if partes else "")
+
+    # fallback: Ollama local
+    try:
+        body = json.dumps({
+            "model": os.environ.get("OLLAMA_MODEL","llama3.2:1b"),
+            "messages":[{"role":"system","content":"Você é o assistente do painel Hermes OS. Responda curto."},
+                        {"role":"user","content":t}], "stream": False
+        }).encode()
+        req = urllib.request.Request("http://127.0.0.1:11434/api/chat",
+            data=body, headers={"Content-Type":"application/json"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            j = json.loads(r.read())
+            resp = j.get("message",{}).get("content","")
+            if resp: return _chat_ok(resp, {"via":"ollama"})
+    except Exception:
+        pass
+
+    return _chat_ok("Não entendi. Digite **ajuda** para ver os comandos.")
+
+
+def chat_handler(body):
+    try:
+        msg = body.get("msg","")
+        r = _chat_dispatch(msg)
+        with CHAT_HIST.open("a") as f:
+            f.write(json.dumps({"ts":datetime.now().isoformat(timespec="seconds"),
+                                "user":msg,"bot":r.get("msg",""),"ok":r.get("ok",False)},
+                               ensure_ascii=False)+"\n")
+        return r
+    except Exception as e:
+        return _chat_erro(f"Erro: {e}")
+
+class H(BaseHTTPRequestHandler):
+    daemon_threads = True
+    def log_message(self, *a): pass
+    def _json(self, obj, code=200):
+        b = json.dumps(obj, ensure_ascii=False).encode()
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Content-Length", str(len(b)))
+        self.end_headers(); self.wfile.write(b)
+    def do_GET(self):
+        u = urlparse(self.path)
+        if u.path == "/api/health":
+            with lock: return self._json(estado)
+        if u.path == "/api/metrics":
+            horas = int(parse_qs(u.query).get("hours", [24])[0])
+            corte = datetime.now() - timedelta(hours=horas)
+            out = []
+            arq = DATA / "metrics.jsonl"
+            if arq.exists():
+                for ln in arq.read_text().splitlines():
+                    try:
+                        o = json.loads(ln)
+                        if datetime.fromisoformat(o["ts"]) >= corte: out.append(o)
+                    except Exception: pass
+            return self._json({"hours": horas, "count": len(out), "data": out})
+        if u.path == "/api/stream":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/event-stream")
+            self.send_header("Cache-Control", "no-cache")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            ult = ""
+            try:
+                while True:
+                    with lock: atual = dict(estado)
+                    if atual["ts"] != ult:
+                        ult = atual["ts"]
+                        self.wfile.write(f"data: {json.dumps(atual, ensure_ascii=False)}\n\n".encode())
+                        self.wfile.flush()
+                    time.sleep(5)
+            except (BrokenPipeError, ConnectionResetError): pass
+            return
+        if u.path == "/api/sugestoes":
+            lim = int(parse_qs(u.query).get("n", ["20"])[0])
+            ultimo = {"ts":"","origem":"","sugestoes":[]}
+            if SUG_PATH.exists():
+                for ln in SUG_PATH.read_text().splitlines()[-lim:]:
+                    try: ultimo = json.loads(ln)
+                    except Exception: pass
+            return self._json(ultimo)
+        if u.path == "/api/sugestoes/historico":
+            lim = int(parse_qs(u.query).get("n", ["30"])[0])
+            out = []
+            if SUG_PATH.exists():
+                for ln in SUG_PATH.read_text().splitlines()[-lim:]:
+                    try: out.append(json.loads(ln))
+                    except Exception: pass
+            return self._json(out)
+
+        self._json({"erro": "not found",
+                    "paths": ["/api/health", "/api/metrics", "/api/stream"]}, 404)
+
+
+if __name__ == "__main__":
+    threading.Thread(target=coletar, daemon=True).start()
+    threading.Thread(target=loop_evolucao, daemon=True).start()
+    print(f"[watchdog] http://127.0.0.1:{PORTA}", flush=True)
+    ThreadingHTTPServer(("127.0.0.1", PORTA), H).serve_forever()

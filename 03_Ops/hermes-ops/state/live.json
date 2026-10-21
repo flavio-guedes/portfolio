@@ -1,0 +1,7 @@
+{
+  "t": "2026-10-14T01:20:52.536Z",
+  "srv": false,
+  "ollama": true,
+  "wa": "{\"conectado\":false}",
+  "fila": "{\"rodando\":false,\"pendente\":154,\"enviando\":0,\"enviado\":27,\"falhou\":1,\"total\":182,\"atividade\":\"parada\",\"atividadeEm\":\"2026-10-13T22:20:05.245Z\",\"proximoEm\":null,\"atual\":null,\"ultima_mensagem_em\":\"2026-"
+}

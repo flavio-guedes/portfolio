@@ -1,0 +1,116 @@
+      <!-- LEAD FORM -->
+      <section class="block" id="lead-form" style="padding-top:40px;">
+        <div class="section-head">
+          <div class="kicker">Quer esse resultado na sua operação?</div>
+          <h2>Fale com a gente</h2>
+          <p>Preencha seu contato e me diga um pouco sobre sua situação. Te retorno com um diagnóstico inicial do que pode ser 구조urado ou automated.</p>
+        </div>
+        <form id="leadForm" class="grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+          <!-- coluna esquerda: contato -->
+          <div>
+            <div class="section-head" style="margin-bottom:16px;">
+              <div class="kicker">Seus dados</div>
+            </div>
+            <div style="display:grid; gap:14px;">
+              <div>
+                <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Nome <span style="color:var(--blue-vivid);">*</span></label>
+                <input type="text" id="nome" name="nome" required style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div>
+                  <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Email <span style="color:var(--blue-vivid);">*</span></label>
+                  <input type="email" id="email" name="email" required style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                </div>
+                <div>
+                  <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">WhatsApp</label>
+                  <input type="tel" id="telefone" name="telefone" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                </div>
+              </div>
+              <div>
+                <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Empresa / Contexto</label>
+                <input type="text" id="empresa" name="empresa" placeholder="Nome da empresa ou 'Estou iniciando'" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+              </div>
+              <label style="display:flex; gap:10px; align-items:flex-start; font-size:12.5px; color:var(--muted); cursor:pointer; padding:8px 0;">
+                <input type="checkbox" id="permissaocontato" name="permissaocontato" required style="margin-top:3px; accent-color:var(--blue);">
+                <span>Autorizo retorno para apresentação de diagnóstico e proposta. Li e aceito a política de privacidade. <span style="color:var(--blue-vivid);">*</span></span>
+              </label>
+            </div>
+          </div>
+          <!-- coluna direita: qualificação -->
+          <div>
+            <div class="section-head" style="margin-bottom:16px;">
+              <div class="kicker">Qualificação</div>
+            </div>
+            <div style="display:grid; gap:14px;">
+              <div>
+                <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Qual seu objetivo principal? <span style="color:var(--blue-vivid);">*</span></label>
+                <select id="intent" name="intent" required style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                  <option value="">Selecione...</option>
+                  <option value="automatizar-atendimento">Automatizar atendimento de leads</option>
+                  <option value="criar-paineis">Criar painéis e dashboards operacionais</option>
+                  <option value="automatizar-campanhas">Automatizar campanhas e follow-up</option>
+                  <option value="crm-integracao">Integrar CRM e inteligência de contatos</option>
+                  <option value="prospecao">Prospecção e captação</option>
+                  <option value="consolidar-operacoes">Consolidar operações e padronizar processos</option>
+                  <option value="outro">Outro — quero conversar</option>
+                </select>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div>
+                  <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Quando pretende começar?</label>
+                  <select id="tempo" name="tempo" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                    <option value="">Selecione...</option>
+                    <option value="imediato">Imediato</option>
+                    <option value="1-2-semanas">1 a 2 semanas</option>
+                    <option value="1-mes">1 mês</option>
+                    <option value="3-meses">3 meses ou mais</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">Faixa de investimento</label>
+                  <select id="orcamento" name="orcamento" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px;">
+                    <option value="">Selecione...</option>
+                    <option value="<2k">Menos de R$2k/mês</option>
+                    <option value="2k-5k">R$2k–5k/mês</option>
+                    <option value="5k-10k">R$5k–10k/mês</option>
+                    <option value=">10k">Mais de R$10k/mês</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style="display:block; font-size:12.5px; color:var(--muted); margin-bottom:4px;">O que precisa resolver? <span style="color:var(--blue-vivid);">*</span></label>
+                <textarea id="contexto" name="contexto" required rows="4" style="width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:14px; resize:vertical;"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- botão -->
+          <div style="grid-column:1/-1; display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+            <button type="submit" style="padding:12px 28px; background:var(--grad-brand); color:var(--white); border:none; border-radius:9px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; cursor:pointer; box-shadow:0 0 24px var(--blue-glow);">Enviar solicitação</button>
+          </div>
+          <p style="grid-column:1/-1; font-size:11.5px; color:var(--muted-2); margin-top:4px;">Seus dados são usados apenas para retorno sobre esta solicitação. Sem spam, sem compartilhamento.</p>
+        </form>
+        <!-- sucesso -->
+        <div id="formSuccess" style="display:none; background:rgba(60,220,151,.08); border:1px solid rgba(60,220,151,.3); border-radius:12px; padding:28px; text-align:center; margin-top:20px;">
+          <div style="width:48px; height:48px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; box-shadow:0 0 20px rgba(60,220,151,.4);">
+            <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:#fff;"><polyline points="4,12 10,18 20,6" stroke="none"/></svg>
+          </div>
+          <h3 style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--green); margin:0 0 6px;">Solicitação recebida</h3>
+          <p style="color:var(--muted); font-size:14px; margin:0;">Retornamos em até 24h com um diagnóstico inicial. Merece um case igual ao da EPQ.</p>
+        </div>
+      </section>
+
+      <!-- FECHAMENTO -->
+      <div class="closing" id="fechamento">
+        <div class="quote">Marketing não termina no <span class="accent">anúncio</span>.</div>
+        <p style="color:var(--muted); font-size:14.5px; max-width:56ch; margin-top:14px;">Quando marketing, atendimento, dados e tecnologia trabalham conectados, o lead deixa de ser apenas um contato e passa a fazer parte de uma operação que pode ser acompanhada, melhorada e escalada.</p>
+        <div class="signature">
+          <strong>Flávio Guedes</strong>
+          Growth · Product Marketing · IA Agêntica · Marketing
+        </div>
+        <div class="footer-links" id="footer-portfolio"></div>
+        <div class="contact-row">
+          <span>flavioguedesmkt@gmail.com</span>
+          <span>21 99971-9474</span>
+          <span>LinkedIn</span>
+        </div>
+      </div>

@@ -1,0 +1,125 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0c;color:#e5e7eb;font-family:Inter,-apple-system,sans-serif}
+section.slide{width:1920px;height:1080px;padding:100px 120px;display:flex;flex-direction:column;
+  justify-content:center;background:radial-gradient(circle at 30% 20%,#121318,#0a0a0c);
+  border-bottom:1px solid rgba(255,255,255,.06)}
+h1{font-size:72px;font-weight:800;background:linear-gradient(90deg,#6366f1,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:30px}
+h2{font-size:42px;color:#fbbf24;margin:24px 0 16px}
+p,li{font-size:28px;line-height:1.55;color:#cbd5e1;margin:12px 0}
+ul{padding-left:40px;margin:20px 0}
+blockquote{border-left:6px solid #6366f1;padding:24px 32px;font-style:italic;
+  background:rgba(99,102,241,.08);border-radius:12px;margin-top:40px;font-size:26px}
+code{background:rgba(255,255,255,.08);padding:2px 10px;border-radius:6px;color:#34d399}
+strong{color:#fff}
+.glass{background:rgba(18,19,24,.7);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;padding:40px}
+</style></head><body>
+<section class="slide"><div class="glass"><h1>🍽️ A Grande Aula do Restaurante — Hermes OS</h1>
+<strong>Subtítulo:</strong> Como o LiteLLM e o Ollama gerenciam agentes de IA
+<strong>Autor:</strong> [Seu Nome/Projeto]</p><p>---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Infográfico dividido ao meio. De um lado, um prédio 3D iluminado (Sua Máquina). Do outro, uma cidade futurista em nuvem (A Cidade). Usar cartões glassmorphism apontando para os elementos.]</h2>
+<h1>🏢 O Cenário: Sua Máquina vs. A Nuvem</h1></p><p>Imagine que você mora num prédio. No térreo, tem um <strong>maître</strong> que atende você. Perto do prédio, existem vários restaurantes na cidade.</p><p><h2>🏢 SEU PRÉDIO (Sua Máquina - Local)</h2>
+<ul><li>  🧑‍🍳 <strong>Sua Cozinha (Ollama):</strong> Você mesmo cozinha. Grátis, ilimitado, mas simples.</li>
+<li>  🎩 <strong>Maître (LiteLLM):</strong> Fica no térreo. Recebe seus pedidos e decide para onde mandar.</li>
+</ul>
+<h2>🏙️ A CIDADE (A Nuvem - Externa)</h2>
+<ul><li>  🍽️ <strong>OpenRouter:</strong> Enorme, com várias cozinhas dentro (Google, NVIDIA, DeepSeek).</li>
+<li>  🍽️ <strong>Groq:</strong> Rápido, especializado em pratos simples de altíssima velocidade.</li>
+<li>  🍽️ <strong>Gemini:</strong> Sofisticado, pratos grandes e complexos.</li>
+</ul>
+---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Tabela ou grid de cartões em formato de infográfico. Fundo escuro. Cartões com efeito de vidro. Ícones grandes e coloridos para cada entidade.]</h2>
+<h1>🎭 Quem é quem no Hermes OS</h1></p><p>| No restaurante | No Hermes OS | O que faz |
+| :--- | :--- | :--- |
+| 🧑‍💼 <strong>Você com fome</strong> | Agente (Mercúrio, Hermes...) | Pede a comida |
+| 📋 <strong>Tipo de pedido</strong> | Perfil (<code>rapido</code>, <code>principal</code>...) | Define a política de atendimento |
+| 🎩 <strong>Maître</strong> | LiteLLM (<code>localhost:4000</code>) | Decide de onde vem a comida |
+| 🏠 <strong>Sua cozinha</strong> | Ollama | Cozinha local, 100% grátis |
+| ☁️ <strong>Restaurante Externo</strong>| OpenRouter / Groq | Múltiplas cozinhas na nuvem |
+| 🍳 <strong>Prato pronto</strong> | Resposta do modelo | O que você recebe no painel |</p><p>---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Um fluxograma de árvore minimalista. Linhas finas conectando o Perfil do cliente à ordem de preferência dos restaurantes. Caixas em glassmorphism.]</h2>
+<h1>📋 As Regras do Maître (LiteLLM)</h1></p><p>O maître tem uma <strong>lista de regras</strong> afixada na parede. Cada regra dita a ordem de preferência de acordo com quem pediu. <strong>O cliente não escolhe onde vai comer.</strong></p><p><h2>Agente: Mercúrio (perfil rápido)</h2>
+1º ➔ Cozinha de casa (Ollama) <em>(Sempre primeiro)</em>
+2º ➔ Restaurante Groq
+3º ➔ Restaurante Gemini</p><p><h2>Agente: Hermes (perfil principal)</h2>
+1º ➔ Restaurante OpenRouter
+2º ➔ Restaurante Groq
+3º ➔ Cozinha de casa (Ollama) <em>(Seguro final)</em></p><p>---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Diagrama de fluxo horizontal. 5 passos conectados por setas luminosas azuis. Ícones circulares para cada passo.]</h2>
+<h1>🔄 O Ciclo Completo: Do Painel ao Prato</h1></p><p>O processo acontece em milissegundos de forma invisível:</p><p>1. 📊 <strong>O Painel (Você vê):</strong> <em>&quot;Mercúrio · Analisando lista&quot;</em>
+2. 🍽️ <strong>O Cliente (Agente):</strong> Pede para classificar 312 leads.
+3. 📋 <strong>A Regra (Perfil):</strong> O sistema identifica que é um perfil &quot;local primeiro&quot;.
+4. 🎩 <strong>O Maître (LiteLLM):</strong> Decide enviar o pedido para a Cozinha de Casa (Ollama).
+5. 🍳 <strong>O Prato (Resposta):</strong> Ollama gera a resposta: &quot;12 leads de alta oportunidade&quot;.
+6. 📊 <strong>O Painel Atualizado:</strong> O prato é servido na interface.</p><p>---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Divisão de tela (Split Screen). Esquerda focada em um ambiente local aconchegante (Verde/Esmeralda). Ícones de escudo para proteção de dados e cifrão cortado para custo zero.]</h2>
+<h1>🏠 Caso Real: O Cliente Local (Mercúrio)</h1></p><p><strong>No painel:</strong> <em>&quot;Mercúrio · Analisando lista · 48/312&quot;</em></p><p>O Mercúrio pede ao Maître para processar 312 leads. O Maître aciona imediatamente a <strong>Sua Cozinha (Ollama)</strong>. </p><p><h2>Por que a cozinha de casa?</h2>
+<ul><li>  💰 <strong>Custo Zero:</strong> 312 pedidos num restaurante externo estourariam a cota rapidamente.</li>
+<li>  🔒 <strong>Ingrediente Sensível:</strong> Os dados dos leads são privados e nunca saem da sua máquina.</li>
+<li>  ⚡ <strong>Prato Simples:</strong> Apenas classificação (350ms por lead).</li>
+</ul>
+---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Divisão de tela (Split Screen). Direita focada em uma nuvem tecnológica poderosa (Roxo/Índigo). Ícone de processador ou cérebro brilhante.]</h2>
+<h1>☁️ Caso Real: O Cliente Externo (Hermes)</h1></p><p><strong>No painel:</strong> <em>&quot;300 sugestões do Hermes aguardando decisão&quot;</em></p><p>O Hermes chega pedindo uma análise profunda de 300 sugestões de uma vez. O Maître envia direto para o <strong>Restaurante OpenRouter (Nuvem)</strong>.</p><p><h2>Por que o restaurante externo?</h2>
+<ul><li>  🧠 <strong>Prato Complexo:</strong> Exige raciocínio lógico avançado e profunda orquestração.</li>
+<li>  📦 <strong>Cozinha Industrial (Contexto):</strong> O pedido tem 1 Milhão de tokens de contexto. A GPU de casa não daria conta.</li>
+<li>  🌐 <strong>Ingrediente Genérico:</strong> Não há dados privados críticos que impeçam o envio para a nuvem.</li>
+</ul>
+---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Fluxograma vertical de &quot;Cascata&quot; (Waterfall). Setas verdes indicando sucesso, setas vermelhas indicando falha e pulando para o próximo bloco de vidro.]</h2>
+<h1>🛡️ Quando o restaurante fecha: O Fallback</h1></p><p>Se o restaurante principal falhar, o Maître não entra em pânico. Ele ativa a rede de segurança.</p><p>1. 🎩 <strong>Maître tenta OpenRouter:</strong>
+   ❌ <em>Erro 429: &quot;50 pedidos já feitos hoje. Cota esgotada.&quot;</em>
+2. 🎩 <strong>Maître pula silenciosamente para o Groq:</strong>
+   ✅ <em>Sucesso: &quot;Aceito! Aqui está o prato.&quot;</em>
+3. 📊 <strong>Resultado Final:</strong> 
+   O prato é devolvido ao cliente. O cliente nem percebe que o restaurante mudou. <strong>Ele nunca fica sem comer.</strong></p><p>---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Linha do tempo horizontal parecida com uma esteira de produção. 6 cartões em glassmorphism lado a lado.]</h2>
+<h1>⚙️ As 6 Fases do Painel (A Esteira de Trabalho)</h1></p><p>No rodapé do seu Hermes OS, o prato passa por 6 fases. Em cada uma, o Maître roteia para uma cozinha diferente:</p><p><ul><li>  📥 <strong>DADOS:</strong> A matéria-prima (312 leads).</li>
+<li>  🔍 <strong>ANÁLISE:</strong> Mercúrio (Vai p/ 🏠 <strong>Casa</strong> - simples e sensível).</li>
+<li>  🧠 <strong>DECISÃO:</strong> Hermes (Vai p/ ☁️ <strong>Nuvem</strong> - raciocínio complexo).</li>
+<li>  ⚡ <strong>AÇÃO:</strong> Vanguard (Vai p/ ☁️ <strong>Nuvem</strong> - criar apresentação longa).</li>
+<li>  📩 <strong>RESPOSTA:</strong> Pulse (Vai p/ 🏠 <strong>Casa</strong> - e-mail curto e sensível).</li>
+<li>  📚 <strong>APRENDIZADO:</strong> Hermes (Vai p/ ☁️ <strong>Nuvem</strong> - síntese total).</li>
+</ul>
+---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Uma balança minimalista em neon ou duas colunas de comparação. Destaques em Verde (Casa) e Roxo (Nuvem).]</h2>
+<h1>⚖️ A Balança do Maître (Critérios de Decisão)</h1></p><p>Como o sistema divide o trabalho inteligentemente:</p><p><h2>🏠 Cozinha Local (Ollama)</h2>
+<ul><li>  ✓ Foco em Segurança e Economia.</li>
+<li>  ✓ Dados privados (Leads, senhas, chaves).</li>
+<li>  ✓ Tarefas curtas, simples e muito rápidas.</li>
+<li>  ✓ Alto volume de repetição (Centenas de requests).</li>
+</ul>
+<h2>☁️ Restaurante na Nuvem (OpenRouter / Groq)</h2>
+<ul><li>  ✓ Foco em Potência e Contexto.</li>
+<li>  ✓ Raciocínio profundo e criatividade.</li>
+<li>  ✓ Contexto Gigante (Livros inteiros, códigos fonte).</li>
+<li>  ✓ Dados genéricos, estruturais ou orquestração.</li>
+</ul>
+---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Tabela limpa, com bordas arredondadas e efeito blur. Usar emojis ao lado de cada item para facilitar a leitura visual.]</h2>
+<h1>📊 O Painel na Prática (Traduzindo a Mesa)</h1></p><p>Se você olhar para os logs agora, já sabe de onde a comida está vindo:</p><p>| O que você vê no painel | Agente | Onde come? | Por quê? |
+| :--- | :--- | :--- | :--- |
+| <em>Analisando lista (48/312)</em> | Mercúrio | 🏠 Casa | Alto volume, dados sensíveis |
+| <em>300 recomendações</em> | Hermes | ☁️ Nuvem | Complexo, contexto de 1M |
+| <em>Apresentação para a vaga</em> | Vanguard | ☁️ Nuvem | Exigência criativa longa |
+| <em>Mensagem de parceria</em> | Lucas | 🏠 Casa | Dado sensível (contato) |
+| <em>Detectar canal inválido</em> | Aegis | 🏠 Casa | Verificação lógica simples |
+| <em>Follow-up curto</em> | Pulse | 🏠 Casa | Curto, rápido, escalável |</p><p>---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Infográfico comparativo. Dois retângulos grandes. Esquerda: Olho (O que você vê). Direita: Engrenagem (O que o Maître faz nas sombras).]</h2>
+<h1>👻 O Maître Invisível</h1></p><p>A verdadeira mágica do Hermes OS é a abstração. O Maître não tem nome no painel, não emite pop-ups e não pede autorização. Ele opera nas sombras.</p><p><ul><li>  👀 <strong>O QUE VOCÊ VÊ:</strong> &quot;48/312 concluídos&quot;</li>
+<li>  ⚙️ <strong>O QUE ELE FAZ:</strong> Roteia 312 micro-pedidos diretos para a placa de vídeo local.</li>
+<li>  👀 <strong>O QUE VOCÊ VÊ:</strong> &quot;Apresentação gerada&quot;</li>
+<li>  ⚙️ <strong>O QUE ELE FAZ:</strong> Envia um pacote complexo de contexto para a nuvem da NVIDIA.</li>
+<li>  👀 <strong>O QUE VOCÊ VÊ:</strong> &quot;Erro no adapter de e-mail&quot;</li>
+<li>  ⚙️ <strong>O QUE ELE FAZ:</strong> Nada. A culpa é do carteiro, não do cozinheiro!</li>
+</ul>
+---</div></section>
+<section class="slide"><div class="glass"><h2>[KV Instrução Visual: Slide de fechamento impactante. Texto grande e centralizado. Fundo escuro profundo com um leve brilho central (glow) atrás do texto principal. Estilo &quot;Citação / Quote&quot;.]</h2>
+<h1>📌 O Resumo da Ópera: As 5 Leis</h1></p><p>1. <strong>Cada agente é um cliente</strong> com um tipo específico de pedido.
+2. <strong>O Maître (LiteLLM) decide a mesa</strong>, lendo o perfil e roteando autonomamente.
+3. <strong>A Cozinha (Ollama)</strong> é grátis, privada e foca no volume simples.
+4. <strong>O Restaurante (Nuvem)</strong> é pago, poderoso e lida com o contexto gigante.
+5. <strong>O Fallback</strong> garante que, se um restaurante fechar, o Maître acha outro instantaneamente.</p><p>&gt; <em>&quot;O painel é a mesa onde o prato chega. O maître (LiteLLM) é quem decide se o prato vem da sua própria cozinha (Ollama) ou de um restaurante renomado na cidade (Nuvem). O cliente (agente) apenas come — e você só admira o prato pronto.&quot;</em></div></section>
+</body></html>

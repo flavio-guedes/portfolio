@@ -1,0 +1,75 @@
+════════════════════════════════════════════════════════════
+ REVISÃO DE PENDENTES — 12 Out 2026 · 20:47
+ Painel: /Users/mac/missao-hermes-os/painel-evolucao.html
+ Base:   /Users/mac/missao-hermes-os/observabilidade
+════════════════════════════════════════════════════════════
+
+### A. ARQUIVOS-CHAVE
+  · ~/missao-hermes-os/data/metrics.jsonl                    (ausente)
+  · ~/missao-hermes-os/data/health.json                      (ausente)
+  · ~/missao-hermes-os/config/watchdog.json                  (ausente)
+  · ~/missao-hermes-os/alerts.jsonl                          (ausente)
+  · ~/missao-hermes-os/actions.jsonl                         (ausente)
+  · ~/missao-hermes-os/watchdog.py                           (ausente)
+  · ~/missao-hermes-os/observabilidade/watchdog.py           (ausente)
+  · ~/missao-hermes-os/api.py                                (ausente)
+  · ~/missao-hermes-os/observabilidade/api.py                (ausente)
+  ✓ ~/missao-hermes-os/painel-evolucao.html                    72231 bytes
+
+### C. ENDPOINTS / PORTAS
+  ✓ :8421  pid=28326   node
+  ✓ :8422  pid=28312   /Users/mac/.local/bin/node
+  ✓ :8787  pid=28326   node
+  · :9000  (livre)
+  · :3000  (livre)
+  ✓ :4000  pid=18859   /Users/mac/.local/share/uv/tools/litellm/bin/python
+  ✓ :8080  pid=92269   /usr/local/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python
+
+### D. ENDPOINTS HTTP (teste)
+  http://127.0.0.1:9000/api/health              → HTTP 000
+  http://127.0.0.1:8080/api/health              → HTTP 404
+  http://127.0.0.1:8422/api/health              → HTTP 404
+  http://127.0.0.1:9000/api/metrics             → HTTP 000
+  http://127.0.0.1:9000/api/stream              → HTTP 000
+
+### E. LAUNCHD (v12 — boot automático)
+  ✓ ai.hermes.epq-control.plist
+      → carregado: pid=511 status=0
+  ✓ ai.hermes.gateway.plist
+      → carregado: pid=90378 status=1
+  ✓ ai.hermes.whatsapp-bridge.plist
+      → carregado: pid=505 status=0
+  ✓ com.flavioguedes.hermes-watchdog.plist
+      → carregado: pid=- status=0
+  ✓ com.hermes.agent.plist
+      → carregado: pid=28312 status=1
+  ✓ com.hermes.bridge.plist
+      → carregado: pid=- status=1
+  ✓ com.hermes.iniciar.plist
+      → carregado: pid=- status=0
+  ✓ com.hermes.job-intelligence.plist
+      → carregado: pid=- status=0
+  ✓ com.hermes.watchdog.plist
+      → carregado: pid=- status=0
+  ✓ com.hermes.whatsapp.plist
+      → carregado: pid=- status=0
+
+### F. WHATSAPP / BRIDGE (v14)
+  · bridge :3000 ausente
+  ✓ ~/hermes-bridge/leads-autorizados.json
+  ✓ ~/hermes-bridge/hermes-bridge.mjs
+  ✓ ~/hermes-bridge/backups
+
+### G. AUDITORIA DE CUSTOS (v14)
+  · nenhuma trilha de custos encontrada
+
+════════════════════════════════════════════════════════════
+ RESUMO POR ETAPA
+════════════════════════════════════════════════════════════
+ v10 (gráficos 24h/7d)  metrics.jsonl:ausente  api.py:ausente  endpoint /api/metrics:ausente
+ v11 (preditiva)        watchdog.py:ausente  config/watchdog.json:ausente
+ v12 (launchd)          ~/Library/LaunchAgents/*hermes*:10/N
+ v13 (SSE)              /api/stream:ausente
+ v14 (WhatsApp+custos)  bridge:ausente  custos.jsonl:ausente
+
+Relatório salvo em: ~/missao-hermes-os/revisao-pendentes.txt

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Hermes OS</title>
+<link rel="stylesheet" href="/static/style.css">
+</head><body id="body">
+<div id="bg"><div class="bl bl1" data-d="14"></div>
+<div class="bl bl2" data-d="24"></div><div class="nz"></div></div>
+<main>
+ <div class="hd">
+   <div class="brand">
+     <div class="logo" id="logo"></div>
+     <h1 id="ti">HERMES OS</h1>
+     <span class="tag" id="tg">DASHBOARD · carregando</span>
+   </div>
+   <div class="pill">
+     <span class="dot" id="pd" style="background:#6ee7a5;color:#6ee7a5"></span>
+     <span id="pt">—</span>
+     <span style="color:var(--t3);font-size:11px" id="ps">—</span>
+   </div>
+   <div class="tg">
+     <button id="bt" class="on">TÉCNICO</button>
+     <button id="bc">COZINHA</button>
+   </div>
+ </div>
+ <div class="tabs" id="tabs"></div>
+ <div class="pn">
+   <h2 id="ptitle"></h2>
+   <div class="pb" id="pbody"></div>
+ </div>
+ <div class="ft">
+   <div class="it"><span class="dot" id="fd-l"></span> LiteLLM <span class="mo">:4000</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-a"></span> Agent <span class="mo">:8422</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-b"></span> Bridge <span class="mo">:8421</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-o"></span> Ollama <span class="mo">:11434</span></div>
+   <div class="rt">
+     <span id="fsv">—</span><span class="sep">│</span>
+     <span id="fml">—</span><span class="sep">│</span>
+     <span class="mo" id="fhr">—</span>
+   </div>
+ </div>
+</main>
+<script src="/static/app.js"></script>
+</body></html>

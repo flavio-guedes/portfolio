@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ — Turmas, Investimento e Horários</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1216;
+    --paper:#171b20;
+    --paper-2:#1c2129;
+    --line:#2b323b;
+    --line-soft:#232a32;
+    --ink:#e7e3d6;
+    --ink-dim:#93a0ac;
+    --ink-faint:#5c6672;
+    --gold:#b3924e;
+    --gold-dim:#7d6a41;
+    --olive:#77815a;
+    --steel:#5f7f9c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    background-image:
+      radial-gradient(circle at 18% 8%, rgba(179,146,78,0.06), transparent 40%),
+      radial-gradient(circle at 85% 92%, rgba(95,127,156,0.05), transparent 45%);
+    color:var(--ink);
+    font-family:'Lora', Georgia, serif;
+    -webkit-font-smoothing:antialiased;
+    padding:56px 20px 80px;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--line);
+    box-shadow:0 40px 90px -40px rgba(0,0,0,0.7);
+  }
+  .label{
+    font-family:'Inter',sans-serif;
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    color:var(--gold);
+    font-weight:600;
+  }
+
+  /* ---------- Header (frontispício) ---------- */
+  header{
+    padding:38px 44px 28px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .selo{
+    width:46px;height:46px;
+    border:1.5px solid var(--gold-dim);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--gold);
+    float:right;
+    letter-spacing:0.02em;
+  }
+  h1{
+    font-size:29px;
+    font-weight:600;
+    margin:0 0 6px;
+    letter-spacing:0.005em;
+    line-height:1.2;
+  }
+  .subtitulo{
+    color:var(--ink-dim);
+    font-size:15.5px;
+    font-style:italic;
+    margin:0 0 18px;
+  }
+  .meta-row{
+    display:flex;
+    gap:28px;
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    color:var(--ink-faint);
+    border-top:1px solid var(--line-soft);
+    padding-top:14px;
+    flex-wrap:wrap;
+  }
+  .meta-row span b{color:var(--ink-dim); font-weight:500;}
+
+  /* ---------- Seções tipo "artigo" ---------- */
+  section{
+    padding:30px 44px;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-of-type{border-bottom:none;}
+  .secao-titulo{
+    font-family:'Inter',sans-serif;
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    color:var(--ink-faint);
+    margin:0 0 22px;
+    text-transform:uppercase;
+  }
+
+  /* registros de turma */
+  .registro{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:22px;
+    padding:20px 0;
+    border-top:1px solid var(--line-soft);
+  }
+  .registro:first-of-type{border-top:none; padding-top:2px;}
+  .art{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    color:var(--gold);
+    letter-spacing:0.03em;
+    margin-bottom:6px;
+  }
+  .turma-nome{
+    font-size:17px;
+    font-weight:600;
+    line-height:1.3;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'Inter',sans-serif;
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    padding:2px 8px;
+    border-radius:2px;
+    margin-top:7px;
+    border:1px solid;
+  }
+  .tag.civil{color:var(--steel); border-color:rgba(95,127,156,0.4); background:rgba(95,127,156,0.08);}
+  .tag.militar{color:var(--olive); border-color:rgba(119,129,90,0.45); background:rgba(119,129,90,0.08);}
+  .tag.combo{color:var(--gold); border-color:rgba(179,146,78,0.4); background:rgba(179,146,78,0.08);}
+
+  .valores{
+    font-family:'Inter',sans-serif;
+  }
+  .linha-valor{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:7px 0;
+    font-size:14.5px;
+    border-top:1px dashed var(--line-soft);
+  }
+  .linha-valor:first-child{border-top:none;}
+  .forma{color:var(--ink-dim); font-size:13px;}
+  .preco{font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums;}
+  .avista{
+    background:var(--paper-2);
+    border:1px solid var(--line-soft);
+    padding:10px 14px;
+    margin-top:10px;
+    font-size:13.5px;
+    color:var(--gold);
+    display:flex;
+    justify-content:space-between;
+  }
+  .obs-extra{
+    margin-top:10px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+
+  /* horários */
+  .horario-bloco{
+    display:flex;
+    gap:36px;
+    flex-wrap:wrap;
+  }
+  .horario-item{
+    font-family:'Inter',sans-serif;
+    min-width:180px;
+  }
+  .horario-dia{
+    font-size:11.5px;
+    color:var(--ink-faint);
+    letter-spacing:0.02em;
+    margin-bottom:4px;
+  }
+  .horario-hora{
+    font-size:19px;
+    font-weight:600;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .horario-turmas{
+    font-size:12px;
+    color:var(--ink-dim);
+    margin-top:2px;
+  }
+
+  /* datas de início */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+  }
+  thead th{
+    text-align:left;
+    font-size:11px;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    font-weight:600;
+    padding:0 0 10px;
+    border-bottom:1px solid var(--line);
+  }
+  tbody td{
+    padding:11px 0;
+    border-bottom:1px solid var(--line-soft);
+    color:var(--ink-dim);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  td.turma-col{color:var(--ink); font-weight:500;}
+  td.data-col{
+    color:var(--gold);
+    font-weight:600;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* rodapé */
+  footer{
+    padding:30px 44px 38px;
+    font-family:'Inter',sans-serif;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .rodape-bloco .label{display:block; margin-bottom:5px;}
+  .rodape-bloco div{font-size:14px; color:var(--ink);}
+  .rodape-bloco .end{color:var(--ink-dim); font-size:13px; line-height:1.5; max-width:220px;}
+
+  @media (max-width:600px){
+    body{padding:0;}
+    .sheet{border:none; max-width:100%;}
+    header, section, footer{padding-left:24px; padding-right:24px;}
+    .registro{grid-template-columns:1fr; gap:8px;}
+    .selo{display:none;}
+    footer{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="selo">EPQ</div>
+    <h1>Estudando Por Questões</h1>
+    <p class="subtitulo">Tabela de turmas, investimento e horários</p>
+    <div class="meta-row">
+      <span><b>Atualizado em</b> 15/09/2026</span>
+      <span><b>Unidade</b> Nilópolis, RJ</span>
+      <span><b>Consulta rápida</b> valores, turmas e horários vigentes</span>
+    </div>
+  </header>
+
+  <section>
+    <p class="secao-titulo">Turmas &amp; Investimento</p>
+
+    <div class="registro">
+      <div>
+        <div class="art">Art. 1º</div>
+        <div class="turma-nome">PMERJ</div>
+        <span class="tag civil">Concurso civil/estadual</span>
+      </div>
+      <div class="valores">
+        <div class="linha-valor"><span class="forma">5x no PIX</span><span class="preco">R$ 300,00</span></div>
+        <div class="linha-valor"><span class="forma">5x no cartão</span><span class="preco">R$ 330,00</span></div>
+      </div>
+    </div>
+
+    <div class="registro">
+      <div>
+        <div class="art">Art. 2º</div>
+        <div class="turma-nome">INSS + TJ + MP</div>
+        <span class="tag civil">Concurso civil</span>
+      </div>
+      <div class="valores">
+        <div class="linha-valor"><span class="forma">6x no PIX</span><span class="preco">R$ 349,90</span></div>
+        <div class="linha-valor"><span class="forma">6x no cartão</span><span class="preco">R$ 369,90</span></div>
+      </div>
+    </div>
+
+    <div class="registro">
+      <div>
+        <div class="art">Art. 3º</div>
+        <div class="turma-nome">Turmas militares</div>
+        <span class="tag militar">ESA / EAM / EEAR</span>
+      </div>
+      <div class="valores">
+        <div class="linha-valor"><span class="forma">12x no PIX</span><span class="preco">R$ 399,90</span></div>
+        <div class="linha-valor"><span class="forma">12x no cartão</span><span class="preco">R$ 429,90</span></div>
+      </div>
+    </div>
+
+    <div class="registro">
+      <div>
+        <div class="art">Art. 4º</div>
+        <div class="turma-nome">Combo GCM Maricá &amp; São Gonçalo &amp; Queimados</div>
+        <span class="tag combo">Turma combo — 5 meses</span>
+      </div>
+      <div class="valores">
+        <div class="linha-valor"><span class="forma">5x no PIX</span><span class="preco">R$ 389,50</span></div>
+        <div class="linha-valor"><span class="forma">5x no cartão</span><span class="preco">R$ 419,90</span></div>
+        <div class="avista"><span>À vista, com 5% off</span><span>R$ 1.945,50</span></div>
+        <p class="obs-extra">+ Taxa de material: R$ 50,00 · Início semanal 14/09 (aula 2ª a 6ª) e turma de sábado a partir de 19/09 · Duração total: 5 meses</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="secao-titulo">Horários</p>
+    <div class="horario-bloco">
+      <div class="horario-item">
+        <div class="horario-dia">Segunda a sexta-feira</div>
+        <div class="horario-hora">09h — 12h</div>
+        <div class="horario-turmas">Combo GCM &amp; PMERJ</div>
+      </div>
+      <div class="horario-item">
+        <div class="horario-dia">Sábado</div>
+        <div class="horario-hora">09h — 16h30</div>
+        <div class="horario-turmas">Combo GCM &amp; PMERJ</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="secao-titulo">Datas de início das novas turmas</p>
+    <table>
+      <thead>
+        <tr><th>Turma</th><th>Turno</th><th style="text-align:right;">Início</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="turma-col">PMERJ</td><td>Manhã</td><td class="data-col">14/09</td></tr>
+        <tr><td class="turma-col">PMERJ</td><td>Sábado</td><td class="data-col">12/09</td></tr>
+        <tr><td class="turma-col">Turma básica</td><td>Manhã e noite</td><td class="data-col">14/09</td></tr>
+        <tr><td class="turma-col">Turma básica</td><td>Sábado</td><td class="data-col">12/09</td></tr>
+        <tr><td class="turma-col">GCM Maricá e São Gonçalo</td><td>Manhã</td><td class="data-col">14/09</td></tr>
+        <tr><td class="turma-col">GCM Maricá e São Gonçalo</td><td>Noite</td><td class="data-col">14/09</td></tr>
+        <tr><td class="turma-col">GCM Maricá e São Gonçalo</td><td>Sábado</td><td class="data-col">19/09</td></tr>
+        <tr><td class="turma-col">ESA / EAM / EEAR</td><td>Manhã</td><td class="data-col">14/09</td></tr>
+        <tr><td class="turma-col">ESA / EAM / EEAR</td><td>Noite</td><td class="data-col">14/09</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div class="rodape-bloco">
+      <span class="label">Endereço</span>
+      <div class="end">Estrada Mirandela, 618 — Centro, Nilópolis/RJ</div>
+    </div>
+    <div class="rodape-bloco">
+      <span class="label">Pix</span>
+      <div>cursoestudandoporquestoes@gmail.com</div>
+    </div>
+    <div class="rodape-bloco">
+      <span class="label">WhatsApp</span>
+      <div>(21) 97905-5519</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

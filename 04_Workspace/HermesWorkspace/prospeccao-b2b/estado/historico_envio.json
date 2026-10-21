@@ -1,0 +1,1826 @@
+[
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T11:52:03"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T12:02:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T12:12:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T12:22:52"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T12:33:09"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T12:43:22"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T12:53:35"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T13:03:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T13:13:57"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T13:24:09"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T13:34:25"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T13:44:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T13:55:12"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T14:05:38"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T14:16:06"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T14:26:32"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T14:36:50"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-05T14:47:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T14:57:27"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T15:07:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T15:18:02"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T15:28:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T15:38:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T15:49:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T16:00:19"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T16:10:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T16:21:06"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T16:31:25"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T16:41:50"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T16:52:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T17:02:41"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-05T17:13:00"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T17:23:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T17:33:33"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T17:43:51"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T17:54:09"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-05T18:04:28"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T18:14:50"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T18:25:10"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T18:35:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T18:45:56"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T20:54:04"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T21:04:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T21:14:41"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T21:25:02"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-05T21:35:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T21:45:39"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T21:55:52"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T22:06:05"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T22:16:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T22:26:28"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T22:36:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T22:46:49"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-05T22:56:59"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-05T23:07:13"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T10:16:52"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T10:27:01"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T10:37:11"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T10:47:19"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T10:57:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T11:07:38"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T11:17:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T11:27:57"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T11:38:06"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T11:48:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T11:58:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T12:08:32"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T12:18:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T12:28:48"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T12:38:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T12:49:04"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T12:59:13"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T13:09:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T13:19:31"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T13:29:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T13:39:49"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T13:50:02"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T14:00:12"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T14:10:21"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T14:20:32"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T14:30:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T14:40:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T14:51:12"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T15:01:31"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T15:11:48"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "[Errno 54] Connection reset by peer",
+    "timestamp": "2026-10-06T15:22:03"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T15:32:14"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T15:42:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T15:52:57"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T16:03:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T16:13:28"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T16:23:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T16:33:56"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T16:44:11"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T16:54:25"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T17:04:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-06T17:14:53"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-06T22:44:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "timed out",
+    "timestamp": "2026-10-07T08:51:34"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T09:02:00"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T09:12:13"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-07T09:22:27"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T09:32:49"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T09:43:04"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T09:53:13"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T10:03:21"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T10:13:30"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T10:23:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T10:33:46"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T10:43:57"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T10:54:05"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T11:04:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T11:14:23"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T11:24:36"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T11:34:46"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T11:44:56"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-07T11:55:11"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T12:05:25"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T12:15:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T12:25:53"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T12:36:07"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T12:46:21"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T12:56:35"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T13:06:48"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T13:16:58"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T13:27:09"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T13:37:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T13:47:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T13:57:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T14:07:51"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T14:18:04"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T14:28:18"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T14:38:36"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T14:49:00"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T14:59:14"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T15:09:26"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T15:19:41"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T15:29:54"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T15:40:14"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T15:50:42"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T16:01:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T16:11:19"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T16:21:30"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T16:31:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T16:41:56"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T16:52:07"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T17:02:19"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: Service Unavailable",
+    "timestamp": "2026-10-07T17:12:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T17:22:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T17:32:50"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T17:43:01"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T17:53:11"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T18:03:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T18:13:35"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T18:23:50"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T18:34:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T18:44:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T18:54:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T19:04:58"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T19:15:09"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T19:25:22"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T21:06:33"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T23:10:34"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T23:20:45"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T23:30:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T23:41:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-07T23:51:19"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T00:01:30"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T00:11:41"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T00:21:52"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T08:47:42"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T08:57:59"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T09:08:10"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T09:18:22"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T09:28:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T09:39:00"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T09:49:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T09:59:38"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T10:09:59"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T10:20:12"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T10:30:30"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T10:40:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T10:50:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T11:01:07"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T11:11:21"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T11:21:35"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T11:31:48"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T11:42:01"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T11:52:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T12:02:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T12:13:02"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T12:23:14"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T12:33:27"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T12:43:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T12:54:02"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T13:04:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T13:14:31"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T13:24:46"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T13:35:00"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T13:45:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T13:55:34"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T14:05:49"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T14:16:06"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T14:26:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T14:36:34"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T14:46:45"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T14:56:56"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T15:07:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T15:17:22"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T15:27:34"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T15:37:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T15:48:10"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T15:58:39"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T16:09:03"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T16:19:32"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T16:29:54"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T16:40:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T16:50:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T17:00:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T17:10:52"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T17:21:10"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T17:31:33"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T17:41:53"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T17:52:11"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T18:02:31"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T18:13:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T18:23:54"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T18:34:13"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T18:44:54"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T18:55:35"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T19:06:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T19:16:40"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T19:27:23"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T19:37:39"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T19:47:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T19:58:14"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T20:08:34"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T20:18:53"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T20:29:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T20:39:26"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T20:49:45"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T21:00:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T21:10:24"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T21:20:45"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T21:31:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T21:41:50"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T21:52:22"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T22:02:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T22:13:08"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T22:23:41"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T22:33:58"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T22:44:14"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T22:54:33"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T23:04:49"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T23:15:04"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T23:25:19"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T23:35:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T23:45:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-08T23:56:13"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T00:06:30"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T00:16:44"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T00:27:00"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T00:37:23"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T00:47:53"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T00:58:07"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T01:08:21"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T01:18:37"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T01:29:09"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T01:39:42"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T01:50:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T02:00:45"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T02:11:17"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T02:21:47"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T02:32:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T02:42:52"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T02:53:25"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T03:03:55"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T03:14:25"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T03:24:57"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T03:35:27"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T03:45:57"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T03:56:18"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T04:06:39"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T04:16:58"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T04:27:15"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T04:37:35"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T04:47:54"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T04:58:10"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T05:08:32"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T05:18:51"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T05:29:11"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T05:39:29"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T05:49:49"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T06:00:07"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T06:10:28"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T06:20:46"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T06:31:04"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T06:41:23"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T06:51:43"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T07:01:59"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T07:12:20"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T07:22:42"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T07:33:02"
+  },
+  {
+    "lead_id": "L004",
+    "status": "FALHA",
+    "error": "bridge_offline: [Errno 61] Connection refused",
+    "timestamp": "2026-10-09T07:43:22"
+  }
+]

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.hermes.bridge</string>
+  <key>ProgramArguments</key><array>
+    <string>/Users/mac/.local/bin/node</string><string>/Users/mac/hermes-bridge/hermes-bridge.mjs</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/mac/hermes-bridge</string>
+  <key>EnvironmentVariables</key><dict>
+    <key>HERMES_TOKEN</key><string>hermes123</string>
+    <key>HERMES_ADMIN</key><string>5521999719474</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/tmp/hermes-bridge.log</string>
+  <key>StandardErrorPath</key><string>/tmp/hermes-bridge.log</string>
+</dict></plist>

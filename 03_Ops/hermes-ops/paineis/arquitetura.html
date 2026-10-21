@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hermes OS · Mapa da Arquitetura</title>
+<style>
+:root{
+  --bg:#0a0d12; --bg2:#0f141b; --card:#141a23; --card2:#1a2130;
+  --fg:#e6edf3; --mut:#7d8590; --bd:#21262d; --bd2:#30363d;
+  --ok:#3fb950; --ok2:#56d364; --warn:#d29922; --err:#f85149;
+  --acc:#58a6ff; --acc2:#79c0ff; --pur:#bc8cff; --pink:#f778ba;
+  --shadow:0 8px 24px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--fg);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Menlo,monospace;
+  min-height:100vh; padding-bottom:60px;
+}
+header{
+  position:sticky; top:0; z-index:50;
+  padding:16px 32px;
+  background:rgba(10,13,18,.85); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bd);
+  display:flex; justify-content:space-between; align-items:center;
+}
+h1{font-size:16px; font-weight:600; display:flex; align-items:center; gap:10px}
+h1 .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.meta{display:flex;gap:20px;align-items:center;font-size:12px;color:var(--mut)}
+.meta b{color:var(--fg);font-weight:600}
+.wrap{max-width:1400px;margin:0 auto;padding:24px 32px}
+
+.tabs{
+  display:flex; gap:4px; margin-bottom:20px;
+  background:var(--card); padding:4px; border-radius:10px;
+  border:1px solid var(--bd); width:fit-content;
+}
+.tab{padding:8px 18px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--mut);transition:all .2s}
+.tab.on{background:var(--card2);color:var(--fg)}
+.tab:hover:not(.on){color:var(--fg)}
+
+.card{
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:12px; padding:24px; margin-bottom:20px;
+}
+.card h2{
+  font-size:13px;color:var(--mut);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:16px;font-weight:600;
+}
+.hidden{display:none}
+
+/* SVG container */
+.svg-wrap{
+  background:var(--bg2); border:1px solid var(--bd);
+  border-radius:10px; padding:24px;
+  overflow-x:auto;
+}
+svg{display:block;margin:0 auto;max-width:100%;height:auto}
+
+/* Legend */
+.legend{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:8px;margin-top:16px;font-size:11px;color:var(--mut);
+}
+.legend .item{display:flex;align-items:center;gap:8px}
+.legend .swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+
+/* Cards of components */
+.components{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;margin-top:16px;
+}
+.comp{
+  background:var(--card2);border:1px solid var(--bd);
+  border-radius:8px;padding:14px;
+}
+.comp .h{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.comp .h .dot{width:8px;height:8px;border-radius:50%}
+.comp .h .name{font-weight:600;font-size:13px}
+.comp .d{font-size:11px;color:var(--mut);line-height:1.6}
+.comp code{background:rgba(88,166,255,.12);padding:1px 5px;border-radius:3px;font-size:11px;color:var(--acc2)}
+
+/* Flow list */
+.flow-list{
+  background:var(--bg2); border:1px solid var(--bd);
+  border-radius:10px; padding:20px; font:12px/1.8 Menlo,monospace;
+  white-space:pre; overflow-x:auto; color:var(--fg);
+}
+.flow-list .step{color:var(--acc2)}
+.flow-list .ok{color:var(--ok)}
+.flow-list .arrow{color:var(--mut)}
+.flow-list .err{color:var(--err)}
+.flow-list .box{color:var(--pur)}
+
+/* Tabela */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--bd)}
+th{color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+td code{background:rgba(88,166,255,.1);padding:1px 6px;border-radius:3px;font-size:11px;color:var(--acc2)}
+tr:hover td{background:rgba(88,166,255,.03)}
+
+.footer{text-align:center;margin-top:40px;padding:20px;color:var(--mut);font-size:11px;border-top:1px solid var(--bd)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="dot"></span> Hermes OS · Mapa da Arquitetura</h1>
+  <div class="meta">
+    <span>11 etapas · <b>12/12 verdes</b></span>
+    <span>RAM hermes <b>609 MB</b></span>
+    <span style="color:var(--ok)">● operando</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="tabs">
+    <div class="tab on" data-t="flow">🌊 Fluxo</div>
+    <div class="tab" data-t="topo">🏗️ Topologia</div>
+    <div class="tab" data-t="comp">🧩 Componentes</div>
+    <div class="tab" data-t="files">📁 Arquivos</div>
+  </div>
+
+  <!-- ═══════════ FLUXO ═══════════ -->
+  <div id="view-flow">
+    <div class="card">
+      <h2>🌊 Fluxo end-to-end (da mensagem no WhatsApp ao painel)</h2>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 1300 900" xmlns="http://www.w3.org/2000/svg" font-family="Menlo,Consolas,monospace" font-size="12">
+          <defs>
+            <marker id="arr-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/>
+            </marker>
+            <marker id="arr-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#58a6ff"/>
+            </marker>
+            <marker id="arr-pur" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#bc8cff"/>
+            </marker>
+            <marker id="arr-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#d29922"/>
+            </marker>
+            <linearGradient id="g-acc" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(88,166,255,.18)"/>
+              <stop offset="100%" stop-color="rgba(88,166,255,.05)"/>
+            </linearGradient>
+            <linearGradient id="g-ok" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(63,185,80,.18)"/>
+              <stop offset="100%" stop-color="rgba(63,185,80,.05)"/>
+            </linearGradient>
+            <linearGradient id="g-pur" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(188,140,255,.18)"/>
+              <stop offset="100%" stop-color="rgba(188,140,255,.05)"/>
+            </linearGradient>
+          </defs>
+
+          <!-- ─── Coluna 1: entrada (celular/WhatsApp) ─── -->
+          <text x="50" y="40" fill="#7d8590" font-size="11" font-weight="700" letter-spacing="1">ENTRADA</text>
+          <rect x="50" y="60" width="180" height="80" rx="8" fill="url(#g-acc)" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="140" y="95" fill="#e6edf3" font-weight="600" text-anchor="middle">📱 WhatsApp</text>
+          <text x="140" y="115" fill="#7d8590" font-size="11" text-anchor="middle">Aparelho conectado</text>
+
+          <!-- ─── Coluna 2: Launchd supervisor ─── -->
+          <text x="320" y="40" fill="#7d8590" font-size="11" font-weight="700" letter-spacing="1">SUPERVISÃO</text>
+          <rect x="320" y="60" width="220" height="80" rx="8" fill="url(#g-pur)" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="430" y="90" fill="#e6edf3" font-weight="600" text-anchor="middle">🛡️ com.hermes.supervisor</text>
+          <text x="430" y="110" fill="#7d8590" font-size="11" text-anchor="middle">launchd · KeepAlive</text>
+          <text x="430" y="126" fill="#7d8590" font-size="11" text-anchor="middle">ÚNICO serviço ativo</text>
+
+          <!-- ─── Coluna 3: hermesctl ─── -->
+          <text x="620" y="40" fill="#7d8590" font-size="11" font-weight="700" letter-spacing="1">CONTROLE</text>
+          <rect x="620" y="60" width="180" height="80" rx="8" fill="url(#g-pur)" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="710" y="90" fill="#e6edf3" font-weight="600" text-anchor="middle">⚙️ hermesctl</text>
+          <text x="710" y="110" fill="#7d8590" font-size="11" text-anchor="middle">start · stop · mission</text>
+          <text x="710" y="126" fill="#7d8590" font-size="11" text-anchor="middle">lock /tmp/hermes-8420.lock</text>
+
+          <!-- ─── Coluna 4: lock ─── -->
+          <text x="900" y="40" fill="#7d8590" font-size="11" font-weight="700" letter-spacing="1">TRAVA</text>
+          <rect x="900" y="60" width="180" height="80" rx="8" fill="rgba(210,153,34,.1)" stroke="#d29922" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="990" y="90" fill="#e6edf3" font-weight="600" text-anchor="middle">🔐 Singleton Lock</text>
+          <text x="990" y="110" fill="#7d8590" font-size="11" text-anchor="middle">PID + timestamp</text>
+          <text x="990" y="126" fill="#7d8590" font-size="11" text-anchor="middle">impede duplicata</text>
+
+          <!-- ─── Linha 2: backend ─── -->
+          <text x="50" y="220" fill="#7d8590" font-size="11" font-weight="700" letter-spacing="1">NÚCLEO</text>
+          <rect x="50" y="240" width="1060" height="180" rx="12" fill="url(#g-ok)" stroke="#3fb950" stroke-width="2"/>
+          <text x="70" y="270" fill="#56d364" font-weight="700" font-size="14">🖥️ Backend :8420 · node src/server.js</text>
+          <text x="70" y="290" fill="#7d8590" font-size="11">PID único · HERMES-SINGLETON · HTML_FILE + RAG_DIR</text>
+
+          <!-- Sub-blocos internos -->
+          <rect x="70" y="310" width="200" height="90" rx="6" fill="rgba(0,0,0,.3)" stroke="#30363d"/>
+          <text x="170" y="335" fill="#e6edf3" text-anchor="middle" font-weight="600">📱 Baileys</text>
+          <text x="170" y="355" fill="#7d8590" font-size="11" text-anchor="middle">.baileys/</text>
+          <text x="170" y="371" fill="#7d8590" font-size="11" text-anchor="middle">25 arquivos</text>
+          <text x="170" y="387" fill="#7d8590" font-size="11" text-anchor="middle">creds.json + backup</text>
+
+          <rect x="290" y="310" width="200" height="90" rx="6" fill="rgba(0,0,0,.3)" stroke="#30363d"/>
+          <text x="390" y="335" fill="#e6edf3" text-anchor="middle" font-weight="600">📥 Fila</text>
+          <text x="390" y="355" fill="#7d8590" font-size="11" text-anchor="middle">154 pend · 27 env</text>
+          <text x="390" y="371" fill="#7d8590" font-size="11" text-anchor="middle">fila.json</text>
+          <text x="390" y="387" fill="#7d8590" font-size="11" text-anchor="middle">idempotente · lock_pid</text>
+
+          <rect x="510" y="310" width="200" height="90" rx="6" fill="rgba(0,0,0,.3)" stroke="#30363d"/>
+          <text x="610" y="335" fill="#e6edf3" text-anchor="middle" font-weight="600">🧠 Scheduler</text>
+          <text x="610" y="355" fill="#7d8590" font-size="11" text-anchor="middle">ciclo 30 min</text>
+          <text x="610" y="371" fill="#7d8590" font-size="11" text-anchor="middle">IMAP 3 min</text>
+          <text x="610" y="387" fill="#7d8590" font-size="11" text-anchor="middle">RAG · 592 leads</text>
+
+          <rect x="730" y="310" width="200" height="90" rx="6" fill="rgba(0,0,0,.3)" stroke="#30363d"/>
+          <text x="830" y="335" fill="#e6edf3" text-anchor="middle" font-weight="600">🔌 API REST</text>
+          <text x="830" y="355" fill="#7d8590" font-size="11" text-anchor="middle">/api/whatsapp/*</text>
+          <text x="830" y="371" fill="#7d8590" font-size="11" text-anchor="middle">/api/fila/*</text>
+          <text x="830" y="387" fill="#7d8590" font-size="11" text-anchor="middle">Bearer token</text>
+
+          <rect x="950" y="310" width="140" height="90" rx="6" fill="rgba(0,0,0,.3)" stroke="#30363d"/>
+          <text x="1020" y="335" fill="#e6edf3" text-anchor="middle" font-weight="600">📊 Logs</text>
+          <text x="1020" y="355" fill="#7d8590" font-size="11" text-anchor="middle">JSONL</text>
+          <text x="1020" y="371" fill="#7d8590" font-size="11" text-anchor="middle">rotate 10MB×5</text>
+          <text x="1020" y="387" fill="#7d8590" font-size="11" text-anchor="middle">~/hermes-ops/logs/</text>
+
+          <!-- ─── Linha 3: agentes ─── -->
+          <text x="50" y="480" fill="#7d8590" font-size="11" font-weight="700" letter-spacing="1">AGENTES</text>
+
+          <rect x="50" y="500" width="240" height="110" rx="8" fill="rgba(88,166,255,.08)" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="170" y="530" fill="#79c0ff" font-weight="600" text-anchor="middle">🐕 agent-watchdog.mjs</text>
+          <text x="170" y="550" fill="#7d8590" font-size="11" text-anchor="middle">tick 60s</text>
+          <text x="170" y="566" fill="#7d8590" font-size="11" text-anchor="middle">lê :8420 + WhatsApp</text>
+          <text x="170" y="582" fill="#7d8590" font-size="11" text-anchor="middle">→ state/live.json</text>
+          <text x="170" y="598" fill="#7d8590" font-size="11" text-anchor="middle">33 MB RAM</text>
+
+          <rect x="310" y="500" width="240" height="110" rx="8" fill="rgba(88,166,255,.08)" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="430" y="530" fill="#79c0ff" font-weight="600" text-anchor="middle">🔒 privacy-hook.mjs</text>
+          <text x="430" y="550" fill="#7d8590" font-size="11" text-anchor="middle">tick 120s</text>
+          <text x="430" y="566" fill="#7d8590" font-size="11" text-anchor="middle">varre logs</text>
+          <text x="430" y="582" fill="#7d8590" font-size="11" text-anchor="middle">→ state/privacy.json</text>
+          <text x="430" y="598" fill="#7d8590" font-size="11" text-anchor="middle">30 MB RAM</text>
+
+          <rect x="570" y="500" width="240" height="110" rx="8" fill="rgba(188,140,255,.08)" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="690" y="530" fill="#bc8cff" font-weight="600" text-anchor="middle">🧠 Ollama (local)</text>
+          <text x="690" y="550" fill="#7d8590" font-size="11" text-anchor="middle">KEEP_ALIVE=0</text>
+          <text x="690" y="566" fill="#7d8590" font-size="11" text-anchor="middle">lazy load modelos</text>
+          <text x="690" y="582" fill="#7d8590" font-size="11" text-anchor="middle">processa LLM local</text>
+          <text x="690" y="598" fill="#7d8590" font-size="11" text-anchor="middle">18 MB ocioso</text>
+
+          <rect x="830" y="500" width="280" height="110" rx="8" fill="rgba(247,120,186,.08)" stroke="#f778ba" stroke-width="1.5"/>
+          <text x="970" y="530" fill="#f778ba" font-weight="600" text-anchor="middle">📊 Painel :8430</text>
+          <text x="970" y="550" fill="#7d8590" font-size="11" text-anchor="middle">python http.server</text>
+          <text x="970" y="566" fill="#7d8590" font-size="11" text-anchor="middle">evolucao.html + arquitetura.html</text>
+          <text x="970" y="582" fill="#7d8590" font-size="11" text-anchor="middle">lê state/*.json · tick 3s</text>
+          <text x="970" y="598" fill="#7d8590" font-size="11" text-anchor="middle">só metadados · nunca leads</text>
+
+          <!-- ─── Setas ─── -->
+          <line x1="230" y1="100" x2="318" y2="100" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-acc)"/>
+          <line x1="540" y1="100" x2="618" y2="100" stroke="#bc8cff" stroke-width="1.5" marker-end="url(#arr-pur)"/>
+          <line x1="800" y1="100" x2="898" y2="100" stroke="#d29922" stroke-width="1.5" marker-end="url(#arr-warn)"/>
+
+          <path d="M 170 140 L 170 238" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arr-ok)"/>
+          <path d="M 430 140 L 430 200 Q 430 218 448 218 L 480 218 Q 498 218 498 236" stroke="#bc8cff" stroke-width="1.5" fill="none" marker-end="url(#arr-pur)"/>
+          <path d="M 710 140 L 710 200 Q 710 218 692 218 L 660 218 Q 642 218 642 236" stroke="#bc8cff" stroke-width="1.5" fill="none" marker-end="url(#arr-pur)"/>
+
+          <path d="M 170 420 L 170 498" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-acc)"/>
+          <path d="M 430 420 L 430 498" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-acc)"/>
+          <path d="M 690 420 L 690 498" stroke="#bc8cff" stroke-width="1.5" marker-end="url(#arr-pur)"/>
+
+          <path d="M 290 555 L 308 555" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-acc)"/>
+          <path d="M 550 555 L 568 555" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-acc)"/>
+          <path d="M 810 555 L 828 555" stroke="#f778ba" stroke-width="1.5" marker-end="url(#arr-acc)"/>
+
+          <!-- Feedback do painel -->
+          <path d="M 970 610 L 970 660 L 170 660 L 170 420" stroke="#f778ba" stroke-width="1" fill="none" stroke-dasharray="5 4" marker-end="url(#arr-acc)"/>
+          <text x="500" y="680" fill="#7d8590" font-size="11" text-anchor="middle">feedback de estado</text>
+        </svg>
+      </div>
+
+      <div class="legend">
+        <div class="item"><div class="swatch" style="background:#58a6ff"></div>entrada / API</div>
+        <div class="item"><div class="swatch" style="background:#bc8cff"></div>supervisão / orquestração</div>
+        <div class="item"><div class="swatch" style="background:#3fb950"></div>núcleo operacional</div>
+        <div class="item"><div class="swatch" style="background:#d29922"></div>trava / singleton</div>
+        <div class="item"><div class="swatch" style="background:#f778ba"></div>observabilidade</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TOPOLOGIA ═══════════ -->
+  <div id="view-topo" class="hidden">
+    <div class="card">
+      <h2>🏗️ Topologia de processos</h2>
+      <div class="flow-list">
+<span class="ok">launchd</span>
+  └─ <span class="box">com.hermes.supervisor</span>  <span class="arrow">·</span>  KeepAlive=true  <span class="arrow">·</span>  ThrottleInterval=10s
+       └─ <span class="box">hermesctl start</span>
+            └─ <span class="ok">node src/server.js</span>  <span class="arrow">·</span>  PID 85291  <span class="arrow">·</span>  117 MB
+                 ├─ <span class="step">Baileys</span>       .baileys/  <span class="arrow">(</span>creds.json + backup<span class="arrow">)</span>
+                 ├─ <span class="step">Fila</span>          fila.json  <span class="arrow">(</span>154 pend · 27 env · idempotente<span class="arrow">)</span>
+                 ├─ <span class="step">Scheduler</span>     30 min <span class="arrow">·</span> IMAP 3 min
+                 ├─ <span class="step">API REST</span>      :8420 <span class="arrow">(</span>Bearer<span class="arrow">)</span>
+                 └─ <span class="step">Logs</span>          ~/hermes-ops/logs/backend.out.log
+
+<span class="ok">processos independentes</span>
+  ├─ <span class="box">agent-watchdog.mjs</span>  <span class="arrow">·</span>  60s  <span class="arrow">·</span>  33 MB
+  ├─ <span class="box">privacy-hook.mjs</span>    <span class="arrow">·</span>  120s  <span class="arrow">·</span>  30 MB
+  ├─ <span class="box">ollama serve</span>         <span class="arrow">·</span>  lazy  <span class="arrow">·</span>  18 MB ocioso
+  └─ <span class="box">python http.server 8430</span>  <span class="arrow">·</span>  painel
+
+<span class="ok">PORTAS</span>
+  :8420  <span class="arrow">→</span>  backend (API)
+  :8430  <span class="arrow">→</span>  painel (HTML + state)
+  :11434 <span class="arrow">→</span>  ollama (interno)
+
+<span class="ok">ESTADO (state/*.json)</span>
+  live.json       <span class="arrow">←</span> agent-watchdog (tick 60s)
+  privacy.json    <span class="arrow">←</span> privacy-hook   (tick 120s)
+  baseline.json   <span class="arrow">←</span> hermesctl baseline (uma vez)
+  etapa-01…11     <span class="arrow">←</span> hermesctl mission (uma vez)
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ COMPONENTES ═══════════ -->
+  <div id="view-comp" class="hidden">
+    <div class="card">
+      <h2>🧩 Componentes · responsabilidades</h2>
+      <div class="components">
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#bc8cff"></span><span class="name">com.hermes.supervisor</span></div>
+          <div class="d">Único launchd. Garante que <code>hermesctl start</code> rode sempre. Se o backend cair, relaunch em 10s.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#58a6ff"></span><span class="name">hermesctl</span></div>
+          <div class="d">CLI em <code>~/hermes-ops/bin/</code>. Comandos: <code>mission</code>, <code>start</code>, <code>stop</code>, <code>status</code>, <code>baseline</code>, <code>lock</code>, <code>backoff</code>, <code>session</code>, <code>painel</code>, <code>runbook</code>, <code>privacy</code>.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#3fb950"></span><span class="name">server.js</span></div>
+          <div class="d">Backend ESM. Baileys + fila + scheduler + API. Lock singleton em <code>/tmp/hermes-8420.lock</code>. Backoff exponencial no reconnect.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#58a6ff"></span><span class="name">agent-watchdog.mjs</span></div>
+          <div class="d">60s. Lê <code>:8420</code> + WhatsApp + Ollama. Escreve <code>state/live.json</code>. Base do KPI no painel.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#58a6ff"></span><span class="name">privacy-hook.mjs</span></div>
+          <div class="d">120s. Varre <code>logs/backend.out.log</code> por <code>/\d{10,13}/</code> + <code>prompt|ollama</code>. Se ambos → violação. Escreve <code>state/privacy.json</code>.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#f778ba"></span><span class="name">painel :8430</span></div>
+          <div class="d">Dois HTMLs: <code>evolucao.html</code> (timeline) + <code>arquitetura.html</code> (este). Lê <code>state/*.json</code>. Nunca expõe leads.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#bc8cff"></span><span class="name">Ollama (local)</span></div>
+          <div class="d"><code>KEEP_ALIVE=0</code>. Modelos carregam sob demanda. Nunca recebe prompt com leads. 18 MB ocioso.</div>
+        </div>
+        <div class="comp">
+          <div class="h"><span class="dot" style="background:#d29922"></span><span class="name">Singleton lock</span></div>
+          <div class="d"><code>/tmp/hermes-8420.lock</code> com PID + timestamp. Injetado por patch ESM <code>HERMES-SINGLETON</code> no topo do server.js.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ARQUIVOS ═══════════ -->
+  <div id="view-files" class="hidden">
+    <div class="card">
+      <h2>📁 Mapa de arquivos</h2>
+      <table>
+        <thead>
+          <tr><th>Caminho</th><th>Função</th><th>Atualização</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>~/hermes-ops/bin/hermesctl</code></td><td>CLI de controle</td><td>estático</td></tr>
+          <tr><td><code>~/hermes-ops/bin/agent-watchdog.mjs</code></td><td>Escreve state/live.json</td><td>tick 60s</td></tr>
+          <tr><td><code>~/hermes-ops/bin/privacy-hook.mjs</code></td><td>Auditoria de logs</td><td>tick 120s</td></tr>
+          <tr><td><code>~/hermes-ops/bin/rotate-logs.sh</code></td><td>Rotação 10MB×5</td><td>sob demanda</td></tr>
+          <tr><td><code>~/hermes-ops/state/etapa-01…11</code></td><td>Status das etapas</td><td>por etapa (mission)</td></tr>
+          <tr><td><code>~/hermes-ops/state/live.json</code></td><td>Backend + WA + fila</td><td>60s</td></tr>
+          <tr><td><code>~/hermes-ops/state/privacy.json</code></td><td>Auditoria</td><td>120s</td></tr>
+          <tr><td><code>~/hermes-ops/state/baseline.json</code></td><td>Snapshot inicial</td><td>uma vez</td></tr>
+          <tr><td><code>~/hermes-ops/logs/backend.out.log</code></td><td>stdout do backend</td><td>contínuo</td></tr>
+          <tr><td><code>~/hermes-ops/logs/agent.jsonl</code></td><td>Histórico do agente</td><td>60s</td></tr>
+          <tr><td><code>~/hermes-ops/attic/</code></td><td>Plists desativados</td><td>una vez</td></tr>
+          <tr><td><code>~/hermes-ops/trash/</code></td><td>.baileys antigos</td><td>auto >7d</td></tr>
+          <tr><td><code>~/hermes-work/hermes-os/backend/src/server.js</code></td><td>Backend ESM</td><td>nunca (a não ser patch)</td></tr>
+          <tr><td><code>~/hermes-work/hermes-os/backend/.baileys/</code></td><td>Sessão WhatsApp</td><td>contínuo</td></tr>
+          <tr><td><code>~/hermes-work/fila.json</code></td><td>182 leads</td><td>contínuo</td></tr>
+          <tr><td><code>/tmp/hermes-8420.lock</code></td><td>Singleton</td><td>no boot do server.js</td></tr>
+          <tr><td><code>~/Library/LaunchAgents/com.hermes.supervisor.plist</code></td><td>Único launchd</td><td>estático</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Hermes OS · mapa da arquitetura · operando com 12/12 verdes · 609 MB RAM · 1 supervisor · 1 backend · 2 agentes
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    const v = t.dataset.t;
+    document.getElementById('view-flow').classList.toggle('hidden', v!=='flow');
+    document.getElementById('view-topo').classList.toggle('hidden', v!=='topo');
+    document.getElementById('view-comp').classList.toggle('hidden', v!=='comp');
+    document.getElementById('view-files').classList.toggle('hidden', v!=='files');
+  };
+});
+</script>
+</body>
+</html>

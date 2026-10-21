@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Hermes OS</title>
+<link rel="stylesheet" href="/static/style.css">
+</head><body id="body">
+<div id="bg"><div class="bl bl1" data-d="14"></div>
+<div class="bl bl2" data-d="24"></div><div class="nz"></div></div>
+<main>
+ <div class="hd">
+   <div class="brand">
+     <div class="logo" id="logo"></div>
+     <h1 id="ti">HERMES OS</h1>
+     <span class="tag" id="tg">DASHBOARD · carregando</span>
+   </div>
+   <div class="pill">
+     <span class="dot" id="pd" style="background:#6ee7a5;color:#6ee7a5"></span>
+     <span id="pt">—</span>
+     <span style="color:var(--t3);font-size:11px" id="ps">—</span>
+   </div>
+   <div class="tg">
+     <button id="bt" class="on">TÉCNICO</button>
+     <button id="bc">COZINHA</button>
+   </div>
+ </div>
+ <div class="tabs" id="tabs"></div>
+
+
+ <div class="pn">
+   <h2 id="ptitle"></h2>
+   <div class="pb" id="pbody"></div>
+ </div>
+ <div class="ft">
+   <div class="it"><span class="dot" id="fd-l"></span> LiteLLM <span class="mo">:4000</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-a"></span> Agent <span class="mo">:8422</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-b"></span> Bridge <span class="mo">:8421</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-o"></span> Ollama <span class="mo">:11434</span></div>
+   <div class="rt">
+     <span id="fsv">—</span><span class="sep">│</span>
+     <span id="fml">—</span><span class="sep">│</span>
+     <span class="mo" id="fhr">—</span>
+   </div>
+ </div>
+</main>
+<script src="/static/app.js"></script>
+
+
+
+<!-- ===== MENU ESCALA (aba real, à prova de re-render) ===== -->
+<style>
+#escala-view{
+  max-width:1100px;margin:16px auto;padding:22px;
+  background:rgba(20,20,24,.72);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.08);border-radius:14px;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8ec;
+  display:none;
+}
+#escala-view.on{display:block}
+#escala-view h2{margin:0 0 4px;font-size:18px;font-weight:600}
+#escala-view .sub{color:#888;font-size:12px;margin-bottom:16px}
+#escala-view h3{margin:20px 0 0;font-size:13px;color:#aaa;
+  text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+#escala-view table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+#escala-view th{text-align:left;color:#888;font-weight:500;padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,.1);text-transform:uppercase;
+  letter-spacing:.05em;font-size:10px}
+#escala-view td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+#escala-view tr:last-child td{border:none}
+#escala-view .fase{font-weight:600;color:#4da3ff}
+#escala-view .ok{color:#2ecc71}
+#escala-view .warn{color:#f1c40f}
+#escala-view .off{color:#888}
+#escala-view .pill{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:10px;background:#4da3ff22;color:#4da3ff}
+#escala-view .fases{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+#escala-view .f{padding:12px;border-radius:10px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);position:relative}
+#escala-view .f.on{border-color:#4da3ff55;background:#4da3ff11}
+#escala-view .f .n{color:#888;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+#escala-view .f .t{font-weight:600;font-size:13px;margin:2px 0 6px}
+#escala-view .f .d{color:#999;font-size:11px;line-height:1.4}
+#escala-view .f .eta{position:absolute;top:8px;right:10px;font-size:10px;color:#4da3ff}
+#escala-view .regra{margin-top:14px;padding:10px 14px;border-radius:8px;
+  background:#e74c3c11;border:1px solid #e74c3c33;color:#e74c3c;font-size:11px}
+#escala-view .alertas{margin-top:12px;padding:10px 14px;border-radius:8px;
+  background:#4da3ff11;border:1px solid #4da3ff33;font-size:11px}
+#escala-view .alertas div{padding:3px 0;color:#cce4ff}
+#escala-view .alertas div::before{content:"▶ ";color:#4da3ff;margin-right:4px}
+
+/* Força a aba Escala a ter o mesmo visual das outras */
+#tabs .tb#tab-escala{cursor:pointer}
+</style>
+
+<div id="escala-view">
+  <h2>Plano de Escala</h2>
+  <div class="sub">4 fases · crescer sem quebrar · leads nunca saem da máquina</div>
+
+  <div class="fases">
+    <div class="f on">
+      <span class="eta">2h</span>
+      <div class="n">Fase 1</div>
+      <div class="t">Endurecer</div>
+      <div class="d">Rotação metrics · launchd daemon · fix /static/</div>
+    </div>
+    <div class="f">
+      <span class="eta">8h</span>
+      <div class="n">Fase 2</div>
+      <div class="t">Integrar</div>
+      <div class="d">Leads + campanhas no painel (só local)</div>
+    </div>
+    <div class="f">
+      <span class="eta">16h</span>
+      <div class="n">Fase 3</div>
+      <div class="t">Distribuir</div>
+      <div class="d">VM standby · réplica SQLite · failover</div>
+    </div>
+    <div class="f">
+      <span class="eta">∞</span>
+      <div class="n">Fase 4</div>
+      <div class="t">Observar</div>
+      <div class="d">v11 preditiva · alertas WhatsApp</div>
+    </div>
+  </div>
+
+  <h3>O que quebra primeiro</h3>
+  <table>
+    <tr><th>#</th><th>Limite</th><th>Quando estoura</th><th>Sintoma</th></tr>
+    <tr><td>1</td><td>metrics.jsonl infinito</td><td>~2M linhas (~3 anos)</td><td class="warn">Leitura lenta</td></tr>
+    <tr><td>2</td><td>HTTPServer + SSE</td><td>2+ abas abertas</td><td class="warn">/api/health timeout</td></tr>
+    <tr><td>3</td><td>Watchdog single-thread</td><td>30+ serviços</td><td class="warn">Coleta &gt;15s</td></tr>
+    <tr><td>4</td><td>RAM backend CRM</td><td>&gt;5.000 leads</td><td class="warn">Swap ativo</td></tr>
+    <tr><td>5</td><td>Porta única :9100</td><td>Necessidade de HA</td><td class="warn">SPOF</td></tr>
+  </table>
+
+  <h3>Regras inegociáveis</h3>
+  <table>
+    <tr><th>Item</th><th>Regra</th></tr>
+    <tr><td>Leads (592)</td><td class="off">Nunca para a nuvem — só local</td></tr>
+    <tr><td>Campanhas</td><td class="off">Processadas só no Mac (PII)</td></tr>
+    <tr><td>Ollama</td><td class="off">Fogão de casa — privacidade + zero custo</td></tr>
+    <tr><td>Backend CRM</td><td class="off">Contém PII — nunca migra</td></tr>
+    <tr><td>~/.hermes_env</td><td class="off">Chaves nunca saem da máquina</td></tr>
+    <tr><td>Nuvem</td><td class="ok">Só processa o que é público</td></tr>
+  </table>
+
+  <div class="regra">
+    ⛔ Leads · campanhas · CRM · chaves — nunca saem da máquina.
+  </div>
+
+  <div class="alertas" id="escala-alertas">
+    <div>Carregando sugestões…</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function getView(){ return document.getElementById('escala-view'); }
+
+  function injetar(){
+    var tabs = document.getElementById('tabs');
+    if (!tabs) return false;
+    if (tabs.querySelector('#tab-escala')) return true;
+
+    var btn = document.createElement('div');
+    btn.className = 'tb';
+    btn.id = 'tab-escala';
+    btn.setAttribute('data-tab','escala');
+    btn.innerHTML = '<span>Escala</span>';
+
+    btn.onclick = function(e){
+      e.stopPropagation();
+      // marca visualmente
+      tabs.querySelectorAll('.tb').forEach(function(x){ x.classList.remove('on'); });
+      btn.classList.add('on');
+      // mostra view, esconde conteúdo do app.js
+      var v = getView(); if (v) v.classList.add('on');
+      var pb = document.getElementById('pbody'); if (pb) pb.style.display = 'none';
+      var pt = document.getElementById('ptitle'); if (pt) pt.style.display = 'none';
+      // limpa seleção do app.js
+      try { if (typeof window.det !== 'undefined') window.det = null; } catch(_){}
+      carregar();
+    };
+
+    tabs.appendChild(btn);
+    return true;
+  }
+
+  function esconder(){
+    var v = getView(); if (v) v.classList.remove('on');
+    var pb = document.getElementById('pbody'); if (pb) pb.style.display = '';
+    var pt = document.getElementById('ptitle'); if (pt) pt.style.display = '';
+    var tab = document.getElementById('tab-escala');
+    if (tab) tab.classList.remove('on');
+  }
+
+  function carregar(){
+    var box = document.getElementById('escala-alertas');
+    if (!box) return;
+    fetch('/api/alerts?tipo=escala&limit=5', {cache:'no-store'})
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(arr){
+        if (!arr || !arr.length){ box.innerHTML = '<div>Nenhuma sugestão nova ainda</div>'; return; }
+        box.innerHTML = arr.slice(-5).map(function(a){
+          return '<div>'+(a.msg||'')+'</div>';
+        }).join('');
+      })
+      .catch(function(){
+        box.innerHTML = '<div>Fase 4: acumulando amostras para v11 preditiva</div>'
+                      + '<div>Fase 2: hora de integrar leads + campanhas (só local)</div>';
+      });
+  }
+
+  function start(){
+    var tabs = document.getElementById('tabs');
+    if (!tabs){ setTimeout(start, 200); return; }
+
+    // Observa qualquer reescrita de #tabs e reinjeta o botão
+    var obs = new MutationObserver(function(muts){
+      // só reinjeta se o botão foi perdido
+      if (!tabs.querySelector('#tab-escala')) injetar();
+    });
+    obs.observe(tabs, {childList: true, subtree: false});
+
+    // Injeta imediatamente
+    injetar();
+
+    // Delega cliques nas OUTRAS abas para esconder a view de escala
+    tabs.addEventListener('click', function(e){
+      var alvo = e.target.closest('.tb');
+      if (!alvo) return;
+      if (alvo.id === 'tab-escala') return;
+      esconder();
+    }, true);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+</script>
+<!-- ===== fim MENU ESCALA ===== -->
+
+</body></html>

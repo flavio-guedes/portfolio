@@ -1,0 +1,18 @@
+[
+  {
+    "run_id": "run-1788153192997",
+    "task": "diagnostic",
+    "platform": "upwork",
+    "executor": "STAGEHAND",
+    "state": "ERROR",
+    "started_at": "2026-08-31T05:13:12.997358+00:00",
+    "finished_at": "2026-08-31T05:13:12.998361+00:00",
+    "evidence": {
+      "selected_executor": "STAGEHAND",
+      "dynamic_page": true,
+      "url": ""
+    },
+    "next_action": "",
+    "error": "Stagehand adapter not implemented"
+  }
+]

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.hermes.agent</string>
+  <key>ProgramArguments</key><array>
+    <string>/Users/mac/.local/bin/node</string><string>/Users/mac/hermes-bridge/hermes-agent/hermes-agent.mjs</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/mac/hermes-bridge/hermes-agent</string>
+  <key>EnvironmentVariables</key><dict>
+    <key>HERMES_TOKEN</key><string>hermes123</string>
+    <key>FLAVIO_JID</key><string>5521999719474@s.whatsapp.net</string>
+    <key>MODELO</key><string>qwen2.5:3b</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/tmp/hermes-agent.log</string>
+  <key>StandardErrorPath</key><string>/tmp/hermes-agent.log</string>
+</dict></plist>

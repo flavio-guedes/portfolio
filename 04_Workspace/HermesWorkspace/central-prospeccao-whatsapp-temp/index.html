@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central de Prospecção — WhatsApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020b16;
+    --surface: #0a1628;
+    --surface-2: #0f2140;
+    --border: #1a3a5c;
+    --text: #e6f3ff;
+    --text-muted: #7d9cbd;
+    --cyan: #22d3ee;
+    --cyan-dim: rgba(34,211,238,0.25);
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.15);
+    --orange: #fbbf24;
+    --orange-dim: rgba(251,191,36,0.15);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.18);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  :focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    max-width: 1800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+  }
+  header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.4;
+  }
+  .panel-title--compact {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .panel-title--compact::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 6px var(--cyan);
+  }
+  .metric {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-shadow: 0 0 20px var(--cyan-dim);
+    line-height: 1;
+  }
+  .metric-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .search-input, .filter-select {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    outline: none;
+  }
+  .search-input { flex: 1; min-width: 200px; }
+  .search-input:focus, .filter-select:focus { border-color: var(--cyan); }
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .content-area {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding-right: 4px;
+  }
+  .content-area::-webkit-scrollbar { width: 6px; }
+  .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .filter-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+  .item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+  }
+  .item:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan-dim);
+  }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .item-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .item-name::before {
+    content: "";
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 4px var(--cyan);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .chip {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid var(--border);
+    background: rgba(34,211,238,0.08);
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .chip.ok { background: var(--green-dim); color: var(--green); border-color: rgba(52,211,153,0.3); }
+  .chip.warn { background: var(--orange-dim); color: var(--orange); border-color: rgba(251,191,36,0.3); }
+  .chip.danger { background: var(--red-dim); color: var(--red); border-color: rgba(248,113,113,0.3); }
+  .chip.plan { background: var(--purple-dim); color: var(--purple); border-color: rgba(167,139,250,0.3); }
+  .item-body {
+    display: none;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .item.expanded .item-body { display: block; }
+  .item.expanded .item-expand { transform: rotate(45deg); }
+  .item-expand {
+    color: var(--cyan);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .detail-section { margin-bottom: 8px; }
+  .detail-section:last-child { margin-bottom: 0; }
+  .detail-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .detail-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .btn.primary {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .empty-state {
+    padding: 24px 12px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .toast-stack {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    pointer-events: none;
+  }
+  .toast {
+    background: var(--surface-2);
+    border: 1px solid var(--cyan);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: 0 0 16px var(--cyan-dim);
+    animation: toast-in 0.2s ease, toast-out 0.2s ease 2.6s forwards;
+  }
+  @keyframes toast-in { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+  @keyframes toast-out { to { opacity: 0; transform: translateY(-6px);} }
+  .recent-section { margin-top: 10px; }
+  .recent-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 980px) {
+    header { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    header { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+  <div class="toolbar">
+    <input class="search-input" id="search" placeholder="Pesquisar empresa, cidade, estado ou categoria..." />
+    <select class="filter-select" id="category-filter">
+      <option value="all">Todas categorias</option>
+      <option value="Agência de Comunicação">Agência de Comunicação</option>
+      <option value="Agência de Publicidade">Agência de Publicidade</option>
+      <option value="Agência de Marketing Digital">Agência de Marketing Digital</option>
+      <option value="Empresa de Mídia">Empresa de Mídia</option>
+      <option value="Veículo de Comunicação">Veículo de Comunicação</option>
+      <option value="Produtora">Produtora</option>
+      <option value="Empresa de Branding">Empresa de Branding</option>
+      <option value="Empresa de Performance/Growth">Empresa de Performance/Growth</option>
+      <option value="Empresa de Tecnologia">Empresa de Tecnologia</option>
+      <option value="Outros">Outros</option>
+    </select>
+    <select class="filter-select" id="location-filter">
+      <option value="all">Todas localizações</option>
+      <option value="Rio de Janeiro">Rio de Janeiro</option>
+      <option value="São Paulo">São Paulo</option>
+      <option value="Outros">Outros Estados</option>
+      <option value="Nacional">Nacional</option>
+    </select>
+  </div>
+
+  <div class="main">
+    <div class="content-area" id="content"></div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toast-stack"></div>
+
+<script>
+const MESSAGE_TEMPLATES = {
+  default: (nome) => `Olá! Tudo bem?\n\nMeu nome é Flávio Guedes. Sou profissional de comunicação, design e marketing, com experiência em criação, direção de arte, campanhas, mídia e projetos digitais.\n\nEstou entrando em contato para me apresentar e conhecer possíveis oportunidades de colaboração com a empresa.\n\nPosso enviar meu portfólio?\n\nPortfólio: https://flavio-guedes.github.io/portfolio/designhead.html`,
+  agency: (nome) => `Olá! Tudo bem?\n\nMeu nome é Flávio Guedes e atuo nas áreas de comunicação, design, direção de arte e marketing.\n\nEstou entrando em contato porque acompanho o trabalho da empresa e gostaria de me apresentar para possíveis oportunidades de colaboração em projetos, demandas criativas ou posições futuras.\n\nPosso enviar meu portfólio?\n\nPortfólio: https://flavio-guedes.github.io/portfolio/designhead.html`,
+  media: (nome) => `Olá! Tudo bem?\n\nMeu nome é Flávio Guedes. Trabalho com comunicação, criação, design e marketing digital.\n\nGostaria de me apresentar e conhecer possíveis oportunidades de colaboração com a equipe em projetos de comunicação, produtos digitais, campanhas ou outras demandas.\n\nPosso compartilhar meu portfólio?\n\nPortfólio: https://flavio-guedes.github.io/portfolio/designhead.html`,
+  branding: (nome) => `Olá! Tudo bem?\n\nMeu nome é Flávio Guedes. Atuo com design, branding e direção de arte.\n\nGostaria de me apresentar para possíveis projetos ou colaborações em identidade visual, posicionamento e construção de marca.\n\nPosso enviar meu portfólio?\n\nPortfólio: https://flavio-guedes.github.io/portfolio/designhead.html`,
+  performance: (nome) => `Olá! Tudo bem?\n\nMeu nome é Flávio Guedes. Trabalho com marketing, comunicação e growth.\n\nGostaria de me apresentar para possíveis oportunidades em performance, campanhas, conteúdo e crescimento de marcas.\n\nPosso compartilhar meu portfólio?\n\nPortfólio: https://flavio-guedes.github.io/portfolio/designhead.html`,
+  tech: (nome) => `Olá! Tudo bem?\n\nMeu nome é Flávio Guedes. Atuo nas áreas de produto, UX/UI, comunicação e marketing.\n\nGostaria de me apresentar para possíveis oportunidades na área de tecnologia, produtos digitais ou iniciativas de comunicação.\n\nPosso enviar meu portfólio?\n\nPortfólio: https://flavio-guedes.github.io/portfolio/designhead.html`
+};
+
+let empresas = [];
+let currentFilter = { category: 'all', location: 'all', search: '' };
+
+function loadEmpresas() {
+  try {
+    const raw = localStorage.getItem('empresas');
+    if (raw) {
+      empresas = JSON.parse(raw);
+    } else {
+      fetch('data/empresas.json')
+        .then(r => r.json())
+        .then(data => { empresas = data; render(); updateMetrics(); });
+    }
+  } catch (e) {
+    fetch('data/empresas.json')
+      .then(r => r.json())
+      .then(data => { empresas = data; render(); updateMetrics(); });
+  }
+}
+
+function saveEmpresas() {
+  localStorage.setItem('empresas', JSON.stringify(empresas));
+}
+
+function getMessageTemplate(categoria) {
+  const key = categoria.includes('Agência') || categoria.includes('Publicidade') ? 'agency' :
+              categoria.includes('Mídia') || categoria.includes('Veículo') ? 'media' :
+              categoria.includes('Branding') ? 'branding' :
+              categoria.includes('Performance') || categoria.includes('Growth') ? 'performance' :
+              categoria.includes('Tecnologia') ? 'tech' : 'default';
+  return MESSAGE_TEMPLATES[key] || MESSAGE_TEMPLATES.default;
+}
+
+function buildWhatsAppLink(whatsapp, nome, categoria) {
+  const normalized = String(whatsapp).replace(/[^\d]/g, '');
+  const message = encodeURIComponent(getMessageTemplate(categoria)(nome));
+  return `https://wa.me/${normalized}?text=${message}`;
+}
+
+function buildMailto(subject, body) {
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function updateMetrics() {
+  document.getElementById('metric-companies').textContent = String(empresas.length);
+  document.getElementById('metric-whatsapp').textContent = String(empresas.filter(e => e.whatsapp).length);
+  document.getElementById('metric-validated').textContent = String(empresas.filter(e => e.status_validacao === 'validado').length);
+  const contactedIds = new Set(JSON.parse(localStorage.getItem('contacted') || '[]').map(x => x.id));
+  document.getElementById('metric-contacted').textContent = String(contactedIds.size);
+}
+
+function render() {
+  const container = document.getElementById('content');
+  const search = currentFilter.search.toLowerCase();
+  const filtered = empresas.filter(e => {
+    const matchSearch = !search || [e.empresa, e.cidade, e.estado, e.categoria].some(v => String(v).toLowerCase().includes(search));
+    const matchCategory = currentFilter.category === 'all' || e.categoria === currentFilter.category;
+    const matchLocation = currentFilter.location === 'all' || (currentFilter.location === 'Nacional' ? e.pais === 'Brasil' && !e.cidade : e.cidade === currentFilter.location || e.estado === currentFilter.location);
+    return matchSearch && matchCategory && matchLocation;
+  });
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state">Nenhuma empresa encontrada com os filtros atuais.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(e => {
+    const whatsappLink = buildWhatsAppLink(e.whatsapp, e.empresa, e.categoria);
+    const statusClass = e.status_validacao === 'validado' ? 'ok' : e.status_validacao === 'pendente' ? 'warn' : 'plan';
+    return `
+      <div class="item" data-id="${e.id}">
+        <div class="item-header">
+          <span class="item-name">${e.empresa}</span>
+          <span class="chip">${e.categoria}</span>
+          <span class="chip ${statusClass}">${e.status_validacao}</span>
+          <span class="item-expand">+</span>
+        </div>
+        <div class="item-body">
+          <div class="detail-section">
+            <div class="detail-label">Localização</div>
+            <div class="detail-text">${[e.cidade, e.estado, e.pais].filter(Boolean).join(' / ')}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">WhatsApp</div>
+            <div class="detail-text">${e.whatsapp || '—'}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Fonte</div>
+            <div class="detail-text">${e.fonte_contato || '—'}${e.url_fonte ? ' — <a href="' + e.url_fonte + '" target="_blank" rel="noopener" style="color:var(--cyan)">abrir fonte</a>' : ''}</div>
+          </div>
+          ${e.observacoes ? `<div class="detail-section"><div class="detail-label">Observações</div><div class="detail-text">${e.observacoes}</div></div>` : ''}
+          <div class="actions">
+            <a class="btn primary" href="${whatsappLink}" target="_blank" rel="noopener">Abrir WhatsApp</a>
+            <button class="btn" onclick="copyMessage('${whatsappLink.replace('https://wa.me/', '')}')">Copiar mensagem</button>
+            ${e.site ? `<a class="btn" href="${e.site}" target="_blank" rel="noopener">Visitar site</a>` : ''}
+            <button class="btn" onclick="markContacted('${e.id}')">Contatado</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  updateMetrics();
+}
+
+function showToast(text) {
+  const stack = document.getElementById('toast-stack');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = text;
+  stack.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+window.copyMessage = function(waPath) {
+  const url = new URL('https://wa.me/' + waPath);
+  const text = decodeURIComponent(url.searchParams.get('text') || '');
+  navigator.clipboard.writeText(text).then(() => showToast('Mensagem copiada'));
+};
+
+window.markContacted = function(id) {
+  const list = JSON.parse(localStorage.getItem('contacted') || '[]');
+  list.push({ id, date: new Date().toISOString() });
+  localStorage.setItem('contacted', JSON.stringify(list));
+  updateMetrics();
+  showToast('Contato registrado');
+};
+
+function init() {
+  loadEmpresas();
+  document.getElementById('search').addEventListener('input', (e) => { currentFilter.search = e.target.value; render(); });
+  document.getElementById('category-filter').addEventListener('change', (e) => { currentFilter.category = e.target.value; render(); });
+  document.getElementById('location-filter').addEventListener('change', (e) => { currentFilter.location = e.target.value; render(); });
+}
+
+init();
+</script>
+</body>
+</html>

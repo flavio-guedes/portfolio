@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "name": "AI Hub",
+    "subtitle": "AI Agent Command Center",
+    "owner": "Flávio",
+    "version": "0.1.0"
+  },
+  "humans": [
+    {
+      "id": "flavio",
+      "name": "Flávio",
+      "role": "Human Operator",
+      "emoji": "🧑‍💼",
+      "status": "ONLINE",
+      "department": "Human",
+      "project": "AI Hub",
+      "task": "Governar operação",
+      "progress": 100,
+      "lastActivity": "12:30",
+      "nextAction": "Aprovar contratação",
+      "coordinator": "—",
+      "isHired": true,
+      "location": "Escritório",
+      "color": "#fbbf24"
+    }
+  ],
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master",
+      "role": "AI Operations Coordinator",
+      "emoji": "🎯",
+      "status": "WORKING",
+      "department": "Operations",
+      "project": "AI Hub",
+      "task": "Distribuir tarefas",
+      "progress": 72,
+      "lastActivity": "12:28",
+      "nextAction": "Review bloqueios",
+      "coordinator": "Flávio",
+      "isHired": true,
+      "location": "Command Center",
+      "color": "#22d3ee",
+      "monitor": true
+    },
+    {
+      "id": "creative-director",
+      "name": "Diretor Criativo",
+      "role": "Creative Director / Brand / Creative Planning",
+      "emoji": "🎨",
+      "status": "WORKING",
+      "department": "Creative",
+      "project": "EPQ",
+      "task": "Creative System",
+      "progress": 68,
+      "lastActivity": "12:25",
+      "nextAction": "Format Guide",
+      "coordinator": "Master",
+      "isHired": true,
+      "location": "Creative Studio",
+      "color": "#c084fc"
+    },
+    {
+      "id": "product-designer",
+      "name": "Product Designer",
+      "role": "Product Design / UX / UI",
+      "emoji": "🧩",
+      "status": "ANALYZING",
+      "department": "Product",
+      "project": "AI Hub",
+      "task": "Dashboard UX",
+      "progress": 44,
+      "lastActivity": "12:22",
+      "nextAction": "Prototype v1",
+      "coordinator": "Master",
+      "isHired": true,
+      "location": "Product Lab",
+      "color": "#60a5fa"
+    }
+  ],
+  "talentPool": [
+    { "id": "strategist", "name": "Estrategista", "role": "Strategy", "emoji": "♟️", "status": "WAITING" },
+    { "id": "product-manager", "name": "Product Manager", "role": "Product", "emoji": "📋", "status": "WAITING" },
+    { "id": "commercial", "name": "Comercial", "role": "Commercial", "emoji": "📞", "status": "WAITING" },
+    { "id": "growth", "name": "Growth", "role": "Growth", "emoji": "📈", "status": "WAITING" },
+    { "id": "operations", "name": "Operations", "role": "Operations", "emoji": "⚙️", "status": "WAITING" },
+    { "id": "finance", "name": "Financeiro", "role": "Finance", "emoji": "💰", "status": "WAITING" },
+    { "id": "customer-success", "name": "Customer Success", "role": "CS", "emoji": "🤝", "status": "WAITING" },
+    { "id": "data", "name": "Data Analyst", "role": "Data", "emoji": "📊", "status": "WAITING" },
+    { "id": "copywriter", "name": "Copywriter", "role": "Copy", "emoji": "✍️", "status": "WAITING" },
+    { "id": "social-media", "name": "Social Media", "role": "Social", "emoji": "📣", "status": "WAITING" }
+  ],
+  "projects": [
+    { "id": "epq", "name": "EPQ", "agents": ["creative-director"], "status": "Ativo", "progress": 68 },
+    { "id": "aihub", "name": "AI Hub", "agents": ["master", "product-designer"], "status": "Ativo", "progress": 44 },
+    { "id": "intern", "name": "Projetos Internos", "agents": [], "status": "Backlog", "progress": 0 }
+  ],
+  "tasks": [
+    { "id": "t1", "agentId": "master", "project": "AI Hub", "title": "Distribuir tarefas", "status": "WORKING", "progress": 72 },
+    { "id": "t2", "agentId": "creative-director", "project": "EPQ", "title": "Creative System", "status": "WORKING", "progress": 68 },
+    { "id": "t3", "agentId": "product-designer", "project": "AI Hub", "title": "Dashboard UX", "status": "ANALYZING", "progress": 44 },
+    { "id": "t4", "agentId": "master", "project": "AI Hub", "title": "Review bloqueios", "status": "WAITING", "progress": 0 },
+    { "id": "t5", "agentId": "creative-director", "project": "EPQ", "title": "Format Guide", "status": "WAITING", "progress": 0 },
+    { "id": "t6", "agentId": "product-designer", "project": "AI Hub", "title": "Prototype v1", "status": "WAITING", "progress": 0 }
+  ],
+  "feed": [
+    { "time": "12:30", "msg": "Flávio aprovou abertura do AI Hub.", "color": "#fbbf24" },
+    { "time": "12:28", "msg": "Master iniciou nova tarefa: Distribuir tarefas.", "color": "#22d3ee" },
+    { "time": "12:25", "msg": "Diretor Criativo analisando Brand System.", "color": "#c084fc" },
+    { "time": "12:22", "msg": "Product Designer iniciou protótipo.", "color": "#60a5fa" },
+    { "time": "12:20", "msg": "Master distribuiu tarefa para Diretor Criativo.", "color": "#22d3ee" },
+    { "time": "12:18", "msg": "Operação sincronizada.", "color": "#34d399" }
+  ]
+}

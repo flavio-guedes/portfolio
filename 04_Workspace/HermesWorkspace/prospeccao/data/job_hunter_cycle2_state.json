@@ -1,0 +1,14 @@
+{
+  "cycle": "cycle-2",
+  "generated_at": "2026-08-31T04:30:00.000000+00:00",
+  "status": "RUNNING",
+  "previous_cycle": "cycle-1-improved",
+  "blocker": "low-quality scraping from indeed/weworkremotely; generic search URLs instead of real job posts",
+  "next_steps": [
+    "attempt browser-based validation of top target URLs",
+    "prepare tailored outreach for top tier-S/A opportunities",
+    "execute follow-up batch on validated CRM contacts if job URLs remain blocked",
+    "record material result before next cycle"
+  ],
+  "material_result_target": "prepare_application_package_or_outreach_batch"
+}

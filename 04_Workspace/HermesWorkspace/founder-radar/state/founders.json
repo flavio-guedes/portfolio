@@ -1,0 +1,26 @@
+[
+  {
+    "id": "founder-001",
+    "name": "Exemplo Seed",
+    "cargo": "CEO",
+    "empresa": "Exemplo Foods",
+    "segmento": "Alimentos Saudáveis",
+    "localizacao": "São Paulo, SP",
+    "linkedin": null,
+    "instagram": null,
+    "empresa_site": null,
+    "contato_publico": null,
+    "email_publico": null,
+    "telefone_publico": null,
+    "tamanho_estagio": "STARTUP",
+    "sinais_crescimento": [],
+    "aderencia_perfil": 0,
+    "motivo_aderencia": "",
+    "status": "NOVO",
+    "fonte": "seed",
+    "criado_em": "2026-09-03T00:00:00-03:00",
+    "atualizado_em": "2026-09-03T00:00:00-03:00",
+    "score": 2.25,
+    "tier": "D"
+  }
+]

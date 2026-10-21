@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI HUB — AI AGENT COMMAND CENTER</title>
+  <link rel="stylesheet" href="./src/styles/theme.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header glass" style="grid-area:header">
+      <div class="flex items-center gap-3">
+        <div class="avatar">🤖</div>
+        <div>
+          <div class="text-xs text-dim">COMMAND CENTER</div>
+          <h1>AI HUB</h1>
+        </div>
+      </div>
+      <div class="kpis" id="kpis">
+        <div class="kpi"><span class="label">Agents</span><span class="value" id="kpi-agents">3</span></div>
+        <div class="kpi"><span class="label">Online</span><span class="value" id="kpi-online">3</span></div>
+        <div class="kpi"><span class="label">Working</span><span class="value" id="kpi-working">2</span></div>
+        <div class="kpi"><span class="label">Waiting</span><span class="value" id="kpi-waiting">10</span></div>
+        <div class="kpi"><span class="label">Projects</span><span class="value" id="kpi-projects">3</span></div>
+        <div class="kpi"><span class="label">Tasks</span><span class="value" id="kpi-tasks">12</span></div>
+        <div class="kpi"><span class="label">Alerts</span><span class="value" id="kpi-alerts">0</span></div>
+      </div>
+    </header>
+
+    <header class="header-controls">
+      <span class="text-xs text-dim" style="letter-spacing:0.16em;text-transform:uppercase">Visualização</span>
+      <button class="chip active" data-view="list">Lista</button>
+      <button class="chip" data-view="kanban">Kanban</button>
+      <button class="chip" data-view="gantt">Gantt</button>
+      <button class="chip" data-view="steps">Etapas</button>
+      <button class="chip" data-view="workload">Carga</button>
+      <span class="text-xs text-dim" style="margin-left:6px;letter-spacing:0.16em;text-transform:uppercase">Status</span>
+      <select id="filter-status">
+        <option value="all">Todos</option>
+        <option value="WORKING">Trabalhando</option>
+        <option value="WAITING">Aguardando</option>
+        <option value="ANALYZING">Analisando</option>
+        <option value="OFFLINE">Offline</option>
+      </select>
+      <span class="text-xs text-dim" style="margin-left:6px;letter-spacing:0.16em;text-transform:uppercase">Projeto</span>
+      <select id="filter-project">
+        <option value="all">Todos</option>
+      </select>
+    </header>
+
+    <!-- Nav -->
+    <nav class="nav" id="nav">
+      <div class="nav-section">
+        <h3>Operação</h3>
+        <div id="agent-list"></div>
+      </div>
+      <div class="nav-section">
+        <h3>Projetos</h3>
+        <div id="project-list"></div>
+      </div>
+      <div class="nav-section">
+        <h3>Estrutura</h3>
+        <div class="hierarchy" id="hierarchy"></div>
+      </div>
+    </nav>
+
+    <!-- Office -->
+    <section class="office glass" id="office">
+      <div class="office-header">
+        <div class="office-title">Escritório Virtual · AI HUB</div>
+        <div class="flex items-center gap-2">
+          <span class="status-dot status-ONLINE"></span>
+          <span class="text-xs text-dim">Sincronizado</span>
+        </div>
+      </div>
+      <div class="stage" id="stage"></div>
+      <div class="office-floor"></div>
+      <div class="office-tooltip" id="office-tooltip"></div>
+    </section>
+
+    <section class="main-view" id="main-view">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)">Operação</div>
+          <div style="font-size:18px;font-weight:700" id="view-title">Projetos</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim)" id="view-subtitle">Visão unificada</div>
+      </div>
+      <div id="view-stage" style="flex:1;min-height:0;overflow:auto"></div>
+    </section>
+
+    <!-- Right panels -->
+    <aside class="right">
+      <div class="panel">
+        <h3>Live Activity</h3>
+        <div class="feed" id="feed"></div>
+      </div>
+      <div class="panel">
+        <h3>Evolução</h3>
+        <div class="flex gap-2 text-xs">
+          <div class="field"><span class="k">Level</span><span class="v">03</span></div>
+          <div class="field"><span class="k">Maturidade</span><span class="v">32%</span></div>
+          <div class="field"><span class="k">Missions</span><span class="v">127</span></div>
+          <div class="field"><span class="k">Automações</span><span class="v">24</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Tarefas</h3>
+        <div id="task-list"></div>
+      </div>
+    </aside>
+
+    <aside class="right2">
+      <div class="panel">
+        <h3>Foco do Dia</h3>
+        <div id="focus-day" class="text-sm" style="margin-top:4px">Carregando foco...</div>
+      </div>
+      <div class="panel">
+        <h3>Acesso Rápido</h3>
+        <div class="flex gap-2 text-xs" style="flex-wrap:wrap;margin-top:4px">
+          <a class="chip" href="https://drive.google.com" target="_blank" rel="noopener">Drive</a>
+          <a class="chip" href="https://github.com/flavio-guedes" target="_blank" rel="noopener">GitHub</a>
+          <a class="chip" href="https://www.figma.com" target="_blank" rel="noopener">Figma</a>
+          <a class="chip" href="https://telegram.org" target="_blank" rel="noopener">Telegram</a>
+          <a class="chip" href="https://www.notion.so" target="_blank" rel="noopener">Notion</a>
+          <a class="chip" href="https://www.meta.com" target="_blank" rel="noopener">Meta</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Detail sidebar -->
+    <aside class="detail" id="detail">
+      <div class="hero">
+        <div class="flex items-center gap-3">
+          <div class="avatar" id="detail-avatar"></div>
+          <div>
+            <div style="font-size:18px;font-weight:700" id="detail-name"></div>
+            <div class="text-xs text-dim" id="detail-role"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fields" id="detail-fields"></div>
+    </aside>
+  </div>
+
+  <script>
+    // 1. DATA LAYER — carrega de JSON externo
+    let data = {};
+    async function loadData() {
+      try {
+        const res = await fetch('./src/data/ai-hub.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Falha ao carregar dados');
+        data = await res.json();
+      } catch (e) {
+        console.error(e);
+        data = { humans: [], agents: [], talentPool: [], projects: [], tasks: [], feed: [] };
+      }
+      refresh();
+    }
+
+    // -----------------------
+    // 2. STATE
+    // -----------------------
+    let selectedAgentId = null;
+    let selectedTalentId = null;
+
+    // -----------------------
+    // 3. RENDER HELPERS
+    // -----------------------
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    function statusClass(status) {
+      return "status-" + status.replace(" ", "_").replace("/", "_");
+    }
+
+    function renderKPIs() {
+      const agents = [...data.humans, ...data.agents];
+      const online = agents.filter(a => a.status !== "OFFLINE").length;
+      const working = agents.filter(a => a.status === "WORKING").length;
+      const waiting = data.talentPool.length + agents.filter(a => a.status === "WAITING" || a.status === "OFFLINE").length;
+      $("#kpi-agents").textContent = String(agents.length).padStart(2, "0");
+      $("#kpi-online").textContent = String(online).padStart(2, "0");
+      $("#kpi-working").textContent = String(working).padStart(2, "0");
+      $("#kpi-waiting").textContent = String(waiting).padStart(2, "0");
+      $("#kpi-projects").textContent = String(data.projects.length).padStart(2, "0");
+      $("#kpi-tasks").textContent = String(data.tasks.length).padStart(2, "0");
+      $("#kpi-alerts").textContent = "00";
+    }
+
+    function stepHTML(id, step) {
+      const key = String(step.status || "").toLowerCase();
+      let css = "step-status-todo";
+      let icon = "⬜";
+      if (key.includes("conclu") || key.includes("done") || key.includes("complete")) { css = "step-status-done"; icon = "✅"; }
+      else if (key.includes("andamento") || key.includes("doing") || key.includes("working")) { css = "step-status-doing"; icon = "🔵"; }
+      return `
+        <div class="step">
+          <div class="step-icon">${icon}</div>
+          <div class="step-body">
+            <div class="step-title">${step.title}</div>
+            <div class="step-meta">${step.status || "Sem status"}</div>
+          </div>
+          <span class="step-pill ${css}">${step.status || "—"}</span>
+        </div>
+      `;
+    }
+
+    function renderAgentList() {
+      const container = $("#agent-list");
+      container.innerHTML = "";
+      data.humans.forEach(h => container.appendChild(rowFor(h, true)));
+      data.agents.forEach(a => container.appendChild(rowFor(a, false)));
+    }
+
+    function rowFor(entity, isHuman) {
+      const row = document.createElement("div");
+      row.className = "agent-row" + (selectedAgentId === entity.id ? " active" : "");
+      row.dataset.id = entity.id;
+      row.innerHTML = `
+        <div class="avatar" style="border-color:${entity.color || 'var(--border)'}">${entity.emoji}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${entity.name}</div>
+          <div class="text-xs text-dim">${entity.role}</div>
+        </div>
+        <div class="status-dot ${statusClass(entity.status)}"></div>
+      `;
+      row.addEventListener("click", () => openDetail(entity));
+      return row;
+    }
+
+    function renderTalentList() {
+      const container = $("#talent-list");
+      if (!container) return;
+      container.innerHTML = "";
+      data.talentPool.slice(0, 4).forEach(t => {
+        const row = document.createElement("div");
+        row.className = "agent-row" + (selectedTalentId === t.id ? " active" : "");
+        row.dataset.id = t.id;
+        row.innerHTML = `
+          <div class="avatar">${t.emoji}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600">${t.name}</div>
+            <div class="text-xs text-dim">${t.role} · ⏳ Waiting</div>
+          </div>
+        `;
+        row.addEventListener("click", () => { selectedTalentId = t.id; renderTalentList(); renderTalentGrid(); });
+        container.appendChild(row);
+      });
+    }
+
+    function renderProjectList() {
+      const container = $("#project-list");
+      container.innerHTML = "";
+      data.projects.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "agent-row";
+        row.innerHTML = `
+          <div class="avatar">📁</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
+            <div class="text-xs text-dim">${p.agents.length} agentes · ${p.progress}%</div>
+          </div>
+        `;
+        const milestones = (p.milestones || []).filter(Boolean);
+        const panel = document.createElement("div");
+        panel.className = "expandable";
+        panel.innerHTML = milestones.length
+          ? milestones.map((m, idx) => stepHTML(p.id + "-p-" + idx, m)).join("")
+          : `<div class="text-xs text-dim">Sem etapas definidas.</div>`;
+        row.addEventListener("click", () => {
+          panel.classList.toggle("open");
+          row.classList.toggle("active");
+        });
+        container.appendChild(row);
+        container.appendChild(panel);
+      });
+    }
+
+    function renderTaskList() {
+      const container = $("#task-list");
+      if (!container) return;
+      container.innerHTML = "";
+      const grouped = {};
+      (data.tasks || []).forEach(t => {
+        const project = t.project || "Geral";
+        grouped[project] = grouped[project] || [];
+        grouped[project].push(t);
+      });
+      Object.keys(grouped).forEach(project => {
+        const groupTitle = document.createElement("div");
+        groupTitle.style.cssText = "font-size:10px;color:var(--text-dim);letter-spacing:0.14em;text-transform:uppercase;margin-top:10px;margin-bottom:4px";
+        groupTitle.textContent = project;
+        container.appendChild(groupTitle);
+        grouped[project].forEach(t => {
+          const item = document.createElement("div");
+          item.className = "agent-row";
+          const milestoneCount = (t.milestones || []).filter(Boolean).length;
+          item.innerHTML = `
+            <div class="avatar" style="font-size:12px">📌</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.title}</div>
+              <div class="text-xs text-dim">${t.status || ""} · ${milestoneCount} etapas</div>
+            </div>
+            <div style="font-size:11px;color:var(--text)">${t.progress ?? 0}%</div>
+          `;
+          const milestonePanel = document.createElement("div");
+          milestonePanel.className = "expandable";
+          const milestones = (t.milestones || []).filter(Boolean);
+          milestonePanel.innerHTML = milestones.length
+            ? milestones.map((m, idx) => stepHTML(t.id + "-t-" + idx, m)).join("")
+            : `<div class="text-xs text-dim">Sem etapas.</div>`;
+          item.addEventListener("click", () => {
+            milestonePanel.classList.toggle("open");
+            item.classList.toggle("active");
+          });
+          container.appendChild(item);
+          container.appendChild(milestonePanel);
+        });
+      });
+    }
+
+    function renderHierarchy() {
+      const el = $("#hierarchy");
+      const humans = data.humans.map(h => ({ ...h, children: [] }));
+      const agents = data.agents.map(a => ({ ...a, children: [] }));
+      const pixelion = humans[0];
+      const logix = agents.find(a => a.id === "logix");
+      const creatives = agents.filter(a => a.department === "Creative");
+      const products = agents.filter(a => a.department === "Product");
+      const strategy = agents.filter(a => a.department === "Strategy");
+
+      const buildNode = (n) => `<div class="h-node"><div style="font-weight:700">${n.emoji} ${n.name}</div><div class="text-xs text-dim">${n.role}</div></div>`;
+      el.innerHTML = `
+        ${buildNode(pixelion)}
+        <div class="h-branch"></div>
+        ${buildNode(logix)}
+        <div class="h-row">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            ${creatives.map(c => `<div>${buildNode(c)}</div>`).join("")}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            ${products.map(p => `<div>${buildNode(p)}</div>`).join("")}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            ${strategy.map(s => `<div>${buildNode(s)}</div>`).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function drawPixelSprite(canvas, rows, palette) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = rows[0].length;
+      canvas.height = rows.length;
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      rows.forEach((row, y) => {
+        [...row].forEach((ch, x) => {
+          const color = palette[ch];
+          if (!color || color === 'transparent') return;
+          ctx.fillStyle = color;
+          ctx.fillRect(x, y, 1, 1);
+        });
+      });
+    }
+
+    const PX = {
+      '.': 'transparent',
+      '#': '#0b1020',
+      'W': '#e2e8f0',
+      'S': '#1f2937',
+      'B': '#334155',
+      'Y': '#fbbf24',
+      'G': '#34d399',
+      'R': '#f87171',
+      'C': '#c084fc',
+      'M': '#60a5fa',
+      'O': '#f97316',
+      'P': '#22d3ee',
+      'D': '#fde68a'
+    };
+
+    const CHAR = {
+      master: [
+        '..DWW.',
+        '.DWWWD',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ],
+      'creative-director': [
+        '..CWW.',
+        '.CWWWC',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ],
+      'product-designer': [
+        '..MWM.',
+        '.MWWWM',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ],
+      flavio: [
+        '..YWW.',
+        '.YWWWY',
+        '.WWWWW',
+        'WWWWWW',
+        '.BBBB.',
+        '.BBBB.',
+        '..B.B.',
+        '..B.B.',
+        '..S.S.',
+        '..S.S.'
+      ]
+    };
+
+    const DECOR = {
+      board: {
+        label: 'Aprovações',
+        svg: `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='56' viewBox='0 0 72 56' shape-rendering='crispEdges'><rect x='4' y='4' width='64' height='48' fill='#0f172a'/><rect x='4' y='4' width='64' height='6' fill='#1e293b'/><rect x='12' y='16' width='20' height='4' fill='#334155'/><rect x='12' y='24' width='40' height='4' fill='#334155'/><rect x='12' y='32' width='32' height='4' fill='#334155'/><rect x='56' y='40' width='8' height='10' fill='#fbbf24' opacity='.9'/></svg>`
+      },
+      screen: {
+        label: 'Ferramentas',
+        svg: `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='56' viewBox='0 0 72 56' shape-rendering='crispEdges'><rect x='8' y='6' width='56' height='38' fill='#0b1020'/><rect x='12' y='10' width='48' height='6' fill='#22d3ee' opacity='.35'/><rect x='12' y='20' width='48' height='4' fill='#1f2937'/><rect x='12' y='28' width='32' height='4' fill='#1f2937'/><rect x='12' y='36' width='24' height='4' fill='#1f2937'/><rect x='24' y='44' width='24' height='4' fill='#334155'/></svg>`
+      },
+      shelf: {
+        label: 'Projetos',
+        svg: `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='56' viewBox='0 0 72 56' shape-rendering='crispEdges'><rect x='4' y='8' width='64' height='4' fill='#1f2937'/><rect x='4' y='28' width='64' height='4' fill='#1f2937'/><rect x='12' y='10' width='16' height='18' fill='#c084fc' opacity='.35'/><rect x='32' y='10' width='16' height='18' fill='#22d3ee' opacity='.35'/><rect x='52' y='10' width='10' height='18' fill='#fbbf24' opacity='.35'/></svg>`
+      },
+      meeting: {
+        label: 'Reuniões',
+        svg: `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='56' viewBox='0 0 72 56' shape-rendering='crispEdges'><rect x='8' y='24' width='56' height='4' fill='#334155'/><rect x='16' y='28' width='12' height='14' fill='#1f2937'/><rect x='44' y='28' width='12' height='14' fill='#1f2937'/><rect x='20' y='16' width='8' height='8' fill='#60a5fa' opacity='.6'/><rect x='44' y='16' width='8' height='8' fill='#c084fc' opacity='.6'/></svg>`
+      },
+      plant: {
+        label: 'Clima',
+        svg: `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='56' viewBox='0 0 72 56' shape-rendering='crispEdges'><rect x='28' y='36' width='16' height='12' fill='#1f2937'/><rect x='24' y='32' width='24' height='4' fill='#334155'/><rect x='32' y='14' width='12' height='18' fill='#46D89C' opacity='.35'/><rect x='28' y='22' width='4' height='10' fill='#1f2937'/></svg>`
+      },
+      clock: {
+        label: 'Tempo',
+        svg: `<svg xmlns='http://www.w3.org/2000/svg' width='72' height='56' viewBox='0 0 72 56' shape-rendering='crispEdges'><rect x='20' y='10' width='32' height='32' fill='#0f172a'/><rect x='20' y='10' width='32' height='32' fill='none' stroke='#23344D' stroke-width='2'/><rect x='36' y='14' width='4' height='16' fill='#FFC247' opacity='.8'/><rect x='34' y='28' width='14' height='4' fill='#36D8F0' opacity='.8'/></svg>`
+      }
+    };
+
+    const OFFICE_TOOLTIPS = {
+      'pixelion': '🧑‍💼 Pixelion — Comando',
+      'logix': '⚙️ Logi-X — Operações',
+      'visiona': '🎨 Visiona — Criativo',
+      'uxel': '🧩 Uxel — Produto',
+      'stratego': '♟️ Stratego — Estratégia'
+    };
+
+    function spriteHTMLFor(entity) {
+      const color = entity.color || '#22d3ee';
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='80' viewBox='0 0 64 80' shape-rendering='crispEdges'><rect x='20' y='4' width='24' height='6' fill='${color}' /><rect x='12' y='10' width='40' height='10' fill='${color}' /><rect x='4' y='20' width='56' height='12' fill='${color}' /><rect x='8' y='32' width='48' height='12' fill='${color}' /><rect x='4' y='44' width='56' height='12' fill='${color}' /><rect x='16' y='56' width='32' height='10' fill='${color}' /><rect x='24' y='66' width='16' height='6' fill='${color}' /><rect x='20' y='4' width='24' height='6' fill='white' opacity='.15' /><rect x='12' y='10' width='40' height='10' fill='white' opacity='.1' /><rect x='20' y='14' width='24' height='2' fill='white' opacity='.2' /></svg>`;
+      const desk = entity.monitor ? '<div class="desk"></div>' : '';
+      const monitor = entity.monitor ? '<div class="monitor"></div>' : '';
+      return `<div class="sprite-pixel">${desk}${monitor}${svg}<div class="status-badge">${entity.status.replace('_',' ')}</div></div>`;
+    }
+
+    function renderStage() {
+      const stage = $("#stage");
+      stage.innerHTML = "";
+      const slots = [
+        { x: 2, y: 1, w: 3, h: 3, entity: data.humans.find(a => a.id === "pixelion"), zone: "Command" },
+        { x: 7, y: 1, w: 3, h: 3, entity: data.agents.find(a => a.id === "logix"), zone: "Operations" },
+        { x: 2, y: 5, w: 3, h: 3, entity: data.agents.find(a => a.id === "uxel"), zone: "Product" },
+        { x: 7, y: 5, w: 3, h: 3, entity: data.agents.find(a => a.id === "visiona"), zone: "Creative" }
+      ];
+      slots.forEach(s => {
+        if (!s.entity) return;
+        const spot = document.createElement("div");
+        spot.className = "agent-spot";
+        spot.dataset.status = s.entity.status;
+        spot.style.gridColumn = `${s.x} / span ${s.w}`;
+        spot.style.gridRow = `${s.y} / span ${s.h}`;
+        const isWaiting = s.entity.status === "WAITING";
+        spot.innerHTML = `<div class="sprite">${spriteHTMLFor(s.entity)}</div>`;
+        spot.addEventListener("click", () => openDetail(s.entity));
+        stage.appendChild(spot);
+      });
+
+      const decors = [
+        { key: "shelf", x: 9, y: 2, w: 3, h: 3 },
+        { key: "board", x: 1, y: 5, w: 3, h: 3 },
+        { key: "meeting", x: 1, y: 1, w: 2, h: 2 },
+        { key: "screen", x: 10, y: 6, w: 3, h: 2 },
+        { key: "plant", x: 4, y: 6, w: 2, h: 2 },
+        { key: "clock", x: 9, y: 5, w: 2, h: 2 }
+      ];
+      decors.forEach(d => {
+        const item = document.createElement("div");
+        item.className = "agent-spot decor interactive";
+        item.style.gridColumn = `${d.x} / span ${d.w}`;
+        item.style.gridRow = `${d.y} / span ${d.h}`;
+        item.dataset.status = "";
+        item.dataset.decorLabel = DECOR[d.key].label;
+        item.innerHTML = `<div style="padding:10px;display:flex;flex-direction:column;gap:10px">
+          ${DECOR[d.key].svg}
+          <div class="office-label">${DECOR[d.key].label}</div>
+        </div>`;
+        item.addEventListener("click", () => {
+          if (d.key === "shelf") {
+            const projects = data.projects || [];
+            if (projects.length) {
+              const first = projects[0];
+              openDetail({
+                id: first.id,
+                name: first.name,
+                role: "Projeto",
+                emoji: "📁",
+                status: "Ativo",
+                project: first.name,
+                task: `${first.progress}%`,
+                progress: first.progress,
+                lastActivity: "—",
+                nextAction: "Ver milestones",
+                coordinator: "—",
+                location: "Painel"
+              });
+            }
+          }
+        });
+        item.addEventListener("mouseenter", (evt) => {
+          const tooltip = $("#office-tooltip");
+          tooltip.textContent = DECOR[d.key].label;
+          tooltip.classList.add("visible");
+          positionTooltip(evt);
+        });
+        item.addEventListener("mouseleave", () => {
+          const tooltip = $("#office-tooltip");
+          tooltip.classList.remove("visible");
+        });
+        item.addEventListener("mousemove", positionTooltip);
+        stage.appendChild(item);
+      });
+    }
+
+    function positionTooltip(evt) {
+      const tooltip = $("#office-tooltip");
+      const office = $("#office");
+      const rect = office.getBoundingClientRect();
+      const x = evt.clientX - rect.left + 10;
+      const y = evt.clientY - rect.top + 10;
+      tooltip.style.left = `${x}px`;
+      tooltip.style.top = `${y}px`;
+    }
+
+    function renderFeed() {
+      const feed = $("#feed");
+      feed.innerHTML = "";
+      data.feed.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "feed-item";
+        el.innerHTML = `
+          <div class="dot" style="background:${item.color}"></div>
+          <div class="time">${item.time}</div>
+          <div class="msg">${item.msg}</div>
+        `;
+        feed.appendChild(el);
+      });
+    }
+
+    function renderFocus() {
+      const el = $("#focus-day");
+      if (!el) return;
+      const working = (data.agents || []).filter(a => a.status === "WORKING");
+      if (!working.length) {
+        el.textContent = "Nenhum agente em foco no momento.";
+        return;
+      }
+      const names = working.map(a => a.name).join(", ");
+      el.innerHTML = `<div style="font-weight:700">${names}</div><div class="text-xs text-dim" style="margin-top:4px">Operação ativa agora</div>`;
+    }
+
+    let currentView = 'list';
+    function setView(view) {
+      currentView = view;
+      document.querySelectorAll('.header-controls .chip').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+      renderView();
+    }
+
+    function renderView() {
+      const container = $("#view-stage");
+      if (!container) return;
+      const projects = data.projects || [];
+      const tasks = data.tasks || [];
+      const agents = [...(data.humans || []), ...(data.agents || [])];
+
+      if (currentView === 'list') {
+        container.innerHTML = projects.map(p => `
+          <div class="step">
+            <div class="step-icon">📁</div>
+            <div class="step-body">
+              <div class="step-title">${p.name}</div>
+              <div class="step-meta">${p.status} · ${p.progress}%</div>
+            </div>
+            <span class="step-pill step-status-doing">${p.progress}%</span>
+          </div>
+        `).join("") || `<div class="text-xs text-dim">Sem projetos.</div>`;
+      } else if (currentView === 'kanban') {
+        const cols = ['Backlog','Em andamento','Em revisão','Concluído'];
+        const map = { 'Backlog': [], 'Em andamento': [], 'Em revisão': [], 'Concluído': [] };
+        (tasks || []).forEach(t => {
+          const s = t.status || 'Backlog';
+          if (!map[s]) map[s] = [];
+          map[s].push(t);
+        });
+        container.innerHTML = `<div class="flex gap-2" style="flex-wrap:wrap;gap:8px">
+          ${cols.map(c => `<div style="flex:1;min-width:120px">
+            <div class="text-xs text-dim" style="margin-bottom:4px">${c}</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              ${(map[c] || []).map(t => `<div class="step" style="cursor:default">
+                <div class="step-body"><div class="step-title">${t.title}</div></div>
+                <span class="step-pill step-status-todo">${t.progress ?? 0}%</span>
+              </div>`).join('')}
+            </div>
+          </div>`).join('')}
+        </div>`;
+      } else if (currentView === 'gantt') {
+        const bars = (tasks || []).map((t, idx) => {
+          const start = idx * 18;
+          const width = Math.max(18, (t.progress || 0) * 1.8);
+          const agent = agents.find(a => a.id === (t.agentId || a.id)) || { name: '—', color: 'var(--accent)' };
+          return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <div style="width:90px;font-size:11px;color:var(--text-dim)">${t.title}</div>
+            <div style="flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden;position:relative">
+              <div style="position:absolute;left:${start}px;top:0;height:100%;width:${width}px;border-radius:999px;background:${agent.color || 'var(--accent)'};opacity:.85"></div>
+            </div>
+            <div style="width:36px;text-align:right;font-size:10px;color:var(--text-dim)">${t.progress ?? 0}%</div>
+          </div>`;
+        }).join('');
+        container.innerHTML = bars || `<div class="text-xs text-dim">Sem tarefas.</div>`;
+      } else if (currentView === 'steps') {
+        const all = [...(tasks || [])].map(t => ({ ...t, type: 'task' }));
+        container.innerHTML = all.map((item, idx) => stepHTML('v-' + idx, { title: item.title, status: item.status })).join('');
+      } else if (currentView === 'workload') {
+        const list = agents.map(a => {
+          const count = (tasks || []).filter(t => t.agentId === a.id).length;
+          const progress = Math.min(100, count * 25 + (a.progress || 0));
+          return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="width:32px;text-align:center">${a.emoji}</div>
+            <div style="flex:1;min-width:0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}</div>
+            <div style="width:80px;height:8px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden">
+              <div style="width:${progress}%;height:100%;border-radius:999px;background:${a.color || 'var(--accent)'}"></div>
+            </div>
+            <div style="width:32px;text-align:right;font-size:10px;color:var(--text-dim)">${count}</div>
+          </div>`;
+        }).join('');
+        container.innerHTML = list || `<div class="text-xs text-dim">Sem agentes.</div>`;
+      }
+    }
+
+    function refreshFilters() {
+      const statusEl = $("#filter-status");
+      const projectEl = $("#filter-project");
+      if (!statusEl || !projectEl) return;
+      const projects = data.projects || [];
+      projectEl.innerHTML = `<option value="all">Todos</option>` +
+        projects.map(p => `<option value="${p.name}">${p.name}</option>`).join("");
+    }
+
+    function renderTalentGrid() {
+      const grid = $("#talent-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      (data.talentPool || []).forEach(t => {
+        const card = document.createElement("div");
+        card.className = "talent-card";
+        card.innerHTML = `
+          <div class="avatar">${t.emoji}</div>
+          <div class="name">${t.name}</div>
+          <div class="role">${t.role}</div>
+          <div class="chair"></div>
+        `;
+        card.addEventListener("click", () => { selectedTalentId = t.id; renderTalentList(); renderTalentGrid(); $("#hire-status").textContent = `Selecionado: ${t.name}`; });
+        grid.appendChild(card);
+      });
+    }
+
+    function renderDetail(entity) {
+      $("#detail-avatar").textContent = entity.emoji || "📄";
+      $("#detail-name").textContent = entity.name || entity.id;
+      $("#detail-role").textContent = entity.role || "";
+      const fields = $("#detail-fields");
+      fields.innerHTML = "";
+      const map = [
+        { k: "STATUS", v: entity.status || "—", color: true },
+        { k: "PROJECT", v: entity.project || entity.name || "—" },
+        { k: "CURRENT TASK", v: entity.task || "—" },
+        { k: "PROGRESS", v: (entity.progress ?? 0) + "%" },
+        { k: "LAST ACTIVITY", v: entity.lastActivity || "—" },
+        { k: "NEXT ACTION", v: entity.nextAction || "—" },
+        { k: "COORDINATOR", v: entity.coordinator || "—" },
+        { k: "LOCATION", v: entity.location || "—" }
+      ];
+      map.forEach(item => {
+        const f = document.createElement("div");
+        f.className = "field";
+        f.innerHTML = `<div class="k">${item.k}</div><div class="v" ${item.color ? `style="color:var(--accent)"` : ''}>${item.v}</div>`;
+        fields.appendChild(f);
+      });
+
+      const milestones = entity.milestones || [];
+      if (milestones.length) {
+        const section = document.createElement("div");
+        section.className = "field";
+        section.style.marginTop = "6px";
+        section.innerHTML = `<div class="k">MILESTONES</div>`;
+        milestones.forEach((m, idx) => {
+          const row = document.createElement("div");
+          row.style.cssText = "display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)";
+          row.innerHTML = `<div style="font-size:12px">${m.title}</div><div style="margin-left:auto;font-size:10px;color:var(--text-dim)">${m.status}</div>`;
+          section.appendChild(row);
+        });
+        fields.appendChild(section);
+      }
+
+      $$(".agent-spot").forEach(el => el.classList.remove("selected"));
+      const stageCard = Array.from($$(".agent-spot")).find(el => el.textContent.trim().startsWith(entity.emoji || ""));
+      if (stageCard) stageCard.classList.add("selected");
+    }
+
+    function openDetail(entity) {
+      selectedAgentId = entity.id;
+      renderDetail(entity);
+      $("#detail").classList.add("open");
+      renderAgentList();
+    }
+
+    function closeDetail() {
+      selectedAgentId = null;
+      $("#detail").classList.remove("open");
+      $$(".agent-spot").forEach(el => el.classList.remove("selected"));
+      renderAgentList();
+    }
+
+    // -----------------------
+    // 4. INTERACTIONS
+    // -----------------------
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
+    document.getElementById("btn-hire").addEventListener("click", () => {
+      if (!selectedTalentId) { $("#hire-status").textContent = "Selecione um agente na Talent Pool."; return; }
+      const idx = data.talentPool.findIndex(t => t.id === selectedTalentId);
+      if (idx < 0) return;
+      const talent = data.talentPool[idx];
+      const statusEl = $("#hire-status");
+      statusEl.textContent = `Contratando ${talent.name}...`;
+      setTimeout(() => {
+        const newAgent = {
+          id: talent.id, name: talent.name, role: talent.role, emoji: talent.emoji,
+          status: "WORKING", department: talent.role, project: "AI Hub", task: "Onboarding",
+          progress: 0, lastActivity: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          nextAction: "Receber tarefa", coordinator: "Pixelion", isHired: true, location: "Escritório",
+          color: "#FFC247", monitor: false
+        };
+        data.agents.push(newAgent);
+        data.tasks.push({ id: "t" + Date.now(), agentId: newAgent.id, project: "AI Hub", title: "Onboarding", status: "WORKING", progress: 0 });
+        data.feed.unshift({ time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), msg: `${talent.name} foi contratado e entrou em operação.`, color: "#46D89C" });
+        data.talentPool.splice(idx, 1);
+        selectedTalentId = null;
+        refresh();
+        statusEl.textContent = `${talent.name} contratado com sucesso!`;
+      }, 900);
+    });
+
+    document.addEventListener("click", (e) => {
+      const detail = $("#detail");
+      const office = $("#office");
+      const nav = $("#nav");
+      const right = document.querySelector(".right");
+      const right2 = document.querySelector(".right2");
+      if (!detail.contains(e.target) && !office.contains(e.target) && !nav.contains(e.target) && !right.contains(e.target) && !right2.contains(e.target)) closeDetail();
+    });
+
+    // -----------------------
+    // 5. LIVE ACTIVITY SIMULATOR
+    // -----------------------
+    function simulateActivity() {
+      const events = [
+        () => { const a = data.agents[Math.floor(Math.random()*data.agents.length)]; return `${a.name} está atualizando progresso.`; },
+        () => `Logi-X redistribuiu prioridades.`,
+        () => `Novo evento sincronizado em ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}.`,
+        () => `Visiona finalizou revisão.`
+      ];
+      const colors = ["#36D8F0", "#B87CFF", "#69AFFF", "#46D89C", "#FFC247"];
+      const msg = events[Math.floor(Math.random()*events.length)]();
+      data.feed.unshift({ time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), msg, color: colors[Math.floor(Math.random()*colors.length)] });
+      if (data.feed.length > 30) data.feed.pop();
+      renderFeed();
+    }
+    setInterval(simulateActivity, 7000);
+
+    // -----------------------
+    // 6. INIT + REFRESH
+    // -----------------------
+    function refresh() {
+      renderKPIs();
+      renderAgentList();
+      renderTalentList();
+      renderProjectList();
+      renderHierarchy();
+      renderStage();
+      renderFeed();
+      renderTalentGrid();
+      renderTaskList();
+      renderFocus();
+      if (selectedAgentId) {
+        const all = [...data.humans, ...data.agents];
+        const found = all.find(a => a.id === selectedAgentId);
+        if (found) renderDetail(found); else closeDetail();
+      }
+    }
+    loadData();
+  </script>
+</body>
+</html>

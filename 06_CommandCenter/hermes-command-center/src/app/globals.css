@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #111111;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium light command center tokens */
+.hero-gradient {
+  background: linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #06B6D4 100%);
+}
+
+.status-gradient {
+  background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+}
+
+.blocked-gradient {
+  background: linear-gradient(135deg, #C026D3 0%, #DC2626 100%);
+}
+
+.success-gradient {
+  background: linear-gradient(135deg, #059669 0%, #06B6D4 100%);
+}
+
+.warning-gradient {
+  background: linear-gradient(135deg, #D97706 0%, #DC2626 100%);
+}
+
+.command-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr 280px;
+  gap: 16px;
+}
+
+@media (max-width: 1280px) {
+  .command-grid {
+    grid-template-columns: 200px 1fr 260px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .command-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Light surface system */
+.command-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EC;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.command-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.command-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+}
+
+/* Status indicators */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot-running {
+  background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot-blocked {
+  background: linear-gradient(135deg, #C026D3 0%, #DC2626 100%);
+}
+
+.status-dot-success {
+  background: linear-gradient(135deg, #059669 0%, #06B6D4 100%);
+}
+
+.status-dot-warning {
+  background: linear-gradient(135deg, #D97706 0%, #DC2626 100%);
+}
+
+.status-dot-idle {
+  background: #E5E7EC;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Subtle futuristic accents */
+.futuristic-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(124, 58, 237, 0.25) 50%, transparent 100%);
+}
+
+.futuristic-glow {
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.12);
+}
+
+/* HUD micro details */
+.hud-corner {
+  position: relative;
+}
+
+.hud-corner::before,
+.hud-corner::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(124, 58, 237, 0.35);
+  border-style: solid;
+}
+
+.hud-corner::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.hud-corner::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8F8FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E5E7EC;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777B85;
+}

@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Automações — Espelhamento WhatsApp</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #14161b;
+      --panel-2: #1a1d24;
+      --border: #252a34;
+      --text: #e7eaf0;
+      --muted: #9aa2b4;
+      --accent: #4cc38a;
+      --warn: #f5c842;
+      --danger: #f06262;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top left, #161922, #0f1115);
+      color: var(--text);
+    }
+    header {
+      padding: 22px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(15,17,21,0.55);
+    }
+    h1 { font-size: 18px; margin: 0; letter-spacing: 0.2px; }
+    main {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 1100px) {
+      main { grid-template-columns: 280px 1fr; }
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .row { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 12px; color: var(--muted); }
+    select, textarea, input[type="text"] {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 10px;
+      font: inherit;
+      outline: none;
+    }
+    select:focus, textarea:focus, input:focus { border-color: #3a4155; }
+    textarea { min-height: 140px; resize: vertical; }
+    button {
+      background: var(--accent);
+      color: #06140e;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary { background: #252a34; color: var(--text); }
+    button.danger { background: var(--danger); color: white; }
+    .muted { color: var(--muted); font-size: 12px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--muted);
+    }
+    .pill.ok { color: #b7f0d4; border-color: #276344; background: #13231a; }
+    .pill.warn { color: #ffe2a0; border-color: #6b5a1c; background: #231f15; }
+    .pill.danger { color: #ffb8b8; border-color: #6b2b2b; background: #231616; }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 9px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    th { color: var(--muted); font-weight: 500; }
+    .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .tabs button { padding: 8px 10px; }
+    .tabs button.active { outline: 2px solid var(--accent); }
+    .log { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    details { margin-top: 8px; }
+    summary { cursor: pointer; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Automações — Espelhamento WhatsApp</h1>
+    <div class="toolbar">
+      <span class="badge" id="version">v2</span>
+      <span class="badge" id="mercuryBadge">#MERCÚRIO</span>
+      <button class="secondary" id="loadRemote">Recarregar</button>
+      <button class="secondary" id="exportJson">Exportar JSON</button>
+    </div>
+  </header>
+  <main>
+    <section>
+      <div class="toolbar">
+        <strong>Campanha #MERCÚRIO</strong>
+        <span class="pill" id="mercuryMode">DRY_RUN</span>
+        <span class="pill" id="mercuryQueue">471 na fila</span>
+      </div>
+      <div class="tabs">
+        <button id="tabMercurySeq" class="active">Sequência</button>
+        <button id="tabMercuryFire">Disparo</button>
+        <button id="tabMercuryFollow">Acompanhamento</button>
+        <button id="tabMercuryRota">Ajuste de rota</button>
+      </div>
+      <div id="viewMercurySeq">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Tier</th>
+              <th>Template</th>
+              <th>Horário</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="mercurySeqTable"></tbody>
+        </table>
+      </div>
+      <div id="viewMercuryFire" hidden>
+        <div class="row">
+          <label>Lotes prontos</label>
+          <div class="muted">Lote 1 outreach • 09:00–10:00</div>
+          <div class="muted">Lote 2 followup_d3 • 10:30–11:30</div>
+        </div>
+        <br />
+        <div class="toolbar">
+          <button id="mercuryDryRun">Dry-run 10</button>
+          <button id="mercurySendLote1">Enviar lote 1</button>
+          <button id="mercurySendLote2">Enviar lote 2</button>
+          <span class="pill" id="mercurySendStatus">—</span>
+        </div>
+      </div>
+      <div id="viewMercuryFollow" hidden>
+        <div class="row">
+          <label>Acompanhamento</label>
+          <div class="muted" id="mercuryFollowText">Follow-up programado para D+3.</div>
+        </div>
+        <br />
+        <div class="toolbar">
+          <span class="pill" id="mercuryStatsEnv">Envios: 0</span>
+          <span class="pill" id="mercuryStatsResp">Respostas: 0</span>
+          <span class="pill" id="mercuryStatsBlock">Bloqueios: 0</span>
+        </div>
+      </div>
+      <div id="viewMercuryRota" hidden>
+        <div class="row">
+          <label>Ajuste de rota</label>
+          <div class="muted">Após as 19h, avaliar taxa de resposta e sugerir ajuste de rota.</div>
+        </div>
+        <br />
+        <textarea id="mercuryRotaNotes" placeholder="Anotações para ajuste de rota..."></textarea>
+      </div>
+    </section>
+    <section>
+      <div class="toolbar">
+        <strong>Painel</strong>
+        <span class="pill" id="statusCount">0 leads</span>
+        <span class="pill" id="statusTrigger">—</span>
+        <span class="pill" id="statusEtiqueta">—</span>
+      </div>
+      <div class="tabs">
+        <button id="tabLeads" class="active">Leads</button>
+        <button id="tabEtiquetas">Etiquetas WhatsApp</button>
+        <button id="tabAuditoria">Auditoria</button>
+      </div>
+      <div id="viewLeads">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Score</th>
+              <th>Fonte</th>
+              <th>Fluxo</th>
+              <th>Etiqueta</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabela"></tbody>
+        </table>
+      </div>
+      <div id="viewEtiquetas" hidden>
+        <table>
+          <thead>
+            <tr>
+              <th>Etiqueta</th>
+              <th>Leads</th>
+              <th>Fluxo</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaEtiquetas"></tbody>
+        </table>
+      </div>
+      <div id="viewAuditoria" hidden>
+        <div class="row">
+          <label>Histórico local</label>
+          <textarea id="historico" readonly placeholder="Sem eventos..."></textarea>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const state = { leads: [], templates: {}, triggers: {}, log: [] };
+
+    const LABEL_MAPPING = {
+      novo_lead: '🟢 01 • NOVO LEAD',
+      automacao_ativa: '🔵 02 • AUTOMAÇÃO ATIVA',
+      mensagem_enviada: '🟣 03 • MENSAGEM ENVIADA',
+      aguardando_resposta: '🟡 04 • AGUARDANDO RESPOSTA',
+      respondeu: '🟠 05 • RESPONDEU',
+      lead_quente: '🔥 06 • LEAD QUENTE',
+      qualificado: '⭐ 07 • QUALIFICADO',
+      convertido: '💰 08 • CONVERSÃO',
+      follow_up: '🔁 09 • FOLLOW-UP',
+      encerrado: '⚫ 10 • ENCERRADO',
+      atendimento_humano: '👤 ATENDIMENTO HUMANO'
+    };
+
+    const PRECEDENCIA = [
+      'convertido',
+      'atendimento_humano',
+      'lead_quente',
+      'qualificado',
+      'respondeu',
+      'aguardando_resposta',
+      'automacao_ativa',
+      'mensagem_enviada',
+      'novo_lead'
+    ];
+
+    const FLUXO_KEYS = [
+      'FLUXO • BOAS-VINDAS',
+      'FLUXO • CAPTAÇÃO',
+      'FLUXO • NUTRIÇÃO',
+      'FLUXO • FOLLOW-UP',
+      'FLUXO • REATIVAÇÃO',
+      'FLUXO • CONVERSÃO'
+    ];
+
+    function statusParaChave(status) {
+      if (!status) return null;
+      const s = String(status).trim().toLowerCase().replace(/[^a-z0-9_]+/g, '_');
+      const map = {
+        novo_lead: 'novo_lead',
+        automacao_ativa: 'automacao_ativa',
+        mensagem_enviada: 'mensagem_enviada',
+        aguardando_resposta: 'aguardando_resposta',
+        respondeu: 'respondeu',
+        lead_quente: 'lead_quente',
+        qualificado: 'qualificado',
+        convertido: 'convertido',
+        follow_up: 'follow_up',
+        follow_up: 'follow_up',
+        encerrado: 'encerrado',
+        atendimento_humano: 'atendimento_humano'
+      };
+      return map[s] || null;
+    }
+
+    function normalizarEtiqueta(etiqueta) {
+      if (!etiqueta) return LABEL_MAPPING.novo_lead;
+      const e = String(etiqueta).trim();
+      if (LABEL_MAPPING[e]) return LABEL_MAPPING[e];
+      for (const chave of Object.keys(LABEL_MAPPING)) {
+        if (e.toLowerCase().includes(chave.replace(/_/g, ' '))) return LABEL_MAPPING[chave];
+      }
+      return e;
+    }
+
+    function normalizarFluxo(fluxo) {
+      if (!fluxo) return 'FLUXO • CAPTAÇÃO';
+      const f = String(fluxo).trim();
+      if (f.toUpperCase().startsWith('FLUXO •')) return f;
+      const base = f.replace(/[^A-Za-zÀ-ÿ0-9]+/g, ' ').trim();
+      const alvo = base.split(' ')[0];
+      for (const fl of FLUXO_KEYS) {
+        const parte = fl.replace('FLUXO •', '').trim().split(' ')[0];
+        if (parte && alvo && alvo.toLowerCase().startsWith(parte.toLowerCase())) return fl;
+      }
+      return 'FLUXO • ' + f;
+    }
+
+    function statusValido(status) {
+      return PRECEDENCIA.includes(statusParaChave(status));
+    }
+
+    function maiorPrioridade(a, b) {
+      const ka = statusParaChave(a);
+      const kb = statusParaChave(b);
+      const ia = PRECEDENCIA.indexOf(ka);
+      const ib = PRECEDENCIA.indexOf(kb);
+      if (ia === -1 && ib === -1) return a;
+      if (ia === -1) return b;
+      if (ib === -1) return a;
+      return ia < ib ? a : b;
+    }
+
+    async function fetchJSON(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error('Falha ao carregar ' + path + ' -> ' + res.status);
+      return res.json();
+    }
+    async function fetchText(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error('Falha ao carregar ' + path + ' -> ' + res.status);
+      return res.text();
+    }
+
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+      if (lines.length === 0) return [];
+      const headers = parseCSVLine(lines[0]);
+      return lines.slice(1).map((line) => {
+        const cols = parseCSVLine(line);
+        const obj = {};
+        headers.forEach((h, i) => (obj[h] = (cols[i] || '').trim()));
+        return obj;
+      });
+    }
+    function parseCSVLine(line) {
+      const out = [];
+      let cur = '';
+      let inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (inQ) {
+          if (ch === '"') {
+            if (line[i + 1] === '"') { cur += '"'; i++; }
+            else inQ = false;
+          } else cur += ch;
+        } else {
+          if (ch === '"') inQ = true;
+          else if (ch === ',') { out.push(cur); cur = ''; }
+          else cur += ch;
+        }
+      }
+      out.push(cur);
+      return out;
+    }
+
+    function normalizePhone(v) {
+      const digits = String(v || '').replace(/\D+/g, '');
+      if (!digits) return '';
+      if (digits.length <= 13 && !String(v || '').trim().startsWith('+')) return '+' + digits;
+      return String(v || '').trim();
+    }
+
+    function now() {
+      const d = new Date();
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `[${dd}/${mm} ${hh}:${min}]`;
+    }
+
+    function registrar(evento) {
+      const linha = `${now()} ${evento}`;
+      state.log.push(linha);
+      $('historico').value = state.log.join('\n');
+    }
+
+    function auditar(statusAnterior, novoStatus, lead) {
+      registrar(`${lead.Nome || lead.Telefone}: ${statusAnterior || '—'} → ${novoStatus}`);
+    }
+
+    async function init() {
+      const [templatesRaw, triggersRaw, leadsRaw] = await Promise.all([
+        fetchJSON('./templates.json').catch(() => ({})),
+        fetchJSON('./triggers.json').catch(() => ({})),
+        fetchText('./leads.csv').catch(() => ''),
+      ]);
+
+      state.templates = templatesRaw;
+      state.triggers = triggersRaw;
+      state.leads = parseCSV(leadsRaw).filter((r) => r.Telefone);
+
+      state.leads.forEach((lead) => {
+        lead.FLUXO = normalizarFluxo(lead.FLUXO || lead.fluxo || '');
+        lead.ETIQUETA = normalizarEtiqueta(lead.ETIQUETA || lead.etiqueta || '');
+        lead.STATUS = statusValido(lead.STATUS) ? lead.STATUS : 'AUTOMAÇÃO ATIVA';
+      });
+
+      const tplSelect = $('template');
+      const trgSelect = $('trigger');
+      tplSelect.innerHTML = '';
+      trgSelect.innerHTML = '';
+      for (const [key, tpl] of Object.entries(templatesRaw)) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = tpl.label;
+        tplSelect.appendChild(opt);
+      }
+      for (const [key, trg] of Object.entries(triggersRaw)) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = trg.label + (trg.active ? '' : ' [inativo]');
+        trgSelect.appendChild(opt);
+      }
+      updatePreview();
+      renderTable();
+    }
+
+    function updatePreview() {
+      const tplKey = $('template').value;
+      const tpl = state.templates[tplKey];
+      const trgKey = $('trigger').value;
+      const trg = state.triggers[trgKey];
+      $('statusTrigger').textContent = trg ? trg.label : '—';
+      $('statusEtiqueta').textContent = (trg && trg.etiqueta) ? trg.etiqueta : '—';
+    }
+
+    function renderTable() {
+      const tbody = $('tabela');
+      tbody.innerHTML = '';
+      $('statusCount').textContent = state.leads.length + ' leads';
+      for (let i = 0; i < state.leads.length; i++) {
+        const row = state.leads[i];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${i + 1}</td><td title="${row.Nome}">${row.Nome}</td><td>${normalizePhone(row.Telefone)}</td><td>${row.Score}</td><td>${row.Fonte}</td><td>${row.FLUXO}</td><td>${row.ETIQUETA}</td><td>${row.STATUS}</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    function renderEtiquetas() {
+      const tbody = $('tabelaEtiquetas');
+      tbody.innerHTML = '';
+      const map = {};
+      state.leads.forEach((lead) => {
+        const key = lead.ETIQUETA;
+        if (!map[key]) map[key] = { etiqueta: key, leads: 0, fluxo: lead.FLUXO, status: lead.STATUS };
+        map[key].leads += 1;
+      });
+      const linhas = Object.values(map).sort((a, b) => String(a.etiqueta).localeCompare(String(b.etiqueta)));
+      linhas.forEach((linha) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${linha.etiqueta}</td><td>${linha.leads}</td><td>${linha.fluxo}</td><td>${linha.status}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function validarLista() {
+      const conflitos = [];
+      const ausentes = [];
+      state.leads.forEach((lead, idx) => {
+        if (!lead.FLUXO) ausentes.push(`#${idx + 1} fluxo ausente`);
+        if (!lead.ETIQUETA) ausentes.push(`#${idx + 1} etiqueta ausente`);
+        if (!statusValido(lead.STATUS)) ausentes.push(`#${idx + 1} status inválido: ${lead.STATUS}`);
+        const chave = statusParaChave(lead.STATUS);
+        if (!chave) conflitos.push(`#${idx + 1} sem precedência: ${lead.STATUS}`);
+      });
+      const saida = [];
+      if (ausentes.length) saida.push('AUSENTES/INVÁLIDOS: ' + ausentes.join('; '));
+      if (conflitos.length) saida.push('CONFLITOS: ' + conflitos.join('; '));
+      if (!saida.length) saida.push('OK: nenhum conflito detectado.');
+      $('validacao').textContent = saida.join('\n');
+      $('validacao').className = ausentes.length || conflitos.length ? 'pill danger' : 'pill ok';
+    }
+
+    function switchTab(tab) {
+      $('viewLeads').hidden = tab !== 'leads';
+      $('viewEtiquetas').hidden = tab !== 'etiquetas';
+      $('viewAuditoria').hidden = tab !== 'auditoria';
+      $('tabLeads').classList.toggle('active', tab === 'leads');
+      $('tabEtiquetas').classList.toggle('active', tab === 'etiquetas');
+      $('tabAuditoria').classList.toggle('active', tab === 'auditoria');
+      if (tab === 'etiquetas') renderEtiquetas();
+    }
+
+    $('loadRemote').addEventListener('click', async () => {
+      $('status').textContent = 'Carregando...';
+      try { await init(); $('status').textContent = 'Carregado.'; } catch (e) { $('status').textContent = 'Erro: ' + e.message; }
+    });
+
+    $('exportJson').addEventListener('click', () => {
+      const payload = {
+        version: 'v2',
+        label_mapping: LABEL_MAPPING,
+        leads: state.leads.map((r) => ({ ...r })),
+        selected_template: $('template').value,
+        selected_trigger: $('trigger').value,
+        preview: state.templates[$('template').value]?.text || '',
+        log: state.log.slice(-200),
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'automacao-espelhamento-whatsapp.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    $('executar').addEventListener('click', async () => {
+      const tpl = state.templates[$('template').value];
+      const trg = state.triggers[$('trigger').value];
+      const modo = $('modo').value;
+      const historico = $('historico');
+      if (!tpl) { $('status').textContent = 'Selecione um template.'; return; }
+      const recipient = state.leads[0] ? normalizePhone(state.leads[0].Telefone) : '';
+      const payload = {
+        time: new Date().toISOString(),
+        trigger: trg ? trg.id : null,
+        template: tpl.id,
+        fluxo: trg ? trg.fluxo : tpl.fluxo,
+        etiqueta: trg ? trg.etiqueta : tpl.etiqueta,
+        status: trg ? trg.status : tpl.status,
+        recipient,
+        mode: modo,
+        message: tpl.text,
+      };
+
+      if (trg && recipient) {
+        const lead = state.leads.find((r) => normalizePhone(r.Telefone) === recipient);
+        const anterior = lead ? lead.STATUS : null;
+        if (lead) {
+          lead.FLUXO = normalizarFluxo(trg.fluxo || lead.FLUXO || '');
+          lead.ETIQUETA = normalizarEtiqueta(trg.etiqueta || tpl.etiqueta || lead.ETIQUETA || '');
+          lead.STATUS = maiorPrioridade(trg.status || tpl.status || lead.STATUS, lead.STATUS);
+          auditar(anterior, lead.STATUS, lead);
+        }
+      }
+
+      const line = JSON.stringify(payload);
+      if (historico.value && !historico.value.endsWith('\n')) historico.value += '\n';
+      historico.value += line + '\n';
+      $('status').textContent = modo === 'dry-run' ? 'Dry-run executado: ' + recipient : 'Executado: ' + recipient;
+      renderTable();
+      registrar(`Execução ${modo}: ${tpl.label} para ${recipient}`);
+    });
+
+    $('validar').addEventListener('click', () => validarLista());
+
+    $('tabLeads').addEventListener('click', () => switchTab('leads'));
+    $('tabEtiquetas').addEventListener('click', () => switchTab('etiquetas'));
+    $('tabAuditoria').addEventListener('click', () => switchTab('auditoria'));
+
+    const mercurySeq = [
+      { nome: 'Ana Luiza Amaral Baldacini', telefone: '+119****4562', tier: 'TIER 1A', template: 'outreach', hora: '09:00', lote: 1 },
+      { nome: 'Ana C. Leme', telefone: '+119****2800', tier: 'TIER 1B', template: 'outreach', hora: '09:10', lote: 1 },
+      { nome: 'Pedro Brum', telefone: '+459****2546', tier: 'TIER 1B', template: 'outreach', hora: '09:20', lote: 1 },
+      { nome: 'Raphaella Schultz', telefone: '+279****4510', tier: 'TIER 1B', template: 'outreach', hora: '09:30', lote: 1 },
+      { nome: 'Thiago Miranda', telefone: '+559****7310', tier: 'TIER 1B', template: 'outreach', hora: '09:40', lote: 1 },
+      { nome: 'Alex Avena', telefone: '+219****2274', tier: 'TIER 1C', template: 'followup_d3', hora: '10:30', lote: 2 },
+      { nome: 'Bruno Pereira', telefone: '+219****2539', tier: 'TIER 1C', template: 'followup_d3', hora: '10:40', lote: 2 },
+      { nome: 'Bruno Pereira', telefone: '+219****7539', tier: 'TIER 1C', template: 'followup_d3', hora: '10:50', lote: 2 },
+      { nome: 'Bárbara Fiuza', telefone: '+119****6214', tier: 'TIER 1C', template: 'followup_d3', hora: '11:00', lote: 2 },
+      { nome: 'Carolina Vicente', telefone: '+419****4997', tier: 'TIER 1C', template: 'followup_d3', hora: '11:10', lote: 2 },
+    ];
+
+    function renderMercurySeq() {
+      const tbody = $('mercurySeqTable');
+      tbody.innerHTML = '';
+      mercurySeq.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${idx + 1}</td><td>${item.nome}</td><td>${item.telefone}</td><td>${item.tier}</td><td>${item.template}</td><td>${item.hora}</td><td>${item.lote === 1 ? 'Lote 1' : 'Lote 2'}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function switchMercuryTab(tab) {
+      ['viewMercurySeq', 'viewMercuryFire', 'viewMercuryFollow', 'viewMercuryRota'].forEach((id, idx) => {
+        const el = $(id);
+        el.hidden = idx !== tab;
+      });
+      ['tabMercurySeq', 'tabMercuryFire', 'tabMercuryFollow', 'tabMercuryRota'].forEach((id, idx) => {
+        const el = $(id);
+        el.classList.toggle('active', idx === tab);
+      });
+    }
+
+    $('tabMercurySeq').addEventListener('click', () => switchMercuryTab(0));
+    $('tabMercuryFire').addEventListener('click', () => switchMercuryTab(1));
+    $('tabMercuryFollow').addEventListener('click', () => switchMercuryTab(2));
+    $('tabMercuryRota').addEventListener('click', () => switchMercuryTab(3));
+
+    $('mercuryDryRun').addEventListener('click', async () => {
+      $('mercurySendStatus').textContent = 'Executando dry-run...';
+      try {
+        await fetch('http://127.0.0.1:4321/mercury/execute', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ mode: 'dry-run', limit: 10 }),
+        });
+        $('mercurySendStatus').textContent = 'Dry-run concluído.';
+      } catch (e) {
+        $('mercurySendStatus').textContent = 'Erro: ' + e.message;
+      }
+    });
+
+    $('mercurySendLote1').addEventListener('click', async () => {
+      $('mercurySendStatus').textContent = 'Enviando lote 1...';
+      try {
+        await fetch('http://127.0.0.1:4321/mercury/execute', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ mode: 'execute', limit: 5 }),
+        });
+        $('mercurySendStatus').textContent = 'Lote 1 enviado.';
+      } catch (e) {
+        $('mercurySendStatus').textContent = 'Erro: ' + e.message;
+      }
+    });
+
+    $('mercurySendLote2').addEventListener('click', async () => {
+      $('mercurySendStatus').textContent = 'Enviando lote 2...';
+      try {
+        await fetch('http://127.0.0.1:4321/mercury/execute', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ mode: 'execute', limit: 5 }),
+        });
+        $('mercurySendStatus').textContent = 'Lote 2 enviado.';
+      } catch (e) {
+        $('mercurySendStatus').textContent = 'Erro: ' + e.message;
+      }
+    });
+
+    renderMercurySeq();
+    switchMercuryTab(0);
+    init();
+  </script>
+</body>
+</html>

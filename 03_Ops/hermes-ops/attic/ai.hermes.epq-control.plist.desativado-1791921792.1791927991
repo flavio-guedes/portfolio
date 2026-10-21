@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.hermes.epq-control</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/mac/.local/bin/node</string>
+        <string>/Users/mac/HermesWorkspace/hermes/epq-control.js</string>
+        <string>--port</string>
+        <string>7687</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/mac/HermesWorkspace/hermes</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HERMES_HOME</key>
+        <string>/Users/mac/.hermes</string>
+        <key>HOME</key>
+        <string>/Users/mac</string>
+    </dict>
+
+    <key>LimitLoadToSessionType</key>
+    <array>
+        <string>Aqua</string>
+        <string>Background</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/mac/.hermes/logs/epq-control.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/mac/.hermes/logs/epq-control.error.log</string>
+</dict>
+</plist>

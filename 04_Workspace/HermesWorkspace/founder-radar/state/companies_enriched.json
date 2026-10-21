@@ -1,0 +1,117 @@
+[
+  {
+    "id": "company-001",
+    "empresa": "Exemplo Foods",
+    "segmento": "Alimentos Saudáveis",
+    "localizacao": "São Paulo, SP",
+    "site": null,
+    "tamanho_estagio": "STARTUP",
+    "sinais_crescimento": [],
+    "ultima_movimentacao": null,
+    "criado_em": "2026-09-03T00:00:00-03:00",
+    "atualizado_em": "2026-09-03T00:00:00-03:00",
+    "founders": [
+      {
+        "id": "founder-001",
+        "name": "Exemplo Seed",
+        "cargo": "CEO",
+        "empresa": "Exemplo Foods",
+        "segmento": "Alimentos Saudáveis",
+        "localizacao": "São Paulo, SP",
+        "linkedin": null,
+        "instagram": null,
+        "empresa_site": null,
+        "contato_publico": null,
+        "email_publico": null,
+        "telefone_publico": null,
+        "tamanho_estagio": "STARTUP",
+        "sinais_crescimento": [],
+        "aderencia_perfil": 0,
+        "motivo_aderencia": "",
+        "status": "NOVO",
+        "fonte": "seed",
+        "criado_em": "2026-09-03T00:00:00-03:00",
+        "atualizado_em": "2026-09-03T00:00:00-03:00",
+        "score": 2.25,
+        "tier": "D"
+      }
+    ],
+    "vagas": [
+      {
+        "id": "opp-001",
+        "cargo": "Head of Marketing",
+        "empresa": "Exemplo Foods",
+        "segmento": "Alimentos Saudáveis",
+        "localizacao": "São Paulo, SP",
+        "tipo": "CLT",
+        "modelo": "Híbrido",
+        "fonte": "LinkedIn Jobs",
+        "link": null,
+        "salario": null,
+        "score": 0.0,
+        "tier": "D",
+        "status": "NOVO",
+        "aderencia": 0.0,
+        "aderencia_segmento": 0.0,
+        "sinal_crescimento": 0.0,
+        "acessibilidade_decisor": 0.0,
+        "oportunidade_identificada": 0.0,
+        "potencial_financeiro": 0.0,
+        "criado_em": "2026-09-03T00:00:00-03:00",
+        "atualizado_em": "2026-09-03T00:00:00-03:00"
+      }
+    ],
+    "social_posts": [
+      {
+        "id": "social-001",
+        "autor": "Exemplo",
+        "empresa": "Exemplo Foods",
+        "cargo": "CEO",
+        "link_post": null,
+        "tema": "Crescimento de marca",
+        "por_que_interagir": "",
+        "prioridade": "BAIXA",
+        "acoes": [
+          "CURTIR",
+          "COMENTAR",
+          "SEGUIR"
+        ],
+        "comentario_v1": "",
+        "comentario_v2": "",
+        "comentario_v3": "",
+        "status": "NOVO",
+        "criado_em": "2026-09-03T00:00:00-03:00",
+        "atualizado_em": "2026-09-03T00:00:00-03:00"
+      }
+    ],
+    "outreach": [
+      {
+        "id": "outreach-001",
+        "tipo": "LINKEDIN_DM",
+        "destinatario": "Exemplo",
+        "empresa": "Exemplo Foods",
+        "cargo": "CEO",
+        "canal": "LinkedIn",
+        "contexto": "",
+        "dor": "",
+        "experiencia_relevante": "",
+        "portfolio": "https://flavio-guedes.github.io/portfolio/parceria.html",
+        "mensagem": "",
+        "status": "RASCUNHO",
+        "criado_em": "2026-09-03T00:00:00-03:00",
+        "atualizado_em": "2026-09-03T00:00:00-03:00"
+      }
+    ],
+    "score": {
+      "score": 21.0,
+      "tier": "D",
+      "stage_score": 5,
+      "sinais_score": 0.0,
+      "founders_score": 4.0,
+      "vagas_score": 5.0,
+      "social_score": 3.0,
+      "outreach_score": 4.0
+    },
+    "tier": "D"
+  }
+]

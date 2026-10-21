@@ -1,0 +1,13 @@
+[
+  {
+    "run_id": "run-1788153192997",
+    "executor": "STAGEHAND",
+    "summary": "Stagehand adapter not implemented",
+    "extra": {
+      "selected_executor": "STAGEHAND",
+      "dynamic_page": true,
+      "url": ""
+    },
+    "at": "2026-08-31T05:13:12.997848+00:00"
+  }
+]

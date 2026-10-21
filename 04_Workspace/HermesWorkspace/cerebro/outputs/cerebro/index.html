@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes — Cérebro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.035);
+    --surface-hover: rgba(255, 255, 255, 0.06);
+    --border: rgba(255, 255, 255, 0.10);
+    --border-active: rgba(255, 255, 255, 0.22);
+    --text: #ffffff;
+    --text-secondary: #888888;
+    --text-tertiary: #555555;
+    --accent: rgba(120, 180, 255, 0.25);
+    --accent-glow: rgba(120, 180, 255, 0.15);
+    --shadow-float: 0 24px 80px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255,255,255,0.06);
+    --shadow-inner: inset 0 1px 0 rgba(255,255,255,0.04);
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --sidebar-w: 280px;
+    --topbar-h: 64px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --agent-estrategia: #60a5fa;
+    --agent-criacao: #a78bfa;
+    --agent-dados: #22d3ee;
+    --agent-execucao: #34d399;
+    --agent-inteligencia: #c084fc;
+    --agent-interface: #fbbf24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    grid-template-rows: var(--topbar-h) 1fr;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  .topbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-6);
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .topbar-left { display: flex; align-items: center; gap: var(--space-3); }
+  .logo {
+    width: 26px; height: 26px;
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, rgba(120,180,255,0.2), rgba(120,180,255,0.05));
+    box-shadow: 0 0 24px rgba(120,180,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.9);
+  }
+  .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: rgba(255,255,255,0.85);
+  }
+  .topbar-right { display: flex; gap: var(--space-4); align-items: center; }
+  .topbar-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 12px rgba(16,185,129,0.5), 0 0 4px rgba(255,255,255,0.2);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .cmd-trigger {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: all 150ms ease;
+  }
+  .cmd-trigger:hover { border-color: var(--border-active); color: var(--text); }
+  .kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-secondary);
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: var(--space-5) var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-tertiary);
+    padding: var(--space-4) var(--space-3) var(--space-2);
+    font-weight: 500;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 150ms ease;
+    border: 1px solid transparent;
+  }
+  .nav-item:hover {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .nav-item.active {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-inner), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .nav-icon {
+    width: 16px; height: 16px;
+    opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+  }
+
+  .page-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-1);
+  }
+  .page-sub {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: var(--space-5);
+  }
+
+  .toolbar {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-5);
+  }
+  .chip {
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 150ms ease;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .chip:hover, .chip.active {
+    border-color: var(--border-active);
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-5);
+  }
+  .col-12 { grid-column: span 12; }
+  .col-8 { grid-column: span 8; }
+  .col-6 { grid-column: span 6; }
+  .col-4 { grid-column: span 4; }
+  .col-3 { grid-column: span 3; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    box-shadow: var(--shadow-float), var(--shadow-inner);
+    padding: var(--space-5);
+    transition: all 150ms ease;
+    cursor: pointer;
+  }
+  .card:hover {
+    border-color: var(--border-active);
+    box-shadow: var(--shadow-float), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: var(--space-2);
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), rgba(120,180,255,0.6));
+    transition: width 250ms ease;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    display: flex; align-items: flex-start; gap: var(--space-3);
+    transition: all 150ms ease;
+    cursor: pointer;
+  }
+  .agent-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
+  .agent-avatar {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px;
+    color: #000;
+    flex-shrink: 0;
+    box-shadow: 0 0 18px rgba(255,255,255,0.08);
+  }
+  .agent-meta { flex: 1; }
+  .agent-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .agent-role {
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .agent-status {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px rgba(16,185,129,0.5);
+    animation: pulse 3s ease-in-out infinite;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 18vh;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+  .overlay.open { display: flex; opacity: 1; }
+  .palette {
+    width: 100%; max-width: 560px;
+    background: rgba(10,10,10,0.95);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-float);
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: transform 150ms ease;
+  }
+  .overlay.open .palette { transform: translateY(0); }
+  .palette-input {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+  }
+  .palette-input::placeholder { color: var(--text-tertiary); }
+  .palette-list {
+    padding: var(--space-2);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .palette-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 13px;
+    transition: all 100ms ease;
+  }
+  .palette-item:hover, .palette-item.selected {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+  .palette-item .icon { opacity: 0.6; width: 18px; text-align: center; }
+  .palette-group {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-tertiary);
+    padding: var(--space-3) var(--space-3) var(--space-1);
+    font-weight: 500;
+  }
+  .palette-footer {
+    padding: var(--space-2) var(--space-4);
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: var(--text-tertiary);
+  }
+
+  .mobile-toggle {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 8px;
+    cursor: pointer;
+  }
+  .sidebar-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 500;
+  }
+
+  .detail-panel {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: 420px;
+    background: rgba(8,8,8,0.98);
+    border-left: 1px solid var(--border);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 600;
+    transform: translateX(100%);
+    transition: transform 200ms ease;
+    overflow-y: auto;
+    padding: var(--space-6);
+  }
+  .detail-panel.open { transform: translateX(0); }
+  .detail-close {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    margin-bottom: var(--space-4);
+  }
+
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed;
+      left: calc(-1 * var(--sidebar-w));
+      top: 0; bottom: 0;
+      width: var(--sidebar-w);
+      z-index: 501;
+      transition: left 200ms ease;
+      background: rgba(5,5,5,0.98);
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-backdrop.open { display: block; }
+    .main { margin-left: 0 !important; }
+    .mobile-toggle { display: block; }
+    .grid-12 { grid-template-columns: 1fr; }
+    .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+    .agent-grid { grid-template-columns: 1fr; }
+    .detail-panel { width: 100%; }
+    .content { padding: var(--space-5); }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+        <div class="logo">H</div>
+        <div class="brand">hermes · cérebro</div>
+      </div>
+      <div class="topbar-right">
+        <button class="cmd-trigger" id="cmdTrigger">
+          <span>Buscar</span>
+          <span class="kbd">⌘K</span>
+        </button>
+        <div class="topbar-dot" title="Online"></div>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">Mapa</div>
+      <div class="nav-item active" data-target="skills">
+        <span class="nav-icon">◈</span>
+        <span>Skills</span>
+      </div>
+      <div class="nav-item" data-target="frameworks">
+        <span class="nav-icon">◧</span>
+        <span>Frameworks</span>
+      </div>
+      <div class="nav-item" data-target="tools">
+        <span class="nav-icon">⚡</span>
+        <span>Tools</span>
+      </div>
+      <div class="nav-item" data-target="projetos">
+        <span class="nav-icon">▦</span>
+        <span>Projetos</span>
+      </div>
+
+      <div class="sidebar-section">Capacidades</div>
+      <div class="nav-item" data-target="agentes">
+        <span class="nav-icon">◎</span>
+        <span>Agentes</span>
+      </div>
+      <div class="nav-item" data-target="maturidade">
+        <span class="nav-icon">◩</span>
+        <span>Maturidade</span>
+      </div>
+      <div class="nav-item" data-target="oportunidades">
+        <span class="nav-icon">◪</span>
+        <span>Oportunidades</span>
+      </div>
+
+      <div class="sidebar-section">Status</div>
+      <div class="nav-item" data-target="forças">
+        <span class="nav-icon">▲</span>
+        <span>Pontos fortes</span>
+      </div>
+      <div class="nav-item" data-target="desenvolver">
+        <span class="nav-icon">△</span>
+        <span>A desenvolver</span>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <main class="main">
+      <div class="content" id="mainContent"></div>
+    </main>
+  </div>
+
+  <div class="overlay" id="cmdOverlay">
+    <div class="palette">
+      <input class="palette-input" id="cmdInput" placeholder="Digite um comando ou busca..." autocomplete="off">
+      <div class="palette-list" id="cmdList"></div>
+      <div class="palette-footer">
+        <span>↑↓ navegar</span>
+        <span>↵ abrir</span>
+        <span>esc fechar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-panel" id="detailPanel">
+    <button class="detail-close" id="detailClose">✕</button>
+    <div id="detailContent"></div>
+  </div>
+
+  <script>
+    const DATA = {
+      skills: [
+        { name: 'Google Workspace', category: 'produtividade', maturity: 90, strength: 'automação de docs/drive', develop: 'eventos e lembretes avançados' },
+        { name: 'HTML/CSS/JS', category: 'frontend', maturity: 88, strength: 'dashboards standalone', develop: 'design system reutilizável' },
+        { name: 'Python', category: 'backend', maturity: 85, strength: 'scripts e automação', develop: 'API própria unificada' },
+        { name: 'Google Drive API', category: 'integração', maturity: 82, strength: 'estrutura e versionamento', develop: 'organizadores automáticos' },
+        { name: 'Image Generation', category: 'criativo', maturity: 78, strength: 'Pollinations/OpenAI local', develop: 'prompt engineering avançado' },
+        { name: 'Audio Transcription', category: 'multimídia', maturity: 75, strength: 'ElevenLabs direto', develop: 'timestamps e diarização' },
+        { name: 'GitHub Pages', category: 'deploy', maturity: 92, strength: 'publish rápido', develop: 'rollback e previews' },
+        { name: 'Hugging Face', category: 'mlops', maturity: 65, strength: 'model discovery', develop: 'fine-tuning local' },
+        { name: 'Browser Automation', category: 'automação', maturity: 70, strength: 'browser-use/cua', develop: 'cenários robustos' },
+      ],
+      frameworks: [
+        { name: 'Command Palette Central', maturity: 90, projects: ['Cerebro', 'EPQ', 'Prospecção'] },
+        { name: 'Bento Grid Modular', maturity: 85, projects: ['EPQ', 'Hermes'] },
+        { name: 'KPI-First Stack', maturity: 80, projects: ['EPQ', 'Prospecção'] },
+        { name: 'Dark-First System', maturity: 95, projects: ['Todos'] },
+        { name: 'Micro-interactions', maturity: 75, projects: ['Hermes', 'EPQ'] },
+        { name: 'Spatial Navigation', maturity: 60, projects: ['Hermes'] },
+      ],
+      tools: [
+        { name: 'google_api.py', type: 'script', maturity: 85, projects: ['EPQ'] },
+        { name: 'image_generator.py', type: 'script', maturity: 75, projects: ['EPQ', 'Hermes'] },
+        { name: 'reference_collector.py', type: 'script', maturity: 70, projects: ['HIIF'] },
+        { name: 'reference_scraper.py', type: 'script', maturity: 68, projects: ['HIIF'] },
+        { name: 'browser-use', type: 'cli', maturity: 72, projects: ['Automação'] },
+        { name: 'eval.mjs', type: 'script', maturity: 60, projects: ['Desktop'] },
+      ],
+      projetos: [
+        { name: 'EPQ', status: 'ativo', stack: 'HTML/JS + Drive', agent: 'Criação', url: 'https://flavio-guedes.github.io/epq/painel-estrutura/' },
+        { name: 'sistema-prospeccao', status: 'ativo', stack: 'FastAPI + Pages', agent: 'Execução', url: '' },
+        { name: 'agentes', status: 'ativo', stack: 'Prompt/CLI', agent: 'Inteligência', url: '' },
+        { name: 'prospects', status: 'ativo', stack: 'HTML/JSON', agent: 'Dados', url: '' },
+        { name: 'pessoas', status: 'ativo', stack: 'HTML/JSON', agent: 'Estratégia', url: '' },
+        { name: 'epq-central', status: 'planejado', stack: 'HTML/JS', agent: 'Interface', url: '' },
+        { name: 'epq-projetos', status: 'planejado', stack: 'HTML/JS', agent: 'Estratégia', url: '' },
+        { name: 'pedagogico', status: 'planejado', stack: 'HTML/JS', agent: 'Interface', url: '' },
+        { name: 'b2b-opportunity-finder', status: 'planejado', stack: 'HTML/JS', agent: 'Execução', url: '' },
+      ],
+      agentes: [
+        { name: 'Estratégia', role: 'decisão e planejamento', color: 'var(--agent-estrategia)', icon: '▲', status: 'online' },
+        { name: 'Criação', role: 'conteúdo e formato', color: 'var(--agent-criacao)', icon: '◆', status: 'online' },
+        { name: 'Dados', role: 'análise e extração', color: 'var(--agent-dados)', icon: '●', status: 'online' },
+        { name: 'Execução', role: 'automação e fluxo', color: 'var(--agent-execucao)', icon: '■', status: 'ocupado' },
+        { name: 'Inteligência', role: 'IA, pesquisa e síntese', color: 'var(--agent-inteligencia)', icon: '✦', status: 'online' },
+        { name: 'Interface', role: 'UX e comunicação visual', color: 'var(--agent-interface)', icon: '★', status: 'online' },
+      ],
+      maturidade: [
+        { domain: 'Frontend', value: 88 },
+        { domain: 'Backend', value: 75 },
+        { domain: 'Deploy', value: 92 },
+        { domain: 'Criativo', value: 78 },
+        { domain: 'Automação', value: 70 },
+        { domain: 'ML/AI', value: 65 },
+        { domain: 'Integração', value: 82 },
+        { domain: 'UX', value: 80 },
+      ],
+      oportunidades: [
+        { title: 'Prompt mestre unificado', priority: 'alta', agent: 'Inteligência', desc: 'Centralizar prompts em JSON versionado.' },
+        { title: 'Tour guiado cross-app', priority: 'média', agent: 'Interface', desc: 'Tour reaproveitável para todos os painéis.' },
+        { title: 'Deploy automatizado', priority: 'alta', agent: 'Execução', desc: 'CI/CD local para Pages com 1 comando.' },
+        { title: 'Repositório de assets', priority: 'média', agent: 'Criação', desc: 'Drive estruturado para referências e briefings.' },
+        { title: 'Observabilidade', priority: 'baixa', agent: 'Dados', desc: 'Logs estruturados de geração de imagem/áudio.' },
+      ],
+      strengths: [
+        'Design DNA documentado e prototipado',
+        'Ecossistema multi-projeto consistente',
+        'Deploy rápido em GitHub Pages',
+        'Curadoria de padrões HIIF ativa',
+        'Automação Google Drive + Docs',
+        'Geração local de imagem/áudio',
+      ],
+      developments: [
+        'Design system tokenizado reutilizável',
+        'API unificada do Hermes',
+        'Prompt engineering padronizado',
+        'Testes visuais automatizados',
+        'CI/CD com preview e rollback',
+        'Observabilidade de tarefas longas',
+      ]
+    };
+
+    const overlay = document.getElementById('cmdOverlay');
+    const input = document.getElementById('cmdInput');
+    const list = document.getElementById('cmdList');
+    const trigger = document.getElementById('cmdTrigger');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const mainContent = document.getElementById('mainContent');
+    const detailPanel = document.getElementById('detailPanel');
+    const detailContent = document.getElementById('detailContent');
+    const detailClose = document.getElementById('detailClose');
+    let selectedIndex = 0;
+    let flatItems = [];
+
+    function openPalette() {
+      overlay.classList.add('open');
+      input.value = '';
+      renderList('');
+      input.focus();
+    }
+    function closePalette() {
+      overlay.classList.remove('open');
+    }
+    function renderList(query) {
+      const q = query.toLowerCase();
+      flatItems = [];
+      let html = '';
+      const groups = [
+        { group: 'Mapa', items: ['Skills','Frameworks','Tools','Projetos'] },
+        { group: 'Capacidades', items: ['Agentes','Maturidade','Oportunidades'] },
+        { group: 'Status', items: ['Pontos fortes','A desenvolver'] },
+      ];
+      groups.forEach(g => {
+        const matched = g.items.filter(it => it.toLowerCase().includes(q));
+        if (!matched.length) return;
+        html += `<div class="palette-group">${g.group}</div>`;
+        matched.forEach(label => {
+          html += `<div class="palette-item" data-index="${flatItems.length}">
+            <span class="icon">›</span>
+            <span>${label}</span>
+          </div>`;
+          flatItems.push({ target: label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g,'') });
+        });
+      });
+      if (!flatItems.length) {
+        html += `<div class="palette-item" style="cursor:default; opacity:0.6">Nenhum resultado</div>`;
+      }
+      list.innerHTML = html;
+      selectedIndex = 0;
+      updateSelection();
+    }
+    function updateSelection() {
+      const items = list.querySelectorAll('.palette-item');
+      items.forEach((el, i) => el.classList.toggle('selected', i === selectedIndex));
+      if (items[selectedIndex]) items[selectedIndex].scrollIntoView({ block: 'nearest' });
+    }
+    function activate(item) {
+      closePalette();
+      if (!item) return;
+      const targets = ['skills','frameworks','tools','projetos','agentes','maturidade','oportunidades','forças','desenvolver'];
+      const target = targets.find(t => item.target.includes(t));
+      if (target) {
+        document.querySelectorAll('.nav-item').forEach(n => {
+          n.classList.toggle('active', n.dataset.target === target);
+        });
+        renderPage(target);
+      }
+    }
+
+    trigger.addEventListener('click', openPalette);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closePalette(); });
+    input.addEventListener('input', () => renderList(input.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex + 1) % flatItems.length;
+        updateSelection();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex - 1 + flatItems.length) % flatItems.length;
+        updateSelection();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        activate(flatItems[selectedIndex]);
+      } else if (e.key === 'Escape') {
+        closePalette();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openPalette();
+      }
+    });
+    list.addEventListener('click', (e) => {
+      const item = e.target.closest('.palette-item');
+      if (!item) return;
+      const idx = parseInt(item.dataset.index, 10);
+      activate(flatItems[idx]);
+    });
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebarBackdrop.classList.toggle('open');
+    });
+    sidebarBackdrop.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarBackdrop.classList.remove('open');
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+        renderPage(item.dataset.target);
+        sidebar.classList.remove('open');
+        sidebarBackdrop.classList.remove('open');
+      });
+    });
+
+    function openDetail(html) {
+      detailContent.innerHTML = html;
+      detailPanel.classList.add('open');
+    }
+    detailClose.addEventListener('click', () => detailPanel.classList.remove('open'));
+
+    function renderPage(target) {
+      let html = '';
+      if (target === 'skills') {
+        html = `<div class="page-title">Skills</div><div class="page-sub">Habilidades, maturidade e evolução.</div>
+        <div class="toolbar" id="skillFilters"></div>
+        <div class="grid-12" id="skillGrid"></div>`;
+        mainContent.innerHTML = html;
+        const filters = ['todos', ...new Set(DATA.skills.map(s => s.category))];
+        const container = document.getElementById('skillFilters');
+        container.innerHTML = filters.map(f => `<button class="chip ${f==='todos'?'active':''}" data-cat="${f}">${f}</button>`).join('');
+        container.querySelectorAll('.chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            container.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            renderSkills(chip.dataset.cat);
+          });
+        });
+        renderSkills('todos');
+      } else if (target === 'frameworks') {
+        html = `<div class="page-title">Frameworks</div><div class="page-sub">Padrões adotados e projetos onde vivem.</div>
+        <div class="grid-12" id="fwGrid"></div>`;
+        mainContent.innerHTML = html;
+        const grid = document.getElementById('fwGrid');
+        grid.innerHTML = DATA.frameworks.map((fw, i) => `
+          <div class="col-4">
+            <div class="card" onclick="openDetail('<div class=\\'page-title\\'>${fw.name}</div><div class=\\'page-sub\\'>Maturidade ${fw.maturity}%</div><div style=\\'display:flex; flex-direction:column; gap:8px;\\'>' + ${JSON.stringify(fw.projects).replace(/"/g,'&quot;')}.map(p => '<div class=\\'badge\\'>'+p+'</div>').join('') + '</div>')">
+              <div class="card-header"><div class="card-title">Framework</div><div class="badge">${fw.maturity}%</div></div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; margin-bottom: 8px;">${fw.name}</div>
+              <div class="bar-track"><div class="bar-fill" style="width:${fw.maturity}%"></div></div>
+            </div>
+          </div>`).join('');
+      } else if (target === 'tools') {
+        html = `<div class="page-title">Tools</div><div class="page-sub">Scripts, CLIs e integrações próprias ou adotadas.</div>
+        <div class="grid-12" id="toolsGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('toolsGrid').innerHTML = DATA.tools.map((t, i) => `
+          <div class="col-4">
+            <div class="card" onclick="openDetail('<div class=\\'page-title\\'>${t.name}</div><div class=\\'page-sub\\'>${t.type} · Maturidade ${t.maturity}%</div><div style=\\'display:flex; flex-wrap:wrap; gap:8px;\\'>' + ${JSON.stringify(t.projects).replace(/"/g,'&quot;')}.map(p => '<div class=\\'badge\\'>'+p+'</div>').join('') + '</div>')">
+              <div class="card-header"><div class="card-title">${t.type}</div><div class="badge">${t.maturity}%</div></div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500;">${t.name}</div>
+              <div class="bar-track"><div class="bar-fill" style="width:${t.maturity}%"></div></div>
+            </div>
+          </div>`).join('');
+      } else if (target === 'projetos') {
+        html = `<div class="page-title">Projetos</div><div class="page-sub">Ecossistema ativo e planejado.</div>
+        <div class="grid-12" id="projGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('projGrid').innerHTML = DATA.projetos.map((p, i) => `
+          <div class="col-4">
+            <div class="card" onclick="openDetail('<div class=\\'page-title\\'>${p.name}</div><div class=\\'page-sub\\'>${p.status} · ${p.stack}</div><div class=\\'badge\\'>Agente: ${p.agent}</div>${p.url ? '<div style=\\'margin-top:8px\\'><a href=\\''+p.url+'\\' target=\\'_blank\\'>Abrir link</a></div>' : ''}')">
+              <div class="card-header"><div class="card-title">Projeto</div><div class="badge">${p.status}</div></div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500;">${p.name}</div>
+              <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">${p.stack}</div>
+            </div>
+          </div>`).join('');
+      } else if (target === 'agentes') {
+        html = `<div class="page-title">Agentes</div><div class="page-sub">6 papéis, cores e status.</div>
+        <div class="agent-grid" id="agentGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('agentGrid').innerHTML = DATA.agentes.map((a, i) => `
+          <div class="agent-card" onclick="openDetail('<div class=\\'page-title\\'>${a.name}</div><div class=\\'page-sub\\'>${a.role}</div><div class=\\'badge\\'>Status: ${a.status}</div><div style=\\'margin-top:8px\\'>Função principal: ${a.role}.</div>')">
+            <div class="agent-avatar" style="background: ${a.color}">${a.icon}</div>
+            <div class="agent-meta">
+              <div class="agent-name">${a.name}</div>
+              <div class="agent-role">${a.role}</div>
+            </div>
+            <div class="agent-status" title="${a.status}"></div>
+          </div>`).join('');
+      } else if (target === 'maturidade') {
+        html = `<div class="page-title">Maturidade</div><div class="page-sub">Visão por domínio.</div>
+        <div class="grid-12" id="matGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('matGrid').innerHTML = DATA.maturidade.map((m, i) => `
+          <div class="col-4">
+            <div class="card" onclick="openDetail('<div class=\\'page-title\\'>${m.domain}</div><div class=\\'page-sub\\'>Maturidade ${m.value}%</div><div class=\\'bar-track\\' style=\\'height:10px\\'><div class=\\'bar-fill\\' style=\\'width:${m.value}%; height:100%\\'></div></div><div style=\\'margin-top:8px; font-size:12px; color: var(--text-secondary)\\'>Nível: ${m.value >= 80 ? 'Alto' : m.value >= 70 ? 'Médio-alto' : 'Médio'}</div>')">
+              <div class="card-header"><div class="card-title">Domínio</div><div class="badge">${m.value}%</div></div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500;">${m.domain}</div>
+              <div class="bar-track"><div class="bar-fill" style="width:${m.value}%"></div></div>
+            </div>
+          </div>`).join('');
+      } else if (target === 'oportunidades') {
+        html = `<div class="page-title">Oportunidades</div><div class="page-sub">Projetos e melhorias com maior impacto.</div>
+        <div class="grid-12" id="oppGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('oppGrid').innerHTML = DATA.oportunidades.map((o, i) => `
+          <div class="col-4">
+            <div class="card" onclick="openDetail('<div class=\\'page-title\\'>${o.title}</div><div class=\\'page-sub\\'>Prioridade ${o.priority} · Agente ${o.agent}</div><div>${o.desc}</div>')">
+              <div class="card-header"><div class="card-title">Oportunidade</div><div class="badge">${o.priority}</div></div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500;">${o.title}</div>
+              <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Agente: ${o.agent}</div>
+            </div>
+          </div>`).join('');
+      } else if (target === 'forças') {
+        html = `<div class="page-title">Pontos fortes</div><div class="page-sub">O que já funciona e deve ser mantido.</div>
+        <div class="grid-12" id="strGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('strGrid').innerHTML = DATA.strengths.map((s, i) => `
+          <div class="col-4">
+            <div class="card">
+              <div style="font-size: 22px; color: var(--agent-execucao); margin-bottom: 8px;">✓</div>
+              <div style="font-size: 13px; color: var(--text-secondary);">${s}</div>
+            </div>
+          </div>`).join('');
+      } else if (target === 'desenvolver') {
+        html = `<div class="page-title">A desenvolver</div><div class="page-sub">Oportunidades de evolução do ecossistema.</div>
+        <div class="grid-12" id="devGrid"></div>`;
+        mainContent.innerHTML = html;
+        document.getElementById('devGrid').innerHTML = DATA.developments.map((s, i) => `
+          <div class="col-4">
+            <div class="card">
+              <div style="font-size: 22px; color: var(--agent-interface); margin-bottom: 8px;">△</div>
+              <div style="font-size: 13px; color: var(--text-secondary);">${s}</div>
+            </div>
+          </div>`).join('');
+      }
+    }
+
+    function renderSkills(cat) {
+      const items = cat === 'todos' ? DATA.skills : DATA.skills.filter(s => s.category === cat);
+      const grid = document.getElementById('skillGrid');
+      if (!grid) return;
+      grid.innerHTML = items.map((s, i) => `
+        <div class="col-4">
+          <div class="card" onclick="openDetail('<div class=\\'page-title\\'>${s.name}</div><div class=\\'page-sub\\'>${s.category}</div><div class=\\'badge\\'>Maturidade ${s.maturity}%</div><div style=\\'margin-top:8px; font-size:12px; color: var(--text-secondary)\\'>Ponto forte: ${s.strength}.</div><div style=\\'margin-top:6px; font-size:12px; color: var(--text-secondary)\\'>A desenvolver: ${s.develop}.</div>')">
+            <div class="card-header"><div class="card-title">${s.category}</div><div class="badge">${s.maturity}%</div></div>
+            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500;">${s.name}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${s.maturity}%"></div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    renderPage('skills');
+  </script>
+</body>
+</html>

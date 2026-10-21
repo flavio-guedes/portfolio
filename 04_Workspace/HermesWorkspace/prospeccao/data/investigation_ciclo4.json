@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-08-31T04:24:22.228514+00:00",
+  "cycle": "ciclo4",
+  "top_investigated": 4,
+  "target_companies": [
+    {
+      "company": "Creative tech agency (async/remote)",
+      "role": "AI Creative Technologist",
+      "score": 70,
+      "classification": "🟢 BOA",
+      "salary": "USD 60–110k or EUR equivalent",
+      "remote": "Remote",
+      "target_score": "A",
+      "next_action": "Validar se há vagas abertas na careers page ou via contato direto; preparar candidatura com adaptação de portfólio para AI + creative/marketing."
+    },
+    {
+      "company": "B2B SaaS / Productivity",
+      "role": "AI Workflow Automation Specialist",
+      "score": 69,
+      "classification": "🟡 AVALIAR",
+      "salary": "US$3,500–6,000/mo",
+      "remote": "Remote",
+      "target_score": "B",
+      "next_action": "Validar se há vagas abertas na careers page ou via contato direto; preparar candidatura com adaptação de portfólio para AI + creative/marketing."
+    },
+    {
+      "company": "AI-native startup (remote-first)",
+      "role": "AI Automation Specialist",
+      "score": 68,
+      "classification": "🟡 AVALIAR",
+      "salary": "US$4,000–6,000/mo",
+      "remote": "Remote",
+      "target_score": "A",
+      "next_action": "Validar se há vagas abertas na careers page ou via contato direto; preparar candidatura com adaptação de portfólio para AI + creative/marketing."
+    },
+    {
+      "company": "AI product company",
+      "role": "AI Product Specialist",
+      "score": 68,
+      "classification": "🟡 AVALIAR",
+      "salary": "US$3,200–5,500/mo",
+      "remote": "Remote",
+      "target_score": "B",
+      "next_action": "Validar se há vagas abertas na careers page ou via contato direto; preparar candidatura com adaptação de portfólio para AI + creative/marketing."
+    }
+  ],
+  "blockers": [
+    {
+      "platform": "LinkedIn",
+      "type": "🌐 PLATFORM",
+      "problem": "Links atuais são buscas genéricas; não há vaga confirmada nem método de apply direto.",
+      "alternative": "Usar empresa + careers ou validate via site oficial; aplicar em portais com menor fricção quando disponível.",
+      "needs_user": false
+    }
+  ],
+  "insights": [
+    "Empresas com perfil startup/agência apresentam maior chance de múltiplas vagas correlatas.",
+    "Cargos com AI + criatividade e AI + automação lideram aderência no ciclo atual.",
+    "Melhor próximo movimento: validar páginas de carreira diretas e aplicar filtro por método de candidatura antes de enviar."
+  ]
+}

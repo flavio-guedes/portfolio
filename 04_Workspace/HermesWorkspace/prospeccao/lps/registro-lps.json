@@ -1,0 +1,17 @@
+{
+  "lps": [
+    {
+      "slug": "juridico",
+      "arquivo": "prospeccao/lps/juridico.html",
+      "planilha": {
+        "nome": "LPs - Leads",
+        "spreadsheetId": "1lvBWZFiSxLXpuwQ06-b0nk32CtsjqiYAMKDO5oHULSs",
+        "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1lvBWZFiSxLXpuwQ06-b0nk32CtsjqiYAMKDO5oHULSs/edit",
+        "googleSheetsUrl": null,
+        "status": "aguardando_apps_script"
+      },
+      "notas": "Toda nova LP deve usar a planilha LPs - Leads. Depois, crie o Apps Script e cole a web app URL no campo googleSheetsUrl da LP."
+    }
+  ],
+  "regra": "Todas as LPs de serviços usam a planilha LPs - Leads como alias unificado de CRM de leads."
+}

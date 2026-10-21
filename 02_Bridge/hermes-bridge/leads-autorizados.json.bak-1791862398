@@ -1,0 +1,17 @@
+{
+  "versao": 1,
+  "atualizado_em": "2026-10-12 12:24:35",
+  "regras": {
+    "bloquear_grupos": true,
+    "bloquear_desconhecidos": true,
+    "exigir_ativo": true
+  },
+  "leads": [
+    {
+      "numero": "5521999999999",
+      "nome": "EXEMPLO — edite este arquivo",
+      "ativo": false,
+      "notas": "substitua pelo seu numero real"
+    }
+  ]
+}

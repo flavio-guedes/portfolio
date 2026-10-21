@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline LinkedIn — Flávio Guedes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0b0b14; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  p { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: 860px; margin: 0 auto; }
+  .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+  .main { min-width: 0; }
+  .card h2 { font-size: 16px; margin-bottom: 4px; }
+  .meta { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+  .score { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+  .score-hot { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .score-warm { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .score-cold { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  a.btn { text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; }
+  a.btn:hover { background: #1e293b; }
+  .pager { max-width: 860px; margin: 18px auto 0; display: flex; gap: 10px; justify-content: space-between; align-items: center; }
+  .pill { padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #111827; border: 1px solid #334155; }
+  button.nav { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; cursor: pointer; }
+  button.nav:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <h1>Pipeline LinkedIn</h1>
+  <p>Clique no botão para abrir a mensagem do lead.</p>
+  <div class="grid" id="cards"></div>
+  <div class="pager">
+    <button class="nav" id="prev" onclick="changePage(-1)">Anterior</button>
+    <div class="pill" id="pageInfo">Página 1</div>
+    <button class="nav" id="next" onclick="changePage(1)">Próxima</button>
+  </div>
+
+<script>
+  const data = [
+    {name:"Elaine Carvalho",company:"Binatural",temp:"FRIA",url:"https://www.linkedin.com/in/elainecb-carvalho"},
+    {name:"Mariana Ruas",company:"UnitedClass",temp:"FRIA",url:"https://www.linkedin.com/in/mariruas"},
+    {name:"Raquel Kiss",company:"Compass UOL",temp:"FRIA",url:"https://www.linkedin.com/in/raquelkissdesign"},
+    {name:"Rodrigo Souza",company:"Bradesco",temp:"FRIA",url:"https://www.linkedin.com/in/rodrigo-souza-48370118"},
+    {name:"Clever Braga",company:"Cometa Gaming",temp:"QUENTE",url:"https://www.linkedin.com/in/clever-braga"},
+    {name:"Natália Mori",company:"Fundação Bradesco",temp:"FRIA",url:"https://www.linkedin.com/in/natália-mori-88523129"},
+    {name:"Ranaú Fonseca",company:"Valemobi",temp:"FRIA",url:"https://www.linkedin.com/in/rana%C3%BA-fonseca-a806021ba"},
+    {name:"Paula Martins",company:"iFood",temp:"FRIA",url:"https://www.linkedin.com/in/paularsmartins"},
+    {name:"Marcel Vieira",company:"Natura",temp:"MORNO",url:"https://www.linkedin.com/in/marcel-vieira-8a6a1155"},
+    {name:"Thamiris Pimentel",company:"Grupo Boticário",temp:"FRIA",url:"https://www.linkedin.com/in/thamirispimentel"},
+    {name:"Rodrigo Maciel Pires",company:"Vivo",temp:"FRIA",url:"https://www.linkedin.com/in/piresrodrigo"},
+    {name:"Denilson Silva",company:"Vivo",temp:"FRIA",url:"https://www.linkedin.com/in/denilsonsilva"},
+    {name:"Beatriz Huscher",company:"Bela Metais",temp:"FRIA",url:"https://www.linkedin.com/in/beatriz-huscher"},
+    {name:"Leonardo Souza",company:"iFood",temp:"FRIA",url:"https://www.linkedin.com/in/leonardosouza"},
+    {name:"Fernanda Lopes",company:"Mercado Livre",temp:"FRIA",url:"https://www.linkedin.com/in/fernandalopes"},
+    {name:"Carolina Mendes",company:"Nubank",temp:"FRIA",url:"https://www.linkedin.com/in/carolinamendes"},
+    {name:"Gustavo Pereira",company:"Magazine Luiza",temp:"FRIA",url:"https://www.linkedin.com/in/gustavopereira"},
+    {name:"Tatiane Costa",company:"Santander",temp:"FRIA",url:"https://www.linkedin.com/in/tatianecostasantander"},
+    {name:"Vinicius Almeida",company:"Itaú",temp:"FRIA",url:"https://www.linkedin.com/in/viniciusalmeida"},
+    {name:"Larissa Oliveira",company:"Totvs",temp:"FRIA",url:"https://www.linkedin.com/in/larissaoliveiratotvs"},
+    {name:"Renata Costa",company:"Nubank",temp:"FRIA",url:"https://www.linkedin.com/in/renatacosta"},
+    {name:"Felipe Almeida",company:"Mercado Livre",temp:"FRIA",url:"https://www.linkedin.com/in/felipealmeida"},
+    {name:"Juliana Santos",company:"iFood",temp:"FRIA",url:"https://www.linkedin.com/in/julianasantos"},
+    {name:"Rafael Oliveira",company:"Magazine Luiza",temp:"FRIA",url:"https://www.linkedin.com/in/rafaeloliveira"},
+    {name:"Camila Rocha",company:"Santander",temp:"FRIA",url:"https://www.linkedin.com/in/camilarocha"}
+  ];
+
+  const pageSize = 10;
+  let page = 0;
+  function render() {
+    const container = document.getElementById('cards');
+    container.innerHTML = '';
+    const start = page * pageSize;
+    const slice = data.slice(start, start + pageSize);
+    slice.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const scoreClass = item.temp === 'QUENTE' ? 'score-hot' : (item.temp === 'MORNO' ? 'score-warm' : 'score-cold');
+      const recipient = item.url.split('/').pop();
+      card.innerHTML = `
+        <div class="main">
+          <h2>${item.name}</h2>
+          <div class="meta">${item.company} · <span class="score ${scoreClass}">${item.temp}</span></div>
+        </div>
+        <a class="btn" href="${item.url}" target="_blank" rel="noopener">Perfil</a>
+      `;
+      container.appendChild(card);
+    });
+    document.getElementById('pageInfo').innerText = `Página ${page + 1} · ${start + 1}-${Math.min(start + pageSize, data.length)}/${data.length}`;
+    document.getElementById('prev').disabled = page === 0;
+    document.getElementById('next').disabled = start + pageSize >= data.length;
+  }
+  function changePage(delta) {
+    page += delta;
+    render();
+  }
+  render();
+</script>
+</body>
+</html>

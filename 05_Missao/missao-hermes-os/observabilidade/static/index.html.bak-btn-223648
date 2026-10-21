@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Hermes OS</title>
+<link rel="stylesheet" href="/static/style.css">
+</head><body id="body">
+<div id="bg"><div class="bl bl1" data-d="14"></div>
+<div class="bl bl2" data-d="24"></div><div class="nz"></div></div>
+<main>
+ <div class="hd">
+   <div class="brand">
+     <div class="logo" id="logo"></div>
+     <h1 id="ti">HERMES OS</h1>
+     <span class="tag" id="tg">DASHBOARD · carregando</span>
+   </div>
+   <div class="pill">
+     <span class="dot" id="pd" style="background:#6ee7a5;color:#6ee7a5"></span>
+     <span id="pt">—</span>
+     <span style="color:var(--t3);font-size:11px" id="ps">—</span>
+   </div>
+   <div class="tg">
+     <button id="bt" class="on">TÉCNICO</button>
+     <button id="bc">COZINHA</button>
+   </div>
+ </div>
+ <div class="tabs" id="tabs"></div>
+
+<!-- ===== Plano de Escala — status ao vivo ===== -->
+<style>
+#escala-strip{
+  max-width:1100px;margin:16px auto 0;padding:14px 18px;
+  background:rgba(20,20,24,.72);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:#e8e8ec;font-size:12px;
+}
+#escala-strip h3{margin:0 0 10px;font-size:13px;color:#aaa;
+  text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+#escala-strip .fases{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#escala-strip .f{padding:10px;border-radius:9px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);position:relative}
+#escala-strip .f.on{border-color:#4da3ff55;background:#4da3ff11}
+#escala-strip .f .n{color:#888;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+#escala-strip .f .t{font-weight:600;font-size:13px;margin:2px 0 6px}
+#escala-strip .f .d{color:#999;font-size:11px;line-height:1.4}
+#escala-strip .f .eta{position:absolute;top:8px;right:10px;font-size:10px;color:#4da3ff}
+#escala-strip .regra{margin-top:12px;padding:8px 12px;border-radius:8px;
+  background:#e74c3c11;border:1px solid #e74c3c33;color:#e74c3c;font-size:11px}
+#escala-strip .next{margin-top:12px;padding:10px 12px;border-radius:8px;
+  background:#2ecc7111;border:1px solid #2ecc7133;color:#2ecc71;font-size:11px}
+</style>
+
+<div id="escala-strip">
+  <h3>Plano de Escala · 4 fases</h3>
+  <div class="fases">
+    <div class="f on">
+      <span class="eta">2h</span>
+      <div class="n">Fase 1</div>
+      <div class="t">Endurecer</div>
+      <div class="d">Rotação metrics · launchd daemon · fix /static/</div>
+    </div>
+    <div class="f">
+      <span class="eta">8h</span>
+      <div class="n">Fase 2</div>
+      <div class="t">Integrar</div>
+      <div class="d">Leads + campanhas no painel (só local)</div>
+    </div>
+    <div class="f">
+      <span class="eta">16h</span>
+      <div class="n">Fase 3</div>
+      <div class="t">Distribuir</div>
+      <div class="d">VM standby · réplica SQLite · failover</div>
+    </div>
+    <div class="f">
+      <span class="eta">∞</span>
+      <div class="n">Fase 4</div>
+      <div class="t">Observar</div>
+      <div class="d">v11 preditiva · alertas WhatsApp</div>
+    </div>
+  </div>
+  <div class="regra">
+    ⛔ Leads (592) · campanhas · CRM · chaves — nunca saem da máquina. Nuvem só processa conteúdo público.
+  </div>
+  <div class="next" id="escala-next">
+    ▶ Sugestão: feche o handler /static/ (Fase 1) antes de abrir a Fase 2
+  </div>
+</div>
+<!-- ===== fim Plano de Escala ===== -->
+
+ <div class="pn">
+   <h2 id="ptitle"></h2>
+   <div class="pb" id="pbody"></div>
+ </div>
+ <div class="ft">
+   <div class="it"><span class="dot" id="fd-l"></span> LiteLLM <span class="mo">:4000</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-a"></span> Agent <span class="mo">:8422</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-b"></span> Bridge <span class="mo">:8421</span></div>
+   <span class="sep">│</span>
+   <div class="it"><span class="dot" id="fd-o"></span> Ollama <span class="mo">:11434</span></div>
+   <div class="rt">
+     <span id="fsv">—</span><span class="sep">│</span>
+     <span id="fml">—</span><span class="sep">│</span>
+     <span class="mo" id="fhr">—</span>
+   </div>
+ </div>
+</main>
+<script src="/static/app.js"></script>
+</body></html>

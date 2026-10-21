@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founder & Opportunity Radar</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: #03040a; color: #e7edf3;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  header { display:flex; align-items:center; justify-content:space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid #1f2a3a; }
+  h1 { font-size: 20px; margin: 0; }
+  .sub { color: #8aa3bf; font-size: 12px; }
+  .toolbar { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  button, .btn {
+    background: #0b1220; color: #e7edf3; border: 1px solid #243044; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px;
+  }
+  button:hover { border-color: #4c8bff; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: rgba(15,23,42,.55); border: 1px solid #243044; border-radius: 16px; padding: 16px; backdrop-filter: blur(12px);
+  }
+  .card h2 { font-size: 14px; margin: 0 0 10px; color: #cfe2f5; }
+  .stat { display:flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #1a273b; }
+  .stat:last-child { border-bottom: none; }
+  .stat .label { color: #8aa3bf; font-size: 12px; }
+  .stat .value { font-weight: 700; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #1a273b; vertical-align: top; }
+  th { color: #8aa3bf; font-weight: 600; }
+  tr:hover td { background: rgba(20,30,50,.35); }
+  .tier { display:inline-block; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .tier-s { background: rgba(99,220,140,.15); color: #7ceca2; border: 1px solid rgba(99,220,140,.3); }
+  .tier-a { background: rgba(60,180,255,.15); color: #5cd2ff; border: 1px solid rgba(60,180,255,.3); }
+  .tier-b { background: rgba(255,190,60,.15); color: #ffd06a; border: 1px solid rgba(255,190,60,.3); }
+  .tier-c { background: rgba(160,160,200,.15); color: #c7c7e0; border: 1px solid rgba(160,160,200,.25); }
+  .tier-d { background: rgba(255,255,255,.06); color: #9ba7b7; border: 1px solid rgba(255,255,255,.1); }
+  .section { margin-top: 20px; }
+  .empty { color: #6e7f93; font-size: 12px; padding: 8px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>Founder & Opportunity Radar</h1>
+      <div class="sub" id="meta">Carregando...</div>
+    </div>
+    <div class="toolbar">
+      <button onclick="loadAll()">Atualizar</button>
+      <button onclick="downloadJSON('founders')">Founders</button>
+      <button onclick="downloadJSON('opportunities')">Oportunidades</button>
+      <button onclick="downloadJSON('companies_enriched')">Empresas</button>
+    </div>
+  </header>
+
+  <div class="grid" id="kpis"></div>
+
+  <div class="section">
+    <div class="card">
+      <h2>Oportunidades</h2>
+      <div id="opportunities"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <h2>Founders</h2>
+      <div id="founders"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <h2>Social Radar</h2>
+      <div id="social"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <h2>Outreach</h2>
+      <div id="outreach"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = './state';
+const meta = document.getElementById('meta');
+
+async function loadJSON(file) {
+  const res = await fetch(`${BASE}/${file}.json?ts=${Date.now()}`);
+  if (!res.ok) throw new Error(`${file}: ${res.status}`);
+  return res.json();
+}
+
+function tierClass(tier) {
+  const map = { S: 'tier-s', A: 'tier-a', B: 'tier-b', C: 'tier-c', D: 'tier-d' };
+  return map[tier] || 'tier-d';
+}
+
+function esc(str) {
+  if (str === null || str === undefined) return '-';
+  return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+function renderStats(containerId, items, fields) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let html = '<table><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody>';
+  for (const f of fields) {
+    const label = f.label;
+    const value = f.value ? esc(f.value) : '-';
+    html += `<tr><td>${esc(label)}</td><td>${value}</td></tr>`;
+  }
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+function renderList(containerId, items, columns) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!items.length) {
+    el.innerHTML = '<div class="empty">Nenhum registro.</div>';
+    return;
+  }
+  const headers = columns.map(c => `<th>${esc(c.label)}</th>`).join('');
+  const rows = items.slice(0, 50).map(item => {
+    const cells = columns.map(c => {
+      const raw = c.key === 'tier' ? `<span class="tier ${tierClass(item.tier || 'D')}">${esc(item.tier || '-')}</span>` : esc(item[c.key]);
+      return `<td>${raw}</td>`;
+    }).join('');
+    return `<tr>${cells}</tr>`;
+  }).join('');
+  el.innerHTML = `<table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+async function loadAll() {
+  try {
+    const [founders, companies, opportunities, socials, outreach] = await Promise.all([
+      loadJSON('founders').catch(() => []),
+      loadJSON('companies').catch(() => []),
+      loadJSON('opportunities').catch(() => []),
+      loadJSON('social_radar').catch(() => []),
+      loadJSON('outreach').catch(() => []),
+    ]);
+
+    meta.textContent = `Founders: ${founders.length} | Empresas: ${companies.length} | Oportunidades: ${opportunities.length} | Social: ${socials.length} | Outreach: ${outreach.length}`;
+
+    const tierCounts = { S: 0, A: 0, B: 0, C: 0, D: 0 };
+    for (const o of opportunities) {
+      const t = (o.tier || 'D').toUpperCase();
+      tierCounts[t] = (tierCounts[t] || 0) + 1;
+    }
+
+    document.getElementById('kpis').innerHTML = [
+      { label: 'Tier S', value: tierCounts.S },
+      { label: 'Tier A', value: tierCounts.A },
+      { label: 'Tier B', value: tierCounts.B },
+      { label: 'Tier C', value: tierCounts.C },
+      { label: 'Tier D', value: tierCounts.D },
+      { label: 'Total Oportunidades', value: opportunities.length },
+      { label: 'Total Founders', value: founders.length },
+      { label: 'Total Empresas', value: companies.length },
+    ].map(k => `<div class="card"><div class="stat"><span class="label">${esc(k.label)}</span><span class="value">${esc(k.value)}</span></div></div>`).join('');
+
+    renderList('opportunities', opportunities, [
+      { key: 'empresa', label: 'Empresa' },
+      { key: 'cargo', label: 'Cargo' },
+      { key: 'segmento', label: 'Segmento' },
+      { key: 'tier', label: 'Tier' },
+      { key: 'score', label: 'Score' },
+      { key: 'fonte', label: 'Fonte' },
+      { key: 'status', label: 'Status' },
+    ]);
+
+    renderList('founders', founders, [
+      { key: 'nome', label: 'Nome' },
+      { key: 'cargo', label: 'Cargo' },
+      { key: 'empresa', label: 'Empresa' },
+      { key: 'segmento', label: 'Segmento' },
+      { key: 'tier', label: 'Tier' },
+      { key: 'score', label: 'Score' },
+      { key: 'status', label: 'Status' },
+    ]);
+
+    renderList('social', socials, [
+      { key: 'autor', label: 'Autor' },
+      { key: 'empresa', label: 'Empresa' },
+      { key: 'tema', label: 'Tema' },
+      { key: 'prioridade', label: 'Prioridade' },
+      { key: 'status', label: 'Status' },
+    ]);
+
+    renderList('outreach', outreach, [
+      { key: 'tipo', label: 'Tipo' },
+      { key: 'destinatario', label: 'Destinatário' },
+      { key: 'empresa', label: 'Empresa' },
+      { key: 'canal', label: 'Canal' },
+      { key: 'status', label: 'Status' },
+    ]);
+  } catch (e) {
+    meta.textContent = 'Erro ao carregar: ' + e.message;
+  }
+}
+
+function downloadJSON(name) {
+  const a = document.createElement('a');
+  a.href = `${BASE}/${name}.json?ts=${Date.now()}`;
+  a.download = name + '.json';
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+loadAll();
+</script>
+</body>
+</html>

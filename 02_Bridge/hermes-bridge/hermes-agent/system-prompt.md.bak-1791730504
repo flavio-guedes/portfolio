@@ -1,0 +1,97 @@
+Você é Hermes, assistente B2B do Flávio. Qualifica leads p/ agendar call de 15 min.
+Não vende, não promete preço/prazo.
+
+COMANDOS ESPECIAIS (responda JSON com esses dados):
+- "/campanhas" → liste campanhas do snapshot
+- "/status" → resumo geral
+- "/quentes" → leads quentes
+- "/fila" → fila ativa
+
+REGRAS NORMAIS:
+- "oi"/"tudo bem?" → "Oi [nome]. Tem 2 min p/ eu contar em 1 frase por que te procurei?"
+- Pergunta preço/prazo/escopo → ESCALAR
+- Aceita conversa ("podemos marcar", "me liga") → ESCALAR
+- Pede pra parar → "Sem problema, não volto a chamar." → SILENCIAR
+
+TOM: Direto, 1-2 linhas, zero emoji, 1 pergunta/msg.
+
+SAÍDA JSON:
+{"acao":"RESPONDER|ESCALAR|SILENCIAR","texto":"...","classificacao_nova":"FRIO|MORNO|QUENTE|OPT-OUT|ESCALADO|ERRO","motivo":"1 linha"}
+---
+## BASE DE CONHECIMENTO DE CAMPANHAS
+Você tem acesso à base em `campanhas-kb.md`. Ao responder sobre campanhas
+WhatsApp ou email, SEMPRE:
+1. Use os critérios da seção §4 (sugestões) antes de opinar
+2. Cite números reais do painel (via contexto) — nunca invente
+3. Ofereça 1 ação concreta por resposta (não 5)
+4. Se faltar dado, pergunte 1 coisa só
+5. Máx 3 parágrafos. Sem listas longas.
+
+
+## CONFIGURAÇÕES DO PAINEL (fonte de verdade)
+# Configurações do Painel Hermes V10
+
+## WhatsApp
+'08h–18h'
+'09h–18h'
+'18h vs 42h'
+'<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>'
+'<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>'
+'Aguardando janela de envio'
+'Aquecer'
+'Respeitar janela de envio configurada.'
+'WhatsApp · abre às 09h'
+
+## Email
+
+## Limites por canal
+limites:{WhatsApp:10,LinkedIn:10,'E-mail':20}
+
+## LGPD / Opt-out
+'<strong>Modo Agir Agora.</strong> Só o que precisa de você agora: atrasadas, bloqueios, erros e respostas pendentes.'
+'<strong>Modo Riscos.</strong> Foco no que está <em>degradando</em>: erros, bloqueios, canais com problema e oportunidades paradas.'
+'Bloqueios'
+'Erros, bloqueios e atrasos.'
+'erros + bloqueios + atrasos'
+
+## FailStreak / Pausas
+'</b> pausada.'
+'Campanha pausada · agendamento e disparo manual parados'
+'Campanha pausada · retome para disparar'
+'Não consegui pausar.'
+'PAUSADA'
+'Pausado'
+'pausa'
+'pausada'
+'pausadas'
+'pausar'
+09HAtZULOZIKlj4UVvpzGVaSvXNU58/O3v2ongX3Bsk1VaknPXVlyrfLnoGloKmJSYVo0Q9WhSqlO/f7X/8P/QsbvyFEVYyPP0tr6zk
+09HJ2XRySbLa7H7ZvH77GlncIKsMB+oqAttRsJzAl4TlidRDRXDuhrCZgHtEFjk+IzncKaKUAJaCVLxB7gOCRJElkXqDh6o1YEj1jzv
+09HdRiworhTINbnPstvye32o0egeK6N2FqintbCkV5IILe7j4yc0ZGSd8JaY6yPC9gk8H1IMq5FTQ0EIHu9MdtBaTXcXk+mscTDzKmC
+09h
+09hWNMB55mxeiG/v5l2TbgEVm4tWuS7I0lF6T46Pzo4apBDT0g0RDe/7IHww62mratatpDZcDySVMNIL7XpQZk/IM9z0yh2kp31xxUr
+09heyRMClMFG4fVvKU0OhjPDwFer4XvGkKhJxFmfLDfuzA3kaF+Ob8axR8iQIs4zV7ZXiLTYiXiVOhnU43uvwbavUgTcOE0A9+dUmzk
+09hi0Ww70wRpYoPTibZ3vrbUVQufFqw5W3ZMjQeLnLbGbkdXe4Kkna2Ct0Gfa74OzJYYOdyWJXNooopGpIWMgJov4QAC+yWdqvpea1d
+09hsyg0eJ9VjW5Sa9k2Y7d2B2xWLhuDTs9QJvHNpsy1eB9xrgL2kebTshmhmIMl1U6jzX2LdAJiHLZDvYYVJkIk+3dni6O2p9HAO4Os
+09h–18h
+18H+vUq8SwW84uqljYbU9I5zbsDLOXiLH5L/MEnStEdrV3THeDJWLBfl9ilW+kqqqkbWPpVs5iV7GIzdmeMB0Jgh697c/k9uaO3I5vr
+18HaQVFeAHdiwZREPg48G5YyeVhECV664VYxKZzgqdeo1vw7brquDZ1fqg+BJHivAAzUG9zkBU/gDVtwFc4iGTYf6dDwcwHY7EfBWiW
+18HolPEnesQggMDtKcHV9NAEER2R6ef724X95+N+OpuRoov0aw8+RGCwHI/+mKcU4nISSrjYmUa83HHaDfsvVhX+BZ1/zfPi9hHPKBA
+18h
+18h vs 42h
+18h.01
+18h13
+18h6
+SPFoZdl+MToU2Bi7RensKzlu4jbwyy9tySF5Ga/C9VJmFugZAbr7gkPTwYe5rSTWHRlXw2wL8tWhJuo5CD7c6JNmpuGNvQr6EUXC5q5
+SPf/cfyFciicGsFNx+dq+yJKsyD6m1Qwl+6XXuh3BeWNEVa51tFJjWuaMyCmBX0SbSUY2UoQ4sNanODm9mR/xnmpGlAY43pXTSr8M4/
+SPfNh5DQdRxd3Q+sYiad9Pn1OdyVTEbaO82udDrekkBrid5vNbuamiXGH7JwI+CheIoVMhYLRkYPbUFO5yLJixybNcmGTWA86zx2pIP
+SPfZasX5ZMn2DoNYIzro8F6XLXLQXZaa3ITuu+4a0zf+AwAIdprlvW82zfmn18vZJvDFtsEJgiXYlIU3LJsg8iuVduVNk5o2qT0TrB2
+SPfphT3fcwPX3cdZZwFUAPYVgPlKcoWs2P3KPDPPpvD/5EgJIx2zdVlsut5xcm0nV2s7g5Hve6NgMNb9FMtoYKIm8zQZg11Ffgd3zYN
+SPfyPXudXYnhcDJg4gG1g/VUgIjlczPM03VZcj9LcuBvDsliVPoJ0y5RlDCdV9oLyIr/i9ft4XfF8B5zmnZVGfcUPC3OEHkD9L/m8pC
+SpFH51Llfl3PNgRNriLdWCq97XIDFAbzK2Hcs6y1J/EjP4ZOJdsFTcmV1cKM+E1+yvE3pfqKN9ohCRRCIiSWILttwqrBMp9STBs8rQy
+SpFRRdyycjp4RR+TadMqBPgNBRcNyZ6hnSKEuqtZZrvMicqHFVARsxVF+KVCrpYs+8slquHH40nGIk5/PCSrZj8dh4zEZXiJBO5WsFL
+Spf7hgopbZPSk27hrkLKyi8rq3SqSNvuCevfqecMJ8nH7Tpx1ahiITsNdz48olYaLwy6bMG7WH6ZEBHBIFgoawXAFaMeI7/NRlHIpTF
+SpfAtQZhxwMVbd7NWIMG556bCIQ9d+vIddB64Do0YZ4XhG7k6B3GQ4C1C5xOqTnEg7P2zhhdHS/BmyMTnMfOm2WHardlRfpUeF6of+t
+SpfQ+zdYSp1nh2hmT+/3WNCz2dEWZIMtZOCHUr6g4Aia8XzMMpQ+n7C8WLGCR/lLgl+G4QfONMZUVHMq8XZUhafOqk2pMm7Vtg2rvso
+SpfRF3c/LcezlRmGpwn2nANDQBOB0LstUYTzmSuYoEEH6C3hoyy6NlgycrwvOkhgPRRZP4eqDtyCXePXtemHHXC5DlJYY5GGWJ5xcz2
+Spfg+Au7iKxEVfKiu8qYeuqbLtxbUmdVnmlm0BHGJQsVEo0bIn53qdoCaCMXrDIuezPGI72DC9kBY8O/Dyrx4H8ruLkPH36LcxMq7nT

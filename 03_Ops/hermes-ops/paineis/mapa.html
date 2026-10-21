@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hermes OS · Mapa · Técnico + Gastronômico</title>
+<style>
+:root{
+  --bg:#0a0d12; --bg2:#0f141b; --card:#141a23; --card2:#1a2130;
+  --fg:#e6edf3; --mut:#7d8590; --bd:#21262d; --bd2:#30363d;
+  --ok:#3fb950; --warn:#d29922; --err:#f85149;
+  --acc:#58a6ff; --acc2:#79c0ff; --pur:#bc8cff; --pink:#f778ba;
+  --gold:#ffb86c; --wine:#c9546b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--fg);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Menlo,monospace;
+  min-height:100vh; padding-bottom:60px;
+}
+header{
+  position:sticky; top:0; z-index:50;
+  padding:16px 32px;
+  background:rgba(10,13,18,.85); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bd);
+  display:flex; justify-content:space-between; align-items:center;
+}
+h1{font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px}
+h1 .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.meta{display:flex;gap:20px;align-items:center;font-size:12px;color:var(--mut)}
+.meta b{color:var(--fg);font-weight:600}
+
+.wrap{max-width:1400px;margin:0 auto;padding:24px 32px}
+
+.tabs{
+  display:flex; gap:4px; margin-bottom:20px;
+  background:var(--card); padding:4px; border-radius:10px;
+  border:1px solid var(--bd); width:fit-content;
+}
+.tab{padding:10px 22px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:var(--mut);transition:all .2s}
+.tab.on{background:var(--card2);color:var(--fg)}
+.tab[data-t="tech"].on{border:1px solid rgba(88,166,255,.4);color:var(--acc2)}
+.tab[data-t="food"].on{border:1px solid rgba(255,184,108,.4);color:var(--gold)}
+.tab:hover:not(.on){color:var(--fg)}
+
+.card{
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:12px; padding:24px; margin-bottom:20px;
+}
+.card h2{
+  font-size:13px;color:var(--mut);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:16px;font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.hidden{display:none}
+
+/* Nós do mapa */
+.node-grid{
+  display:grid; gap:14px; margin-bottom:20px;
+}
+.node{
+  background:var(--card2); border:1px solid var(--bd);
+  border-radius:10px; padding:14px 16px;
+  position:relative; transition:all .2s;
+}
+.node:hover{transform:translateY(-1px);border-color:var(--bd2)}
+.node .lbl{
+  font-size:10px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; margin-bottom:4px;
+}
+.node .name{font-size:14px; font-weight:700; margin-bottom:6px}
+.node .desc{font-size:12px; color:var(--mut); line-height:1.6}
+.node .tag{
+  display:inline-block; padding:2px 8px; border-radius:10px;
+  font-size:10px; font-weight:600; margin-right:4px; margin-top:6px;
+}
+
+.tech .lbl{color:var(--acc2)}
+.tech{border-color:rgba(88,166,255,.25);background:linear-gradient(135deg,rgba(88,166,255,.06),rgba(88,166,255,.02))}
+.tech .tag{background:rgba(88,166,255,.15);color:var(--acc2);border:1px solid rgba(88,166,255,.3)}
+
+.food .lbl{color:var(--gold)}
+.food{border-color:rgba(255,184,108,.25);background:linear-gradient(135deg,rgba(255,184,108,.06),rgba(255,184,108,.02))}
+.food .tag{background:rgba(255,184,108,.15);color:var(--gold);border:1px solid rgba(255,184,108,.3)}
+
+.food .name{font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:15px}
+
+/* Fluxo */
+.flow{
+  background:var(--bg2); border:1px solid var(--bd);
+  border-radius:10px; padding:20px; overflow-x:auto;
+  font:12px/1.8 Menlo,monospace;
+  white-space:pre; color:var(--fg);
+}
+.flow.tech-flow{color:var(--fg)}
+.flow.food-flow{font-family:Georgia,serif;font-size:13px;line-height:2;color:#f4e4c8}
+.flow .hi{color:var(--acc2)}
+.flow .ok{color:var(--ok)}
+.flow .warn{color:var(--warn)}
+.flow .dim{color:var(--mut)}
+.flow.food-flow .hi{color:var(--gold)}
+.flow.food-flow .ok{color:#a8d5a8}
+
+/* Setas */
+.arrow-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 20px; margin:8px 0; font-size:11px;
+  color:var(--mut); border-top:1px dashed var(--bd2);
+  border-bottom:1px dashed var(--bd2);
+}
+.arrow-row .mid{font-weight:600;color:var(--acc2);letter-spacing:.05em}
+.food .arrow-row .mid{color:var(--gold)}
+
+/* Comparativo lado-a-lado */
+.compare{
+  display:grid; grid-template-columns:1fr 1fr; gap:20px;
+}
+@media(max-width:900px){.compare{grid-template-columns:1fr}}
+
+.col-title{
+  font-size:12px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; margin-bottom:12px;
+  padding-bottom:8px; border-bottom:1px solid var(--bd);
+}
+.col-title.tech-col{color:var(--acc2)}
+.col-title.food-col{color:var(--gold)}
+
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--bd);vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+td code{background:rgba(88,166,255,.1);padding:1px 6px;border-radius:3px;font-size:11px;color:var(--acc2)}
+td.food{font-family:Georgia,serif;font-style:italic;color:#f4e4c8}
+tr:hover td{background:rgba(88,166,255,.03)}
+
+.footer{text-align:center;margin-top:40px;padding:20px;color:var(--mut);font-size:11px;border-top:1px solid var(--bd)}
+
+.food-hero{
+  background:linear-gradient(135deg,rgba(255,184,108,.1),rgba(201,84,107,.05));
+  border:1px solid rgba(255,184,108,.25); border-radius:12px;
+  padding:24px; margin-bottom:20px;
+}
+.food-hero h2{
+  font-family:Georgia,serif; font-style:italic; font-weight:400;
+  font-size:22px; color:var(--gold); text-transform:none;
+  letter-spacing:0; margin-bottom:8px;
+}
+.food-hero p{color:#f4e4c8; font-size:13px; line-height:1.7}
+.food-hero em{color:var(--gold); font-style:normal; font-weight:600}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="dot"></span> Hermes OS · Mapa da Arquitetura</h1>
+  <div class="meta">
+    <span>backend <b>:8420</b></span>
+    <span>painel <b>:8430</b></span>
+    <span>RAM <b>609 MB</b></span>
+    <span style="color:var(--ok)">● 12/12 verdes</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="tabs">
+    <div class="tab on" data-t="tech">🔬 Versão Técnica</div>
+    <div class="tab" data-t="food">🍽️ Versão Gastronômica</div>
+  </div>
+
+  <!-- ═══════════════ TÉCNICA ═══════════════ -->
+  <div id="view-tech">
+    <div class="card">
+      <h2>🔬 Sistemas e responsabilidades</h2>
+      <div class="compare">
+        <div>
+          <div class="col-title tech-col">🛡️ Supervisão · launchd</div>
+          <div class="node tech">
+            <div class="lbl">SUPERVISOR</div>
+            <div class="name">com.hermes.supervisor</div>
+            <div class="desc">Único serviço launchd ativo. <b>KeepAlive=true</b>, <b>ThrottleInterval=10s</b>. Executa <code>hermesctl start</code> no boot e a cada crash.</div>
+            <div><span class="tag">launchd</span><span class="tag">1 único</span></div>
+          </div>
+          <div class="node tech" style="margin-top:14px">
+            <div class="lbl">CONTROLE</div>
+            <div class="name">hermesctl</div>
+            <div class="desc">CLI bash em <code>~/hermes-ops/bin/</code>. Comandos: <code>mission</code>, <code>start</code>, <code>stop</code>, <code>status</code>, <code>baseline</code>, <code>lock</code>, <code>backoff</code>, <code>session</code>, <code>runbook</code>, <code>privacy</code>.</div>
+            <div><span class="tag">bash</span><span class="tag">set -euo</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="col-title tech-col">🖥️ Núcleo · :8420</div>
+          <div class="node tech">
+            <div class="lbl">BACKEND ESM</div>
+            <div class="name">node src/server.js</div>
+            <div class="desc">Node v22 · <b>type: module</b> · patch <code>HERMES-SINGLETON</code> no topo. Cuida de Baileys, fila, scheduler, API REST, logs JSONL.</div>
+            <div><span class="tag">:8420</span><span class="tag">~117 MB</span><span class="tag">PID único</span></div>
+          </div>
+          <div class="node tech" style="margin-top:14px">
+            <div class="lbl">TRAVA</div>
+            <div class="name">/tmp/hermes-8420.lock</div>
+            <div class="desc">PID + timestamp. Se o lock aponta pra PID vivo, novo <code>node</code> faz <code>exit(1)</code>. <b>TOCTOU-safe:</b> só o server.js escreve.</div>
+            <div><span class="tag">flock</span><span class="tag">idempotente</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>⚙️ Fluxo operacional · passo a passo</h2>
+      <div class="flow tech-flow">
+<span class="dim">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="dim">│</span> <span class="hi">ENTRADA</span>                                                     <span class="dim">│</span>
+<span class="dim">│</span>   WhatsApp Cloud → Baileys socket → <span class="ok">server.js</span>              <span class="dim">│</span>
+<span class="dim">└─────────────────────────────────────────────────────────────┘</span>
+                            <span class="dim">↓</span>
+<span class="dim">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="dim">│</span> <span class="hi">PROCESSAMENTO</span>                                               <span class="dim">│</span>
+<span class="dim">│</span>   1. <span class="ok">Fila</span>       lê <span class="hi">fila.json</span> · pega item com lock_pid livre  <span class="dim">│</span>
+<span class="dim">│</span>   2. <span class="ok">Scheduler</span>  marca próximo_envio (+10 min ± 60s)         <span class="dim">│</span>
+<span class="dim">│</span>   3. <span class="ok">Template</span>   gera mensagem (sem LLM no caminho crítico)    <span class="dim">│</span>
+<span class="dim">│</span>   4. <span class="ok">Baileys</span>    sendMessage(jid, texto)                       <span class="dim">│</span>
+<span class="dim">│</span>   5. <span class="ok">Persistir</span>  atualiza status=enviado + historico           <span class="dim">│</span>
+<span class="dim">└─────────────────────────────────────────────────────────────┘</span>
+                            <span class="dim">↓</span>
+<span class="dim">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="dim">│</span> <span class="hi">OBSERVABILIDADE</span>                                             <span class="dim">│</span>
+<span class="dim">│</span>   agent-watchdog (60s)  → <span class="hi">state/live.json</span>                    <span class="dim">│</span>
+<span class="dim">│</span>   privacy-hook  (120s)  → <span class="hi">state/privacy.json</span>                 <span class="dim">│</span>
+<span class="dim">│</span>   painel :8430 (3s)     lê ambos e renderiza timeline         <span class="dim">│</span>
+<span class="dim">└─────────────────────────────────────────────────────────────┘</span>
+                            <span class="dim">↓</span>
+<span class="dim">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="dim">│</span> <span class="hi">PRIVACIDADE</span>                                                 <span class="dim">│</span>
+<span class="dim">│</span>   Regex <span class="hi">/\d{10,13}/</span> + <span class="hi">/prompt|ollama/i</span> em log recente:     <span class="dim">│</span>
+<span class="dim">│</span>     match duplo → <span class="warn">violacao: true</span> em privacy.json          <span class="dim">│</span>
+<span class="dim">│</span>   592 leads nunca saem do CRM local                          <span class="dim">│</span>
+<span class="dim">└─────────────────────────────────────────────────────────────┘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 Endpoints e artefatos</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Tipo</th><th>Intervalo</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td><code>:8420/api/whatsapp/status</code></td><td>GET</td><td>on-demand</td><td>Bearer auth</td></tr>
+          <tr><td><code>:8420/api/fila/status</code></td><td>GET</td><td>on-demand</td><td>182 itens, paginação</td></tr>
+          <tr><td><code>:8420/api/fila/iniciar</code></td><td>POST</td><td>manual</td><td>libera worker</td></tr>
+          <tr><td><code>state/live.json</code></td><td>file</td><td>60s</td><td>agent-watchdog</td></tr>
+          <tr><td><code>state/privacy.json</code></td><td>file</td><td>120s</td><td>privacy-hook</td></tr>
+          <tr><td><code>state/etapa-01…11</code></td><td>file</td><td>uma vez</td><td>hermesctl mission</td></tr>
+          <tr><td><code>logs/backend.out.log</code></td><td>file</td><td>contínuo</td><td>rotação 10MB×5</td></tr>
+          <tr><td><code>/tmp/hermes-8420.lock</code></td><td>file</td><td>boot</td><td>singleton</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════ GASTRONOMIA ═══════════════ -->
+  <div id="view-food" class="hidden">
+    <div class="food-hero">
+      <h2>🍽️ O restaurante Hermes</h2>
+      <p>Imagine o Hermes OS como um <em>bistrô francês de bairro</em>. Um chef talentoso, um garçom falante, uma cozinha enxuta — e uma clientela de <em>592 clientes cadastrados</em> que entram, fazem pedido e esperam ser bem servidos. Tudo funciona em 609 MB de RAM, uma cozinha do tamanho de uma copa.</p>
+    </div>
+
+    <div class="card">
+      <h2>🍴 Salão, cozinha e equipe</h2>
+      <div class="compare">
+        <div>
+          <div class="col-title food-col">🏠 A casa</div>
+          <div class="node food">
+            <div class="lbl">DONO DO RESTAURANTE</div>
+            <div class="name">com.hermes.supervisor</div>
+            <div class="desc">Dorme no fundo do salão, mas com <b>um olho aberto</b>. Se a cozinha pega fogo ou o chef desmaia, ele contrata outro em 10 segundos. <b>Nunca contrata dois</b> — regra de ouro da casa.</div>
+            <div><span class="tag">dono</span><span class="tag">vigilante</span></div>
+          </div>
+          <div class="node food" style="margin-top:14px">
+            <div class="lbl">CHEF EXECUTIVO</div>
+            <div class="name">hermesctl</div>
+            <div class="desc">O <b>livro de receitas da casa</b>. Ele decide a ordem: primeiro acender o fogo, depois temperar, depois servir. Cada receita tem 10 etapas — todas testadas, todas validadas.</div>
+            <div><span class="tag">manual</span><span class="tag">receitas</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="col-title food-col">🔥 A cozinha</div>
+          <div class="node food">
+            <div class="lbl">A COZINHA CENTRAL</div>
+            <div class="name">node src/server.js · :8420</div>
+            <div class="desc">Toda a comida sai daqui: o <b>forno</b> (scheduler), a <b>geladeira</b> (fila com 154 pedidos pendentes), o <b>passa</b> (Baileys enviando pratos), e o <b>caderno de ocorrências</b> (logs).</div>
+            <div><span class="tag">cozinha</span><span class="tag">117 MB</span></div>
+          </div>
+          <div class="node food" style="margin-top:14px">
+            <div class="lbl">A CHAVE DA COZINHA</div>
+            <div class="name">singleton lock</div>
+            <div class="desc"><b>Só um cozinheiro por vez.</b> Se o segundo chega e a chave está na porta, ele vai embora. Antigamente tinha 13 cozinheiros — hoje é 1, e a chave resolve tudo.</div>
+            <div><span class="tag">chave única</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🍷 Noite de serviço · passo a passo</h2>
+      <div class="flow food-flow">
+<span class="dim">╔═════════════════════════════════════════════════════════════╗</span>
+<span class="dim">║</span> <span class="hi">A CHEGADA DO CLIENTE</span>                                       <span class="dim">║</span>
+<span class="dim">║</span>   <em>Celular</em> faz sinal pro restaurante. O <em>Baileys</em>       <span class="dim">║</span>
+<span class="dim">║</span>   <em>(garçom falante)</em> atende, anota nome e mesa.              <span class="dim">║</span>
+<span class="dim">╚═════════════════════════════════════════════════════════════╝</span>
+                                <span class="dim">↓</span>
+<span class="dim">╔═════════════════════════════════════════════════════════════╗</span>
+<span class="dim">║</span> <span class="hi">O PREPARO NA COZINHA</span>                                       <span class="dim">║</span>
+<span class="dim">║</span>   <em>1.</em> <span class="ok">Comanda pendurada no passa</span>  (fila.json)                <span class="dim">║</span>
+<span class="dim">║</span>   <em>2.</em> <span class="ok">Chef acende o fogo</span>          (scheduler · 30 min)     <span class="dim">║</span>
+<span class="dim">║</span>   <em>3.</em> <span class="ok">Tempera sem IA</span>              (template · sem LLM)     <span class="dim">║</span>
+<span class="dim">║</span>   <em>4.</em> <span class="ok">Garçom leva o prato</span>         (Baileys sendMessage)     <span class="dim">║</span>
+<span class="dim">║</span>   <em>5.</em> <span class="ok">Marca comanda como servida</span>  (persistir no fila.json)  <span class="dim">║</span>
+<span class="dim">╚═════════════════════════════════════════════════════════════╝</span>
+                                <span class="dim">↓</span>
+<span class="dim">╔═════════════════════════════════════════════════════════════╗</span>
+<span class="dim">║</span> <span class="hi">OS INSPETORES DA CASA</span>                                      <span class="dim">║</span>
+<span class="dim">║</span>   <em>🐕 Inspetor de mesa</em>  (agent-watchdog) passa a cada 60s <span class="dim">║</span>
+<span class="dim">║</span>      olhando se há cliente sem atendimento.                  <span class="dim">║</span>
+<span class="dim">║</span>   <em>👨‍⚕️ Sanitarista</em>      (privacy-hook) a cada 2 min       <span class="dim">║</span>
+<span class="dim">║</span>      verifica que nenhum ingrediente proibido               <span class="dim">║</span>
+<span class="dim">║</span>      <em>(leads, telefones)</em> caiu na panela do chef IA.         <span class="dim">║</span>
+<span class="dim">╚═════════════════════════════════════════════════════════════╝</span>
+                                <span class="dim">↓</span>
+<span class="dim">╔═════════════════════════════════════════════════════════════╗</span>
+<span class="dim">║</span> <span class="hi">A JANELA DE VIDRO</span>                                          <span class="dim">║</span>
+<span class="dim">║</span>   O <em>painel :8430</em> é a janela pela qual o dono               <span class="dim">║</span>
+<span class="dim">║</span>   espia a operação <em>sem entrar na cozinha</em>.                 <span class="dim">║</span>
+<span class="dim">║</span>   Vê <em>temperaturas, pratos na fila, garçons ativos</em>.        <span class="dim">║</span>
+<span class="dim">║</span>   <em>Nunca vê ingredientes secretos dos clientes.</em>            <span class="dim">║</span>
+<span class="dim">╚═════════════════════════════════════════════════════════════╝</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🍽️ Quem é quem</h2>
+      <table>
+        <thead><tr><th>Na técnica</th><th>No restaurante</th></tr></thead>
+        <tbody>
+          <tr><td><code>launchd supervisor</code></td><td class="food">Dono que nunca fecha o restaurante</td></tr>
+          <tr><td><code>hermesctl</code></td><td class="food">Livro de receitas com 10 etapas testadas</td></tr>
+          <tr><td><code>server.js :8420</code></td><td class="food">Cozinha central onde tudo é preparado</td></tr>
+          <tr><td><code>Baileys socket</code></td><td class="food">Garçom falante que atende o celular</td></tr>
+          <tr><td><code>fila.json</code></td><td class="food">Comandas penduradas no passa</td></tr>
+          <tr><td><code>scheduler (30 min)</code></td><td class="food">Fogo lento que não deixa prato queimar</td></tr>
+          <tr><td><code>template message</code></td><td class="food">Prato pré-montado, temperado na hora</td></tr>
+          <tr><td><code>singleton lock</code></td><td class="food">Chave única da porta da cozinha</td></tr>
+          <tr><td><code>agent-watchdog (60s)</code></td><td class="food">Inspetor de mesa que circula o salão</td></tr>
+          <tr><td><code>privacy-hook (120s)</code></td><td class="food">Sanitarista que confere os ingredientes</td></tr>
+          <tr><td><code>Ollama (KEEP_ALIVE=0)</code></td><td class="food">Chef de partida: só trabalha sob demanda</td></tr>
+          <tr><td><code>painel :8430</code></td><td class="food">Janela de vidro pra cozinha (sem entrar)</td></tr>
+          <tr><td><code>state/*.json</code></td><td class="food">Lousa de status na parede do salão</td></tr>
+          <tr><td><code>logs JSONL + rotação</code></td><td class="food">Caderno de ocorrências com páginas rasgadas há 5 dias</td></tr>
+          <tr><td><code>.baileys/</code></td><td class="food">Caderneta do garçom com nomes e mesas</td></tr>
+          <tr><td><code>state/etapa-01…11</code></td><td class="food">Checklist da abertura do restaurante</td></tr>
+          <tr><td><code>592 leads no CRM local</code></td><td class="food">Livro de clientes na gaveta do dono (nunca na cozinha)</td></tr>
+          <tr><td><code>backoff exponencial</code></td><td class="food">Garçom que espera 3s, 6s, 12s… antes de bater de novo</td></tr>
+          <tr><td><code>portas :8420 / :8430</code></td><td class="food">Porta de serviço / janela de vidro</td></tr>
+          <tr><td><code>RAM 609 MB</code></td><td class="food">Bistrô inteiro numa copa de 6 m²</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>📖 Moral da história</h2>
+      <div class="food-hero" style="margin:0">
+        <p>Antigamente o restaurante tinha <em>treze cozinheiros</em> gritando ao mesmo tempo, sem chave na porta e com o garçom escorregando em óleo. Hoje tem <em>um chef só</em>, uma <em>chave na porta</em>, <em>dois inspetores</em> discretos e uma <em>janela de vidro</em>. A comida sai mais devagar — mas sai <em>bem</em>, e nenhum cliente recebe o pedido de outro.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Hermes OS · mapa técnico + gastronômico · 1 chef · 1 chave · 2 inspetores · 609 MB
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    const v = t.dataset.t;
+    document.getElementById('view-tech').classList.toggle('hidden', v!=='tech');
+    document.getElementById('view-food').classList.toggle('hidden', v!=='food');
+  };
+});
+</script>
+</body>
+</html>

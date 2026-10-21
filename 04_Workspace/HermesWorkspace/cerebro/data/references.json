@@ -1,0 +1,609 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-08-21",
+  "sources": [
+    "awwwards",
+    "fwa",
+    "webby",
+    "cssda",
+    "csswinner",
+    "siteinspire",
+    "behance",
+    "dribbble",
+    "muzli",
+    "landbook",
+    "lapaninja",
+    "godly",
+    "gsap-showcase",
+    "adc"
+  ],
+  "references": [
+    {
+      "id": "awwwards-0",
+      "name": "Linear",
+      "url": "https://linear.app",
+      "agency": "Linear",
+      "category": ["saas", "productivity", "command-center"],
+      "type": "Produto SaaS / Project Management",
+      "date": "2025-01-01",
+      "awards": ["Site of the Year", "Site of the Day", "Developer Tool"],
+      "source": "awwwards",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "productivity", "command-center"],
+      "styles": ["dark-mode", "minimalist", "data-driven"],
+      "tech_stack": {
+        "framework": "Next.js",
+        "styling": "Tailwind CSS",
+        "animation": "Framer Motion",
+        "design_system": "Radix UI + shadcn/ui"
+      },
+      "tech_confidence": {
+        "framework": "PROVÁVEL",
+        "styling": "PROVÁVEL",
+        "animation": "PROVÁVEL",
+        "design_system": "PROVÁVEL"
+      },
+      "concepts": [
+        "command-driven interface",
+        "progressive disclosure",
+        "zero-click automation",
+        "adaptive interface",
+        "ambient intelligence"
+      ],
+      "components_identified": [
+        "command palette",
+        "sidebar",
+        "topbar",
+        "kpi cards",
+        "data visualizations",
+        "activity feeds",
+        "search interface"
+      ],
+      "layout": {
+        "grid": "CSS Grid + Flexbox",
+        "hierarchy": "Primário: workspace content; Secundário: sidebar/navigation; Terciário: metadata",
+        "spacing": "8px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop"],
+        "density": "medium-high",
+        "whitespace": "generous but purposeful"
+      },
+      "why_it_works": "Combina velocidade de teclado (command palette) com clareza visual. Reduz carga cognitiva escondendo ações secundárias até serem necessárias."
+    },
+    {
+      "id": "awwwards-1",
+      "name": "Vercel",
+      "url": "https://vercel.com",
+      "agency": "Vercel",
+      "category": ["saas", "developer-tools", "landing"],
+      "type": "Produto SaaS / Cloud Platform",
+      "date": "2025-01-01",
+      "awards": ["Site of the Year", "Site of the Day"],
+      "source": "awwwards",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "developer-tools", "landing"],
+      "styles": ["dark-mode", "minimalist", "futurist"],
+      "tech_stack": {
+        "framework": "Next.js",
+        "styling": "Tailwind CSS",
+        "animation": "Framer Motion",
+        "design_system": "shadcn/ui"
+      },
+      "tech_confidence": {
+        "framework": "CONFIRMADA",
+        "styling": "CONFIRMADA",
+        "animation": "PROVÁVEL",
+        "design_system": "PROVÁVEL"
+      },
+      "concepts": [
+        "information hierarchy",
+        "progressive disclosure",
+        "visual prioritization",
+        "data storytelling"
+      ],
+      "components_identified": [
+        "hero section",
+        "feature cards",
+        "code blocks",
+        "kpi cards",
+        "testimonial cards",
+        "cta buttons"
+      ],
+      "layout": {
+        "grid": "CSS Grid 12 colunas",
+        "hierarchy": "Hero forte → Features → Social proof → CTA",
+        "spacing": "16px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop", "wide"],
+        "density": "low-medium",
+        "whitespace": "extensive"
+      },
+      "why_it_works": "Landing page de alto desempenho com hierarquia clara. Usa whitespace para guiar o olhar e reduzir carga cognitiva. Motion sutil, não intrusivo."
+    },
+    {
+      "id": "awwwards-2",
+      "name": "Resend",
+      "url": "https://resend.com",
+      "agency": "Resend",
+      "category": ["saas", "developer-tools", "landing"],
+      "type": "Produto SaaS / Email API",
+      "date": "2024-06-01",
+      "awards": ["Site of the Month", "Site of the Day"],
+      "source": "awwwards",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "developer-tools", "landing"],
+      "styles": ["dark-mode", "minimalist", "brutalist"],
+      "tech_stack": {
+        "framework": "Next.js",
+        "styling": "Tailwind CSS",
+        "animation": "Framer Motion"
+      },
+      "tech_confidence": {
+        "framework": "PROVÁVEL",
+        "styling": "PROVÁVEL",
+        "animation": "PROVÁVEL"
+      },
+      "concepts": [
+        "visual prioritization",
+        "command-driven interface",
+        "reduction of cognitive load"
+      ],
+      "components_identified": [
+        "hero section",
+        "code blocks",
+        "feature cards",
+        "kpi cards",
+        "command palette"
+      ],
+      "layout": {
+        "grid": "CSS Grid 12 colunas",
+        "hierarchy": "Hero direto → Features → Code examples → CTA",
+        "spacing": "16px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop"],
+        "density": "low",
+        "whitespace": "extensive"
+      },
+      "why_it_works": "Estética brutalista funcional. Tipografia grande, contrastes fortes, sem decoração desnecessária. Foco total no produto e no valor."
+    },
+    {
+      "id": "behance-3",
+      "name": "Notion Dashboard Kit",
+      "url": "https://www.behance.net/gallery/notion-dashboard-kit",
+      "agency": "Various Designers",
+      "category": ["dashboard", "saas", "template"],
+      "type": "Template / Dashboard",
+      "date": "2024-03-15",
+      "awards": ["Behance Featured"],
+      "source": "behance",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["dashboard", "saas", "template"],
+      "styles": ["minimalist", "data-driven", "glassmorphism"],
+      "tech_stack": {
+        "framework": "Unknown",
+        "styling": "Custom CSS"
+      },
+      "tech_confidence": {
+        "framework": "DESCONHECIDA",
+        "styling": "DESCONHECIDA"
+      },
+      "concepts": [
+        "bento architecture",
+        "information hierarchy",
+        "visual prioritization",
+        "modular workspace"
+      ],
+      "components_identified": [
+        "kpi cards",
+        "data visualizations",
+        "tables",
+        "filters",
+        "tabs",
+        "modals"
+      ],
+      "layout": {
+        "grid": "Bento grid",
+        "hierarchy": "KPIs no topo → Visualizações → Tabelas detalhadas",
+        "spacing": "12px base grid",
+        "breakpoints": ["mobile", "desktop"],
+        "density": "medium",
+        "whitespace": "balanced"
+      },
+      "why_it_works": "Arquitetura bento modular. Cada módulo tem propósito único. Reorganizável por drag-and-drop. Densidade calibrada: muito informação sem sobrecarga."
+    },
+    {
+      "id": "dribbble-4",
+      "name": "AI Command Center",
+      "url": "https://dribbble.com/shots/ai-command-center",
+      "agency": "Various Designers",
+      "category": ["dashboard", "command-center", "ai-native"],
+      "type": "Dashboard / Command Center",
+      "date": "2024-11-20",
+      "awards": ["Dribbble Popular"],
+      "source": "dribbble",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["dashboard", "command-center", "ai-native"],
+      "styles": ["dark-mode", "futurist", "data-driven"],
+      "tech_stack": {
+        "framework": "Unknown",
+        "styling": "Custom CSS",
+        "animation": "GSAP or similar"
+      },
+      "tech_confidence": {
+        "framework": "DESCONHECIDA",
+        "styling": "DESCONHECIDA",
+        "animation": "PROVÁVEL"
+      },
+      "concepts": [
+        "command-driven interface",
+        "ambient intelligence",
+        "real-time feedback",
+        "data storytelling",
+        "zero-click automation"
+      ],
+      "components_identified": [
+        "command palette",
+        "kpi cards",
+        "data visualizations",
+        "activity feeds",
+        "alertas",
+        "search interface"
+      ],
+      "layout": {
+        "grid": "CSS Grid",
+        "hierarchy": "Command bar no topo → KPIs → Visualizações → Activity feed lateral",
+        "spacing": "8px base grid",
+        "breakpoints": ["desktop"],
+        "density": "high",
+        "whitespace": "minimal"
+      },
+      "why_it_works": "Center command: tudo começa pelo comando central. Dados em tempo real com indicadores visuais claros. Alertas contextuais. Interface escura reduz fadiga em uso prolongado."
+    },
+    {
+      "id": "cssda-5",
+      "name": "Raycast",
+      "url": "https://www.raycast.com",
+      "agency": "Raycast",
+      "category": ["saas", "developer-tools", "command-center"],
+      "type": "Produto SaaS / Productivity",
+      "date": "2024-09-01",
+      "awards": ["Site of the Day", "Site of the Month", "Innovation"],
+      "source": "cssda",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "developer-tools", "command-center"],
+      "styles": ["dark-mode", "minimalist", "futurist"],
+      "tech_stack": {
+        "framework": "Next.js",
+        "styling": "Tailwind CSS",
+        "design_system": "shadcn/ui"
+      },
+      "tech_confidence": {
+        "framework": "PROVÁVEL",
+        "styling": "PROVÁVEL",
+        "design_system": "PROVÁVEL"
+      },
+      "concepts": [
+        "command-driven interface",
+        "spatial navigation",
+        "progressive disclosure",
+        "zero-click automation",
+        "context-aware UI"
+      ],
+      "components_identified": [
+        "command palette",
+        "sidebar",
+        "store cards",
+        "extensions list",
+        "kpi cards",
+        "search interface"
+      ],
+      "layout": {
+        "grid": "CSS Grid + Flexbox",
+        "hierarchy": "Store/Extensions → Detail view → Settings",
+        "spacing": "8px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop"],
+        "density": "medium-high",
+        "whitespace": "balanced"
+      },
+      "why_it_works": "Interface de command palette como centro de controle. Navegação espacial consistente. Extensões como módulos independentes. Velocidade de uso máxima."
+    },
+    {
+      "id": "siteinspire-6",
+      "name": "Stripe Dashboard",
+      "url": "https://dashboard.stripe.com",
+      "agency": "Stripe",
+      "category": ["dashboard", "saas", "fintech"],
+      "type": "Dashboard / Fintech",
+      "date": "2024-07-01",
+      "awards": ["SiteInspire Featured"],
+      "source": "siteinspire",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["dashboard", "saas", "fintech"],
+      "styles": ["minimalist", "data-driven", "corporate-premium"],
+      "tech_stack": {
+        "framework": "Unknown",
+        "styling": "Custom CSS"
+      },
+      "tech_confidence": {
+        "framework": "DESCONHECIDA",
+        "styling": "DESCONHECIDA"
+      },
+      "concepts": [
+        "information hierarchy",
+        "visual prioritization",
+        "contextual actions",
+        "real-time feedback"
+      ],
+      "components_identified": [
+        "sidebar",
+        "topbar",
+        "kpi cards",
+        "data visualizations",
+        "tables",
+        "filters",
+        "modals",
+        "activity feeds"
+      ],
+      "layout": {
+        "grid": "CSS Grid",
+        "hierarchy": "Sidebar → Topbar → KPIs → Charts → Tables",
+        "spacing": "16px base grid",
+        "breakpoints": ["desktop", "tablet"],
+        "density": "medium",
+        "whitespace": "generous"
+      },
+      "why_it_works": "Dashboard financeiro que equilibra densidade de dados com clareza. Ações contextuais em cada item. Navegação previsível. Performance otimizada para uso diário intensivo."
+    },
+    {
+      "id": "muzli-7",
+      "name": "Loom",
+      "url": "https://www.loom.com",
+      "agency": "Loom",
+      "category": ["saas", "communication", "productivity"],
+      "type": "Produto SaaS / Video Messaging",
+      "date": "2024-05-01",
+      "awards": ["Muzli Featured", "Site of the Month"],
+      "source": "muzli",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "communication", "productivity"],
+      "styles": ["minimalist", "editorial", "corporate-premium"],
+      "tech_stack": {
+        "framework": "Next.js",
+        "styling": "Tailwind CSS"
+      },
+      "tech_confidence": {
+        "framework": "PROVÁVEL",
+        "styling": "PROVÁVEL"
+      },
+      "concepts": [
+        "visual prioritization",
+        "information hierarchy",
+        "contextual actions",
+        "conversational UI"
+      ],
+      "components_identified": [
+        "hero section",
+        "feature cards",
+        "video embeds",
+        "testimonial cards",
+        "cta buttons",
+        "pricing tables"
+      ],
+      "layout": {
+        "grid": "CSS Grid 12 colunas",
+        "hierarchy": "Hero → Demo → Features → Testimonials → Pricing → CTA",
+        "spacing": "16px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop"],
+        "density": "low-medium",
+        "whitespace": "generous"
+      },
+      "why_it_works": "Landing page que conta uma história visual. Demo interativa no hero. Prova social forte. CTAs claros e posicionados estrategicamente."
+    },
+    {
+      "id": "godly-8",
+      "name": "LottieFiles",
+      "url": "https://lottiefiles.com",
+      "agency": "LottieFiles",
+      "category": ["saas", "animation", "design-tools"],
+      "type": "Produto SaaS / Animation Platform",
+      "date": "2024-08-01",
+      "awards": ["Godly Featured"],
+      "source": "godly",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "animation", "design-tools"],
+      "styles": ["dark-mode", "experimental", "futurist"],
+      "tech_stack": {
+        "framework": "Next.js",
+        "styling": "Tailwind CSS",
+        "animation": "Lottie + Rive"
+      },
+      "tech_confidence": {
+        "framework": "PROVÁVEL",
+        "styling": "PROVÁVEL",
+        "animation": "CONFIRMADA"
+      },
+      "concepts": [
+        "visual prioritization",
+        "progressive disclosure",
+        "real-time feedback",
+        "contextual actions"
+      ],
+      "components_identified": [
+        "hero section",
+        "animation showcase",
+        "feature cards",
+        "search interface",
+        "filter chips",
+        "editor interface"
+      ],
+      "layout": {
+        "grid": "CSS Grid",
+        "hierarchy": "Hero → Featured animations → Tools → Editor → CTA",
+        "spacing": "16px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop"],
+        "density": "medium",
+        "whitespace": "balanced"
+      },
+      "why_it_works": "Showcase de animações como hero. Interface de editor inline. Filtros por estilo/categoria. Motion como diferencial funcional, não apenas decorativo."
+    },
+    {
+      "id": "cssda-9",
+      "name": "Excalidraw",
+      "url": "https://excalidraw.com",
+      "agency": "Excalidraw",
+      "category": ["saas", "design-tools", "collaboration"],
+      "type": "Produto SaaS / Whiteboard",
+      "date": "2024-10-01",
+      "awards": ["Site of the Day", "Site of the Month", "UX"],
+      "source": "cssda",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "design-tools", "collaboration"],
+      "styles": ["minimalist", "editorial", "experimental"],
+      "tech_stack": {
+        "framework": "Unknown",
+        "styling": "Custom CSS"
+      },
+      "tech_confidence": {
+        "framework": "DESCONHECIDA",
+        "styling": "DESCONHECIDA"
+      },
+      "concepts": [
+        "visual prioritization",
+        "progressive disclosure",
+        "contextual actions",
+        "spatial navigation",
+        "human-in-the-loop"
+      ],
+      "components_identified": [
+        "canvas",
+        "toolbar",
+        "sidebar",
+        "properties panel",
+        "collaboration indicators",
+        "zoom controls"
+      ],
+      "layout": {
+        "grid": "Absolute positioning canvas",
+        "hierarchy": "Canvas como centro → Toolbar flutuante → Sidebars colapsáveis",
+        "spacing": "8px base grid",
+        "breakpoints": ["mobile", "tablet", "desktop"],
+        "density": "low",
+        "whitespace": "canvas-based"
+      },
+      "why_it_works": "Canvas espacial como interface principal. Toolbars flutuantes minimizam intrusão. Colaboração em tempo real com indicadores visuais. Zero distrações no foco criativo."
+    },
+    {
+      "id": "awwwards-10",
+      "name": "Arc Browser",
+      "url": "https://arc.net",
+      "agency": "The Browser Company",
+      "category": ["saas", "browser", "productivity"],
+      "type": "Produto SaaS / Browser",
+      "date": "2024-12-01",
+      "awards": ["Site of the Year", "Site of the Day", "Innovation"],
+      "source": "awwwards",
+      "added_at": "2026-08-21T00:00:00",
+      "analyzed_at": "2026-08-21T00:00:00",
+      "categories": ["saas", "browser", "productivity"],
+      "styles": ["minimalist", "futurist", "dark-mode"],
+      "tech_stack": {
+        "framework": "Unknown",
+        "styling": "Custom CSS"
+      },
+      "tech_confidence": {
+        "framework": "DESCONHECIDA",
+        "styling": "DESCONHECIDA"
+      },
+      "concepts": [
+        "spatial navigation",
+        "progressive disclosure",
+        "adaptive interface",
+        "context-aware UI",
+        "modular workspace"
+      ],
+      "components_identified": [
+        "sidebar",
+        "tabs",
+        "spaces",
+        "command palette",
+        "favorites bar",
+        "profile switcher"
+      ],
+      "layout": {
+        "grid": "Flexbox",
+        "hierarchy": "Spaces → Tabs → Content",
+        "spacing": "8px base grid",
+        "breakpoints": ["desktop", "mobile"],
+        "density": "medium",
+        "whitespace": "balanced"
+      },
+      "why_it_works": "Sistema de Spaces para separação contextual. Navegação espacial entre abas. Interface adaptativa baseada em uso. Reduz carga cognitiva agrupando trabalho por contexto."
+    }
+  ],
+  "stats": {
+    "total": 11,
+    "by_source": {
+      "awwwards": 4,
+      "behance": 1,
+      "dribbble": 1,
+      "cssda": 2,
+      "siteinspire": 1,
+      "muzli": 1,
+      "godly": 1
+    },
+    "by_category": {
+      "saas": 7,
+      "dashboard": 3,
+      "productivity": 3,
+      "command-center": 3,
+      "developer-tools": 3,
+      "landing": 3,
+      "data-driven": 3,
+      "ai-native": 1,
+      "fintech": 1,
+      "communication": 1,
+      "design-tools": 2,
+      "collaboration": 1,
+      "browser": 1,
+      "template": 1
+    },
+    "by_style": {
+      "minimalist": 7,
+      "dark-mode": 5,
+      "data-driven": 3,
+      "futurist": 3,
+      "saas": 2,
+      "productivity": 2,
+      "command-center": 2,
+      "developer-tools": 2,
+      "landing": 2,
+      "dashboard": 1,
+      "template": 1,
+      "glassmorphism": 1,
+      "corporate-premium": 1,
+      "editorial": 1,
+      "experimental": 1,
+      "brutalist": 1,
+      "ai-native": 1
+    },
+    "by_tech": {
+      "Next.js": 5,
+      "Tailwind CSS": 7,
+      "Framer Motion": 4,
+      "shadcn/ui": 3,
+      "Radix UI": 1,
+      "Custom CSS": 4,
+      "Unknown": 4,
+      "Lottie": 1,
+      "Rive": 1,
+      "GSAP": 1
+    }
+  }
+}

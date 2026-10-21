@@ -1,0 +1,14 @@
+[
+  {
+    "id": "company-001",
+    "empresa": "Exemplo Foods",
+    "segmento": "Alimentos Saudáveis",
+    "localizacao": "São Paulo, SP",
+    "site": null,
+    "tamanho_estagio": "STARTUP",
+    "sinais_crescimento": [],
+    "ultima_movimentacao": null,
+    "criado_em": "2026-09-03T00:00:00-03:00",
+    "atualizado_em": "2026-09-03T00:00:00-03:00"
+  }
+]

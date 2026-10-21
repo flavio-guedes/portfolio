@@ -1,0 +1,14 @@
+{
+  "gap_min_segundos": 300,
+  "gap_max_segundos": 480,
+  "max_envios_por_dia": 60,
+  "max_envios_por_hora": 8,
+  "janela_inicio": "09:00",
+  "janela_fim": "20:00",
+  "pausa_se_erro_seguido": 3,
+  "pausa_minutos_apos_erro": 30,
+  "pausa_se_bloqueio": 1440,
+  "atualizado_em": "2026-10-17",
+  "gap_novo_seg": 600,
+  "gap_base_seg": 360
+}

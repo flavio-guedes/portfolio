@@ -1,0 +1,34 @@
+{
+  "outreach": {
+    "id": "outreach",
+    "label": "Outreach — marketing, atendimento e dados",
+    "categoria": "FLUXO",
+    "etiqueta": "FLUXO • CAPTAÇÃO",
+    "status": "AUTOMAÇÃO ATIVA",
+    "text": "Tenho trabalhado bastante nessa ideia de conectar marketing, atendimento e dados de uma forma mais inteligente.\n\nSe esse tema fizer sentido para você ou para a sua operação, fico à disposição para trocar uma ideia e compartilhar um pouco do que tenho desenvolvido.\n\nÀs vezes, uma boa conversa já ajuda a enxergar algumas oportunidades.\n\nDeixo aqui minha apresentação para quem sabe ser uma alavanca na sua estratégia de aquisição de clientes com base em dados.\n\nhttps://flavio-guedes.github.io/portfolio/parceria.html"
+  },
+  "followup_d3": {
+    "id": "followup_d3",
+    "label": "Follow-up D+3",
+    "categoria": "FLUXO",
+    "etiqueta": "FLUXO • FOLLOW-UP",
+    "status": "AUTOMAÇÃO ATIVA",
+    "text": "Retomando o assunto de marketing, atendimento e dados. Se ainda fizer sentido, podemos seguir com uma conversa curta esta semana."
+  },
+  "followup_d7": {
+    "id": "followup_d7",
+    "label": "Follow-up D+7",
+    "categoria": "FLUXO",
+    "etiqueta": "FLUXO • FOLLOW-UP",
+    "status": "AUTOMAÇÃO ATIVA",
+    "text": "Aqui é o Flávio novamente. Se o timing mudou, tudo bem. Se quiser, posso adiantar um ponto prático antes da conversa."
+  },
+  "resposta_1": {
+    "id": "resposta_1",
+    "label": "Resposta recebida — primeira resposta",
+    "categoria": "STATUS",
+    "etiqueta": "🟠 05 • RESPONDEU",
+    "status": "RESPONDEU",
+    "text": "Obrigado pelo retorno! Posso responder em poucos minutos: a ideia é unir marketing, atendimento e dados para reduzir desperdício e melhorar a conversão."
+  }
+}

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prospecção · Kanban de Disparos</title>
+<style>
+:root{--bg:#0b0c10;--bg2:#13151b;--bg3:#1a1c25;--border:#252830;--text:#e8e8ec;--text-dim:#8a8d99;--accent:#6d5bff;--accent2:#22c55e;--danger:#ef4444;--warn:#f59e0b;--info:#3b82f6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,sans-serif;line-height:1.4;}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 120px;}
+.top{margin-bottom:18px;}
+.top h1{font-size:18px;font-weight:700;letter-spacing:-.2px;}
+.top .sub{color:var(--text-dim);font-size:12.5px;margin-top:4px;}
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;}
+.column{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:10px;min-height:220px;display:flex;flex-direction:column;}
+.col-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.col-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-dim);}
+.col-count{background:var(--bg3);color:var(--text);padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;}
+.col-actions{display:flex;gap:6px;}
+.col-body{flex:1;display:flex;flex-direction:column;gap:8px;}
+.empty{color:var(--text-dim);font-size:12px;padding:12px 6px;text-align:center;opacity:.8;}
+.card{background:linear-gradient(180deg,rgba(109,91,255,.12),rgba(109,91,255,.03));border:1px solid rgba(109,91,255,.25);border-radius:12px;padding:10px;cursor:pointer;user-select:none;transition:transform .08s,border-color .15s;}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 2px rgba(109,91,255,.3);}
+.card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;}
+.c-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.c-meta{font-size:12px;color:var(--text-dim);}
+.c-email{font-size:11px;color:#8b5cf6;margin-top:2px;word-break:break-all;}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.badge{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(109,91,255,.15);color:#c4b5fd;}
+.badge-prio{background:rgba(245,158,11,.15);color:#fcd34d;}
+.badge-tier{background:rgba(34,197,94,.15);color:#86efac;}
+.badge-sub{background:rgba(59,130,246,.15);color:#93c5fd;}
+.follow{margin-top:8px;font-size:12px;color:var(--text-dim);background:var(--bg3);padding:6px 8px;border-radius:8px;}
+.follow b{color:var(--text);font-weight:600;}
+.card-actions{display:flex;gap:6px;margin-top:8px;}
+.action-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,16,22,.92);backdrop-filter:blur(14px);border-top:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;z-index:50;}
+.action-bar .count{font-size:13px;font-weight:700;}
+.action-bar .count b{color:var(--accent2);font-size:16px;}
+.btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid transparent;border-radius:10px;padding:8px 12px;font-size:12.5px;font-weight:600;cursor:pointer;background:var(--bg3);color:var(--text);transition:filter .15s,transform .1s;}
+.btn:hover{filter:brightness(1.1);}
+.btn:active{transform:translateY(1px);}
+.btn-primary{background:linear-gradient(135deg,#6d5bff,#8b5cf6);color:#fff;border:none;}
+.btn-ghost{background:transparent;border-color:var(--border);}
+.btn-danger{background:rgba(239,68,68,.15);color:#fca5a5;border-color:rgba(239,68,68,.35);}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(5,6,10,.7);backdrop-filter:blur(3px);z-index:100;align-items:flex-start;justify-content:center;overflow-y:auto;padding:30px 14px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:620px;width:100%;padding:24px;margin-bottom:40px;}
+.modal h2{font-size:18px;margin-bottom:2px;}
+.modal .sub{color:var(--text-dim);font-size:12.5px;margin-bottom:16px;}
+.modal-row{display:flex;gap:10px;margin-bottom:14px;}
+.modal-stat{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+.modal-stat .v{font-size:18px;font-weight:700;color:var(--accent);}
+.modal-stat .l{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;margin-top:2px;}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim);margin-top:12px;margin-bottom:6px;}
+select,input,textarea{width:100%;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:13px;outline:none;}
+textarea{min-height:80px;resize:vertical;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ok);color:#04140b;font-weight:700;font-size:13px;padding:11px 20px;border-radius:30px;opacity:0;pointer-events:none;transition:.25s;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.close-x{position:absolute;right:14px;top:14px;width:32px;height:32px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px;}
+.suggestions{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+.suggest{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 10px;text-align:left;cursor:pointer;color:var(--text);font-size:12.5px;}
+.suggest:hover{border-color:var(--accent);}
+.suggest .label{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:5px 10px;font-size:12px;color:var(--text-dim);cursor:pointer;}
+.chip.active{background:rgba(109,91,255,.15);color:#c4b5fd;border-color:rgba(109,91,255,.35);}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+.search-box{flex:1;min-width:180px;}
+.filter{background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12.5px;}
+.disp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px;}
+.disp-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:12px;}
+.disp-card b{color:var(--text);font-weight:600;}
+.disp-card .meta{color:var(--text-dim);font-size:11px;margin-top:4px;}
+html{font-size:17px;}
+body{line-height:1.6;}
+.top h1{font-size:22px;font-weight:800;letter-spacing:-.3px;}
+.top .sub{font-size:13.5px;margin-top:5px;}
+.col-title{font-size:13px;font-weight:700;letter-spacing:.7px;}
+.c-name{font-size:14px;font-weight:700;margin-bottom:4px;}
+.c-meta{font-size:13px;color:var(--text-dim);}
+.c-email{font-size:12px;color:#8b5cf6;margin-top:3px;word-break:break-all;}
+.badge{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(109,91,255,.15);color:#c4b5fd;}
+.badge-prio{background:rgba(245,158,11,.15);color:#fcd34d;}
+.badge-tier{background:rgba(34,197,94,.15);color:#86efac;}
+.badge-sub{background:rgba(59,130,246,.15);color:#93c5fd;}
+.follow{margin-top:10px;font-size:13px;color:var(--text-dim);background:var(--bg3);padding:8px 10px;border-radius:8px;}
+.follow b{color:var(--text);font-weight:600;}
+.card{background:linear-gradient(180deg,rgba(109,91,255,.12),rgba(109,91,255,.03));border:1px solid rgba(109,91,255,.25);border-radius:12px;padding:14px;cursor:pointer;user-select:none;transition:transform .08s,border-color .15s;}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 2px rgba(109,91,255,.3);}
+.card-actions{display:flex;gap:6px;margin-top:10px;}
+.btn{font-size:13.5px;padding:9px 14px;}
+.btn-sm{padding:7px 11px;font-size:12.5px;}
+.empty{font-size:13px;padding:14px 8px;}
+.action-bar .count{font-size:14px;font-weight:700;}
+.action-bar .count b{font-size:18px;}
+.modal h2{font-size:20px;margin-bottom:3px;}
+.modal .sub{font-size:13.5px;margin-bottom:18px;}
+.field-label{font-size:12px;margin:16px 0 8px;}
+select,input,textarea{width:100%;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13px;outline:none;}
+textarea{min-height:110px;resize:vertical;}
+.detail-panel{display:none;position:fixed;inset:0;background:rgba(5,6,10,.7);backdrop-filter:blur(3px);z-index:100;align-items:flex-start;justify-content:center;overflow-y:auto;padding:30px 14px;}
+.detail-panel.open{display:flex;}
+.detail-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:820px;width:100%;padding:24px;margin-bottom:40px;}
+.detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px;}
+.detail-title{font-size:20px;font-weight:800;}
+.detail-sub{font-size:13.5px;color:var(--text-dim);margin-top:4px;}
+.detail-rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px;}
+.detail-row{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:13px;}
+.detail-row b{color:var(--text-dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:4px;}
+.detail-note{white-space:pre-wrap;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;line-height:1.6;}
+.detail-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap;}
+.close-x{position:absolute;right:14px;top:14px;width:32px;height:32px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top" style="margin-bottom:18px;">
+    <div class="sub" style="color:#f59e0b;font-weight:700;font-size:13px;">📍 ENDPOINT: http://localhost:3000/send &nbsp;|&nbsp; Lista ativa: 01-ZN-MEIER-I (Méier) &nbsp;|&nbsp; Próxima: 02-ZN-CACHAMBI-I (pendente)</div>
+    <div class="sub">Flávio Guedes · Prospecção B2B — Cliente: Gestão de Marketing / Tráfego / CRM</div>
+    <h1>📋 Kanban · Disparos — PROSPECCAO B2B FLAVIO (Marketing / Tráfego / CRM)</h1>
+    <div class="sub">Registre e acompanhe seus disparos de prospecção B2B: captação de clientes para gestão de marketing, tráfego pago e CRM.</div>
+    <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn btn-primary" id="btnAddTop">+ Nova ação / disparo</button>
+      <button class="btn btn-ghost" onclick="window.location.href='kanban_envios.html'">📨 Abrir envios</button>
+      <button class="btn btn-ghost" onclick="window.location.href='command_center.html'">← Voltar para Command Center</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box"><input type="text" id="searchInput" placeholder="Buscar por nome, empresa, cargo ou e-mail..."></div>
+    <select class="filter" id="tierFilter"><option value="">Tier: Todos</option></select>
+    <select class="filter" id="subtypeFilter"><option value="">Subtipo: Todos</option></select>
+    <select class="filter" id="prioFilter"><option value="">Prioridade: Todas</option><option value="Alta">🔥 Alta</option><option value="Média">🟡 Média</option><option value="Média-Baixa">🟡 Média-Baixa</option><option value="Baixa">⚪ Baixa</option></select>
+    <button class="btn btn-ghost btn-sm" id="btnClearFilters">Limpar filtros</button>
+  </div>
+
+  <div class="board" id="board">
+    <div class="column listas" data-col="listas">
+      <div class="col-head"><div><div class="col-title">Listas <span class="col-count" id="c-listas">0</span></div></div><div class="col-actions"><button class="btn btn-ghost" data-add="listas">Adicionar</button></div></div>
+      <div class="col-body" id="col-listas"></div>
+    </div>
+    <div class="column enviados" data-col="enviados">
+      <div class="col-head"><div><div class="col-title">Enviados <span class="col-count" id="c-enviados">0</span></div></div><div class="col-actions"><button class="btn btn-ghost" data-add="enviados">Adicionar</button></div></div>
+      <div class="col-body" id="col-enviados"></div>
+    </div>
+    <div class="column reuniao" data-col="reuniao">
+      <div class="col-head"><div><div class="col-title">Reunião <span class="col-count" id="c-reuniao">0</span></div></div><div class="col-actions"><button class="btn btn-ghost" data-add="reuniao">Adicionar</button></div></div>
+      <div class="col-body" id="col-reuniao"></div>
+    </div>
+    <div class="column proposta" data-col="proposta">
+      <div class="col-head"><div><div class="col-title">Proposta <span class="col-count" id="c-proposta">0</span></div></div><div class="col-actions"><button class="btn btn-ghost" data-add="proposta">Adicionar</button></div></div>
+      <div class="col-body" id="col-proposta"></div>
+    </div>
+    <div class="column ganho" data-col="ganho">
+      <div class="col-head"><div><div class="col-title">Ganho <span class="col-count" id="c-ganho">0</span></div></div><div class="col-actions"><button class="btn btn-ghost" data-add="ganho">Adicionar</button></div></div>
+      <div class="col-body" id="col-ganho"></div>
+    </div>
+    <div class="column perda" data-col="perda">
+      <div class="col-head"><div><div class="col-title">Perda <span class="col-count" id="c-perda">0</span></div></div><div class="col-actions"><button class="btn btn-ghost" data-add="perda">Adicionar</button></div></div>
+      <div class="col-body" id="col-perda"></div>
+    </div>
+  </div>
+
+  <div class="action-bar" id="actionBar">
+    <div class="count"><b id="selCount">0</b> selecionado(s)</div>
+    <div class="btns">
+      <button class="btn btn-ghost" id="btnMoveSel">Mover para...</button>
+      <button class="btn btn-ghost" id="btnFollowSel">Follow sugerido</button>
+      <button class="btn btn-danger" id="btnDeleteSel">Excluir selecionados</button>
+    </div>
+  </div>
+</div>
+
+<div class="detail-panel" id="detailPanel">
+  <div class="detail-head">
+    <div>
+      <div class="detail-title" id="dTitle">Detalhe do disparo</div>
+      <div class="detail-sub" id="dSub"></div>
+    </div>
+    <button class="close-x" id="detailClose">×</button>
+  </div>
+  <div class="detail-body" id="dBody"></div>
+  <div class="detail-actions">
+    <button class="btn btn-ghost" id="dEdit">Editar</button>
+    <button class="btn btn-danger" id="dDelete">Excluir</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="close-x" id="modalClose">×</button>
+    <h2 id="mTitle">Novo disparo</h2>
+    <div class="sub" id="mSub">Registre os dados do disparo</div>
+    <div class="modal-row">
+      <div class="modal-stat"><div class="v" id="mTotal">0</div><div class="l">Total</div></div>
+      <div class="modal-stat"><div class="v" id="mSelStat">0</div><div class="l">Selecionados</div></div>
+      <div class="modal-stat"><div class="v" id="mStage">—</div><div class="l">Estágio</div></div>
+    </div>
+    <div class="field-label">Objetivo / Fluxo</div>
+    <select id="mObjective">
+      <option value="vaga">Vaga / Contratação</option>
+      <option value="indicacao">Indicação</option>
+      <option value="recolocacao">Reconexão / Recolocação</option>
+      <option value="parceria">Parceria / Projeto</option>
+      <option value="comercial">Comercial</option>
+      <option value="reactivacao">Reativação leve</option>
+    </select>
+    <div class="field-label">Título</div>
+    <input type="text" id="mTitle" placeholder="Ex: Follow com gestor de produto na X">
+    <div class="field-label">Nome / Contato</div>
+    <input type="text" id="mName" placeholder="Nome do contato">
+    <div class="field-label">Empresa</div>
+    <input type="text" id="mCompany" placeholder="Empresa">
+    <div class="field-label">Cargo</div>
+    <input type="text" id="mRole" placeholder="Cargo">
+    <div class="field-label">E-mail</div>
+    <input type="text" id="mEmail" placeholder="e-mail">
+    <div class="field-label">Prioridade</div>
+    <select id="mPriority">
+      <option value="Alta">🔥 Alta</option>
+      <option value="Média">🟡 Média</option>
+      <option value="Média-Baixa">🟡 Média-Baixa</option>
+      <option value="Baixa">⚪ Baixa</option>
+    </select>
+    <div class="field-label">Canal do disparo</div>
+    <select id="mChannel">
+      <option value="email">E-mail</option>
+      <option value="linkedin">LinkedIn DM</option>
+      <option value="whatsapp">WhatsApp</option>
+      <option value="ligacao">Ligação</option>
+      <option value="outro">Outro</option>
+    </select>
+    <div class="field-label">Próxima ação</div>
+    <input type="text" id="mNextAction" placeholder="Ex: Ligação, DM, envio de portfólio">
+    <div class="field-label">Data alvo</div>
+    <input type="date" id="mDate">
+    <div class="field-label">Observação / Resposta</div>
+    <textarea id="mNote" placeholder="Resumo do contato, resposta recebida..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="mSave">Salvar</button>
+      <button class="btn btn-ghost" id="mDelete">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STAGES = ['listas','enviados','reuniao','proposta','ganho','perda'];
+const LS_KEY = 'prospeccao_kanban_v1';
+let items = [];
+let selected = new Set();
+let nextId = 1;
+let editingId = null;
+
+try{ const raw = localStorage.getItem(LS_KEY); if(raw){ items = JSON.parse(raw); nextId = items.reduce((m,i)=>Math.max(m,i.id),0)+1; } }catch(e){ items = []; }
+
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(items)); }
+function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function counts(){ const c={listas:0,enviados:0,reuniao:0,proposta:0,ganho:0,perda:0}; items.forEach(i=>{ if(c[i.stage]!==undefined) c[i.stage]++; }); return c; }
+function filtered(){
+  const q = (document.getElementById('searchInput').value||'').toLowerCase();
+  const tier = document.getElementById('tierFilter').value;
+  const sub = document.getElementById('subtypeFilter').value;
+  const prio = document.getElementById('prioFilter').value;
+  return items.filter(i=>{
+    if(q){ const hay = `${i.title||''} ${i.name||''} ${i.company||''} ${i.role||''} ${i.email||''} ${i.note||''}`.toLowerCase(); if(!hay.includes(q)) return false; }
+    if(tier && i.tier !== tier) return false;
+    if(sub && i.subtype !== sub) return false;
+    if(prio && i.priority !== prio) return false;
+    return true;
+  });
+}
+
+function render(){
+  const list = filtered();
+  const c = counts();
+  STAGES.forEach(s=>{ const el = document.getElementById('c-'+s); if(el) el.textContent = c[s]; });
+  const by = {listas:[],enviados:[],reuniao:[],proposta:[],ganho:[],perda:[]};
+  list.forEach(i=>{ if(by[i.stage]) by[i.stage].push(i); });
+  STAGES.forEach(s=>{
+    const box = document.getElementById('col-'+s);
+    if(!box) return;
+    const items2 = by[s];
+    if(items2.length===0){ box.innerHTML = '<div class="empty">Nenhum disparo</div>'; return; }
+    box.innerHTML = items2.map(i=>{
+      const isSel = selected.has(i.id);
+      const channelLabel = {email:'E-mail',linkedin:'LinkedIn',whatsapp:'WhatsApp',ligacao:'Ligação',outro:'Outro'}[i.channel] || i.channel;
+      const channelIcon = {email:'📧',linkedin:'💼',whatsapp:'💬',ligacao:'📞',outro:'📌'}[i.channel] || '📌';
+      const isEnviados = s === 'enviados';
+      const contactInfo = (i.whatsapp || i.phone || i.phone2 || i.phone3 || i.tel || '');
+      const messagePreview = (i.note || i.nextAction || '').trim();
+      return `<div class="card ${isSel?'sel':''}" data-id="${i.id}">
+        <div class="card-top">
+          <div style="flex:1;min-width:0;">
+            <div class="c-name" ${isEnviados?'style="font-size:15px;color:#fff;"':''}>${esc(i.title || i.name || 'Ação')}</div>
+            <div class="c-meta" ${isEnviados?'style="font-weight:600;color:#e8e8ec;"':''}>${esc(i.name || '')} ${i.company ? '· '+esc(i.company) : ''}</div>
+            <div class="c-email">${esc(i.email || '')}</div>
+            ${isEnviados && contactInfo ? `<div class="c-email" style="color:#fcd34d;margin-top:2px;">${esc(contactInfo)}</div>` : ''}
+          </div>
+        </div>
+        <div class="badges">
+          ${channelLabel ? `<span class="badge">${esc(channelLabel)}</span>` : ''}
+          ${i.priority ? `<span class="badge badge-prio">${esc(i.priority)}</span>` : ''}
+          ${i.date ? `<span class="badge">📅 ${esc(i.date)}</span>` : ''}
+        </div>
+        ${isEnviados && messagePreview ? `<div class="follow" style="border-color:rgba(245,158,11,.35);"><b style="color:#fcd34d;">Mensagem enviada:</b> ${esc(messagePreview)}</div>` : `<div class="follow"><b>Próxima ação:</b> ${esc(i.nextAction || 'Definir follow')} ${i.date ? `<br><b>Data alvo:</b> ${esc(i.date)}` : ''}</div>`}
+        <div class="card-actions">
+          <button class="btn btn-ghost move-left" data-id="${i.id}">◀</button>
+          <button class="btn btn-ghost move-right" data-id="${i.id}">▶</button>
+          <button class="btn btn-ghost edit" data-id="${i.id}">Editar</button>
+          <button class="btn btn-danger delete" data-id="${i.id}">Excluir</button>
+        </div>
+      </div>`;
+    }).join('');
+    box.querySelectorAll('.card').forEach(el=>{
+      const id = Number(el.dataset.id);
+      el.addEventListener('click', e=>{
+        if(e.target.closest('button')) return;
+        if(e.target.tagName==='SELECT' || e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+        if(selected.has(id)){ selected.delete(id); render(); }
+        openDetail(id);
+      });
+    });
+    box.querySelectorAll('.move-left').forEach(b=> b.onclick = ()=> moveCard(Number(b.dataset.id), -1));
+    box.querySelectorAll('.move-right').forEach(b=> b.onclick = ()=> moveCard(Number(b.dataset.id), 1));
+    box.querySelectorAll('.edit').forEach(b=> b.onclick = ()=> openModal(Number(b.dataset.id)));
+    box.querySelectorAll('.delete').forEach(b=> b.onclick = ()=> deleteItem(Number(b.dataset.id)));
+  });
+  const selCount = document.getElementById('selCount');
+  if(selCount) selCount.textContent = selected.size;
+}
+
+function moveCard(id, dir){
+  const item = items.find(x=>x.id===id); if(!item) return;
+  const idx = STAGES.indexOf(item.stage);
+  const nxt = idx + dir;
+  if(nxt<0 || nxt>=STAGES.length) return;
+  item.stage = STAGES[nxt];
+  save();
+  render();
+  showToast('Movido para ' + STAGES[nxt]);
+}
+function deleteItem(id){ items = items.filter(x=>x.id!==id); selected.delete(id); save(); render(); showToast('Item excluído'); }
+function deleteSelected(){ if(!selected.size) return showToast('Selecione ao menos um item'); if(!confirm('Excluir selecionados?')) return; items = items.filter(x=>!selected.has(x.id)); selected.clear(); save(); render(); showToast('Itens excluídos'); }
+
+document.getElementById('btnMoveSel').addEventListener('click', ()=>{
+  if(!selected.size) return showToast('Selecione ao menos um item');
+  const choice = prompt('Mover seleção para:\\nlistas\\nenviados\\nreuniao\\nproposta\\nganho\\nperda');
+  const stage = choice && STAGES.includes(choice) ? choice : null;
+  if(!stage) return showToast('Estágio inválido');
+  items.forEach(i=>{ if(selected.has(i.id)) i.stage = stage; });
+  save(); selected.clear(); render(); showToast('Itens movidos');
+});
+document.getElementById('btnFollowSel').addEventListener('click', ()=>{
+  if(!selected.size) return showToast('Selecione ao menos um item');
+  const suggestion = prompt('Sugestão rápida de follow para os selecionados:');
+  if(suggestion===null) return;
+  items.forEach(i=>{ if(selected.has(i.id)){ i.nextAction = suggestion; } });
+  save(); selected.clear(); render(); showToast('Follow atualizado');
+});
+document.getElementById('btnDeleteSel').addEventListener('click', deleteSelected);
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('mSave').addEventListener('click', saveItem);
+document.getElementById('mDelete').addEventListener('click', deleteEditing);
+document.getElementById('modalBg').addEventListener('click', e=>{ if(e.target.id==='modalBg') closeModal(); });
+
+function openModal(id){
+  editingId = id || null;
+  const modal = document.getElementById('modalBg');
+  document.getElementById('mTotal').textContent = items.length;
+  document.getElementById('mSelStat').textContent = selected.size;
+  if(id){
+    const it = items.find(x=>x.id===id); if(!it) return;
+    document.getElementById('mTitle').textContent = 'Editar disparo';
+    document.getElementById('mSub').textContent = 'Ajuste e salve';
+    document.getElementById('mObjective').value = it.objective || 'vaga';
+    document.getElementById('mTitle').value = it.title || '';
+    document.getElementById('mName').value = it.name || '';
+    document.getElementById('mCompany').value = it.company || '';
+    document.getElementById('mRole').value = it.role || '';
+    document.getElementById('mEmail').value = it.email || '';
+    document.getElementById('mPriority').value = it.priority || 'Média';
+    document.getElementById('mChannel').value = it.channel || 'email';
+    document.getElementById('mNextAction').value = it.nextAction || '';
+    document.getElementById('mDate').value = it.date || '';
+    document.getElementById('mNote').value = it.note || '';
+    document.getElementById('mStage').textContent = it.stage || '—';
+    document.getElementById('mDelete').style.display = 'inline-flex';
+  } else {
+    document.getElementById('mTitle').textContent = 'Novo disparo';
+    document.getElementById('mSub').textContent = 'Registre os dados do disparo';
+    document.getElementById('mObjective').value = 'vaga';
+    document.getElementById('mTitle').value = '';
+    document.getElementById('mName').value = '';
+    document.getElementById('mCompany').value = '';
+    document.getElementById('mRole').value = '';
+    document.getElementById('mEmail').value = '';
+    document.getElementById('mPriority').value = 'Média';
+    document.getElementById('mChannel').value = 'email';
+    document.getElementById('mNextAction').value = '';
+    document.getElementById('mDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('mNote').value = '';
+    document.getElementById('mStage').textContent = 'listas';
+    document.getElementById('mDelete').style.display = 'none';
+  }
+  modal.classList.add('open');
+}
+function closeModal(){ document.getElementById('modalBg').classList.remove('open'); editingId = null; }
+
+function saveItem(){
+  const objective = document.getElementById('mObjective').value;
+  const title = document.getElementById('mTitle').value.trim();
+  const name = document.getElementById('mName').value.trim();
+  const company = document.getElementById('mCompany').value.trim();
+  const role = document.getElementById('mRole').value.trim();
+  const email = document.getElementById('mEmail').value.trim();
+  const priority = document.getElementById('mPriority').value;
+  const channel = document.getElementById('mChannel').value;
+  const nextAction = document.getElementById('mNextAction').value.trim();
+  const date = document.getElementById('mDate').value;
+  const note = document.getElementById('mNote').value.trim();
+  const stage = editingId ? (items.find(x=>x.id===editingId)?.stage || 'listas') : 'listas';
+  const tier = objectiveTier(objective);
+  const subtype = objectiveSubtype(objective);
+  const payload = { objective, title, name, company, role, email, priority, channel, nextAction, date, note, stage, tier, subtype };
+  if(editingId){ const idx = items.findIndex(x=>x.id===editingId); if(idx>=0) items[idx] = { ...items[idx], ...payload }; }
+  else { items.push({ id: nextId++, ...payload }); }
+  save(); closeModal(); render(); showToast('Disparo salvo');
+}
+function deleteEditing(){ if(!editingId) return; deleteItem(editingId); closeModal(); }
+
+function showToast(msg){ const t=document.getElementById('toast'); if(t){ t.textContent=msg; t.classList.add('show'); clearTimeout(window.__t); window.__t=setTimeout(()=>t.classList.remove('show'),2200); } }
+
+function openDetail(id){
+  const item = items.find(x=>x.id===id); if(!item) return;
+  const panel = document.getElementById('detailPanel');
+  const channelLabel = {email:'E-mail',linkedin:'LinkedIn',whatsapp:'WhatsApp',ligacao:'Ligação',outro:'Outro'}[item.channel] || item.channel;
+  document.getElementById('dTitle').textContent = item.title || item.name || 'Disparo';
+  document.getElementById('dSub').textContent = `${esc(item.name || '')}${item.company ? ' · ' + esc(item.company) : ''}`;
+  document.getElementById('dBody').innerHTML = `
+    <div class="detail-rows">
+      <div class="detail-row"><b>Nome</b>${esc(item.name || '—')}</div>
+      <div class="detail-row"><b>E-mail</b>${esc(item.email || '—')}</div>
+      <div class="detail-row"><b>Cargo</b>${esc(item.role || '—')}</div>
+      <div class="detail-row"><b>Canal</b>${esc(channelLabel)}</div>
+      <div class="detail-row"><b>Prioridade</b>${esc(item.priority || '—')}</div>
+      <div class="detail-row"><b>Data alvo</b>${esc(item.date || '—')}</div>
+      <div class="detail-row"><b>Próxima ação</b>${esc(item.nextAction || '—')}</div>
+      <div class="detail-row"><b>Estágio</b>${esc(item.stage || '—')}</div>
+    </div>
+    ${item.note ? `<div class="detail-note"><b>Observação</b><br>${esc(item.note)}</div>` : ''}
+  `;
+  document.getElementById('dEdit').onclick = ()=> openModal(id);
+  document.getElementById('dDelete').onclick = ()=>{ if(confirm('Excluir este disparo?')){ deleteItem(id); closeDetail(); }};
+  document.getElementById('detailClose').onclick = closeDetail;
+  panel.classList.add('open');
+}
+function closeDetail(){ document.getElementById('detailPanel').classList.remove('open'); }
+
+document.getElementById('detailPanel').addEventListener('click', e=>{ if(e.target.id==='detailPanel') closeDetail(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeDetail(); } });
+
+document.querySelectorAll('[data-add]').forEach(btn=> btn.addEventListener('click', ()=> openModal(null)));
+document.getElementById('btnAddTop').addEventListener('click', ()=> openModal(null));
+document.getElementById('btnClearFilters').addEventListener('click', ()=>{
+  document.getElementById('searchInput').value='';
+  document.getElementById('tierFilter').value='';
+  document.getElementById('subtypeFilter').value='';
+  document.getElementById('prioFilter').value='';
+  render();
+});
+
+const tierSet = new Set(items.map(i=>i.tier).filter(Boolean));
+const subtypeSet = new Set(items.map(i=>i.subtype).filter(Boolean));
+function objectiveTier(o){ return o==='vaga' ? '01 - Vaga_Contratacao' : o==='indicacao' ? '02 - Indicacao' : o==='recolocacao' ? '03 - Recrutamento' : o==='parceria' ? '06 - Parceria_Projeto' : o==='comercial' ? '07 - Comercial' : '04 - Networking'; }
+function objectiveSubtype(o){ return o==='vaga' ? 'Decisor técnico' : o==='indicacao' ? 'Indicação direta' : o==='recolocacao' ? 'Head hunter / Recrutador' : o==='parceria' ? 'Projeto / Parceria' : o==='comercial' ? 'Comercial' : 'Networking'; }
+function fillOptions(){
+  const tierSel = document.getElementById('tierFilter');
+  const curTier = tierSel.value;
+  tierSel.innerHTML = '<option value="">Tier: Todos</option>' + [...tierSet].sort().map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  tierSel.value = curTier;
+  const subSel = document.getElementById('subtypeFilter');
+  const curSub = subSel.value;
+  subSel.innerHTML = '<option value="">Subtipo: Todos</option>' + [...subtypeSet].sort().map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  subSel.value = curSub;
+}
+fillOptions();
+render();
+</script>
+</body>
+</html>

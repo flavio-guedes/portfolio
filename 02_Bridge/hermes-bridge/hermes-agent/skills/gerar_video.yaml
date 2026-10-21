@@ -1,0 +1,13 @@
+name: gerar_video
+description: Gera um video MP4 narrado a partir de um Markdown de apresentacao.
+quando_usar: |
+  Quando o usuario pedir "video", "apresentacao em video", "narrar slides",
+  "gerar MP4", ou houver um arquivo .md marcado como apresentacao.
+entradas:
+  - nome: markdown
+    tipo: path
+    obrigatorio: true
+  - nome: saida
+    tipo: path
+    default: ~/hermes-bridge/hermes-agent/apresentacao_hermes.mp4
+executar: bash ~/hermes-bridge/hermes-agent/skills/gerar_video.sh "$markdown" "$saida"

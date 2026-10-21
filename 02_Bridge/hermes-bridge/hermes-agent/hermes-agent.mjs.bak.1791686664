@@ -1,0 +1,162 @@
+#!/usr/bin/env node
+// Hermes Agent — conduz conversas de WhatsApp com autonomia supervisionada.
+// Recebe POST em :8422/hermes  →  chama Ollama  →  responde ou escala.
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dir = path.dirname(fileURLToPath(import.meta.url));
+const PROMPT = fs.readFileSync(path.join(__dir, 'system-prompt.md'), 'utf8');
+const OLLAMA   = process.env.OLLAMA   || 'http://127.0.0.1:11434';
+const MODELO   = process.env.MODELO   || 'qwen2.5:3b';
+const BRIDGE   = process.env.BRIDGE   || 'http://127.0.0.1:8787';
+const TOKEN    = process.env.HERMES_TOKEN || 'hermes123';
+const FLÁVIO   = process.env.FLAVIO_JID || ''; // ex: 5521999719474@s.whatsapp.net
+const DRY      = process.env.DRY === '1';       // se 1: loga mas NÃO envia
+const HORA_INI = 9, HORA_FIM = 18;
+
+const HIST = new Map(); // jid → [{role, content}]
+
+function dentroDoHorario() { return true; }
+
+async function ollama(messages) {
+  const r = await fetch(OLLAMA + '/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: MODELO,
+      messages,
+      stream: false,
+      format: 'json',
+      options: { temperature: 0.3, num_predict: 200 }
+    })
+  });
+  if (!r.ok) throw new Error('ollama HTTP ' + r.status);
+  const d = await r.json();
+  return d.message && d.message.content || '';
+}
+
+async function enviarWA(jid, texto) {
+  if (DRY) { console.log('[DRY] enviaria pra', jid, '→', texto); return true; }
+  const r = await fetch(BRIDGE + '/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+    body: JSON.stringify({ number: jid, message: texto })
+  });
+  if (!r.ok) { console.error('bridge /send HTTP', r.status, await r.text()); return false; }
+  return true;
+}
+
+async function avisarFlavio(jid, texto, motivo) {
+  if (!FLÁVIO) { console.log('[aviso] sem FLAVIO_JID — pulando notificação'); return; }
+  const linha = `🔔 *Escalação*\nLead: ${jid.split('@')[0]}\nMotivo: ${motivo}\nMensagem dele: "${texto}"`;
+  await enviarWA(FLÁVIO, linha);
+}
+
+function parseJSON(t) {
+  try { return JSON.parse(t); } catch {}
+  const m = t.match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch {} }
+  return null;
+}
+
+const server = http.createServer(async (req, res) => {
+  if (req.method !== 'POST' || req.url.split('?')[0] !== '/hermes') { res.writeHead(404); return res.end(); }
+  let body = '';
+  req.on('data', c => body += c);
+  req.on('end', async () => {
+    res.writeHead(200, { 'Content-Type': 'application/json' }); res.end('{"ok":true}');
+    let ev;
+    try { ev = JSON.parse(body); } catch { console.error('[agent] payload inválido'); return; }
+
+    const jid  = ev.jid;
+    const texto = String(ev.texto || '').trim();
+    const meta = ev.meta || {};
+    if (!jid || !texto) return;
+
+    console.log('[' + new Date().toLocaleTimeString('pt-BR') + '] ←', jid.split('@')[0], '·', texto.slice(0, 80));
+
+    if (!dentroDoHorario()) {
+      console.log('[agent] fora do horário comercial — aguardando');
+      return;
+    }
+
+    const hist = HIST.get(jid) || [];
+    hist.push({ role: 'user', content: texto });
+    if (hist.length > 12) hist.splice(0, hist.length - 12);
+
+    const ctx = `CONTEXTO DO LEAD:\nNome: ${meta.nome||'—'}\nEmpresa: ${meta.empresa||'—'}\nCargo: ${meta.cargo||'—'}\nSegmento: ${meta.segmento||'—'}\nScore: ${meta.score||'—'}\n\nHISTÓRICO:\n` +
+      hist.map(h => (h.role === 'user' ? 'LEAD: ' : 'HERMES: ') + h.content).join('\n');
+
+    let raw = '';
+    try { raw = await ollama([{ role: 'system', content: PROMPT }, { role: 'user', content: ctx }]); }
+    catch (e) { console.error('[agent] ollama falhou:', e.message); return; }
+
+    const out = parseJSON(raw);
+    console.error('[agent] RAW:', JSON.stringify(out).slice(0,300));
+    if (!out || !out.acao) { console.error('[agent] LLM devolveu não-JSON:', raw.slice(0, 200)); return; }
+
+    console.log('[agent] →', out.acao, '·', out.classificacao_nova, '·', out.motivo);
+    console.error('[agent] out.texto =', JSON.stringify(out.texto || '(VAZIO)'));
+
+    if (out.acao === 'RESPONDER') { if (!out.texto) { console.error('[agent] RESPONDER sem texto — Qwen nao gerou resposta'); return; }
+      const ok = await enviarWA(jid, out.texto);
+      if (ok) { hist.push({ role: 'assistant', content: out.texto }); HIST.set(jid, hist); }
+    } else if (out.acao === 'ESCALAR') {
+      await avisarFlavio(jid, texto, out.motivo || '—');
+      HIST.delete(jid);
+    } else if (out.acao === 'SILENCIAR') {
+      HIST.delete(jid);
+    }
+  });
+});
+
+server.listen(8422, '127.0.0.1', () => {
+  console.log('Hermes Agent em 127.0.0.1:8422 · modelo ' + MODELO);
+  console.log('DRY=' + (DRY ? '1 (não envia)' : '0 (envia de verdade)'));
+});
+
+/* ---------------- BRIDGE HOOK ----------------
+   Patch: chama o agente quando chega mensagem de lead.
+   Só marca "self" e admins como "comando"; o resto é lead.
+----------------------------------------------- */
+const BRIDGE_FILE = '/Users/mac/hermes-bridge/hermes-bridge.mjs';
+const src = fs.readFileSync(BRIDGE_FILE, 'utf8');
+if (!src.includes('/* HERMES_AGENT_HOOK */')) {
+  const marcador = "sock.ev.on('messages.upsert', async function(ev){";
+  const idx = src.indexOf(marcador);
+  if (idx >= 0) {
+    const bloco = marcador + `
+      /* HERMES_AGENT_HOOK */
+      (async function(){
+        if(!ev || ev.type!=='notify') return;
+        const myJid = String((sock&&sock.user&&sock.user.id)||'').replace(/:.*@/,'@');
+        for(const m of ev.messages){
+          try{
+            const jid = m && m.key && m.key.remoteJid;
+            const fromMe = !!(m && m.key && m.key.fromMe);
+            if(!jid) continue;
+            if(fromMe && jid===myJid) continue; // self-chat = comandos /status etc
+            const mm = m.message||{};
+            const texto = (mm.conversation || (mm.extendedTextMessage&&mm.extendedTextMessage.text) || '').trim();
+            if(!texto) continue;
+            fetch('http://127.0.0.1:8422/hermes',{
+              method:'POST', headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ jid, texto, meta: { nome:'', empresa:'', cargo:'', segmento:'', score:'' } })
+            }).catch(function(){});
+          }catch(e){}
+        }
+      })();`;
+    const novo = src.slice(0, idx) + bloco + '\n      ' + src.slice(idx + marcador.length);
+    fs.writeFileSync(BRIDGE_FILE + '.bak.agent', src);
+    fs.writeFileSync(BRIDGE_FILE, novo);
+    console.log('✓ patch no bridge aplicado · backup em .bak.agent');
+  } else {
+    console.log('⚠️  marcador messages.upsert não achado — hook não aplicado');
+  }
+} else {
+  console.log('• bridge já tinha o hook');
+}
+
+process.on('SIGINT', () => { console.log('\nagent saindo'); process.exit(0); });

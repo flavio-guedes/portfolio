@@ -1,0 +1,25 @@
+[
+  {
+    "id": "opp-001",
+    "cargo": "Head of Marketing",
+    "empresa": "Exemplo Foods",
+    "segmento": "Alimentos Saudáveis",
+    "localizacao": "São Paulo, SP",
+    "tipo": "CLT",
+    "modelo": "Híbrido",
+    "fonte": "LinkedIn Jobs",
+    "link": null,
+    "salario": null,
+    "score": 0.0,
+    "tier": "D",
+    "status": "NOVO",
+    "aderencia": 0.0,
+    "aderencia_segmento": 0.0,
+    "sinal_crescimento": 0.0,
+    "acessibilidade_decisor": 0.0,
+    "oportunidade_identificada": 0.0,
+    "potencial_financeiro": 0.0,
+    "criado_em": "2026-09-03T00:00:00-03:00",
+    "atualizado_em": "2026-09-03T00:00:00-03:00"
+  }
+]

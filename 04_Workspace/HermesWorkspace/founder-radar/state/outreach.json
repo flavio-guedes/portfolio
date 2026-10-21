@@ -1,0 +1,18 @@
+[
+  {
+    "id": "outreach-001",
+    "tipo": "LINKEDIN_DM",
+    "destinatario": "Exemplo",
+    "empresa": "Exemplo Foods",
+    "cargo": "CEO",
+    "canal": "LinkedIn",
+    "contexto": "",
+    "dor": "",
+    "experiencia_relevante": "",
+    "portfolio": "https://flavio-guedes.github.io/portfolio/parceria.html",
+    "mensagem": "",
+    "status": "RASCUNHO",
+    "criado_em": "2026-09-03T00:00:00-03:00",
+    "atualizado_em": "2026-09-03T00:00:00-03:00"
+  }
+]

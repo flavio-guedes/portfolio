@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#{{THEME_COLOR}}">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family={{DISPLAY_FONT}}:opsz,wght@{{DISPLAY_FONT_WEIGHTS}}&family={{BODY_FONT}}:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black-950:{{BLACK_950}};
+    --black-900:{{BLACK_900}};
+    --black-800:{{BLACK_800}};
+    --black-700:{{BLACK_700}};
+
+    --accent-600:{{ACCENT_600}};
+    --accent-500:{{ACCENT_500}};
+    --accent-400:{{ACCENT_400}};
+    --accent-300:{{ACCENT_300}};
+
+    --gold-500:{{GOLD_500}};
+    --gold-300:{{GOLD_300}};
+
+    --ink-100:{{INK_100}};
+    --ink-300:{{INK_300}};
+    --ink-500:{{INK_500}};
+
+    --danger:#f0708a;
+    --danger-text:#f6a3b5;
+    --success:#5fc79e;
+
+    --radius-lg:18px;
+    --radius-md:12px;
+    --radius-sm:9px;
+
+    --font-display:'{{DISPLAY_FONT}}',serif;
+    --font-body:'{{BODY_FONT}}',sans-serif;
+
+    --shadow-card:0 30px 70px -28px rgba(0,0,0,.75), 0 0 0 1px rgba({{ACCENT_RGB}},.16), 0 0 50px -18px rgba({{ACCENT_RGB}},.22);
+  }
+
+  *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    font-family:var(--font-body);
+    background:var(--black-950);
+    color:var(--ink-100);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-wrap:break-word;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  img{ max-width:100%; }
+
+  /* ===== Fundo full-bleed (foto de marca) ===== */
+  .bg-layer{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background-image:url("{{HERO_IMAGE}}");
+    background-size:cover;
+    background-position:22% center;
+    background-repeat:no-repeat;
+    background-color:var(--black-950);
+  }
+  /* leve vinheta para o texto ganhar contraste sem lavar a foto */
+  .bg-fade{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:linear-gradient(90deg, rgba(8,8,12,0) 38%, rgba(8,8,12,.55) 58%, rgba(8,8,12,.94) 74%);
+  }
+
+  main{
+    flex:1;
+    min-height:100dvh;
+    display:flex;
+  }
+  .hero{
+    position:relative;
+    flex:1;
+    display:flex;
+    align-items:center;
+    padding:clamp(28px,5vh,64px) clamp(20px,5vw,72px);
+  }
+  .hero-inner{
+    width:100%;
+    max-width:1480px;
+    margin:0 auto;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .hero-content{
+    display:flex;
+    flex-direction:column;
+    gap:clamp(14px,2.2vh,22px);
+    width:100%;
+    max-width:500px;
+  }
+
+  /* ---- tags superiores ---- */
+  .tag-row{
+    list-style:none;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tag-row li{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent-300);
+    border:1px solid rgba({{ACCENT_RGB}},.45);
+    background:rgba({{ACCENT_RGB}},.08);
+    border-radius:999px;
+    padding:6px 13px;
+  }
+
+  /* ---- copy ---- */
+  .hero-copy h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(30px,4.4vw,50px);
+    line-height:1.12;
+    letter-spacing:-0.01em;
+  }
+  .hero-copy h1 .line-2{
+    display:block;
+    color:var(--ink-300);
+    font-weight:500;
+  }
+  .lede{
+    font-size:clamp(14px,1.6vw,16.5px);
+    line-height:1.6;
+    color:var(--ink-300);
+    max-width:46ch;
+  }
+
+  .divider{
+    width:38px;
+    height:2px;
+    background:linear-gradient(90deg,var(--gold-500),var(--accent-500));
+    border-radius:2px;
+  }
+
+  /* ---- form card ---- */
+  .form-card{
+    background:rgba(23,22,31,.74);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba({{ACCENT_RGB}},.22);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    padding:clamp(16px,2.2vh,22px) clamp(16px,2.4vw,22px);
+  }
+  .form-card h2{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(15px,1.7vw,17px);
+    margin-bottom:4px;
+  }
+  .form-card .form-sub{
+    font-size:12.5px;
+    color:var(--ink-500);
+    margin-bottom:clamp(12px,1.6vh,16px);
+  }
+  .field{ margin-bottom:12px; }
+  .field-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .field-row > .field{
+    flex:1 1 180px;
+    min-width:0;
+    margin-bottom:0;
+  }
+  .field-label{
+    display:block;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    color:var(--ink-500);
+    margin-bottom:5px;
+  }
+  .field-label .required-star{ color:var(--gold-300); margin-left:2px; }
+  .field-input{
+    width:100%;
+    font-family:var(--font-body);
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink-100);
+    background:rgba(8,8,12,.55);
+    border:1px solid rgba(148,144,168,.22);
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field-input::placeholder{ color:var(--ink-500); }
+  .field-input:focus{
+    outline:none;
+    border-color:var(--accent-400);
+    box-shadow:0 0 0 3px rgba({{ACCENT_RGB}},.22);
+  }
+  .field-input.is-invalid{ border-color:var(--danger); box-shadow:0 0 0 2px rgba(240,112,138,.14); }
+  .field-select{
+    appearance:none; -webkit-appearance:none; -moz-appearance:none;
+    padding-right:36px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c4c1cd' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+  }
+  .field-select option{ color:#0b0b10; background:#f6f5f8; }
+  .field-error{
+    display:block;
+    min-height:0;
+    font-size:10.5px;
+    color:var(--danger-text);
+    margin-top:4px;
+  }
+
+  .submit-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:var(--font-body);
+    font-weight:700;
+    letter-spacing:.03em;
+    font-size:13.5px;
+    text-transform:uppercase;
+    color:#fff;
+    background:linear-gradient(135deg,var(--accent-600),var(--accent-400));
+    border:none;
+    border-radius:var(--radius-sm);
+    padding:13px 16px;
+    margin-top:4px;
+    cursor:pointer;
+    transition:transform .15s ease, filter .15s ease, box-shadow .15s ease;
+    box-shadow:0 18px 40px -16px rgba({{ACCENT_RGB}},.6);
+  }
+  .submit-btn:hover:not(:disabled){ filter:brightness(1.08); transform:translateY(-1px); }
+  .submit-btn:focus-visible{ outline:3px solid var(--accent-300); outline-offset:3px; }
+  .submit-btn:disabled{ opacity:.75; cursor:not-allowed; transform:none; }
+  .btn-spinner{
+    display:none;
+    width:16px; height:16px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,.35);
+    border-top-color:#fff;
+    animation:spin .7s linear infinite;
+  }
+  .submit-btn.is-loading .btn-spinner{ display:inline-block; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .fine-print{
+    margin-top:10px;
+    font-size:10.5px;
+    line-height:1.4;
+    color:var(--ink-500);
+    text-align:center;
+  }
+  .form-feedback{ font-size:13px; color:var(--danger-text); text-align:center; }
+  .form-feedback:not(:empty){
+    margin-top:12px;
+    padding:11px 13px;
+    border-radius:var(--radius-sm);
+    background:rgba(240,112,138,.10);
+    border:1px solid rgba(240,112,138,.25);
+  }
+
+  .success-view{ text-align:center; padding:10px 4px 4px; }
+  .success-view svg{ margin:0 auto 16px; display:block; }
+  .success-view h2{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:20px;
+    margin-bottom:8px;
+  }
+  .success-view p{ font-size:14px; line-height:1.6; color:var(--ink-300); }
+  .success-next{
+    list-style:none;
+    margin:16px 0 6px;
+    display:inline-block;
+    text-align:left;
+  }
+  .success-next li{ font-size:13.5px; color:var(--ink-300); line-height:1.7; }
+  .success-cta{ font-size:12.5px; color:var(--accent-300); margin-top:6px; }
+
+  /* ===== Marcas decorativas discretas (reforçam a identidade da foto) ===== */
+  .mark-x{
+    position:fixed;
+    left:clamp(20px,5vw,72px);
+    bottom:clamp(20px,4vh,40px);
+    display:flex;
+    gap:6px;
+    z-index:0;
+    opacity:.5;
+  }
+  .mark-x span{
+    width:6px; height:6px;
+    color:var(--accent-400);
+    font-size:9px;
+    line-height:6px;
+  }
+  @media (max-width:1023px){ .mark-x{ display:none; } }
+
+  /* ===== Motion (uma única sequência de entrada) ===== */
+  @media (prefers-reduced-motion: no-preference){
+    .hero-content{ animation:fadeUp .8s cubic-bezier(.19,1,.22,1) both; }
+  }
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ===== Mobile (<1024px): imagem vira uma faixa no topo; conteúdo flui
+     normalmente abaixo, em fundo sólido — evita texto sobre o rosto ===== */
+  @media (max-width:1023px){
+    body{ display:block; }
+    .bg-layer{
+      position:relative;
+      inset:auto;
+      height:38vh;
+      min-height:240px;
+      background-position:38% 22%;
+      z-index:0;
+    }
+    .bg-fade{
+      position:absolute;
+      top:0; left:0; right:0;
+      height:38vh;
+      min-height:240px;
+      background:linear-gradient(180deg, rgba(8,8,12,0) 55%, rgba(8,8,12,.96) 100%);
+      z-index:1;
+    }
+    .mark-x{ position:absolute; }
+    main{ min-height:0; display:block; }
+    .hero{ display:block; padding:clamp(20px,5vw,28px) clamp(16px,4vw,24px) 32px; }
+    .hero-inner{ display:block; max-width:560px; margin:0 auto; }
+    .hero-content{ max-width:none; gap:16px; }
+    .hero-copy h1{ font-size:clamp(28px,8.4vw,40px); }
+    .form-card{ max-width:420px; margin:0 auto; }
+    .site-footer{ position:static; }
+  }
+
+  /* ===== Telas baixas ===== */
+  @media (max-height:720px) and (min-width:1024px){
+    .hero-copy h1{ font-size:clamp(26px,4vw,38px); }
+    .hero-content{ gap:12px; }
+    .form-card{ padding:14px 16px; }
+    .field, .field-row{ margin-bottom:8px; }
+  }
+
+  /* ===== Footer ===== */
+  .site-footer{
+    position:relative;
+    z-index:1;
+    flex:none;
+    border-top:1px solid rgba(255,255,255,.06);
+    padding:clamp(10px,1.6vh,16px) clamp(20px,5vw,72px);
+    text-align:right;
+  }
+  .site-footer p{ font-size:11px; color:var(--ink-500); }
+  @media (max-width:1023px){ .site-footer{ text-align:center; } }
+</style>
+</head>
+<body>
+
+<div class="bg-layer" role="img" aria-label="{{HERO_ALT}}"></div>
+<div class="bg-fade" aria-hidden="true"></div>
+<div class="mark-x" aria-hidden="true"><span>×</span><span>×</span><span>×</span><span>×</span><span>×</span></div>
+
+<main>
+  <section class="hero" id="{{SECTION_ID}}">
+    <div class="hero-inner">
+      <div class="hero-content">
+
+        <div class="hero-copy">
+          <ul class="tag-row">
+            {{TAG_1_LI}}
+            {{TAG_2_LI}}
+            {{TAG_3_LI}}
+          </ul>
+          <div class="divider" style="margin:14px 0 16px;"></div>
+          <h1>{{HEADLINE_1}}<span class="line-2">{{HEADLINE_2}}</span></h1>
+          <p class="lede" style="margin-top:12px;">{{LEDE}}</p>
+        </div>
+
+        <div class="form-card">
+          <form id="lp-form" novalidate>
+            <h2>{{FORM_TITLE}}</h2>
+            <p class="form-sub">{{FORM_SUB}}</p>
+
+            {{FORM_FIELDS}}
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">{{SUBMIT_TEXT}}</span>
+            </button>
+
+            <p class="fine-print">{{FINE_PRINT}}</p>
+            <p class="form-feedback" id="form-feedback" role="alert" aria-live="polite"></p>
+          </form>
+
+          <div class="success-view" id="success-view" hidden tabindex="-1">
+            <svg width="48" height="48" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="26" cy="26" r="25" stroke="#5fc79e" stroke-width="2" opacity="0.4"/>
+              <path d="M16 27L22.5 33.5L36 19" stroke="#5fc79e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>{{SUCCESS_TITLE}}</h2>
+            <p>{{SUCCESS_BODY}}</p>
+            <ul class="success-next">
+              <li>{{SUCCESS_NEXT_1}}</li>
+              <li>{{SUCCESS_NEXT_2}}</li>
+            </ul>
+            <p class="success-cta">{{SUCCESS_CTA}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>{{FOOTER_TEXT}}</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const LEAD_INTEGRATION = {
+    mode: '{{INTEGRATION_MODE}}',
+    webhookUrl: '{{WEBHOOK_URL}}',
+    googleSheetsUrl: '{{GOOGLE_SHEETS_URL}}',
+    localStorageKey: '{{LOCAL_STORAGE_KEY}}'
+  };
+
+  function salvarLeadLocal(lead) {
+    try {
+      const atuais = JSON.parse(localStorage.getItem(LEAD_INTEGRATION.localStorageKey) || '[]');
+      atuais.push(lead);
+      localStorage.setItem(LEAD_INTEGRATION.localStorageKey, JSON.stringify(atuais));
+    } catch (e) {
+      console.warn('[LP] Não foi possível salvar backup local do lead.', e);
+    }
+  }
+
+  function enviarLead(lead) {
+    salvarLeadLocal(lead);
+
+    if (LEAD_INTEGRATION.mode === 'local_panel') {
+      return Promise.resolve({ ok: true, local: true });
+    }
+
+    const url = LEAD_INTEGRATION.mode === 'google_sheets'
+      ? LEAD_INTEGRATION.googleSheetsUrl
+      : LEAD_INTEGRATION.webhookUrl;
+
+    if (!url || url.indexOf('COLE_AQUI') !== -1) {
+      console.warn('[LP] Configure a URL de integração em LEAD_INTEGRATION antes de publicar esta página.');
+      return Promise.resolve({ ok: true, local: true, semIntegracao: true });
+    }
+
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(lead)
+    }).then(function (response) {
+      return response.json().catch(function () { return null; }).then(function (resultado) {
+        const sucesso = response.ok && (!resultado || resultado.success !== false);
+        return { ok: sucesso };
+      });
+    });
+  }
+
+  const form = document.getElementById('lp-form');
+  const successView = document.getElementById('success-view');
+  const formFeedback = document.getElementById('form-feedback');
+  const submitBtn = document.getElementById('submit-btn');
+  const btnText = submitBtn.querySelector('.btn-text');
+
+  const fields = {
+    {{FIELD_1_ID}}: document.getElementById('{{FIELD_1_ID}}'),
+    {{FIELD_2_ID}}: document.getElementById('{{FIELD_2_ID}}'),
+    {{FIELD_3_ID}}: document.getElementById('{{FIELD_3_ID}}')
+  };
+
+  const errorEls = {
+    {{FIELD_1_ID}}: document.getElementById('err-{{FIELD_1_ID}}'),
+    {{FIELD_2_ID}}: document.getElementById('err-{{FIELD_2_ID}}'),
+    {{FIELD_3_ID}}: document.getElementById('err-{{FIELD_3_ID}}')
+  };
+
+  function limparErros() {
+    Object.keys(errorEls).forEach(function (k) { errorEls[k].textContent = ''; });
+    Object.keys(fields).forEach(function (k) { fields[k].classList.remove('is-invalid'); });
+    formFeedback.textContent = '';
+  }
+
+  function marcarErro(campo, mensagem) {
+    fields[campo].classList.add('is-invalid');
+    errorEls[campo].textContent = mensagem;
+  }
+
+  function validarEmail(valor) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor.trim());
+  }
+
+  function validarWhatsapp(valor) {
+    const digitos = valor.replace(/\D/g, '');
+    return digitos.length >= 10 && digitos.length <= 13;
+  }
+
+  function validarFormulario() {
+    limparErros();
+    let valido = true;
+    let primeiroInvalido = null;
+
+    if (!fields.{{FIELD_1_ID}}.value.trim()) {
+      marcarErro('{{FIELD_1_ID}}', '{{ERR_1_MSG}}');
+      valido = false; primeiroInvalido = primeiroInvalido || fields.{{FIELD_1_ID}};
+    }
+    if (!validarWhatsapp(fields.{{FIELD_2_ID}}.value)) {
+      marcarErro('{{FIELD_2_ID}}', '{{ERR_2_MSG}}');
+      valido = false; primeiroInvalido = primeiroInvalido || fields.{{FIELD_2_ID}};
+    }
+    if (!validarEmail(fields.{{FIELD_3_ID}}.value)) {
+      marcarErro('{{FIELD_3_ID}}', '{{ERR_3_MSG}}');
+      valido = false; primeiroInvalido = primeiroInvalido || fields.{{FIELD_3_ID}};
+    }
+
+    if (!valido && primeiroInvalido) primeiroInvalido.focus();
+    return valido;
+  }
+
+  function setCarregando(carregando) {
+    submitBtn.disabled = carregando;
+    submitBtn.classList.toggle('is-loading', carregando);
+    btnText.textContent = carregando ? 'Enviando...' : '{{SUBMIT_TEXT}}';
+  }
+
+  function mostrarSucesso() {
+    form.hidden = true;
+    successView.hidden = false;
+    successView.focus();
+  }
+
+  function mostrarErro() {
+    formFeedback.textContent = 'Não foi possível enviar sua solicitação. Tente novamente.';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validarFormulario()) return;
+
+    setCarregando(true);
+    const lead = {
+      nome: fields.{{FIELD_1_ID}}.value.trim(),
+      whatsapp: fields.{{FIELD_2_ID}}.value.trim(),
+      email: fields.{{FIELD_3_ID}}.value.trim(),
+      origem: '{{ORIGEM_LABEL}}',
+      data_envio: new Date().toISOString()
+    };
+
+    enviarLead(lead)
+      .then(function (resultado) {
+        if (resultado && resultado.ok) {
+          mostrarSucesso();
+        } else {
+          mostrarErro();
+        }
+      })
+      .catch(function () {
+        mostrarErro();
+      })
+      .finally(function () {
+        setCarregando(false);
+      });
+  });
+
+  Object.keys(fields).forEach(function (nome) {
+    const el = fields[nome];
+    el.addEventListener('input', function () {
+      el.classList.remove('is-invalid');
+      errorEls[nome].textContent = '';
+    });
+    el.addEventListener('change', function () {
+      el.classList.remove('is-invalid');
+      errorEls[nome].textContent = '';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.hermes.whatsapp-bridge</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/mac/.hermes/platforms/whatsapp/whatsapp-supervisor.sh</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/mac/.hermes/hermes-agent/scripts/whatsapp-bridge</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/mac/.hermes/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>NODE_PATH</key>
+        <string>/Users/mac/.hermes/hermes-agent/scripts/whatsapp-bridge/node_modules</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>StandardOutPath</key>
+    <string>/Users/mac/.hermes/platforms/whatsapp/supervisor.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/mac/.hermes/platforms/whatsapp/supervisor.err</string>
+</dict>
+</plist>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hermes Guide</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 320px;
+        min-height: 280px;
+        background: #0b0f14;
+        color: #e6ecf4;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, sans-serif;
+      }
+      .hg-root {
+        padding: 12px;
+      }
+      .hg-title {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0 0 6px;
+      }
+      .hg-text {
+        font-size: 12px;
+        line-height: 1.5;
+        color: #cbd5e1;
+      }
+      .hg-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        border: 1px solid #1f2a38;
+        background: #111820;
+        color: #e6ecf4;
+        padding: 6px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      button.primary {
+        border-color: #3b82f6;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="hg-root"></div>
+    <script type="module" src="./popup.tsx"></script>
+  </body>
+</html>

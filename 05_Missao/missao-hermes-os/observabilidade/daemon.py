@@ -1,0 +1,538 @@
+#!/usr/bin/env python3
+"""Hermes OS daemon — API HTTP + Watchdog (threads)"""
+import os, sys, json, time, threading, subprocess, pathlib, traceback, re, socket
+import http.server, socketserver, urllib.request
+from urllib.parse import urlparse, parse_qs
+
+HOME = pathlib.Path.home()
+ROOT = HOME/'missao-hermes-os'/'observabilidade'
+CFG_PATH = ROOT/'config'/'watchdog.json'
+DATA = ROOT/'data'; LOGS = ROOT/'logs'
+for d in [DATA, LOGS]: d.mkdir(parents=True, exist_ok=True)
+
+CFG = json.loads(CFG_PATH.read_text())
+
+
+# ─── Alerta de escala: sugere próxima fase baseado em estado real ───
+def gerar_alertas_escala():
+    """Grava em alerts.jsonl sugestões sobre a próxima fase de escala.
+    Roda a cada ciclo do watchdog."""
+    try:
+        # contadores
+        leads_path = Path.home() / "hermes-bridge" / "leads-autorizados.json"
+        n_leads = 0
+        if leads_path.exists():
+            try:
+                n_leads = len(json.loads(leads_path.read_text()).get("leads", []))
+            except Exception:
+                pass
+
+        metrics = DATA / "metrics.jsonl"
+        n_metrics = metrics.read_text().count("\n") if metrics.exists() else 0
+
+        svc = estado.get("servicos", {}) if isinstance(estado, dict) else {}
+        n_servicos = len(svc)
+        n_down = sum(1 for v in svc.values() if v.get("status") == "down")
+
+        sugestoes = []
+        if n_metrics < 1440:
+            falta = 1440 - n_metrics
+            sugestoes.append(("escala", f"Fase 4 (v11 preditiva): faltam ~{falta} amostras ({falta} min) para 24h"))
+        if n_servicos < 12:
+            sugestoes.append(("escala", f"Fase 3: {n_servicos} serviços monitorados — capacidade para ~15 antes de precisar de VM"))
+        if n_leads > 500 and n_leads < 5000:
+            sugestoes.append(("escala", f"Fase 2: {n_leads} leads no CRM — hora de integrar no painel (limite RAM ~5000)"))
+        if n_leads >= 5000:
+            sugestoes.append(("escala", f"⚠️ {n_leads} leads — RAM do backend CRM em risco. Escalar antes que degrade."))
+        if n_down > 0:
+            sugestoes.append(("escala", f"Fase 1: {n_down} serviço(s) down — fechar antes de crescer"))
+
+        if not sugestoes:
+            sugestoes.append(("escala", "Todas as fases dentro dos limites — sistema pronto para escalar quando quiser"))
+
+        with (DATA / "alerts.jsonl").open("a") as f:
+            for tipo, msg in sugestoes:
+                f.write(json.dumps({
+                    "ts": datetime.now().isoformat(timespec="seconds"),
+                    "tipo": tipo,
+                    "msg": msg,
+                }, ensure_ascii=False) + "\n")
+    except Exception as e:
+        try:
+            with (DATA / "watchdog.log").open("a") as f:
+                f.write(f"[escala] {e}\n")
+        except Exception:
+            pass
+
+# ---------- helpers ----------
+def sh(c, timeout=8):
+    try:
+        r = subprocess.run(c, shell=True, capture_output=True, text=True, timeout=timeout)
+        return r.stdout
+    except Exception: return ''
+
+def port_pid(p):
+    L = sh(f'lsof -nP -iTCP:{p} -sTCP:LISTEN 2>/dev/null').strip().splitlines()
+    if len(L) < 2: return None
+    return L[1].split()[1]
+
+def proc_info(pid):
+    out = sh(f'ps -o rss=,etimes=,command= -p {pid}').strip()
+    if not out: return None
+    parts = out.split(None, 2)
+    return {'rss': int(parts[0]) if parts and parts[0].isdigit() else 0,
+            'up': int(parts[1]) if len(parts)>1 and parts[1].isdigit() else 0,
+            'cmd': parts[2] if len(parts)>2 else '?'}
+
+def tail(path, n=200):
+    try:
+        p = pathlib.Path(os.path.expanduser(path))
+        if not p.exists(): return []
+        return p.read_text(errors='ignore').splitlines()[-n:]
+    except Exception: return []
+
+def expand_log(path):
+    if not path: return None
+    return str(pathlib.Path(os.path.expanduser(path)))
+
+# ---------- collector ----------
+_last_snap = None
+_snap_lock = threading.Lock()
+_history_cache = []  # últimos N snapshots para cálculo de janela
+
+def collect():
+    global _last_snap
+    now = time.time()
+    sv_map = {}
+    down_since = {}
+    for s in CFG['services']:
+        p = s['port']; pid = port_pid(p)
+        info = proc_info(pid) if pid else None
+        sv_map[s['id']] = {
+            'id': s['id'], 'tec': s['tec'], 'cz': s['cz'], 'port': p,
+            'desc_tec': s['desc_tec'], 'desc_cz': s['desc_cz'],
+            'icon': s['icon'], 'log_path': expand_log(s.get('log')),
+            'restart': s.get('restart'),
+            'online': info is not None,
+            'pid': pid or '—',
+            'rss_kb': info['rss'] if info else 0,
+            'uptime_s': info['up'] if info else 0,
+            'cmd': info['cmd'] if info else '—'
+        }
+    # prov
+    env = {}
+    f = HOME/'.hermes_env'
+    if f.exists():
+        for l in f.read_text(errors='ignore').splitlines():
+            if l.startswith('export ') and '=' in l:
+                k,v = l[7:].split('=',1)
+                env[k.strip()] = v.strip().strip('"').strip("'")
+    prov_map = {}
+    for p in CFG['providers']:
+        v = os.environ.get(p['env']) or env.get(p['env'],'')
+        prov_map[p['id']] = {'id':p['id'],'tec':p['tec'],'cz':p['cz'],
+            'env':p['env'],'icon':p['icon'],'online':bool(v),
+            'key_masked':(v[:10]+'…'+v[-4:]) if v else '—','key_len':len(v)}
+
+    # liteLLM models
+    ml = []
+    try:
+        with urllib.request.urlopen('http://127.0.0.1:4000/v1/models', timeout=3) as r:
+            ml = [m['id'] for m in json.loads(r.read()).get('data',[])]
+    except Exception: pass
+
+    # proxy log stats
+    pl = tail(expand_log('~/.config/litellm/proxy.log'), 1000)
+    def cnt(status):
+        return sum(1 for l in pl if f' {status} ' in l and 'HTTP/1.1' in l)
+    posts = sum(1 for l in pl if 'POST /v1/chat/completions' in l)
+    stats = {
+        'posts': posts,
+        'ok200': cnt('200'),
+        'e400': cnt('400'),
+        'e401': cnt('401'),
+        'e429': cnt('429'),
+        'e500': cnt('500')
+    }
+    # timestamp por linha para janelas
+    stats['e429_5min'] = stats['e429']  # simplificado: última janela
+    stats['e400_5min'] = stats['e400']
+    stats['e500_5min'] = stats['e500']
+
+    # system
+    mem_pct = 0
+    try:
+        out = sh('vm_stat')
+        for l in out.splitlines():
+            if 'Pages free' in l:
+                free = int(re.search(r'(\d+)', l).group(1)) * 4096
+            if 'Pages active' in l:
+                active = int(re.search(r'(\d+)', l).group(1)) * 4096
+        total = int(sh('sysctl -n hw.memsize').strip() or '0')
+        if total: mem_pct = round(100 * (1 - free/total), 1)
+    except Exception: pass
+    system = {'mem_pct': mem_pct}
+
+    snap = {
+        'ts': now,
+        'services': sv_map,
+        'providers': prov_map,
+        'models': ml,
+        'stats': stats,
+        'system': system,
+        'latency': {'p95_ms': 0},  # placeholder
+        'totals': {'active': sum(1 for v in sv_map.values() if v['online']),
+                   'total': len(sv_map),
+                   'models': len(ml)}
+    }
+    _last_snap = snap
+    return snap
+
+# ---------- rules engine ----------
+_alert_state = {}  # {alert_key: last_ts}
+_alert_counts = {}  # {alert_key: count_today}
+_down_since = {}
+
+def get_field(snap, path):
+    cur = snap
+    for part in path.split('.'):
+        if isinstance(cur, dict):
+            cur = cur.get(part)
+        else:
+            return None
+    return cur
+
+def evaluate(snap):
+    alerts = []
+    # service down/recovered
+    for s in CFG['services']:
+        info = snap['services'].get(s['id'], {})
+        key = f"svc_{s['id']}"
+        if not info.get('online'):
+            _down_since.setdefault(key, time.time())
+            down_for = int(time.time() - _down_since[key])
+            if down_for > 30:  # 30s para evitar falso-positivo
+                alerts.append({'id':'svc_down','svc':s['id'],'svc_label':s['tec'],
+                    'level':'critical','key':key,'down_for':down_for,
+                    'msg':f"{s['tec']} fora do ar há {down_for}s",
+                    'suggest':f"Log: {s.get('log') or '—'}. Restart: {s.get('restart') or 'manual'}",
+                    'log_path':expand_log(s.get('log')),'restart_cmd':s.get('restart')})
+        else:
+            if key in _down_since:
+                down_for = int(time.time() - _down_since.pop(key))
+                if down_for > 30:
+                    alerts.append({'id':'svc_recovered','svc':s['id'],'level':'info','key':key,
+                        'msg':f"{s['tec']} voltou ao ar após {down_for}s"})
+    # thresholds
+    for r in CFG['rules']:
+        if r['type'] != 'threshold': continue
+        v = get_field(snap, r['field'])
+        if v is None: continue
+        op = r.get('op','>'); thresh = r['value']
+        hit = (op=='>' and v>thresh) or (op=='<' and v<thresh) or (op=='>=' and v>=thresh) or (op=='==' and v==thresh)
+        if hit:
+            key = r['id']
+            # dedup 5min
+            if time.time() - _alert_state.get(key,0) < 300: continue
+            _alert_state[key] = time.time()
+            msg = r['msg'].replace('{{value}}', str(v)).replace('{{value_pct}}', str(round(v*100,1)))
+            alerts.append({'id':r['id'],'level':r['level'],'key':key,'msg':msg,
+                'suggest':r.get('suggest',''),'value':v})
+    return alerts
+
+# ---------- notifier ----------
+def notify(alert):
+    lvl = alert.get('level','info')
+    # always log
+    try:
+        with open(DATA/'alerts.jsonl','a') as f:
+            f.write(json.dumps({**alert,'ts':time.time()})+'\n')
+    except Exception: pass
+    # macOS notification for warn/critical
+    if CFG['notify'].get('macos') and lvl in ('warn','critical'):
+        try:
+            title = f"Hermes [{lvl.upper()}]"
+            msg = alert.get('msg','')[:200]
+            subprocess.Popen(['osascript','-e',
+                f'display notification "{msg}" with title "{title}" sound name "Ping"'],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception: pass
+
+# ---------- healer ----------
+_heal_counts = {}
+_last_heal = {}
+
+def maybe_heal(alert, snap):
+    if not CFG['guardrails'].get('auto_heal_enabled'): return
+    if (DATA/'DISABLE_AUTOHEAL').exists(): return
+    if alert['id'] != 'svc_down': return
+    key = alert['key']
+    now = time.time()
+    rule = next((r for r in CFG['rules'] if r['id']=='svc_down'), {})
+    cooldown = rule.get('cooldown_s',300)
+    max_day = rule.get('max_per_day',5)
+    if now - _last_heal.get(key,0) < cooldown: return
+    day = time.strftime('%Y-%m-%d')
+    _heal_counts.setdefault(day, {})
+    if _heal_counts[day].get(key,0) >= max_day: return
+    # global
+    total_h = sum(_heal_counts[day].values())
+    if total_h >= CFG['guardrails'].get('global_max_per_hour',10): return
+    cmd = alert.get('restart_cmd')
+    if not cmd: return
+    _last_heal[key] = now
+    _heal_counts[day][key] = _heal_counts[day].get(key,0) + 1
+    try:
+        subprocess.Popen(['bash','-c',cmd],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            cwd=str(HOME))
+        with open(DATA/'actions.jsonl','a') as f:
+            f.write(json.dumps({'ts':now,'alert':key,'action':'restart','cmd':cmd[:200]})+'\n')
+        notify({'id':'auto_heal','level':'info','key':key,
+                'msg':f"Auto-heal: reiniciando {alert.get('svc_label','?')}"})
+    except Exception as e:
+        with open(LOGS/'watchdog.log','a') as f:
+            f.write(f"[{time.strftime('%H:%M:%S')}] heal falhou: {e}\n")
+
+# ---------- watchdog loop ----------
+def watchdog_loop():
+    last_persist = 0
+    last_report_day = None
+    while True:
+        try:
+            snap = collect()
+            # persist snapshot
+            now = time.time()
+            if now - last_persist >= CFG['snapshot_persist_s']:
+                last_persist = now
+                with open(DATA/'metrics.jsonl','a') as f:
+                    f.write(json.dumps({
+                        'ts':now,
+                        'active':snap['totals']['active'],
+                        'models':snap['totals']['models'],
+                        'stats':snap['stats'],
+                        'system':snap['system'],
+                        'services_up':{k:v['online'] for k,v in snap['services'].items()}
+                    })+'\n')
+            # evaluate
+            alerts = evaluate(snap)
+            for a in alerts:
+                notify(a)
+                maybe_heal(a, snap)
+            # daily report
+            today = time.strftime('%Y-%m-%d')
+            if time.localtime().tm_hour == CFG.get('report_hour',8) and last_report_day != today:
+                last_report_day = today
+                gerar_relatorio(snap)
+        except Exception as e:
+            with open(LOGS/'watchdog.log','a') as f:
+                f.write(f"[{time.strftime('%H:%M:%S')}] {traceback.format_exc()}\n")
+        time.sleep(CFG['watchdog_interval_s'])
+
+def gerar_relatorio(snap):
+    try:
+        day = time.strftime('%Y-%m-%d')
+        alerts = []
+        try:
+            for l in (DATA/'alerts.jsonl').read_text().splitlines():
+                try:
+                    a = json.loads(l)
+                    if time.strftime('%Y-%m-%d', time.localtime(a['ts'])) == day:
+                        alerts.append(a)
+                except Exception: pass
+        except Exception: pass
+        crit = sum(1 for a in alerts if a.get('level')=='critical')
+        warn = sum(1 for a in alerts if a.get('level')=='warn')
+        md = f"""# Relatório Hermes OS — {day}
+
+## Estado atual
+- Serviços ativos: {snap['totals']['active']}/{snap['totals']['total']}
+- Modelos LiteLLM: {snap['totals']['models']}
+- RAM sistema: {snap['system']['mem_pct']}%
+
+## Estatísticas do dia
+- POSTs: {snap['stats']['posts']}
+- 200 OK: {snap['stats']['ok200']}
+- 429: {snap['stats']['e429']}
+- 400: {snap['stats']['e400']}
+- 500: {snap['stats']['e500']}
+
+## Alertas
+- Critical: {crit}
+- Warn: {warn}
+- Info: {len(alerts)-crit-warn}
+
+### Detalhes
+"""
+        for a in alerts[-30:]:
+            md += f"- [{a.get('level','?')}] {a.get('msg','')}\n"
+        (ROOT/'relatorios'/f'{day}.md').write_text(md)
+    except Exception as e:
+        with open(LOGS/'watchdog.log','a') as f:
+            f.write(f"relatorio falhou: {e}\n")
+
+# ---------- API HTTP ----------
+def build_health():
+    snap = _last_snap or collect()
+    # tail alerts
+    alerts = []
+    try:
+        for l in (DATA/'alerts.jsonl').read_text().splitlines()[-20:]:
+            try: alerts.append(json.loads(l))
+            except Exception: pass
+    except Exception: pass
+    return {
+        'ts': time.time(),
+        'totals': snap['totals'],
+        'services': {k:v for k,v in snap['services'].items()},
+        'providers': snap['providers'],
+        'models': snap['models'],
+        'stats': snap['stats'],
+        'system': snap['system'],
+        'alerts': alerts[::-1]
+    }
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        u = urlparse(self.path)
+        try:
+            if u.path == '/' or u.path == '/index.html':
+                f = ROOT/'static'/'index.html'
+                b = f.read_bytes()
+                self.send_response(200)
+                self.send_header('Content-Type','text/html; charset=utf-8')
+                self.send_header('Cache-Control','no-cache')
+                self.send_header('Content-Length',str(len(b)))
+                self.end_headers(); self.wfile.write(b); return
+            if u.path.startswith('/static/'):
+                f = ROOT/u.path.lstrip('/')
+                if not f.exists() or not str(f.resolve()).startswith(str(ROOT)):
+                    
+                    # /api/alerts?tipo=escala&limit=5
+
+                    if u.path == '/api/alerts':
+
+                        qs = parse_qs(u.query)
+
+                        tipo = qs.get('tipo',[''])[0]
+
+                        lim = int(qs.get('limit',['5'])[0])
+
+                        alertas_path = DATA / 'alerts.jsonl'
+
+                        out = []
+
+                        if alertas_path.exists():
+
+                            for ln in alertas_path.read_text().splitlines()[-500:]:
+
+                                try:
+
+                                    o = json.loads(ln)
+
+                                    if tipo and o.get('tipo') != tipo: continue
+
+                                    out.append(o)
+
+                                except Exception: pass
+
+                        return self._json(out[-lim:])
+
+                    self.send_response(404); self.end_headers(); return
+                mime = {'js':'application/javascript','css':'text/css','html':'text/html','json':'application/json'}.get(f.suffix.lstrip('.'),'text/plain')
+                b = f.read_bytes()
+                self.send_response(200)
+                self.send_header('Content-Type',mime+'; charset=utf-8')
+                self.send_header('Cache-Control','no-cache')
+                self.send_header('Content-Length',str(len(b)))
+                self.end_headers(); self.wfile.write(b); return
+            if u.path == '/api/health':
+                d = build_health()
+                b = json.dumps(d, ensure_ascii=False).encode()
+                self.send_response(200)
+                self.send_header('Content-Type','application/json; charset=utf-8')
+                self.send_header('Cache-Control','no-cache')
+                self.send_header('Content-Length',str(len(b)))
+                self.end_headers(); self.wfile.write(b); return
+            if u.path == '/api/log':
+                q = parse_qs(u.query)
+                p = q.get('path',[''])[0]
+                n = int(q.get('n',['60'])[0])
+                pp = pathlib.Path(os.path.expanduser(p)).resolve()
+                if not str(pp).startswith(str(HOME)):
+                    self.send_response(403); self.end_headers(); return
+                lines = pp.read_text(errors='ignore').splitlines()[-n:] if pp.exists() else []
+                txt = '\n'.join(lines)
+                b = txt.encode()
+                self.send_response(200)
+                self.send_header('Content-Type','text/plain; charset=utf-8')
+                self.send_header('Content-Length',str(len(b)))
+                self.end_headers(); self.wfile.write(b); return
+            if u.path == '/api/test':
+                q = parse_qs(u.query)
+                m = q.get('model',['perfil-principal'])[0]
+                req = urllib.request.Request(
+                    'http://127.0.0.1:4000/v1/chat/completions',
+                    data=json.dumps({'model':m,'messages':[{'role':'user','content':'diga OK'}],'max_tokens':80}).encode(),
+                    headers={'Content-Type':'application/json'})
+                try:
+                    with urllib.request.urlopen(req, timeout=30) as r:
+                        d = json.loads(r.read())
+                        msg = d.get('choices',[{}])[0].get('message',{})
+                        txt = msg.get('content') or msg.get('reasoning_content') or ''
+                        out = {'status':'200','model':d.get('model','?'),'text':txt[:400]}
+                except Exception as e:
+                    out = {'status':'erro','model':m,'text':str(e)[:300]}
+                b = json.dumps(out, ensure_ascii=False).encode()
+                self.send_response(200)
+                self.send_header('Content-Type','application/json; charset=utf-8')
+                self.send_header('Content-Length',str(len(b)))
+                self.end_headers(); self.wfile.write(b); return
+            if u.path == '/api/report':
+                today = time.strftime('%Y-%m-%d')
+                f = ROOT/'relatorios'/f'{today}.md'
+                if f.exists():
+                    b = f.read_bytes()
+                    self.send_response(200)
+                    self.send_header('Content-Type','text/markdown; charset=utf-8')
+                    self.send_header('Content-Length',str(len(b)))
+                    self.end_headers(); self.wfile.write(b); return
+                self.send_response(404); self.end_headers(); return
+            self.send_response(404); self.end_headers()
+        except Exception as e:
+            tb = traceback.format_exc()
+            with open(LOGS/'api-errors.log','a') as f: f.write(tb+'\n---\n')
+            self.send_response(500); self.end_headers()
+            self.wfile.write(('ERR: '+str(e)).encode())
+    def log_message(self, *a): pass
+
+# ---------- main ----------
+def main():
+    print(f'daemon iniciando · pid={os.getpid()}', flush=True)
+    # watchdog thread
+    t = threading.Thread(target=watchdog_loop, daemon=True)
+    t.start()
+    # pre-coleta
+    try: collect()
+    except Exception: pass
+    # http server
+    socketserver.ThreadingTCPServer.allow_reuse_address = True
+    port = CFG['port']
+    for attempt in range(3):
+        try:
+            with socketserver.ThreadingTCPServer(('127.0.0.1', port), Handler) as s:
+                print(f'API em http://127.0.0.1:{port}', flush=True)
+                s.serve_forever()
+                break
+        except OSError as e:
+            print(f'porta {port} ocupada (tent {attempt+1}): {e}', flush=True)
+            time.sleep(2)
+            if attempt == 2:
+                print('desistindo — matando zumbis', flush=True)
+                sh(f"lsof -nP -iTCP:{port} -sTCP:LISTEN 2>/dev/null | awk 'NR>1{{print $2}}' | xargs -I{{}} kill -9 {{}} 2>/dev/null")
+                time.sleep(2)
+                with socketserver.ThreadingTCPServer(('127.0.0.1', port), Handler) as s:
+                    s.serve_forever()
+
+if __name__ == '__main__':
+    main()

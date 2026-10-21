@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cerebro — Hermes Ecosystem Radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020b16;
+      --surface: #0a1628;
+      --surface-2: #0f2140;
+      --border: #1a3a5c;
+      --text: #e6f3ff;
+      --text-muted: #a0c4e0;
+      --cyan: #22d3ee;
+      --cyan-dim: rgba(34,211,238,0.25);
+      --green: #34d399;
+      --green-dim: rgba(52,211,153,0.15);
+      --orange: #fbbf24;
+      --orange-dim: rgba(251,191,36,0.15);
+      --red: #f87171;
+      --red-dim: rgba(248,113,113,0.18);
+      --purple: #a78bfa;
+      --purple-dim: rgba(167,139,250,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { margin: 0; height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* Scanlines */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 3px);
+      z-index: 50;
+    }
+
+    /* Grid background */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+    }
+
+    /* Header */
+    header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.4;
+    }
+    .panel-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-title::before {
+      content: "";
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+    }
+    .panel-title--compact {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .panel-title--compact::before {
+      content: "";
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    /* KPI header */
+    .kpi-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kpi-title::before {
+      content: "";
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+    .metric {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--cyan);
+      text-shadow: 0 0 20px var(--cyan-dim);
+      line-height: 1;
+    }
+    .metric-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .nav button {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      flex: 1;
+      min-width: 90px;
+    }
+    .nav button:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan-dim);
+    }
+    .nav button.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* Main area */
+    .main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      min-height: 0;
+    }
+    .main-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .main-panel::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.4;
+    }
+
+    /* Brain */
+    .brain-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 0;
+    }
+    .brain-svg {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      filter: drop-shadow(0 0 18px var(--cyan-dim));
+      transition: all 0.4s ease;
+    }
+    .brain-svg:hover {
+      filter: drop-shadow(0 0 32px var(--cyan-dim));
+    }
+    .brain-svg.state-radar:hover {
+      filter: drop-shadow(0 0 32px var(--cyan-dim));
+    }
+    .brain-svg:not(.state-radar):hover {
+      filter: none;
+    }
+
+    /* Content */
+    .content-area {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+      padding-right: 4px;
+    }
+    .content-area::-webkit-scrollbar { width: 6px; }
+    .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .filter-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+    .filter-btn:focus-visible, .nav button:focus-visible, .status-row:focus-visible, .item:focus-visible, .insight:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
+
+    /* Items */
+    .item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 8px;
+    }
+    .item:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-dim);
+    }
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .item-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .item-name::before {
+      content: "";
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 4px var(--cyan);
+    }
+    .item-expand {
+      color: var(--cyan);
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+    .item-body {
+      display: none;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .item.expanded .item-body { display: block; }
+    .item.expanded .item-expand { transform: rotate(45deg); }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .chip {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--border);
+      background: rgba(34,211,238,0.08);
+      color: var(--text);
+    }
+    .chip.ok { background: var(--green-dim); color: var(--green); border-color: rgba(52,211,153,0.3); }
+    .chip.warn { background: var(--orange-dim); color: var(--orange); border-color: rgba(251,191,36,0.3); }
+    .chip.danger { background: var(--red-dim); color: var(--red); border-color: rgba(248,113,113,0.3); }
+    .chip.plan { background: var(--purple-dim); color: var(--purple); border-color: rgba(167,139,250,0.3); }
+
+    /* Insights / Alerts */
+    .insight {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-left: 3px solid var(--cyan);
+      transition: all 0.2s;
+    }
+    .insight.alert { border-left-color: var(--red); }
+    .insight.opportunity { border-left-color: var(--green); }
+    .insight.fragility { border-left-color: var(--orange); }
+    .insight.next { border-left-color: var(--purple); }
+    .insight.severity-high { border-left-width: 4px; padding: 14px; box-shadow: 0 0 18px rgba(248,113,113,0.15); }
+    .insight.severity-mid { border-left-width: 3px; padding: 12px; }
+    .insight.severity-low { border-left-width: 2px; padding: 10px; opacity: 0.85; }
+    .insight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .insight-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .insight-type {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Radar */
+    .radar-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .radar-svg {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      filter: drop-shadow(0 0 12px var(--cyan-dim));
+    }
+
+    footer {
+      flex-shrink: 0;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Components */
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .status-row:hover { border-color: var(--cyan); }
+    .status-domain {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .status-bar {
+      width: 100px;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--surface);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .status-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+    }
+    .detail-section { margin-bottom: 12px; }
+    .detail-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .detail-text {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      header { grid-template-columns: repeat(2, 1fr); }
+      .main { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      header { grid-template-columns: 1fr; }
+    }
+
+    /* Command Bar */
+    .command-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      position: relative;
+    }
+    .command-bar__prefix {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+    .command-bar__input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      outline: none;
+    }
+    .command-bar__results {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px;
+      display: none;
+    }
+    .command-bar__results.open { display: block; }
+    .command-bar__item {
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .command-bar__item:hover, .command-bar__item.active {
+      background: var(--surface-2);
+      color: var(--cyan);
+    }
+
+    /* Insight actions */
+    .insight-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .insight-action {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 5px 8px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .insight-action:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+    .insight-feedback {
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--green);
+      min-height: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="container">
+    <header>
+      <div class="panel" data-target="ecosystem">
+        <div class="kpi-title">Ecossistema</div>
+        <div class="metric" id="metric-ecosystem">--</div>
+        <div class="metric-sub" id="metric-ecosystem-sub">Módulos mapeados</div>
+      </div>
+      <div class="panel" data-target="skills">
+        <div class="kpi-title">Skills</div>
+        <div class="metric" id="metric-skills">--</div>
+        <div class="metric-sub" id="metric-skills-sub">Competências ativas</div>
+      </div>
+      <div class="panel" data-target="frameworks">
+        <div class="kpi-title">Frameworks</div>
+        <div class="metric" id="metric-frameworks">--</div>
+        <div class="metric-sub" id="metric-frameworks-sub">Implementados</div>
+      </div>
+      <div class="panel" data-target="insights">
+        <div class="kpi-title">Alertas</div>
+        <div class="metric" id="metric-alerts" style="color:var(--orange)">--</div>
+        <div class="metric-sub" id="metric-alerts-sub">Insights ativos</div>
+      </div>
+    </header>
+
+    <div class="command-bar">
+      <span class="command-bar__prefix">⌘K</span>
+      <input class="command-bar__input" id="command-input" placeholder="Digite um comando..." autocomplete="off" />
+      <div class="command-bar__results" id="command-results" aria-live="polite"></div>
+    </div>
+
+    <nav class="nav">
+      <button class="active" data-tab="radar">Raio-X</button>
+      <button data-tab="ecosystem">Ecossistema</button>
+      <button data-tab="skills">Skills</button>
+      <button data-tab="competencies">Competências</button>
+      <button data-tab="frameworks">Frameworks</button>
+      <button data-tab="maturity">Maturidade</button>
+      <button data-tab="insights">Insights</button>
+    </nav>
+
+    <div class="main">
+      <div class="main-panel">
+        <div class="panel-title">Cérebro — Ecossistema Hermes</div>
+        <div class="brain-container">
+          <svg class="brain-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" id="brain-svg">
+            <!-- Brain outline -->
+            <path d="M100,30 C70,30 50,50 50,80 C50,110 65,125 80,130 L80,150 C80,155 85,160 100,160 C115,160 120,155 120,150 L120,130 C135,125 150,110 150,80 C150,50 130,30 100,30 Z"
+                  fill="none" stroke="var(--cyan)" stroke-width="2" id="brain-outline"/>
+            <!-- Brain hemispheres -->
+            <path d="M100,40 C85,40 75,55 75,80 C75,105 85,120 100,125 C115,120 125,105 125,80 C125,55 115,40 100,40 Z"
+                  fill="rgba(34,211,238,0.08)" stroke="var(--cyan)" stroke-width="1.5" id="brain-fill"/>
+            <line x1="100" y1="40" x2="100" y2="160" stroke="var(--cyan)" stroke-width="1.5" id="brain-divider"/>
+            <!-- Neural connections -->
+            <g id="brain-connections">
+              <path d="M80,60 L120,60 M80,80 L120,80 M80,100 L120,100 M80,120 L120,120" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+              <circle cx="80" cy="60" r="2" fill="var(--cyan)"/>
+              <circle cx="120" cy="60" r="2" fill="var(--cyan)"/>
+              <circle cx="80" cy="80" r="2" fill="var(--cyan)"/>
+              <circle cx="120" cy="80" r="2" fill="var(--cyan)"/>
+              <circle cx="80" cy="100" r="2" fill="var(--cyan)"/>
+              <circle cx="120" cy="100" r="2" fill="var(--cyan)"/>
+              <circle cx="80" cy="120" r="2" fill="var(--cyan)"/>
+              <circle cx="120" cy="120" r="2" fill="var(--cyan)"/>
+            </g>
+            <!-- Center core -->
+            <circle cx="100" cy="100" r="8" fill="var(--cyan)" opacity="0.8" id="brain-core">
+              <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="100" cy="100" r="4" fill="var(--bg)"/>
+            <!-- Pulse rings -->
+            <circle cx="100" cy="100" r="20" fill="none" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5">
+              <animate attributeName="r" values="20;35;20" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="100" cy="100" r="20" fill="none" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5">
+              <animate attributeName="r" values="20;35;20" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+              <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+            </circle>
+            <!-- Dynamic hotspots -->
+            <g id="brain-hotspots"></g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="main-panel">
+        <div class="panel-title" id="panel-title">Raio-X</div>
+        <div class="content-area" id="content"></div>
+      </div>
+
+      <div class="main-panel" id="detail-panel">
+        <div class="panel-title">Detalhes</div>
+        <div id="detail" class="content-area">
+          <div class="detail-empty">Selecione um item para ver detalhes.</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span>HERMES ECOSYSTEM RADAR v1.0.0</span>
+      <a href="https://github.com/flavio-guedes/Cerebro" target="_blank" style="color:var(--cyan);text-decoration:none;">flavio-guedes/Cerebro</a>
+    </footer>
+  </div>
+
+  <script>
+    const ecosystem = {
+      projects: [
+        { name: "epq", status: "ACTIVE", stack: ["Next.js", "Tailwind", "FastAPI"], notes: "Produto principal de conteúdo e IA." },
+        { name: "sistema-prospeccao", status: "ACTIVE", stack: ["FastAPI", "HTML", "Proxy APIs"], notes: "Automação de prospecção e WhatsApp." },
+        { name: "ai-hub", status: "ACTIVE", stack: ["HTML", "JSON", "JS"], notes: "Hub de interfaces standalone." },
+        { name: "Cerebro", status: "ACTIVE", stack: ["HTML", "JS", "JSON"], notes: "Mapa vivo do ecossistema Hermes." },
+        { name: "prospects", status: "PLANNED", stack: ["Next.js", "Recharts"], notes: "Pipeline de prospects." },
+        { name: "pessoas", status: "PLANNED", stack: ["FastAPI", "React"], notes: "Gestão de pessoas e perfis." },
+        { name: "agentes", status: "PLANNED", stack: ["Python", "LLMs"], notes: "Agentes autônomos." },
+        { name: "b2b-opportunity-finder", status: "PLANNED", stack: ["Python", "APIs"], notes: "Oportunidades B2B." }
+      ],
+      skills: [
+        { name: "Frontend (HTML/CSS/JS)", maturity: "high", tools: ["Vite", "Webpack", "Storybook", "Chromatic"], category: "frontend" },
+        { name: "React / Next.js", maturity: "high", tools: ["Next.js", "React", "TypeScript", "Vite"], category: "frontend" },
+        { name: "Tailwind CSS", maturity: "high", tools: ["Tailwind", "PostCSS", "Autoprefixer"], category: "frontend" },
+        { name: "Python / FastAPI", maturity: "high", tools: ["FastAPI", "Uvicorn", "Pydantic", "Alembic"], category: "backend" },
+        { name: "IA / LLMs / Embeddings", maturity: "mid", tools: ["OpenAI", "Anthropic", "HuggingFace", "LangChain"], category: "ia" },
+        { name: "Automação / Agents", maturity: "mid", tools: ["n8n", "Make", "Zapier", "CrewAI"], category: "automacao" },
+        { name: "GitHub Actions / CI", maturity: "mid", tools: ["GitHub Actions", "Workflows", "Environments"], category: "devops" },
+        { name: "APIs / Integrações", maturity: "high", tools: ["REST", "GraphQL", "Webhooks", "OAuth2"], category: "integracoes" },
+        { name: "Dashboards / Visualização", maturity: "high", tools: ["D3.js", "Recharts", "ECharts", "Grafana"], category: "dados" },
+        { name: "Design Systems", maturity: "mid", tools: ["shadcn/ui", "Radix UI", "Storybook", "Tokens"], category: "frontend" },
+        { name: "Scraping / Browser", maturity: "mid", tools: ["Playwright", "Puppeteer", "Cheerio", "Browser Use"], category: "automacao" },
+        { name: "Deploy / GitHub Pages", maturity: "high", tools: ["GitHub Pages", "Vercel", "Netlify", "Docker"], category: "devops" }
+      ],
+      frameworks: [
+        { name: "Next.js", status: "ACTIVE", details: "App Router, SSR/SSG, Edge Functions, API Routes" },
+        { name: "FastAPI", status: "ACTIVE", details: "Async Python, OpenAPI, Dependency Injection, Middleware" },
+        { name: "Tailwind", status: "ACTIVE", details: "Utility-first, JIT, Custom themes, Plugins" },
+        { name: "GSAP", status: "ACTIVE", details: "ScrollTrigger, timelines, motion design, performance" },
+        { name: "Framer Motion", status: "ACTIVE", details: "React animations, gestures, layout animations" },
+        { name: "Three.js", status: "EXPERIMENTAL", details: "WebGL, 3D scenes, shaders, spatial interfaces" },
+        { name: "Playwright", status: "PLANNED", details: "E2E testing, cross-browser, visual regression" },
+        { name: "PostgreSQL", status: "ACTIVE", details: "Relational data, JSONB, migrations, pooling" },
+        { name: "Redis", status: "ACTIVE", details: "Cache, sessions, queues, pub/sub" }
+      ],
+      maturity: [
+        { domain: "Frontend", count: 4, maturity: "92%" },
+        { domain: "IA / ML", count: 3, maturity: "85%" },
+        { domain: "Automação", count: 4, maturity: "78%" },
+        { domain: "Integrações", count: 5, maturity: "88%" },
+        { domain: "DevOps", count: 3, maturity: "80%" },
+        { domain: "Dados", count: 3, maturity: "90%" }
+      ],
+      competencies: [
+        { name: "Arquitetura de interfaces de alto impacto", detail: "Dashboards, SaaS, CRMs, command centers, landing pages.", category: "frontend" },
+        { name: "Sistemas de IA e automação", detail: "LLMs, agentes, pipelines de dados, automação de processos.", category: "ia" },
+        { name: "Dashboards e visualização de dados", detail: "KPIs, relatórios, data storytelling, real-time.", category: "dados" },
+        { name: "Integrações e APIs", detail: "APIs REST/GraphQL, webhooks, OAuth2, conectores externos.", category: "integracoes" },
+        { name: "Design Systems e componentização", detail: "Bibliotecas reutilizáveis, tokens, documentação viva.", category: "frontend" },
+        { name: "Deploy e infraestrutura web", detail: "CI/CD, GitHub Pages, Vercel, Docker, monitoramento.", category: "devops" }
+      ],
+      insights: [
+        { type: "alert", title: "Dependência de APIs externas", desc: "epq e sistema-prospeccao dependem de APIs externas sem fallback claro.", severity: "high", projects: ["epq", "sistema-prospeccao"] },
+        { type: "opportunity", title: "Unificar Design System", desc: "Criar tokens e componentes compartilhados entre epq, ai-hub e Cerebro.", severity: "mid", projects: ["epq", "ai-hub", "Cerebro"] },
+        { type: "fragility", title: "Automação centralizada", desc: "Automação concentrada em poucos projetos; risco se um falhar.", severity: "mid", projects: ["sistema-prospeccao", "agentes"] },
+        { type: "next", title: "Expandir AI Agents", desc: "Agentes autônomos em agentes e b2b-opportunity-finder como próximo passo.", severity: "low", projects: ["agentes", "b2b-opportunity-finder"] },
+        { type: "alert", title: "Stack experimental sem cobertura", desc: "Three.js e Playwright ainda sem uso em produção nem testes.", severity: "mid", projects: ["Three.js", "Playwright"] },
+        { type: "opportunity", title: "Observabilidade unificada", desc: "Grafana + Redis + logs pode virar camada de inteligência operacional.", severity: "mid", projects: ["epq", "sistema-prospeccao"] }
+      ]
+    };
+
+    let currentTab = 'radar';
+    let currentFilter = 'all';
+
+    function setDetail(html) {
+      const el = document.getElementById('detail');
+      if (!el) return;
+      el.innerHTML = html || '<div class="detail-empty">Selecione um item para ver detalhes.</div>';
+    }
+
+    function navigateTo(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      updateBrainState(tab);
+      if (tab === 'radar') renderRadar();
+      if (tab === 'ecosystem') renderEcosystem();
+      if (tab === 'skills') renderSkills();
+      if (tab === 'competencies') renderCompetencies();
+      if (tab === 'frameworks') renderFrameworks();
+      if (tab === 'maturity') renderMaturity();
+      if (tab === 'insights') renderInsights();
+    }
+
+    function severityMeta(severity) {
+      if (severity === 'high') return { label: 'ALTA', cssClass: 'chip danger' };
+      if (severity === 'mid') return { label: 'MÉDIA', cssClass: 'chip warn' };
+      return { label: 'BAIXA', cssClass: 'chip plan' };
+    }
+
+    function statusMeta(status) {
+      if (status === 'ACTIVE') return { label: 'ATIVO', cssClass: 'chip ok' };
+      if (status === 'EXPERIMENTAL') return { label: 'EXPERIMENTAL', cssClass: 'chip warn' };
+      return { label: 'PLANEJADO', cssClass: 'chip plan' };
+    }
+
+    function makeItemClickable(el, onClick) {
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.addEventListener('click', onClick);
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      });
+    }
+
+    function updateBrainState(state) {
+      const hotspots = document.getElementById('brain-hotspots');
+      const connections = document.getElementById('brain-connections');
+      const core = document.getElementById('brain-core');
+      const outline = document.getElementById('brain-outline');
+      const fill = document.getElementById('brain-fill');
+      const divider = document.getElementById('brain-divider');
+      const brainSvg = document.getElementById('brain-svg');
+
+      hotspots.innerHTML = '';
+      brainSvg.className = `brain-svg state-${state}`;
+
+      const colorMap = {
+        frontend: 'var(--green)',
+        backend: 'var(--cyan)',
+        ia: 'var(--purple)',
+        automacao: 'var(--orange)',
+        devops: 'var(--green)',
+        integracoes: 'var(--cyan)',
+        dados: 'var(--purple)'
+      };
+
+      if (state === 'radar') {
+        const domains = [
+          { x: 80, y: 60, c: 'frontend' },
+          { x: 120, y: 60, c: 'backend' },
+          { x: 80, y: 100, c: 'ia' },
+          { x: 120, y: 100, c: 'automacao' },
+          { x: 80, y: 140, c: 'devops' },
+          { x: 120, y: 140, c: 'integracoes' }
+        ];
+        domains.forEach(d => {
+          const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          c.setAttribute('cx', d.x);
+          c.setAttribute('cy', d.y);
+          c.setAttribute('r', '5');
+          c.setAttribute('fill', colorMap[d.c] || 'var(--cyan)');
+          c.setAttribute('opacity', '0.9');
+          c.style.cursor = "pointer";
+          c.style.outline = "none";
+          c.addEventListener('click', () => {
+            document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'skills'));
+            switchTab('skills');
+            setTimeout(() => {
+              document.querySelectorAll('.filter-btn').forEach(f => f.classList.toggle('active', f.dataset.filter === d.c));
+              applyFilter(d.c);
+            }, 50);
+          });
+          hotspots.appendChild(c);
+        });
+        connections.setAttribute('opacity', '0.5');
+        core.setAttribute('fill', 'var(--cyan)');
+      } else if (state === 'skills') {
+        const positions = [
+          { x: 60, y: 50 }, { x: 140, y: 50 }, { x: 60, y: 100 }, { x: 140, y: 100 },
+          { x: 60, y: 150 }, { x: 140, y: 150 }, { x: 100, y: 80 }, { x: 100, y: 120 }
+        ];
+        positions.forEach(p => {
+          const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          c.setAttribute('cx', p.x);
+          c.setAttribute('cy', p.y);
+          c.setAttribute('r', '3');
+          c.setAttribute('fill', 'var(--green)');
+          c.setAttribute('opacity', '0.4');
+          hotspots.appendChild(c);
+        });
+        connections.setAttribute('opacity', '0.6');
+        core.setAttribute('fill', 'var(--green)');
+      } else if (state === 'frameworks') {
+        connections.setAttribute('opacity', '0.9');
+        core.setAttribute('fill', 'var(--orange)');
+        outline.setAttribute('stroke', 'var(--orange)');
+        fill.setAttribute('fill', 'rgba(251,191,36,0.08)');
+        divider.setAttribute('stroke', 'var(--orange)');
+      } else if (state === 'maturity') {
+        connections.setAttribute('opacity', '0.4');
+        core.setAttribute('fill', 'var(--purple)');
+        outline.setAttribute('stroke', 'var(--purple)');
+        fill.setAttribute('fill', 'rgba(167,139,250,0.08)');
+        divider.setAttribute('stroke', 'var(--purple)');
+      } else if (state === 'insights') {
+        const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        pulse.setAttribute('cx', '100');
+        pulse.setAttribute('cy', '100');
+        pulse.setAttribute('r', '12');
+        pulse.setAttribute('fill', 'none');
+        pulse.setAttribute('stroke', 'var(--red)');
+        pulse.setAttribute('stroke-width', '1');
+        pulse.setAttribute('opacity', '0.6');
+        const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        anim.setAttribute('attributeName', 'r');
+        anim.setAttribute('values', '12;25;12');
+        anim.setAttribute('dur', '2s');
+        anim.setAttribute('repeatCount', 'indefinite');
+        const animOp = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        animOp.setAttribute('attributeName', 'opacity');
+        animOp.setAttribute('values', '0.6;0;0.6');
+        animOp.setAttribute('dur', '2s');
+        animOp.setAttribute('repeatCount', 'indefinite');
+        pulse.appendChild(anim);
+        pulse.appendChild(animOp);
+        hotspots.appendChild(pulse);
+        connections.setAttribute('opacity', '0.6');
+        core.setAttribute('fill', 'var(--red)');
+        outline.setAttribute('stroke', 'var(--red)');
+        fill.setAttribute('fill', 'rgba(248,113,113,0.08)');
+        divider.setAttribute('stroke', 'var(--red)');
+      }
+
+      if (state !== 'frameworks' && state !== 'maturity' && state !== 'insights') {
+        outline.setAttribute('stroke', 'var(--cyan)');
+        fill.setAttribute('fill', 'rgba(34,211,238,0.08)');
+        divider.setAttribute('stroke', 'var(--cyan)');
+      }
+    }
+
+    function renderRadar() {
+      document.getElementById('panel-title').textContent = 'Raio-X';
+      const activeProjects = ecosystem.projects.filter(p => p.status === 'ACTIVE').length;
+      const totalProjects = ecosystem.projects.length;
+      const highAlerts = ecosystem.insights.filter(i => i.severity === 'high').length;
+      const avgMaturity = Math.round(ecosystem.maturity.reduce((a, b) => a + parseInt(b.maturity), 0) / ecosystem.maturity.length);
+      const nextSteps = ecosystem.insights.filter(i => i.type === 'next').map(i => i.title);
+
+      const html = `
+        <div class="radar-container">
+          <svg class="radar-svg" viewBox="0 0 100 100">
+            <defs>
+              <radialGradient id="radarFill" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="var(--cyan)" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="var(--cyan)" stop-opacity="0.05"/>
+              </radialGradient>
+            </defs>
+            <polygon points="50,10 90,35 90,75 50,95 10,75 10,35" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+            <polygon points="50,20 80,40 80,70 50,88 20,70 20,40" fill="none" stroke="var(--border)" stroke-width="0.5" opacity="0.5"/>
+            <polygon points="50,30 70,45 70,65 50,80 30,65 30,45" fill="none" stroke="var(--border)" stroke-width="0.5" opacity="0.3"/>
+            <line x1="50" y1="50" x2="50" y2="10" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="50" y1="50" x2="90" y2="35" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="50" y1="50" x2="90" y2="75" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="50" y1="50" x2="50" y2="95" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="50" y1="50" x2="10" y2="75" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+            <line x1="50" y1="50" x2="10" y2="35" stroke="var(--cyan)" stroke-width="0.5" opacity="0.5"/>
+            <circle cx="50" cy="50" r="3" fill="var(--cyan)"/>
+          </svg>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="detail-label">Ecossistema</div>
+          <div class="detail-text">${activeProjects}/${totalProjects} projetos ativos no ecossistema.</div>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="detail-label">Maturidade média</div>
+          <div class="detail-text">${avgMaturity}% de maturidade consolidada nos domínios mapeados.</div>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="detail-label">Alertas críticos</div>
+          <div class="detail-text">${highAlerts} insight(s) de severidade alta requer atenção.</div>
+        </div>
+        ${nextSteps.length ? `
+        <div style="margin-top:10px;">
+          <div class="detail-label">Próximos passos</div>
+          <div class="detail-text">${nextSteps.join('; ')}.</div>
+        </div>
+        ` : ''}
+      `;
+      document.getElementById('content').innerHTML = html;
+    }
+
+    function renderEcosystem() {
+      document.getElementById('panel-title').textContent = 'Ecossistema';
+      const container = document.getElementById('content');
+      container.innerHTML = '<div id="ecosystem-list"></div>';
+      const list = document.getElementById('ecosystem-list');
+      ecosystem.projects.forEach(project => {
+        const row = document.createElement('div');
+        row.className = 'status-row';
+        const status = statusMeta(project.status);
+        row.innerHTML = `
+          <span class="status-domain">${project.name}</span>
+          <span class="chip ${status.cssClass}">${status.label}</span>
+        `;
+        makeItemClickable(row, () => {
+          setDetail(`
+            <div class="detail-section">
+              <div class="detail-label">Projeto</div>
+              <div class="detail-text">${project.name}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Status</div>
+              <div class="detail-text">${status.label}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Stack</div>
+              <div class="chips">${(project.stack || []).map(s => `<span class="chip">${s}</span>`).join('')}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Notas</div>
+              <div class="detail-text">${project.notes}</div>
+            </div>
+          `);
+        });
+        list.appendChild(row);
+      });
+    }
+
+    function renderSkills() {
+      document.getElementById('panel-title').textContent = 'Skills & Competências';
+      const container = document.getElementById('content');
+      const categories = ['all', ...new Set(ecosystem.skills.map(s => s.category))];
+      container.innerHTML = `
+        <div class="filters" id="skill-filters">
+          ${categories.map(c => `<button class="filter-btn ${c === 'all' ? 'active' : ''}" data-filter="${c}">${c === 'all' ? 'Todos' : c}</button>`).join('')}
+        </div>
+        <div id="skills-list"></div>
+      `;
+
+      function applyFilter(cat) {
+        currentFilter = cat;
+        const list = document.getElementById('skills-list');
+        const filtered = cat === 'all' ? ecosystem.skills : ecosystem.skills.filter(s => s.category === cat);
+        list.innerHTML = '';
+        filtered.forEach(skill => {
+          const item = document.createElement('div');
+          item.className = 'item';
+          const maturityLabel = skill.maturity === 'high' ? 'ALTA' : skill.maturity === 'mid' ? 'MÉDIA' : 'BAIXA';
+          const maturityClass = skill.maturity === 'high' ? 'ok' : skill.maturity === 'mid' ? 'warn' : 'plan';
+          item.innerHTML = `
+            <div class="item-header">
+              <span class="item-name">${skill.name}</span>
+              <span class="chip ${maturityClass}">${maturityLabel}</span>
+              <span class="item-expand">+</span>
+            </div>
+            <div class="item-body">
+              <div class="detail-label">Ferramentas</div>
+              <div class="chips">${(skill.tools || []).map(t => `<span class="chip">${t}</span>`).join('')}</div>
+            </div>
+          `;
+          item.addEventListener('click', () => {
+            const expanded = item.classList.toggle('expanded');
+            item.setAttribute('aria-expanded', String(expanded));
+            if (expanded) {
+              setDetail(`
+                <div class="detail-section">
+                  <div class="detail-label">Skill</div>
+                  <div class="detail-text">${skill.name}</div>
+                </div>
+                <div class="detail-section">
+                  <div class="detail-label">Categoria</div>
+                  <div class="detail-text">${skill.category}</div>
+                </div>
+                <div class="detail-section">
+                  <div class="detail-label">Maturidade</div>
+                  <div class="detail-text">${maturityLabel}</div>
+                </div>
+                <div class="detail-section">
+                  <div class="detail-label">Ferramentas</div>
+                  <div class="chips">${(skill.tools || []).map(t => `<span class="chip">${t}</span>`).join('')}</div>
+                </div>
+              `);
+            }
+          });
+          list.appendChild(item);
+        });
+      }
+
+      applyFilter('all');
+      document.querySelectorAll('#skill-filters .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#skill-filters .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilter(btn.dataset.filter);
+        });
+      });
+    }
+
+    function renderCompetencies() {
+      document.getElementById('panel-title').textContent = 'Competências';
+      const container = document.getElementById('content');
+      container.innerHTML = '<div id="competencies-list"></div>';
+      const list = document.getElementById('competencies-list');
+      ecosystem.competencies.forEach(c => {
+        const item = document.createElement('div');
+        item.className = 'item';
+        item.innerHTML = `
+          <div class="item-header">
+            <span class="item-name">${c.name}</span>
+          </div>
+          <div class="item-body">
+            <div class="detail-label">Competência</div>
+            <div class="detail-text">${c.detail}</div>
+          </div>
+        `;
+        item.addEventListener('click', () => {
+          const expanded = item.classList.toggle('expanded');
+          item.setAttribute('aria-expanded', String(expanded));
+          if (expanded) {
+            setDetail(`
+              <div class="detail-section">
+                <div class="detail-label">Competência</div>
+                <div class="detail-text">${c.name}</div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-label">Descrição</div>
+                <div class="detail-text">${c.detail}</div>
+              </div>
+            `);
+          }
+        });
+        list.appendChild(item);
+      });
+    }
+
+    function renderFrameworks() {
+      document.getElementById('panel-title').textContent = 'Frameworks Implementados';
+      const container = document.getElementById('content');
+      const categories = ['all', ...new Set(ecosystem.frameworks.map(f => f.status))];
+      container.innerHTML = `
+        <div class="filters" id="framework-filters">
+          ${categories.map(c => `<button class="filter-btn ${c === 'all' ? 'active' : ''}" data-filter="${c}">${c === 'all' ? 'Todos' : c}</button>`).join('')}
+        </div>
+        <div id="frameworks-list"></div>
+      `;
+
+      function applyFrameworkFilter(status) {
+        const list = document.getElementById('frameworks-list');
+        const filtered = status === 'all' ? ecosystem.frameworks : ecosystem.frameworks.filter(f => f.status === status);
+        list.innerHTML = '';
+        if (!filtered.length) {
+          list.innerHTML = '<div class="detail-empty">Nenhum framework para este filtro.</div>';
+          return;
+        }
+        filtered.forEach(fw => {
+          const item = document.createElement('div');
+          item.className = 'item';
+          const status = statusMeta(fw.status);
+          item.innerHTML = `
+            <div class="item-header">
+              <span class="item-name">${fw.name}</span>
+              <span class="chip ${status.cssClass}">${status.label}</span>
+              <span class="item-expand">+</span>
+            </div>
+            <div class="item-body">
+              <div class="detail-label">Implementação</div>
+              <div class="detail-text">${fw.details}</div>
+            </div>
+          `;
+          item.addEventListener('click', () => {
+            const expanded = item.classList.toggle('expanded');
+            item.setAttribute('aria-expanded', String(expanded));
+            if (expanded) {
+              setDetail(`
+                <div class="detail-section">
+                  <div class="detail-label">Framework</div>
+                  <div class="detail-text">${fw.name}</div>
+                </div>
+                <div class="detail-section">
+                  <div class="detail-label">Status</div>
+                  <div class="detail-text">${status.label}</div>
+                </div>
+                <div class="detail-section">
+                  <div class="detail-label">Implementação</div>
+                  <div class="detail-text">${fw.details}</div>
+                </div>
+              `);
+            }
+          });
+          list.appendChild(item);
+        });
+      }
+
+      applyFrameworkFilter('all');
+      document.querySelectorAll('#framework-filters .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#framework-filters .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFrameworkFilter(btn.dataset.filter);
+        });
+      });
+    }
+
+    function renderMaturity() {
+      document.getElementById('panel-title').textContent = 'Maturidade por Domínio';
+      const container = document.getElementById('content');
+      container.innerHTML = '<div id="maturity-list"></div>';
+      const list = document.getElementById('maturity-list');
+      ecosystem.maturity.forEach(m => {
+        const row = document.createElement('div');
+        row.className = 'status-row';
+        row.innerHTML = `
+          <span class="status-domain">${m.domain}</span>
+          <div class="status-bar"><div class="status-fill" style="width:${m.maturity}"></div></div>
+          <span class="chip ok">${m.maturity}</span>
+        `;
+        row.addEventListener('click', () => {
+          setDetail(`
+            <div class="detail-section">
+              <div class="detail-label">Domínio</div>
+              <div class="detail-text">${m.domain}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Habilidades</div>
+              <div class="detail-text">${m.count}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Maturidade</div>
+              <div class="detail-text">${m.maturity}</div>
+            </div>
+          `);
+        });
+        list.appendChild(row);
+      });
+    }
+
+    function renderInsights() {
+      document.getElementById('panel-title').textContent = 'Insights';
+      const container = document.getElementById('content');
+      const sorted = [...ecosystem.insights].sort((a, b) => {
+        const order = { high: 0, mid: 1, low: 2 };
+        return (order[a.severity] ?? 9) - (order[b.severity] ?? 9);
+      });
+      container.innerHTML = `
+        <div class="filters" id="insight-filters">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="alert">Alertas</button>
+          <button class="filter-btn" data-filter="opportunity">Oportunidades</button>
+          <button class="filter-btn" data-filter="fragility">Fragilidades</button>
+          <button class="filter-btn" data-filter="next">Próximos passos</button>
+        </div>
+        <div id="insights-list"></div>
+      `;
+
+      function applyInsightFilter(type) {
+        const list = document.getElementById('insights-list');
+        const filtered = type === 'all' ? sorted : sorted.filter(i => i.type === type);
+        list.innerHTML = '';
+        if (!filtered.length) {
+          list.innerHTML = '<div class="detail-empty">Nenhum insight para este filtro.</div>';
+          return;
+        }
+        filtered.forEach(ins => {
+          const el = document.createElement('div');
+          el.className = `insight ${ins.type} severity-${ins.severity}`;
+          const typeLabel = ins.type === 'alert' ? 'ALERTA' : ins.type === 'opportunity' ? 'OPORTUNIDADE' : ins.type === 'fragility' ? 'FRAGILIDADE' : 'PRÓXIMO PASSO';
+          const typeClass = ins.type === 'alert' ? 'chip danger' : ins.type === 'opportunity' ? 'chip ok' : ins.type === 'fragility' ? 'chip warn' : 'chip plan';
+          const sev = severityMeta(ins.severity);
+          el.innerHTML = `
+            <div class="insight-header">
+              <span class="insight-title">${ins.title}</span>
+              <span class="insight-type ${typeClass}">${typeLabel}</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${ins.desc}</div>
+            <div class="chips" style="margin-top:6px;">
+              <span class="chip ${sev.cssClass}">${sev.label}</span>
+              ${(ins.projects || []).map(p => `<span class="chip">${p}</span>`).join('')}
+            </div>
+          `;
+          const actions = document.createElement('div');
+          actions.className = 'insight-actions';
+          actions.innerHTML = `
+            <button class="insight-action" data-action="mark-read">Marcar como visto</button>
+            <button class="insight-action" data-action="archive">Arquivar</button>
+            <button class="insight-action" data-action="next-step">Próximo passo</button>
+          `;
+          actions.querySelectorAll('.insight-action').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const action = btn.dataset.action;
+              if (action === 'mark-read') {
+                el.style.opacity = '0.7';
+                el.setAttribute('data-status', 'read');
+                showFeedback('Insight marcado como visto.');
+              } else if (action === 'archive') {
+                el.remove();
+                showFeedback('Insight arquivado.');
+              } else if (action === 'next-step') {
+                showFeedback('Próximo passo criado: ação simulada.');
+              }
+            });
+          });
+          el.appendChild(actions);
+          makeItemClickable(el, () => {
+            setDetail(`
+              <div class="detail-section">
+                <div class="detail-label">Tipo</div>
+                <div class="detail-text">${typeLabel}</div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-label">Severidade</div>
+                <div class="detail-text">${sev.label}</div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-label">Descrição</div>
+                <div class="detail-text">${ins.desc}</div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-label">Projetos</div>
+                <div class="chips">${(ins.projects || []).map(p => `<span class="chip">${p}</span>`).join('')}</div>
+              </div>
+            `);
+          });
+          list.appendChild(el);
+        });
+      }
+
+      applyInsightFilter('all');
+      document.querySelectorAll('#insight-filters .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#insight-filters .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyInsightFilter(btn.dataset.filter);
+        });
+      });
+    }
+
+    function switchTab(tab) {
+      navigateTo(tab);
+    }
+
+    const commands = [
+      { id: 'tab-radar', label: 'Ir para Raio-X', action: () => switchTab('radar') },
+      { id: 'tab-ecosystem', label: 'Ir para Ecossistema', action: () => switchTab('ecosystem') },
+      { id: 'tab-skills', label: 'Ir para Skills', action: () => switchTab('skills') },
+      { id: 'tab-competencies', label: 'Ir para Competências', action: () => switchTab('competencies') },
+      { id: 'tab-frameworks', label: 'Ir para Frameworks', action: () => switchTab('frameworks') },
+      { id: 'tab-maturity', label: 'Ir para Maturidade', action: () => switchTab('maturity') },
+      { id: 'tab-insights', label: 'Ir para Insights', action: () => switchTab('insights') },
+      { id: 'insight-mark-read', label: 'Marcar insight como visto', action: () => markInsightsRead() },
+      { id: 'insight-archive', label: 'Arquivar insights selecionados', action: () => archiveInsights() },
+      { id: 'insight-next-step', label: 'Criar próximo passo', action: () => createNextStep() }
+    ];
+
+    function initCommandBar() {
+      const input = document.getElementById('command-input');
+      const results = document.getElementById('command-results');
+      if (!input || !results) return;
+
+      let activeIndex = -1;
+
+      function render(list) {
+        results.innerHTML = '';
+        if (!list.length) {
+          results.classList.remove('open');
+          activeIndex = -1;
+          return;
+        }
+        activeIndex = 0;
+        list.forEach((cmd, idx) => {
+          const item = document.createElement('div');
+          item.className = `command-bar__item ${idx === 0 ? 'active' : ''}`;
+          item.textContent = cmd.label;
+          item.addEventListener('click', () => executeCommand(cmd));
+          results.appendChild(item);
+        });
+        results.classList.add('open');
+      }
+
+      function executeCommand(cmd) {
+        results.classList.remove('open');
+        results.innerHTML = '';
+        input.value = '';
+        activeIndex = -1;
+        cmd.action();
+      }
+
+      input.addEventListener('input', () => {
+        const value = input.value.trim().toLowerCase();
+        const filtered = commands.filter(c => c.label.toLowerCase().includes(value));
+        render(filtered);
+      });
+
+      input.addEventListener('keydown', (e) => {
+        const items = results.querySelectorAll('.command-bar__item');
+        if (!results.classList.contains('open')) return;
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIndex = Math.min(activeIndex + 1, items.length - 1);
+          updateActive(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIndex = Math.max(activeIndex - 1, 0);
+          updateActive(items);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          const active = items[activeIndex];
+          if (active) active.click();
+        } else if (e.key === 'Escape') {
+          results.classList.remove('open');
+          results.innerHTML = '';
+          activeIndex = -1;
+        }
+      });
+
+      function updateActive(items) {
+        items.forEach((item, idx) => item.classList.toggle('active', idx === activeIndex));
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.command-bar')) {
+          results.classList.remove('open');
+          results.innerHTML = '';
+        }
+      });
+    }
+
+    function markInsightsRead() {
+      const list = document.getElementById('insights-list');
+      if (!list) return;
+      const items = list.querySelectorAll('.insight');
+      items.forEach(el => {
+        el.style.opacity = '0.7';
+        el.setAttribute('data-status', 'read');
+      });
+      showFeedback('Insights marcados como vistos.');
+    }
+
+    function archiveInsights() {
+      const list = document.getElementById('insights-list');
+      if (!list) return;
+      const items = list.querySelectorAll('.insight');
+      items.forEach(el => el.remove());
+      showFeedback('Insights arquivados.');
+    }
+
+    function createNextStep() {
+      showFeedback('Próximo passo criado: ação simulada.');
+    }
+
+    function showFeedback(message) {
+      let feedback = document.querySelector('.insight-feedback');
+      if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'insight-feedback';
+        feedback.setAttribute('aria-live', 'polite');
+        const content = document.getElementById('content');
+        if (content) content.appendChild(feedback);
+      }
+      feedback.textContent = message;
+      setTimeout(() => {
+        feedback.textContent = '';
+      }, 2000);
+    }
+
+    function init() {
+      const activeProjects = ecosystem.projects.filter(p => p.status === 'ACTIVE').length;
+      document.getElementById('metric-ecosystem').textContent = String(ecosystem.projects.length);
+      document.getElementById('metric-skills').textContent = String(ecosystem.skills.length);
+      document.getElementById('metric-frameworks').textContent = String(ecosystem.frameworks.filter(f => f.status === 'ACTIVE').length);
+      document.getElementById('metric-alerts').textContent = String(ecosystem.insights.filter(i => i.type === 'alert').length);
+
+      const alertInsights = ecosystem.insights.filter(i => i.type === 'alert').length;
+      const highInsights = ecosystem.insights.filter(i => i.severity === 'high').length;
+      document.getElementById('metric-alerts').textContent = String(alertInsights);
+      document.getElementById('metric-alerts-sub').textContent = alertInsights > 0 ? `${alertInsights} insight(s), ${highInsights} crítico(s)` : 'Sem alertas ativos';
+
+      const activeFrameworks = ecosystem.frameworks.filter(f => f.status === 'ACTIVE').length;
+      const totalFrameworks = ecosystem.frameworks.length;
+      document.getElementById('metric-frameworks').textContent = String(activeFrameworks);
+      document.getElementById('metric-frameworks-sub').textContent = `${activeFrameworks}/${totalFrameworks} ativos`;
+
+      document.getElementById('metric-ecosystem-sub').textContent = `${activeProjects} em produção`;
+      document.getElementById('metric-skills-sub').textContent = `${ecosystem.skills.filter(s => s.maturity === 'high').length} de alta maturidade`;
+
+      document.querySelectorAll('.nav button').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.querySelectorAll('.panel[data-target]').forEach(panel => {
+        makeItemClickable(panel, () => switchTab(panel.dataset.target));
+      });
+
+      updateBrainState('radar');
+      renderRadar();
+    }
+
+    init();
+  </script>
+</body>
+</html>

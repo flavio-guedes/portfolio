@@ -1,0 +1,64 @@
+{
+  "custom_evolutions": [
+    {
+      "id": "custom-evolution-0",
+      "title": "Command Palette para Prospecção",
+      "sources": {
+        "external": ["navigation-0", "command_centers-0"],
+        "user": ["sistema-prospeccao", "preferencia-deploy-commit-pages-link", "preferencia-secrets-backend"]
+      },
+      "description": "Adaptação do Command Palette Central para ações de prospecção: buscar leads, enviar WhatsApp, gerar relatórios.",
+      "applied_to": ["sistema-prospeccao"],
+      "rules": [
+        "Rotas de API devem usar caminhos relativos (/api/...) no HTML",
+        "Secrets permanecem exclusivamente no backend",
+        "Toda alteração segue deploy padrão: commit + push + GitHub Pages + link no chat"
+      ],
+      "added_at": "2026-08-21T00:00:00"
+    },
+    {
+      "id": "custom-evolution-1",
+      "title": "EPQ KPI-First Dashboard",
+      "sources": {
+        "external": ["dashboard_layouts-1", "kpis-0"],
+        "user": ["epq", "epq-playbook-calendar-rules", "preferencia-link-direto-publicado", "preferencia-acesso-mobile-autenticado"]
+      },
+      "description": "Dashboard EPQ com KPIs no topo, vinculado às regras do playbook de marketing e acessível de fora de casa.",
+      "applied_to": ["epq", "epq-central"],
+      "rules": [
+        "Apenas aulas ou atividades motivacionais de 2024 em diante são republicáveis",
+        "Aulas/atividades antigas devem ser arquivadas, não republicadas",
+        "Nenhuma classe pode ser publicada com menos de 2 semanas de antecedência",
+        "Calendário deve detalhar manhã e tarde",
+        "Período coberto: 21 de agosto até fim de setembro",
+        "Acesso externo: authenticated reverse tunnel ou remote access; nunca expor diretamente sem autenticação",
+        "Ao encerrar etapa ou projeto, entregar link direto da interface HTML publicada"
+      ],
+      "added_at": "2026-08-21T00:00:00"
+    },
+    {
+      "id": "custom-evolution-2",
+      "title": "Deploy-Ready Bento Grid",
+      "sources": {
+        "external": ["dashboard_layouts-0", "cards-0"],
+        "user": ["todos-projetos", "preferencia-deploy-commit-pages-link", "preferencia-acesso-mobile-autenticado"]
+      },
+      "description": "Bento Grid modular com estrutura preparada para deploy standalone e acesso remoto autenticado.",
+      "applied_to": ["epq", "epq-central", "sistema-prospeccao", "prospects", "pessoas", "agentes", "epq-projetos", "pedagogico", "b2b-opportunity-finder"],
+      "rules": [
+        "Estrutura HTML/CSS/JS deve ser standalone para GitHub Pages",
+        "Acesso mobile externo usa authenticated reverse tunnel ou remote access",
+        "Link público previsível após deploy",
+        "Evitar scroll lateral no desktop; usar hamburger menu no mobile"
+      ],
+      "added_at": "2026-08-21T00:00:00"
+    }
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "last_updated": "2026-08-21",
+    "total_evolutions": 3,
+    "user_preferences_applied": 3,
+    "external_patterns_adapted": 3
+  }
+}

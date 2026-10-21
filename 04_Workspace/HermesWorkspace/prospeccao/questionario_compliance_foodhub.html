@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questionário Compliance — FoodHub</title>
+<style>
+  :root { --bg:#0b0d10; --panel:#0f1115; --border:#1a1e24; --text:#e6e8ee; --muted:#9aa3b2; --cyan:#00C2FF; --cyan2:#33cfff; --warn:#f59e0b; --danger:#ef4444; --ok:#10b981; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial; line-height:1.6; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px; }
+  header { border-bottom:1px solid var(--border); padding-bottom:18px; margin-bottom:22px; }
+  h1 { font-size: clamp(24px, 3.8vw, 36px); margin:0 0 6px; letter-spacing:-0.02em; }
+  .sub { color: var(--muted); font-size:15px; }
+  .tag { display:inline-block; padding:4px 10px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:12px; margin-right:6px; }
+  section { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px 18px; margin-bottom:16px; }
+  h2 { font-size:18px; margin:0 0 10px; color:#fff; }
+  h3 { font-size:15px; margin:12px 0 6px; color:#e6e8ee; }
+  ul { margin:6px 0 6px 18px; padding:0; }
+  li, p { color: var(--text); }
+  .grid { display:grid; gap:14px; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 860px) { .grid-2 { grid-template-columned: 1fr; } }
+  .card { background:#0c0e12; border:1px solid var(--border); border-radius:12px; padding:12px; }
+  .question { background:#0c0e12; border:1px solid var(--border); border-radius:12px; padding:12px; margin:10px 0; }
+  .question h4 { margin:0 0 8px; font-size:14px; color:#fff; }
+  .meta { color: var(--muted); font-size:12px; margin-top:6px; }
+  input[type="text"], textarea, select { width:100%; background:#0b0d10; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px 11px; font:inherit; }
+  textarea { min-height: 90px; resize: vertical; }
+  .row { display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 720px) { .row { grid-template-columns: 1fr; } }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+  button { background: linear-gradient(135deg, var(--cyan), var(--cyan2)); color:#001018; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; }
+  button.secondary { background:#151922; color:var(--text); border:1px solid var(--border); }
+  .callout { background:#0b1117; border-left:4px solid var(--cyan); padding:10px 12px; border-radius:0 10px 10px 0; }
+  .ok { color: var(--ok); }
+  .warn { color: var(--warn); }
+  .danger { color: var(--danger); }
+  .summary-box { background:#0c0e12; border:1px solid var(--border); border-radius:12px; padding:12px; white-space:pre-wrap; color:var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="tag">COMPLIANCE</div>
+  <div class="tag">ENTREVISTA</div>
+  <div class="tag">2026-09-02</div>
+  <h1>Questionário — Primeira Conversa com a Compliance</h1>
+  <div class="sub">Objetivo: responder lacunas da auditoria que não são públicas e validar pressupostos operacionais, comerciais e de governança.</div>
+</header>
+
+<section>
+  <h2>Instruções</h2>
+  <ul>
+    <li>Use este formulário como roteiro de entrevista, não como inquérito.</li>
+    <li>Prefira respostas concretas; quando não for possível informar, marque como "Não informado".</li>
+    <li>Inicie pelos dados cadastrais e gover​​nança; depois operação; depois modelo e métricas.</li>
+    <li>Ao final, gere o resumo automático para enviar por e-mail ou usar em ata.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>1. Identificação e Governança</h2>
+  <div class="question">
+    <h4>1.1 Qual a razão social e o CNPJ da empresa operadora do FoodHub?</h4>
+    <textarea data-q="1.1" placeholder="Razão social / CNPJ"></textarea>
+    <div class="meta">Importância: alta — remove ambiguidade jurídica e comercial.</div>
+  </div>
+  <div class="question">
+    <h4>1.2 Quem são os sócios / fundadores / governança nominal com poder de decisão?</h4>
+    <textarea data-q="1.2" placeholder="Nomes, cargos, % de participação se possível"></textarea>
+  </div>
+  <div class="question">
+    <h4>1.3 Humberto Abilio consta como CEO/proprietário em fontes públicas; qual o cargo oficial e qual a sua atuação no dia a dia?</h4>
+    <textarea data-q="1.3" placeholder="Cargo oficial / atuação"></textarea>
+  </div>
+  <div class="question">
+    <h4>1.4 Existe um comitê ou pessoa responsável por governança, curadoria e conflito de interesse?</h4>
+    <textarea data-q="1.4" placeholder="Nome / estrutura / regras"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>2. Dados Operacionais</h2>
+  <div class="question">
+    <h4>2.1 Qual a data de fundação ou início efetivo de operação?</h4>
+    <textarea data-q="2.1" placeholder="Data aproximada ou exata"></textarea>
+  </div>
+  <div class="question">
+    <h4>2.2 Quantos participantes ativos existem hoje, por elo?</h4>
+    <div class="row">
+      <input type="text" data-q="2.2a" placeholder="Produtores / cooperativas">
+      <input type="text" data-q="2.2b" placeholder="Indústrias">
+      <input type="text" data-q="2.2c" placeholder="Distribuidores / atacadistas">
+      <input type="text" data-q="2.2d" placeholder="Varejo / food service">
+      <input type="text" data-q="2.2e" placeholder="Especialistas / parceiros">
+      <input type="text" data-q="2.2f" placeholder="Total de participantes ativos">
+    </div>
+  </div>
+  <div class="question">
+    <h4>2.3 Qual a cobertura geográfica atual e qual o plano de expansão?</h4>
+    <textarea data-q="2.3" placeholder="Estados atendidos / internacional / plano"></textarea>
+  </div>
+  <div class="question">
+    <h4>2.4 Quais categorias estão em operação e quais estão em curadoria/piloto?</h4>
+    <textarea data-q="2.4" placeholder="Proteínas, bakery/frozen, café, azeite, food ingredients..."></textarea>
+  </div>
+  <div class="question">
+    <h4>2.5 Existe SLA operacional? Se sim, quais métricas são acompanhadas?</h4>
+    <textarea data-q="2.5" placeholder="Tempo de match, taxa de fechamento, prazo de entrega, índice de devolução..."></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>3. Modelo Comercial e Receita</h2>
+  <div class="question">
+    <h4>3.1 Como o FoodHub ganha dinheiro hoje? Liste as fontes de receita confirmadas.</h4>
+    <textarea data-q="3.1" placeholder="Comissão, assinatura, inteligência, operação..."></textarea>
+  </div>
+  <div class="question">
+    <h4>3.2 Existe taxa de comissão/take rate praticada? Se sim, qual o percentual médio e se há variação por categoria?</h4>
+    <textarea data-q="3.2" placeholder="% médio / variação / regra"></textarea>
+  </div>
+  <div class="question">
+    <h4>3.3 O modelo é mais parecido com associação/mesa fechada, marketplace transacional ou rede de negócios?</h4>
+    <textarea data-q="3.3" placeholder="Modelo dominante e por quê"></textarea>
+  </div>
+  <div class="question">
+    <h4>3.4 Qual o ticket médio por deal e qual o ciclo médio de venda?</h4>
+    <div class="row">
+      <input type="text" data-q="3.4a" placeholder="Ticket médio">
+      <input type="text" data-q="3.4b" placeholder="Ciclo de venda">
+    </div>
+  </div>
+  <div class="question">
+    <h4>3.5 Já existe GMV ou volume transacionado mensurável? Se sim, qual a ordem de grandeza?</h4>
+    <textarea data-q="3.5" placeholder="Volume / período / fonte"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>4. Governança, Curadoria e Riscos</h2>
+  <div class="question">
+    <h4>4.1 Quais critérios são usados para aprovar ou recusar um participante?</h4>
+    <textarea data-q="4.1" placeholder="Critérios objetivos e subjetivos"></textarea>
+  </div>
+  <div class="question">
+    <h4>4.2 Como são tratados conflitos de interesse, troca de informações sensíveis e confidencialidade?</h4>
+    <textarea data-q="4.2" placeholder="Políticas / NDA / processo"></textarea>
+  </div>
+  <div class="question">
+    <h4>4.3 Quais riscos regulatórios já são tratados de forma estruturada?</h4>
+    <div class="row">
+      <input type="text" data-q="4.3a" placeholder="ANVISA / MAPA / rotulagem">
+      <input type="text" data-q="4.3b" placeholder="ST / ICMS / rastreabilidade">
+    </div>
+  </div>
+  <div class="question">
+    <h4>4.4 Como a mesa lida com fraudes, desvios de qualidade ou problemas sanitários?</h4>
+    <textarea data-q="4.4" placeholder="Processo / responsabilidade / seguro"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>5. Tecnologia e Produto</h2>
+  <div class="question">
+    <h4>5.1 Qual stack/plataforma é usada hoje? Existe produto próprio ou solução terceirizada?</h4>
+    <textarea data-q="5.1" placeholder="Plataforma / fornecedor / roadmap"></textarea>
+  </div>
+  <div class="question">
+    <h4>5.2 Quais dados são coletados, armazenados e compartilhados entre os participantes?</h4>
+    <textarea data-q="5.2" placeholder="Tipos de dados / acesso / retenção"></textarea>
+  </div>
+  <div class="question">
+    <h4>5.3 Existem integrações com ERPs, marketplaces ou sistemas de pagamento/logística?</h4>
+    <textarea data-q="5.3" placeholder="Integrações ativas / planejadas"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>6. Métricas e Resultados</h2>
+  <div class="question">
+    <h4>6.1 Quais indicadores são acompanhados hoje? Liste os 5 mais importantes.</h4>
+    <textarea data-q="6.1" placeholder="Indicadores / frequência de medição / responsável"></textarea>
+  </div>
+  <div class="question">
+    <h4>6.2 Qual a taxa de conversão estimada: de convite → match → operação fechada?</h4>
+    <textarea data-q="6.2" placeholder="Taxas por etapa / período"></textarea>
+  </div>
+  <div class="question">
+    <h4>6.3 Existem cases ou deals que possam ser usados como referência, mesmo de forma anonimizada?</h4>
+    <textarea data-q="6.3" placeholder="Categoria / ticket / resultado"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>7. Parcerias e Ecossistema</h2>
+  <div class="question">
+    <h4>7.1 Quais parcerias institucionais já estão fechadas?</h4>
+    <textarea data-q="7.1" placeholder="Associações / entidades / data de início"></textarea>
+  </div>
+  <div class="question">
+    <h4>7.2 Quais parcerias estão em negociação?</h4>
+    <textarea data-q="7.2" placeholder="Parceiros / estágio / próximos passos"></textarea>
+  </div>
+  <div class="question">
+    <h4>7.3 Existem casos de indicação ou referência cruzada entre participantes?</h4>
+    <textarea data-q="7.3" placeholder="Programa / frequência / formato"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>8. Internacionalização e Expansão</h2>
+  <div class="question">
+    <h4>8.1 Já existem operações internacionais concretas ou apenas intenção comercial?</h4>
+    <textarea data-q="8.1" placeholder="Mercados / modalidade / status"></textarea>
+  </div>
+  <div class="question">
+    <h4>8.2 Quais são as principais barreiras para internacionalizar oferta ou demanda?</h4>
+    <textarea data-q="8.2" placeholder="Regulatória / cambial / logística / cultural"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>9. Comunicação e Marca</h2>
+  <div class="question">
+    <h4>9.1 Quais são as redes sociais oficiais e quem é o responsável pela comunicação?</h4>
+    <textarea data-q="9.1" placeholder="Perfis / responsável / frequência"></textarea>
+  </div>
+  <div class="question">
+    <h4>9.2 Existe guideline de marca, tom de voz ou manual de comunicação?</h4>
+    <textarea data-q="9.2" placeholder="Arquivo / responsável / aplicação"></textarea>
+  </div>
+  <div class="question">
+    <h4>9.3 Quais as objeções mais comuns dos participantes após o primeiro contato?</h4>
+    <textarea data-q="9.3" placeholder="Objeções / frequência / como são tratadas"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>10. Expectativas e Próximos Passos</h2>
+  <div class="question">
+    <h4>10.1 Quais os 3 maiores obstáculos atuais para crescer mais rápido?</h4>
+    <textarea data-q="10.1" placeholder="Obstáculo 1 / 2 / 3"></textarea>
+  </div>
+  <div class="question">
+    <h4>10.2 Quais resultados você espera obter nos próximos 90 dias?</h4>
+    <textarea data-q="10.2" placeholder="Resultados mensuráveis"></textarea>
+  </div>
+  <div class="question">
+    <h4>10.3 Quais informações ainda não foram compartilhadas que seriam relevantes para esta avaliação?</h4>
+    <textarea data-q="10.3" placeholder="Informações adicionais"></textarea>
+  </div>
+</section>
+
+<section>
+  <h2>Resumo da Entrevista</h2>
+  <div class="callout">Clique em "Gerar resumo" para compilar as respostas em texto para cópia/envio.</div>
+  <div class="actions">
+    <button onclick="gerarResumo()">Gerar resumo</button>
+    <button class="secondary" onclick="limparFormulario()">Limpar</button>
+  </div>
+  <div id="resumo" class="summary-box" style="margin-top:10px; display:none;"></div>
+</section>
+
+<footer style="margin-top:18px; color:#6b7280; font-size:12px;">Questionário de uso interno · Baseado na Auditoria FoodHub — Marketing & Growth Intelligence · 2026-09-02</footer>
+
+<script>
+function limparFormulario() {
+  document.querySelectorAll('textarea, input').forEach(el => {
+    if (el.tagName === 'TEXTAREA' || el.type === 'text') el.value = '';
+  });
+  document.getElementById('resumo').style.display = 'none';
+}
+function gerarResumo() {
+  const sections = document.querySelectorAll('section');
+  let text = 'RESUMO — QUESTIONÁRIO COMPLIANCE FOODHUB\n';
+  text += 'Data: ' + new Date().toLocaleString('pt-BR') + '\n\n';
+  sections.forEach(section => {
+    const title = section.querySelector('h2');
+    if (!title) return;
+    const inputs = section.querySelectorAll('textarea, input[type="text"]');
+    const hasInput = Array.from(inputs).some(i => i.value.trim());
+    if (!hasInput) return;
+    text += '## ' + title.textContent + '\n';
+    inputs.forEach(input => {
+      const q = input.getAttribute('data-q');
+      const label = input.closest('.question')?.querySelector('h4')?.textContent || q || 'Resposta';
+      const value = input.value.trim();
+      if (!value) return;
+      text += '- ' + label.replace(/\s+/g,' ').trim() + '\n';
+      if (q) text += '  [' + q + '] ' + value + '\n';
+      else text += '  ' + value + '\n';
+    });
+    text += '\n';
+  });
+  const box = document.getElementById('resumo');
+  box.textContent = text;
+  box.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

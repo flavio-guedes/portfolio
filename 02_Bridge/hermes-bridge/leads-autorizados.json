@@ -1,0 +1,122 @@
+{
+  "versao": 1,
+  "atualizado_em": "2026-10-12 12:24:35",
+  "regras": {
+    "bloquear_grupos": true,
+    "bloquear_desconhecidos": true,
+    "exigir_ativo": true
+  },
+  "leads": [
+    {
+      "numero": "5521999999999",
+      "nome": "EXEMPLO — edite este arquivo",
+      "ativo": true,
+      "notas": "substitua pelo seu numero real"
+    },
+    {
+      "numero": "5511932604562",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5511945079924",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5511958998050",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5511971112800",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5511988501872",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5516988031087",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521971522274",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521979570391",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521981177187",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521982083745",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521982552450",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521986536093",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521988680123",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521990337591",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "5521998336781",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "553284671089",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "553491356216",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "554196979805",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "554799667076",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "555496134269",
+      "nome": "",
+      "ativo": true
+    },
+    {
+      "numero": "555599137310",
+      "nome": "",
+      "ativo": true
+    }
+  ]
+}

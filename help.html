@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case — Help Automotiva · Flávio Guedes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080808;
+  --dark: #0f0f0f;
+  --card: #141414;
+  --card2: #1a1a1a;
+  --yellow: #F5C518;
+  --yellow2: #e8b800;
+  --orange: #E8732A;
+  --white: #F0EDE8;
+  --grey: #777777;
+  --light: #BBBBBB;
+  --border: rgba(245,197,24,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; }
+
+/* ═══ GLOBAL PATTERNS & TEXTURES ═══ */
+.asphalt-bg {
+  background-color: #0a0a0a;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.18'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 60px);
+}
+
+/* ═══ NAVBAR ═══ */
+.topbar {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  padding: 18px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(8,8,8,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-brand { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:3px; color:var(--white); }
+.topbar-brand span { color:var(--yellow); }
+.topbar-nav { display:flex; gap:32px; }
+.topbar-nav a { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:3px; color:var(--grey); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.topbar-nav a:hover { color:var(--yellow); }
+.topbar-tag { font-family:'Space Mono',monospace; font-size:10px; color:var(--yellow); letter-spacing:2px; border:1px solid var(--border); padding:6px 16px; }
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh;
+  padding-top: 70px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* tire tread pattern SVG background */
+.tire-pattern {
+  position:absolute; inset:0; pointer-events:none; opacity:0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect x='0' y='0' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='24' y='0' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='36' y='0' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='0' y='12' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='12' y='12' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='36' y='12' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='48' y='12' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='0' y='24' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='24' y='24' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='36' y='24' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='0' y='36' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='12' y='36' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='36' y='36' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='48' y='36' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='0' y='48' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='24' y='48' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='36' y='48' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='0' y='60' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='12' y='60' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='36' y='60' width='8' height='8' rx='2' fill='%23F5C518'/%3E%3Crect x='48' y='60' width='20' height='8' rx='2' fill='%23F5C518'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+
+.hero-diagonal {
+  position:absolute; bottom:0; left:0; right:0; height:120px; pointer-events:none;
+  background: linear-gradient(to bottom right, transparent 49.5%, var(--black) 50%);
+  z-index:3;
+}
+
+.hero-left {
+  padding: 80px 60px 80px 60px;
+  display:flex; flex-direction:column; justify-content:center;
+  position:relative; z-index:2;
+}
+
+.hero-right {
+  position:relative; overflow:hidden;
+  background: linear-gradient(140deg, #1e1600 0%, #0d0b00 50%, #080808 100%);
+}
+
+.hero-right-glow {
+  position:absolute; width:600px; height:600px;
+  background: radial-gradient(ellipse, rgba(245,197,24,0.15) 0%, transparent 65%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+
+.hero-wordmark {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif; font-size:220px; line-height:0.85;
+  color:rgba(245,197,24,0.05); letter-spacing:-8px; user-select:none;
+  white-space:nowrap;
+}
+
+/* ═══ KV SCREEN MOCKUPS ═══ */
+.hero-screens {
+  position:relative; z-index:2;
+  padding: 50px 40px;
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  align-self:center;
+}
+
+.mockup {
+  border-radius:6px; overflow:hidden; position:relative;
+  border:1px solid rgba(245,197,24,0.15);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mockup:hover { transform:translateY(-4px); box-shadow:0 28px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(245,197,24,0.25); }
+
+/* Card 1 — Alinhamento (yellow + dark) */
+.m1 { background:#1a1200; aspect-ratio:1; }
+.m1-inner { height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:18px; }
+.m1-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.m1-img { width:100%; height:55%; background:linear-gradient(160deg,#2a2000,#1a1200); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; margin:-18px -18px 0; padding:0; }
+
+/* Inline SVG car illustration */
+.m1-bottom { padding-top:12px; }
+.kv-eyebrow { font-family:'Space Mono',monospace; font-size:7px; letter-spacing:2px; color:var(--yellow); text-transform:uppercase; opacity:0.8; }
+.kv-title { font-family:'Bebas Neue',sans-serif; font-size:26px; line-height:1; color:#fff; }
+.kv-title em { color:var(--yellow); font-style:normal; }
+.kv-dots { display:flex; gap:4px; margin-top:8px; }
+.kv-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.2); }
+.kv-dot.active { background:var(--yellow); }
+
+/* Card 2 — Fique Atento (pure yellow) */
+.m2 { background:var(--yellow); aspect-ratio:1; }
+.m2-inner { height:100%; display:flex; flex-direction:column; padding:18px; gap:10px; }
+.m2-alert { display:flex; align-items:center; gap:8px; }
+.m2-alert-icon { width:28px; height:28px; }
+.m2-title-blk .m2-pre { font-family:'Space Mono',monospace; font-size:7px; letter-spacing:2px; color:rgba(0,0,0,0.5); text-transform:uppercase; }
+.m2-title-blk .m2-h { font-family:'Bebas Neue',sans-serif; font-size:30px; line-height:0.9; color:#000; }
+.m2-items { display:flex; flex-direction:column; gap:6px; margin-top:4px; }
+.m2-item { display:flex; align-items:center; gap:8px; font-family:'Bebas Neue',sans-serif; font-size:13px; color:#000; letter-spacing:0.5px; }
+.m2-item-icon { font-size:14px; }
+.m2-dots { display:flex; gap:4px; margin-top:auto; }
+.m2-dot { width:6px; height:6px; border-radius:50%; background:rgba(0,0,0,0.2); }
+.m2-dot.active { background:#000; }
+
+/* Card 3 — Cambagem (yellow left panel) */
+.m3 { background:#111; aspect-ratio:1; }
+.m3-inner { height:100%; display:grid; grid-template-columns:40% 60%; }
+.m3-left { background:var(--yellow); padding:12px 10px; display:flex; flex-direction:column; justify-content:flex-end; }
+.m3-left .m3-pre { font-family:'Space Mono',monospace; font-size:6px; letter-spacing:1px; color:rgba(0,0,0,0.5); text-transform:uppercase; }
+.m3-left .m3-h { font-family:'Bebas Neue',sans-serif; font-size:22px; line-height:0.9; color:#000; }
+.m3-right { padding:12px; display:flex; flex-direction:column; justify-content:center; gap:6px; }
+.m3-row { display:flex; align-items:center; gap:6px; }
+.m3-row-label { font-family:'Bebas Neue',sans-serif; font-size:11px; color:var(--light); letter-spacing:0.5px; }
+
+/* Card 4 — Institucional (dark gold) */
+.m4 { background:#0d0c00; aspect-ratio:1; border:1px solid rgba(245,197,24,0.25) !important; }
+.m4-inner { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:18px; text-align:center; }
+.m4-logo-ring { width:60px; height:60px; border-radius:50%; border:2px solid rgba(245,197,24,0.4); display:flex; align-items:center; justify-content:center; position:relative; }
+.m4-logo-ring::before { content:'H'; font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--yellow); }
+.m4-tagline { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--yellow); letter-spacing:2px; text-align:center; }
+.m4-sub { font-family:'Space Mono',monospace; font-size:7px; letter-spacing:2px; color:var(--grey); text-transform:uppercase; }
+.m4-actions { display:flex; gap:10px; margin-top:8px; }
+.m4-action { font-size:9px; color:var(--grey); display:flex; flex-direction:column; align-items:center; gap:3px; font-family:'Space Mono',monospace; }
+
+/* ═══ HERO TEXT ═══ */
+.hero-kicker { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:4px; color:var(--yellow); text-transform:uppercase; margin-bottom:20px; display:flex; align-items:center; gap:12px; }
+.hero-kicker::before { content:''; width:32px; height:1px; background:var(--yellow); }
+
+.hero-h1 { font-family:'Bebas Neue',sans-serif; font-size:108px; line-height:0.87; letter-spacing:-1px; }
+.hero-h1 em { font-style:normal; color:var(--yellow); }
+.hero-h1 .outline { -webkit-text-stroke: 1.5px rgba(245,197,24,0.4); color:transparent; }
+
+.hero-sub { font-size:16px; line-height:1.75; color:var(--light); max-width:400px; margin-top:28px; }
+
+.hero-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; }
+.chip { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:2px; padding:7px 14px; border:1px solid rgba(255,255,255,0.1); color:var(--grey); text-transform:uppercase; border-radius:2px; }
+.chip.y { border-color:rgba(245,197,24,0.35); color:var(--yellow); }
+
+.hero-meta-row { display:flex; gap:50px; margin-top:50px; padding-top:30px; border-top:1px solid rgba(255,255,255,0.07); }
+.hm { display:flex; flex-direction:column; gap:6px; }
+.hm-l { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--grey); text-transform:uppercase; }
+.hm-v { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1px; }
+
+/* ═══ SECTION BASE ═══ */
+.sec { padding:100px 60px; max-width:1400px; margin:0 auto; }
+.sec-full { padding:0; }
+
+.sec-head { display:flex; align-items:flex-start; gap:40px; margin-bottom:64px; }
+.sec-num { font-family:'Bebas Neue',sans-serif; font-size:130px; line-height:0.8; color:rgba(245,197,24,0.05); flex-shrink:0; user-select:none; margin-top:-16px; }
+.sec-eye { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:4px; color:var(--yellow); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.sec-eye::before { content:''; width:24px; height:1px; background:var(--yellow); }
+.sec-title { font-family:'Bebas Neue',sans-serif; font-size:60px; line-height:0.95; }
+
+.divider { height:1px; background:linear-gradient(90deg, transparent, rgba(245,197,24,0.25), transparent); }
+.divider-solid { height:1px; background:rgba(255,255,255,0.05); }
+
+/* ═══ PROBLEM ═══ */
+.prob-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+.prob { background:var(--card); padding:44px; position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.04); }
+.prob::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:rgba(245,197,24,0.35); }
+.prob.acc::before { background:var(--orange); }
+.prob-num { font-family:'Bebas Neue',sans-serif; font-size:80px; color:rgba(255,255,255,0.03); position:absolute; right:20px; top:10px; line-height:1; user-select:none; }
+.prob-icon { font-size:34px; margin-bottom:20px; display:block; }
+.prob h3 { font-family:'Bebas Neue',sans-serif; font-size:30px; letter-spacing:0.5px; margin-bottom:14px; }
+.prob p { font-size:15px; line-height:1.78; color:var(--light); }
+
+/* ═══ VISUAL SHOWCASE ═══ */
+.showcase-section {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.showcase-section::before {
+  content: 'MATERIAIS';
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif; font-size:220px;
+  color:rgba(255,255,255,0.02); white-space:nowrap;
+  pointer-events:none; user-select:none;
+}
+
+.showcase-label {
+  font-family:'Space Mono',monospace; font-size:10px;
+  letter-spacing:4px; color:var(--yellow); text-transform:uppercase;
+  margin-bottom:40px; display:flex; align-items:center; gap:12px;
+}
+.showcase-label::before { content:''; width:32px; height:1px; background:var(--yellow); }
+
+/* Post Grid */
+.posts-grid {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:12px;
+}
+
+/* Individual post mockups — full recreation of the KV */
+.post-wrap { position:relative; }
+.post-label { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; color:var(--grey); text-transform:uppercase; margin-top:8px; padding-left:2px; }
+
+.post {
+  aspect-ratio:1; border-radius:6px; overflow:hidden; position:relative;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor:pointer;
+}
+.post:hover { transform:scale(1.03) translateY(-3px); box-shadow:0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,197,24,0.3); }
+
+/* POST 1 — Alinhamento (yellow bg, mechanic) */
+.post-alinhamento {
+  background: linear-gradient(135deg, #f5c518 0%, #e8b000 100%);
+  display:flex; flex-direction:column;
+}
+.post-alinhamento .pa-img {
+  flex:1; background:linear-gradient(180deg,#f0bb00 0%, #d4a000 100%);
+  position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;
+}
+.post-alinhamento .pa-bottom {
+  background:#f5c518; padding:14px 16px 16px;
+}
+.post-alinhamento .pa-title {
+  font-family:'Bebas Neue',sans-serif; font-size:20px; color:#000; line-height:1.1;
+}
+.post-alinhamento .pa-sub {
+  font-family:'Space Mono',monospace; font-size:7px; color:rgba(0,0,0,0.55); letter-spacing:1px; margin-top:3px;
+}
+.post-alinhamento .pa-dots { display:flex; gap:4px; margin-top:8px; }
+.pa-dot { width:5px; height:5px; border-radius:50%; background:rgba(0,0,0,0.2); }
+.pa-dot.a { background:#000; }
+
+/* POST 2 — Fique Atento (dark, warning) */
+.post-atento {
+  background:#111; display:flex; flex-direction:column; padding:16px;
+}
+.post-atento .pat-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.post-atento .pat-icon { font-size:22px; }
+.post-atento .pat-title { font-family:'Bebas Neue',sans-serif; font-size:22px; color:#fff; line-height:1; }
+.post-atento .pat-sub { font-family:'Space Mono',monospace; font-size:7px; color:var(--grey); letter-spacing:1px; }
+.post-atento .pat-items { display:flex; flex-direction:column; gap:8px; flex:1; justify-content:center; }
+.pat-item { display:flex; align-items:center; gap:10px; padding:8px 10px; background:rgba(255,255,255,0.04); border-left:2px solid var(--yellow); }
+.pat-item-icon { font-size:16px; }
+.pat-item-text { font-family:'Bebas Neue',sans-serif; font-size:13px; color:var(--light); letter-spacing:0.5px; }
+.post-atento .pat-dots { display:flex; gap:4px; margin-top:auto; padding-top:10px; }
+.pat-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.15); }
+.pat-dot.a { background:var(--yellow); }
+
+/* POST 3 — Institutional dark */
+.post-inst {
+  background: linear-gradient(160deg, #1c1400 0%, #0a0900 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:20px; text-align:center; gap:10px;
+}
+.post-inst .pi-ques { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--yellow); line-height:1; }
+.post-inst .pi-logo-ring { width:56px; height:56px; border-radius:50%; border:2px solid rgba(245,197,24,0.5); display:flex; align-items:center; justify-content:center; }
+.post-inst .pi-h { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--yellow); letter-spacing:1.5px; }
+.post-inst .pi-tagline { font-family:'Bebas Neue',sans-serif; font-size:16px; color:#fff; letter-spacing:2px; }
+.post-inst .pi-actions { display:flex; gap:16px; margin-top:4px; }
+.pi-action { font-size:8px; color:var(--grey); font-family:'Space Mono',monospace; display:flex; flex-direction:column; align-items:center; gap:3px; }
+
+/* POST 4 — Correia dentada (dark with diagram) */
+.post-correia {
+  background:#0f0e00; display:flex; flex-direction:column;
+}
+.post-correia .pc-top { flex:1; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.post-correia .pc-bottom { padding:14px 16px; background:#0d0c00; }
+.post-correia .pc-title { font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff; }
+.post-correia .pc-sub { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--yellow); letter-spacing:1px; }
+
+/* POST 5 — Bieleta (dark tech) */
+.post-bieleta {
+  background:#111; display:flex; flex-direction:column; padding:16px; gap:10px;
+}
+.post-bieleta .pb-title { font-family:'Bebas Neue',sans-serif; font-size:22px; color:#fff; }
+.post-bieleta .pb-title span { color:var(--yellow); }
+.post-bieleta .pb-center { flex:1; display:flex; align-items:center; justify-content:center; }
+.post-bieleta .pb-tag { font-family:'Space Mono',monospace; font-size:7px; color:var(--yellow); letter-spacing:1px; }
+
+/* POST 6 — Balanceamento */
+.post-balanceamento {
+  background:linear-gradient(135deg,#f5c518 0%, #e0a800 100%);
+  display:flex; flex-direction:column;
+}
+.post-balanceamento .pbal-img { flex:1; background:linear-gradient(180deg,#e8b200,#c99b00); display:flex; align-items:center; justify-content:center; }
+.post-balanceamento .pbal-bottom { padding:12px 14px; background:#f5c518; }
+.post-balanceamento .pbal-title { font-family:'Bebas Neue',sans-serif; font-size:18px; color:#000; line-height:1.1; }
+.post-balanceamento .pbal-sub { font-family:'Space Mono',monospace; font-size:6px; color:rgba(0,0,0,0.5); letter-spacing:1px; margin-top:3px; }
+.post-balanceamento .pbal-dots { display:flex; gap:4px; margin-top:6px; }
+
+/* POST 7 — Ford Fechará (news) */
+.post-news {
+  background:#111; display:flex; flex-direction:column; padding:14px; gap:8px;
+}
+.post-news .pn-kicker { display:flex; align-items:center; gap:8px; }
+.post-news .pn-kicker-tag { font-family:'Space Mono',monospace; font-size:7px; color:var(--yellow); border:1px solid var(--border); padding:3px 7px; letter-spacing:1px; }
+.post-news .pn-img { flex:1; background:linear-gradient(160deg,#1a1a1a,#111); border-radius:3px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.post-news .pn-title { font-family:'Bebas Neue',sans-serif; font-size:16px; color:#fff; line-height:1.1; }
+.post-news .pn-title span { color:var(--yellow); }
+
+/* POST 8 — Chuva forte */
+.post-chuva {
+  background:linear-gradient(180deg,#f5c518 0%, #d4a000 100%);
+  display:flex; flex-direction:column; padding:16px; gap:8px;
+}
+.post-chuva .pch-icon { font-size:32px; }
+.post-chuva .pch-title { font-family:'Bebas Neue',sans-serif; font-size:26px; color:#000; line-height:1; }
+.post-chuva .pch-sub { font-family:'Bebas Neue',sans-serif; font-size:16px; color:rgba(0,0,0,0.6); }
+.post-chuva .pch-waves { margin-top:auto; }
+
+/* ═══ VIDEO SECTION ═══ */
+.video-section {
+  background: #0a0a0a;
+  padding: 80px 60px;
+  border-top: 1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+.video-section::after {
+  content:'VIDEO';
+  position:absolute; right:-10px; top:-10px;
+  font-family:'Bebas Neue',sans-serif; font-size:180px;
+  color:rgba(245,197,24,0.03); pointer-events:none; user-select:none;
+}
+.video-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+.vid-wrap { position:relative; }
+.vid-frame {
+  aspect-ratio: 9/16; border-radius:10px; overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  position:relative; background:#111;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.vid-frame:hover { transform:translateY(-6px); box-shadow:0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(245,197,24,0.25); }
+.vid-frame video { width:100%; height:100%; object-fit:cover; display:block; }
+.vid-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+  display:flex; flex-direction:column; justify-content:flex-end; padding:16px;
+  pointer-events:none;
+}
+.vid-play-btn {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:52px; height:52px; border-radius:50%;
+  background:rgba(245,197,24,0.9);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all 0.2s;
+  border:none;
+}
+.vid-play-btn:hover { background:var(--yellow); transform:translate(-50%,-50%) scale(1.08); }
+.vid-play-btn svg { margin-left:4px; }
+.vid-title { font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; }
+.vid-tag { font-family:'Space Mono',monospace; font-size:8px; color:var(--yellow); letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+.vid-meta { font-family:'Space Mono',monospace; font-size:8px; color:var(--grey); letter-spacing:1px; margin-top:8px; }
+
+/* ═══ STRATEGY ═══ */
+.strat-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; }
+.strat-card {
+  background:var(--card); padding:44px 36px; position:relative; overflow:hidden;
+  border:1px solid rgba(255,255,255,0.04);
+}
+.strat-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+  background:var(--yellow); transform:scaleX(0); transform-origin:left; transition:transform 0.4s;
+}
+.strat-card:hover::after { transform:scaleX(1); }
+.strat-num-bg { position:absolute; right:-10px; bottom:-20px; font-family:'Bebas Neue',sans-serif; font-size:120px; color:rgba(255,255,255,0.025); line-height:1; user-select:none; }
+.strat-icon { font-size:36px; margin-bottom:24px; display:block; }
+.strat-eye { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:3px; color:var(--yellow); text-transform:uppercase; margin-bottom:10px; }
+.strat-h { font-family:'Bebas Neue',sans-serif; font-size:32px; line-height:1; margin-bottom:16px; }
+.strat-p { font-size:14px; line-height:1.78; color:var(--light); }
+.tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
+.tag { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; padding:5px 12px; border:1px solid rgba(245,197,24,0.22); color:var(--yellow); border-radius:2px; text-transform:uppercase; }
+.tag.o { border-color:rgba(232,115,42,0.35); color:var(--orange); }
+
+/* ═══ IA BLOCK ═══ */
+.ia-section {
+  background:linear-gradient(160deg, #100d00 0%, #0a0a0a 60%);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:80px 60px; position:relative; overflow:hidden;
+}
+.ia-section::before {
+  content:'';
+  position:absolute; inset:0; pointer-events:none;
+  background-image: repeating-linear-gradient(90deg, rgba(245,197,24,0.03) 0px, rgba(245,197,24,0.03) 1px, transparent 1px, transparent 40px);
+}
+.ia-section::after {
+  content:'AI'; position:absolute; right:-20px; top:-30px;
+  font-family:'Bebas Neue',sans-serif; font-size:300px;
+  color:rgba(245,197,24,0.03); line-height:1; pointer-events:none; user-select:none;
+}
+.ia-top { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; margin-bottom:60px; position:relative; z-index:2; }
+.ia-h { font-family:'Bebas Neue',sans-serif; font-size:64px; line-height:0.9; }
+.ia-h em { font-style:normal; color:var(--yellow); }
+.ia-p { font-size:16px; color:var(--light); line-height:1.8; }
+.ia-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; position:relative; z-index:2; }
+.ia-card { background:rgba(255,255,255,0.03); border:1px solid rgba(245,197,24,0.1); padding:30px; position:relative; }
+.ia-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--yellow),transparent); }
+.ia-tool { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--yellow); margin-bottom:10px; letter-spacing:1px; }
+.ia-desc { font-size:14px; line-height:1.65; color:var(--grey); }
+
+/* ═══ EDITORIAL ═══ */
+.ed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+.ed-col { background:var(--card); padding:36px 30px; border:1px solid rgba(255,255,255,0.04); position:relative; overflow:hidden; }
+.ed-col-num { position:absolute; right:-8px; top:-12px; font-family:'Bebas Neue',sans-serif; font-size:100px; color:rgba(255,255,255,0.025); line-height:1; user-select:none; }
+.ed-col::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+.ed-col:nth-child(1)::after { background:var(--yellow); }
+.ed-col:nth-child(2)::after { background:#999; opacity:0.4; }
+.ed-col:nth-child(3)::after { background:var(--orange); }
+.ed-col:nth-child(4)::after { background:#555; opacity:0.4; }
+.ed-icon { font-size:38px; display:block; margin-bottom:20px; }
+.ed-cat { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--yellow); text-transform:uppercase; margin-bottom:12px; display:block; }
+.ed-h { font-family:'Bebas Neue',sans-serif; font-size:30px; margin-bottom:16px; }
+.ed-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.ed-list li { font-size:13px; color:var(--light); padding-left:18px; position:relative; line-height:1.55; }
+.ed-list li::before { content:'—'; position:absolute; left:0; color:var(--yellow); opacity:0.45; }
+
+/* ═══ RESULTS ═══ */
+.results-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:2px; margin-bottom:2px; }
+.results-grid2 { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+.res { background:var(--card); padding:42px 36px; border:1px solid rgba(255,255,255,0.04); }
+.res.feat { background:var(--yellow); }
+.res-label { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--grey); text-transform:uppercase; display:block; margin-bottom:10px; }
+.res.feat .res-label { color:rgba(0,0,0,0.45); }
+.res-num { font-family:'Bebas Neue',sans-serif; font-size:80px; line-height:0.85; color:var(--yellow); display:block; margin-bottom:12px; }
+.res.feat .res-num { color:#000; font-size:68px; }
+.res-desc { font-size:14px; color:var(--light); line-height:1.65; }
+.res.feat .res-desc { color:rgba(0,0,0,0.65); font-size:15px; line-height:1.7; }
+
+/* ═══ IDENTITY SYSTEM ═══ */
+.identity-section {
+  padding:80px 60px;
+  background:var(--dark);
+  border-top:1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+
+.identity-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:50px; }
+
+.id-card { background:var(--card); border:1px solid rgba(255,255,255,0.05); padding:32px; }
+.id-card h4 { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:20px; color:var(--yellow); }
+
+/* Color palette */
+.palette { display:flex; gap:8px; align-items:flex-end; }
+.swatch { border-radius:4px; }
+.sw-main { width:70px; height:70px; background:var(--yellow); }
+.sw-dark { width:55px; height:55px; background:#111; border:1px solid rgba(255,255,255,0.1); }
+.sw-white { width:45px; height:45px; background:var(--white); }
+.sw-orange { width:40px; height:40px; background:var(--orange); }
+.swatch-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.swatch-wrap span { font-family:'Space Mono',monospace; font-size:7px; color:var(--grey); letter-spacing:1px; }
+
+/* Typography display */
+.type-display { display:flex; flex-direction:column; gap:12px; }
+.type-row { display:flex; align-items:baseline; gap:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.type-row:last-child { border-bottom:none; padding-bottom:0; }
+.type-label { font-family:'Space Mono',monospace; font-size:8px; color:var(--grey); letter-spacing:1px; width:60px; flex-shrink:0; }
+.type-sample { }
+.type-begas { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:1px; color:var(--white); line-height:1; }
+.type-mono { font-family:'Space Mono',monospace; font-size:11px; color:var(--yellow); letter-spacing:2px; }
+.type-body { font-size:14px; color:var(--light); line-height:1; }
+
+/* Vector icons display */
+.vectors { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.vec-item { aspect-ratio:1; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:4px; display:flex; align-items:center; justify-content:center; }
+.vec-item svg { width:36px; height:36px; }
+
+/* ═══ LEARNING ═══ */
+.learn-block {
+  background:var(--card); border-left:4px solid var(--orange);
+  padding:52px 52px 52px 64px; position:relative; overflow:hidden;
+}
+.learn-block::before { content:'"'; position:absolute; top:5px; left:18px; font-family:'Bebas Neue',sans-serif; font-size:90px; color:rgba(232,115,42,0.12); line-height:1; }
+.learn-block::after { content:''; position:absolute; inset:0; pointer-events:none; background-image: repeating-linear-gradient(135deg, rgba(232,115,42,0.02) 0px, rgba(232,115,42,0.02) 1px, transparent 1px, transparent 20px); }
+.learn-block p { font-size:17px; line-height:1.88; color:var(--light); max-width:840px; position:relative; z-index:1; }
+.learn-block strong { color:var(--orange); font-weight:500; }
+
+/* ═══ CONTACT ═══ */
+.contact-section {
+  background:var(--dark);
+  border-top:1px solid var(--border);
+  padding:0;
+  overflow:hidden;
+  position:relative;
+}
+.contact-asphalt {
+  position:absolute; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect x='0' y='0' width='20' height='8' rx='2' fill='%23F5C518' opacity='0.03'/%3E%3Crect x='24' y='0' width='8' height='8' rx='2' fill='%23F5C518' opacity='0.03'/%3E%3Crect x='36' y='0' width='20' height='8' rx='2' fill='%23F5C518' opacity='0.03'/%3E%3Crect x='0' y='12' width='8' height='8' rx='2' fill='%23F5C518' opacity='0.03'/%3E%3Crect x='12' y='12' width='20' height='8' rx='2' fill='%23F5C518' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  pointer-events:none;
+}
+.contact-inner { padding:80px 60px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end; position:relative; z-index:2; }
+.contact-left h2 { font-family:'Bebas Neue',sans-serif; font-size:80px; line-height:0.88; margin-bottom:20px; }
+.contact-left h2 em { font-style:normal; color:var(--yellow); }
+.contact-left p { font-size:16px; color:var(--grey); line-height:1.75; max-width:400px; }
+.behance-btn {
+  display:inline-flex; align-items:center; gap:12px;
+  background:var(--yellow); color:#000;
+  text-decoration:none; padding:18px 32px;
+  font-family:'Space Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; font-weight:700;
+  margin-top:28px; transition:all 0.2s;
+}
+.behance-btn:hover { background:var(--yellow2); transform:translateY(-2px); box-shadow:0 12px 40px rgba(245,197,24,0.25); }
+.contact-links { display:flex; flex-direction:column; gap:16px; }
+.clink { display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--white); font-size:14px; transition:color 0.2s; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.clink:last-child { border-bottom:none; }
+.clink:hover { color:var(--yellow); }
+.clink-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; color:var(--yellow); border:1px solid rgba(245,197,24,0.3); padding:5px 10px; text-transform:uppercase; flex-shrink:0; width:80px; text-align:center; }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:28px 60px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--black);
+}
+.footer-brand { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; color:var(--grey); }
+.footer-brand span { color:var(--yellow); }
+.footer-copy { font-family:'Space Mono',monospace; font-size:9px; color:rgba(255,255,255,0.18); letter-spacing:1px; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+.anim { opacity:0; animation:fadeUp 0.9s ease forwards; }
+.d1 { animation-delay:0s; }
+.d2 { animation-delay:0.12s; }
+.d3 { animation-delay:0.22s; }
+.d4 { animation-delay:0.34s; }
+.d5 { animation-delay:0.44s; }
+
+@media (max-width:1000px) {
+  .hero { grid-template-columns:1fr; } .hero-right { display:none; }
+  .hero-h1 { font-size:72px; }
+  .sec { padding:60px 24px; }
+  .prob-grid, .ed-grid, .strat-grid, .ia-grid, .results-grid, .results-grid2 { grid-template-columns:1fr; }
+  .identity-grid, .contact-inner { grid-template-columns:1fr; }
+  .posts-grid { grid-template-columns:1fr 1fr; }
+  .video-grid { grid-template-columns:1fr 1fr; }
+  .topbar { padding:16px 24px; }
+  .topbar-nav { display:none; }
+  .footer, .contact-inner, .showcase-section, .ia-section, .video-section { padding-left:24px; padding-right:24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+<div class="topbar">
+  <div class="topbar-brand">Flávio<span>.</span>Guedes</div>
+  <nav class="topbar-nav">
+    <a href="#diagnostico">Diagnóstico</a>
+    <a href="#materiais">Materiais</a>
+    <a href="#estrategia">Estratégia</a>
+    <a href="#ia">IA</a>
+    <a href="#resultados">Resultados</a>
+  </nav>
+  <span class="topbar-tag">CASE STUDY · 2023</span>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero asphalt-bg">
+  <div class="tire-pattern"></div>
+
+  <div class="hero-left">
+    <div style="margin-top:10px;">
+      <div class="hero-kicker anim d1">Rebranding · Estratégia · IA · Instagram</div>
+      <h1 class="hero-h1 anim d2">
+        Help<br>
+        <em>Auto-</em><br>
+        <span class="outline">motiva.</span>
+      </h1>
+      <p class="hero-sub anim d3">De uma comunicação sem direção para uma presença digital com autoridade, identidade visual sólida e linha editorial que educa, engaja e converte.</p>
+
+      <div class="hero-chips anim d4">
+        <span class="chip y">Rebranding</span>
+        <span class="chip y">Direção de Arte</span>
+        <span class="chip y">Estratégia Editorial</span>
+        <span class="chip">Instagram</span>
+        <span class="chip">CapCut</span>
+        <span class="chip">HeyGen</span>
+        <span class="chip">ElevenLabs</span>
+      </div>
+
+      <div class="hero-meta-row anim d5">
+        <div class="hm"><span class="hm-l">Cliente</span><span class="hm-v">Help Automotiva</span></div>
+        <div class="hm"><span class="hm-l">Canal</span><span class="hm-v">Instagram</span></div>
+        <div class="hm"><span class="hm-l">Foco</span><span class="hm-v">Brand + IA</span></div>
+        <div class="hm"><span class="hm-l">Ano</span><span class="hm-v">2023</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-glow"></div>
+    <div class="hero-wordmark">HELP</div>
+
+    <!-- KV Mockups -->
+    <div class="hero-screens">
+
+      <!-- MOCKUP 1: Alinhamento -->
+      <div class="mockup m1">
+        <div class="m1-inner">
+          <div class="m1-img" style="margin-bottom:0;height:58%;position:relative;">
+            <!-- Car / mechanic SVG illustration -->
+            <svg width="110" height="80" viewBox="0 0 110 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.7;">
+              <rect x="10" y="30" width="90" height="28" rx="4" fill="#F5C518" opacity="0.6"/>
+              <rect x="18" y="22" width="60" height="16" rx="3" fill="#F5C518" opacity="0.4"/>
+              <circle cx="25" cy="58" r="9" fill="#333" stroke="#F5C518" stroke-width="2"/>
+              <circle cx="25" cy="58" r="5" fill="#222"/>
+              <circle cx="85" cy="58" r="9" fill="#333" stroke="#F5C518" stroke-width="2"/>
+              <circle cx="85" cy="58" r="5" fill="#222"/>
+              <rect x="48" y="36" width="14" height="3" rx="1" fill="#000" opacity="0.4"/>
+              <line x1="5" y1="67" x2="105" y2="67" stroke="#F5C518" stroke-width="1.5" opacity="0.3"/>
+              <!-- wrench icon -->
+              <path d="M70 15 L75 10 L78 13 L73 18 Z" fill="#F5C518" opacity="0.8"/>
+              <path d="M65 20 L70 15 L73 18 L68 23 Z" fill="#F5C518" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="m1-bottom" style="background:#1a1200;padding:12px 14px;">
+            <div class="kv-eyebrow">Quais os sinais?</div>
+            <div class="kv-title">ALINHAMENTO<br><em>QUANDO FAZER</em></div>
+            <div class="kv-dots">
+              <div class="kv-dot active"></div><div class="kv-dot"></div><div class="kv-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOCKUP 2: Fique Atento -->
+      <div class="mockup m2">
+        <div class="m2-inner">
+          <div class="m2-alert">
+            <svg class="m2-alert-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2L26 24H2L14 2Z" fill="#000" stroke="#000" stroke-width="0"/>
+              <path d="M14 4L25 23H3L14 4Z" fill="#000" opacity="0.8"/>
+              <line x1="14" y1="10" x2="14" y2="18" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="14" cy="21" r="1.5" fill="#F5C518"/>
+            </svg>
+            <div class="m2-title-blk">
+              <div class="m2-pre">Ao sentir os sintomas</div>
+              <div class="m2-h">FIQUE ATENTO!</div>
+            </div>
+          </div>
+          <div class="m2-items">
+            <div class="m2-item"><span class="m2-item-icon">🎯</span> DIREÇÃO PUXANDO NA RETA</div>
+            <div class="m2-item"><span class="m2-item-icon">⚙️</span> PNEU + GASTO QUE O OUTRO</div>
+            <div class="m2-item"><span class="m2-item-icon">📳</span> VIBRAÇÃO NO VOLANTE</div>
+          </div>
+          <div class="m2-dots">
+            <div class="m2-dot"></div><div class="m2-dot active"></div><div class="m2-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOCKUP 3: Cambagem -->
+      <div class="mockup m3">
+        <div class="m3-inner">
+          <div class="m3-left">
+            <div>
+              <!-- wheel SVG -->
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:8px;">
+                <circle cx="22" cy="22" r="20" fill="#000" stroke="#000" stroke-width="2"/>
+                <circle cx="22" cy="22" r="14" fill="none" stroke="#000" stroke-width="3"/>
+                <circle cx="22" cy="22" r="6" fill="#000"/>
+                <line x1="22" y1="8" x2="22" y2="16" stroke="#000" stroke-width="2.5"/>
+                <line x1="22" y1="28" x2="22" y2="36" stroke="#000" stroke-width="2.5"/>
+                <line x1="8" y1="22" x2="16" y2="22" stroke="#000" stroke-width="2.5"/>
+                <line x1="28" y1="22" x2="36" y2="22" stroke="#000" stroke-width="2.5"/>
+              </svg>
+            </div>
+            <div class="m3-pre">Você sabe o que é?</div>
+            <div class="m3-h">CAM-<br>BAGEM</div>
+          </div>
+          <div class="m3-right">
+            <div class="m3-row">
+              <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect x="0" y="2" width="20" height="10" rx="5" fill="#444"/><rect x="2" y="4" width="16" height="6" rx="3" fill="#333"/></svg>
+              <span class="m3-row-label">POSITIVA</span>
+            </div>
+            <div class="m3-row">
+              <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect x="0" y="2" width="20" height="10" rx="5" fill="#555"/><rect x="2" y="4" width="16" height="6" rx="3" fill="#444"/></svg>
+              <span class="m3-row-label">NEGATIVA</span>
+            </div>
+            <div class="m3-row">
+              <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect x="0" y="2" width="20" height="10" rx="5" fill="#666"/><rect x="2" y="4" width="16" height="6" rx="3" fill="#555"/></svg>
+              <span class="m3-row-label">NULO</span>
+            </div>
+            <div style="margin-top:8px;"><div class="kv-dots"><div class="kv-dot"></div><div class="kv-dot active"></div><div class="kv-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOCKUP 4: Institucional -->
+      <div class="mockup m4">
+        <div class="m4-inner">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--yellow);letter-spacing:2px;text-align:center;">ALGUMA DÚVIDA?</div>
+          <div class="m4-logo-ring"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <div class="m4-tagline">HELP AUTOMOTIVA</div>
+            <div class="m4-sub">Confiança em 1º lugar</div>
+          </div>
+          <div class="m4-actions">
+            <div class="m4-action"><span>💾</span>Salvar</div>
+            <div class="m4-action"><span>❤️</span>Curtir</div>
+            <div class="m4-action"><span>💬</span>Comente</div>
+            <div class="m4-action"><span>↗️</span>Envie</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /hero-right -->
+</div><!-- /hero -->
+
+<div class="divider"></div>
+
+<!-- ═══ 01 DIAGNÓSTICO ═══ -->
+<section class="sec" id="diagnostico">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <div>
+      <span class="sec-eye">O Problema</span>
+      <h2 class="sec-title">Diagnóstico da<br>Comunicação</h2>
+    </div>
+  </div>
+  <div class="prob-grid">
+    <div class="prob acc">
+      <span class="prob-num">01</span>
+      <span class="prob-icon">⚠️</span>
+      <h3>Ausência de Estratégia Editorial</h3>
+      <p>Os posts eram produzidos sem um plano estruturado. Não havia equilíbrio entre educação, autoridade, engajamento e oferta — o que tornava o perfil inconsistente e sem direção clara para o seguidor.</p>
+    </div>
+    <div class="prob">
+      <span class="prob-num">02</span>
+      <span class="prob-icon">🎨</span>
+      <h3>Identidade Visual Fragmentada</h3>
+      <p>A estética variava entre diferentes estilos e paletas. Sem um sistema visual coeso, o perfil perdia reconhecimento de marca e não transmitia a profissionalidade que o serviço entregava na prática.</p>
+    </div>
+    <div class="prob">
+      <span class="prob-num">03</span>
+      <span class="prob-icon">📢</span>
+      <h3>Oferta Mal Apresentada nos Anúncios</h3>
+      <p>Os criativos patrocinados não tinham estrutura de copy persuasiva. A oferta aparecia sem contexto, sem gatilhos ou prova social — resultando em baixo retorno e desperdício de verba de mídia.</p>
+    </div>
+    <div class="prob acc">
+      <span class="prob-num">04</span>
+      <span class="prob-icon">💬</span>
+      <h3>Reputação e Confiança em Risco</h3>
+      <p>Reclamações pontuais no digital sem um posicionamento de autoridade para contrabalançar. A marca não comunicava expertise — e o silêncio amplificava as dúvidas do público sobre a qualidade do serviço.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 02 MATERIAIS GRÁFICOS — POSTS ═══ -->
+<div class="showcase-section" id="materiais">
+  <span class="showcase-label">Posts Produzidos · Instagram</span>
+
+  <div class="posts-grid">
+
+    <!-- POST 1: Alinhamento -->
+    <div class="post-wrap">
+      <div class="post post-alinhamento">
+        <div class="pa-img">
+          <svg width="100%" height="100%" viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+            <!-- mechanic silhouette -->
+            <rect x="20" y="60" width="160" height="50" rx="2" fill="rgba(0,0,0,0.3)"/>
+            <!-- car body -->
+            <rect x="30" y="72" width="140" height="30" rx="6" fill="#c8900a" opacity="0.7"/>
+            <rect x="50" y="60" width="100" height="20" rx="4" fill="#c8900a" opacity="0.5"/>
+            <!-- wheels -->
+            <circle cx="58" cy="102" r="12" fill="#1a1a1a" stroke="#F5C518" stroke-width="2"/>
+            <circle cx="58" cy="102" r="6" fill="#111"/>
+            <circle cx="142" cy="102" r="12" fill="#1a1a1a" stroke="#F5C518" stroke-width="2"/>
+            <circle cx="142" cy="102" r="6" fill="#111"/>
+            <!-- mechanic figure -->
+            <circle cx="100" cy="52" r="10" fill="#F5C518" opacity="0.4"/>
+            <rect x="93" y="62" width="14" height="20" rx="3" fill="#F5C518" opacity="0.3"/>
+            <!-- lift lines -->
+            <line x1="20" y1="115" x2="180" y2="115" stroke="#F5C518" stroke-width="1.5" opacity="0.3"/>
+            <!-- suspension parts -->
+            <rect x="44" y="88" width="4" height="14" rx="1" fill="#F5C518" opacity="0.6"/>
+            <rect x="152" y="88" width="4" height="14" rx="1" fill="#F5C518" opacity="0.6"/>
+            <!-- warning triangles -->
+            <polygon points="170,20 180,38 160,38" fill="#F5C518" opacity="0.6"/>
+            <text x="173" y="34" font-family="sans-serif" font-size="10" fill="#000" font-weight="bold">!</text>
+          </svg>
+        </div>
+        <div class="pa-bottom">
+          <div class="pa-title">ALINHAMENTO...<br>QUAIS OS SINAIS?<br><span style="color:#000;opacity:0.5;font-size:14px;">&amp; QUANDO REALIZAR?</span></div>
+          <div class="pa-dots"><div class="pa-dot a"></div><div class="pa-dot"></div><div class="pa-dot"></div></div>
+        </div>
+      </div>
+      <div class="post-label">Carrossel · Educativo</div>
+    </div>
+
+    <!-- POST 2: Fique Atento (dark) -->
+    <div class="post-wrap">
+      <div class="post post-atento">
+        <div class="pat-header">
+          <svg class="pat-icon" viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <polygon points="16,3 30,28 2,28" fill="#F5C518" opacity="0.9"/>
+            <line x1="16" y1="12" x2="16" y2="21" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="16" cy="24.5" r="1.5" fill="#000"/>
+          </svg>
+          <div>
+            <div class="pat-sub">AO SENTIR OS SINTOMAS</div>
+            <div class="pat-title" style="font-size:20px;">FIQUE ATENTO!</div>
+          </div>
+        </div>
+        <div class="pat-items">
+          <div class="pat-item">
+            <svg class="pat-item-icon" viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke="#F5C518" stroke-width="1.5"/>
+              <path d="M6 10 L10 6 L14 10" stroke="#F5C518" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="pat-item-text">DIREÇÃO PUXANDO NA RETA</span>
+          </div>
+          <div class="pat-item">
+            <svg class="pat-item-icon" viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke="#F5C518" stroke-width="1.5"/>
+              <path d="M7 13 Q10 7 13 13" stroke="#F5C518" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="pat-item-text">PNEU + GASTO QUE O OUTRO</span>
+          </div>
+          <div class="pat-item">
+            <svg class="pat-item-icon" viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <path d="M3 10 Q5 7 7 10 Q9 13 11 10 Q13 7 15 10 Q17 13 19 10" stroke="#F5C518" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="pat-item-text">VIBRAÇÃO NO VOLANTE</span>
+          </div>
+        </div>
+        <div class="pat-dots"><div class="pat-dot"></div><div class="pat-dot a"></div><div class="pat-dot"></div></div>
+      </div>
+      <div class="post-label">Carrossel · Dica</div>
+    </div>
+
+    <!-- POST 3: Institucional / Alguma dúvida -->
+    <div class="post-wrap">
+      <div class="post post-inst">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--yellow);letter-spacing:1px;text-align:center;line-height:1.2;">ALGUMA<br>DÚVIDA?</div>
+        <div class="pi-logo-ring" style="width:64px;height:64px;border-radius:50%;border:2px solid rgba(245,197,24,0.5);display:flex;align-items:center;justify-content:center;">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <text x="50%" y="70%" text-anchor="middle" dominant-baseline="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#F5C518">H</text>
+          </svg>
+        </div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--yellow);">HELP AUTOMOTIVA</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:#fff;">CONFIANÇA EM 1º LUGAR!</div>
+        </div>
+        <div class="pi-actions">
+          <div class="pi-action"><span>💾</span>Salvar</div>
+          <div class="pi-action"><span>❤️</span>Curtir</div>
+          <div class="pi-action"><span>💬</span>Comente</div>
+          <div class="pi-action"><span>↗️</span>Envie</div>
+        </div>
+      </div>
+      <div class="post-label">Post · Institucional</div>
+    </div>
+
+    <!-- POST 4: Ford News -->
+    <div class="post-wrap">
+      <div class="post post-news">
+        <div class="pn-kicker">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:18px;height:18px;background:#1c6dd0;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;color:#fff;">F</div>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;">FORD</span>
+          </div>
+          <span class="pn-kicker-tag">DEU NA MÍDIA</span>
+        </div>
+        <div class="pn-img" style="border-radius:4px;overflow:hidden;flex:1;position:relative;margin:4px 0;">
+          <svg width="100%" height="100%" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+            <rect width="200" height="160" fill="#1a1a1a"/>
+            <!-- car shape -->
+            <rect x="20" y="80" width="160" height="45" rx="6" fill="#c00" opacity="0.6"/>
+            <rect x="40" y="66" width="110" height="22" rx="4" fill="#b00" opacity="0.5"/>
+            <circle cx="48" cy="125" r="14" fill="#111" stroke="#555" stroke-width="2"/>
+            <circle cx="152" cy="125" r="14" fill="#111" stroke="#555" stroke-width="2"/>
+            <!-- factory background -->
+            <rect x="0" y="30" width="200" height="60" fill="rgba(0,0,0,0.4)"/>
+            <rect x="10" y="10" width="20" height="70" fill="#333" opacity="0.5"/>
+            <rect x="40" y="20" width="16" height="60" fill="#2a2a2a" opacity="0.5"/>
+            <rect x="65" y="15" width="20" height="65" fill="#333" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="pn-title">FORD FECHARÁ<br>FÁBRICAS NO <span>BRASIL</span></div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#555" stroke-width="1.5"/><path d="M10 3 C10 3 7 8 7 12 C7 14.5 8.5 16 10 16" stroke="#555" stroke-width="1" fill="none"/><path d="M10 3 C10 3 13 8 13 12 C13 14.5 11.5 16 10 16" stroke="#555" stroke-width="1" fill="none"/><line x1="2" y1="8" x2="18" y2="8" stroke="#555" stroke-width="1"/></svg>
+          <span style="font-family:'Space Mono',monospace;font-size:7px;color:#555;letter-spacing:1px;">HELP AUTOMOTIVA</span>
+        </div>
+      </div>
+      <div class="post-label">Post · News / Engajamento</div>
+    </div>
+
+    <!-- POST 5: Balanceamento -->
+    <div class="post-wrap">
+      <div class="post post-balanceamento">
+        <div class="pbal-img">
+          <svg width="100%" height="100%" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+            <rect width="200" height="120" fill="#c89800" opacity="0.5"/>
+            <!-- mechanic with wheel -->
+            <circle cx="80" cy="30" r="12" fill="rgba(0,0,0,0.3)"/>
+            <rect x="72" y="42" width="16" height="28" rx="3" fill="rgba(0,0,0,0.3)"/>
+            <!-- big wheel -->
+            <circle cx="130" cy="70" r="38" fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="8"/>
+            <circle cx="130" cy="70" r="26" fill="rgba(0,0,0,0.2)"/>
+            <circle cx="130" cy="70" r="10" fill="rgba(0,0,0,0.3)"/>
+            <line x1="130" y1="32" x2="130" y2="44" stroke="rgba(0,0,0,0.2)" stroke-width="4"/>
+            <line x1="130" y1="96" x2="130" y2="108" stroke="rgba(0,0,0,0.2)" stroke-width="4"/>
+            <line x1="92" y1="70" x2="104" y2="70" stroke="rgba(0,0,0,0.2)" stroke-width="4"/>
+            <line x1="156" y1="70" x2="168" y2="70" stroke="rgba(0,0,0,0.2)" stroke-width="4"/>
+            <!-- tire tread marks -->
+            <rect x="5" y="100" width="12" height="4" rx="1" fill="rgba(0,0,0,0.15)"/>
+            <rect x="22" y="100" width="12" height="4" rx="1" fill="rgba(0,0,0,0.15)"/>
+            <rect x="39" y="100" width="12" height="4" rx="1" fill="rgba(0,0,0,0.15)"/>
+          </svg>
+        </div>
+        <div class="pbal-bottom">
+          <div class="pbal-title">BALANCEAMENTO<br>QUAIS OS SINAIS?<br><span style="font-size:12px;opacity:0.5;">&amp; QUANDO REALIZAR?</span></div>
+          <div class="pbal-dots"><div class="pa-dot a"></div><div class="pa-dot"></div></div>
+        </div>
+      </div>
+      <div class="post-label">Carrossel · Educativo</div>
+    </div>
+
+    <!-- POST 6: Correia Dentada -->
+    <div class="post-wrap">
+      <div class="post post-correia">
+        <div class="pc-top">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- gear/belt system -->
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#F5C518" stroke-width="3" opacity="0.5"/>
+            <circle cx="40" cy="40" r="20" fill="none" stroke="#F5C518" stroke-width="2" opacity="0.3"/>
+            <!-- gear teeth outer ring -->
+            <circle cx="40" cy="40" r="33" fill="none" stroke="#F5C518" stroke-width="2" stroke-dasharray="8 4" opacity="0.35"/>
+            <circle cx="40" cy="40" r="8" fill="#F5C518" opacity="0.4"/>
+            <!-- small gear -->
+            <circle cx="88" cy="72" r="18" fill="none" stroke="#F5C518" stroke-width="2.5" opacity="0.4"/>
+            <circle cx="88" cy="72" r="22" fill="none" stroke="#F5C518" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.25"/>
+            <circle cx="88" cy="72" r="6" fill="#F5C518" opacity="0.35"/>
+            <!-- belt connecting -->
+            <path d="M40 12 L88 54" stroke="#F5C518" stroke-width="3" opacity="0.35" stroke-linecap="round"/>
+            <path d="M40 68 L88 90" stroke="#F5C518" stroke-width="3" opacity="0.35" stroke-linecap="round"/>
+            <!-- labels -->
+            <text x="10" y="14" font-family="'Space Mono',monospace" font-size="7" fill="#F5C518" opacity="0.7">CORRÊA</text>
+            <line x1="28" y1="14" x2="20" y2="18" stroke="#F5C518" stroke-width="1" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="pc-bottom">
+          <div class="pc-title">CUIDADOS COM O MOTOR</div>
+          <div class="pc-sub">CORREIA DENTADA</div>
+        </div>
+      </div>
+      <div class="post-label">Carrossel · Técnico</div>
+    </div>
+
+    <!-- POST 7: Bieleta -->
+    <div class="post-wrap">
+      <div class="post post-bieleta">
+        <div class="pb-title">DEFEITOS QUE A <span>BIELETA</span> PODE APRESENTAR</div>
+        <div class="pb-center">
+          <svg width="80" height="100" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- suspension arm illustration -->
+            <rect x="35" y="5" width="10" height="50" rx="3" fill="#aaa" opacity="0.6"/>
+            <ellipse cx="40" cy="55" rx="12" ry="8" fill="none" stroke="#aaa" stroke-width="2" opacity="0.5"/>
+            <circle cx="40" cy="55" r="5" fill="#666" opacity="0.7"/>
+            <rect x="28" y="63" width="24" height="6" rx="2" fill="#888" opacity="0.5"/>
+            <!-- spring coils -->
+            <path d="M36 72 Q44 75 36 80 Q44 85 36 90 Q44 95 36 100 Q44 105 36 110" stroke="#aaa" stroke-width="2" fill="none" opacity="0.5"/>
+            <path d="M44 72 Q36 75 44 80 Q36 85 44 90 Q36 95 44 100 Q36 105 44 110" stroke="#aaa" stroke-width="2" fill="none" opacity="0.3"/>
+            <!-- label line -->
+            <line x1="54" y1="55" x2="70" y2="45" stroke="#F5C518" stroke-width="1" opacity="0.6"/>
+            <text x="58" y="42" font-family="'Space Mono',monospace" font-size="6" fill="#F5C518" opacity="0.7">BIELETA</text>
+          </svg>
+        </div>
+        <div class="pb-tag">ROMPIMENTO · DEFORMAÇÃO · FIXAÇÃO</div>
+      </div>
+      <div class="post-label">Carrossel · Diagnóstico</div>
+    </div>
+
+    <!-- POST 8: Chuva forte -->
+    <div class="post-wrap">
+      <div class="post post-chuva">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:2px;color:rgba(0,0,0,0.5);text-transform:uppercase;">Dica sazonal</div>
+        </div>
+        <div class="pch-icon">🌧️</div>
+        <div>
+          <div class="pch-title">PROTEJA SEU<br>CARRO DA</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#000;background:rgba(0,0,0,0.15);display:inline-block;padding:2px 8px;margin-top:2px;">CHUVA FORTE!</div>
+        </div>
+        <div class="pch-waves" style="margin-top:auto;">
+          <svg width="100%" height="30" viewBox="0 0 200 30" fill="none">
+            <path d="M0 15 Q25 5 50 15 Q75 25 100 15 Q125 5 150 15 Q175 25 200 15" stroke="rgba(0,0,0,0.2)" stroke-width="3" fill="none"/>
+            <path d="M0 22 Q25 12 50 22 Q75 32 100 22 Q125 12 150 22 Q175 32 200 22" stroke="rgba(0,0,0,0.15)" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <div class="post-label">Post · Sazonal / Engajamento</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ VÍDEOS ═══ -->
+<div class="video-section" id="videos">
+  <span class="showcase-label">Conteúdo em Vídeo · Reels & Feed</span>
+  <div style="font-size:15px;color:var(--grey);max-width:600px;line-height:1.7;margin-bottom:8px;">Produção de vídeos com IA integrada ao fluxo — edição no CapCut, narração via ElevenLabs e apresentação com HeyGen. Cada peça seguia a identidade visual do sistema criado.</div>
+
+  <div class="video-grid">
+
+    <div class="vid-wrap">
+      <div class="vid-frame">
+        <video src="/mnt/user-data/uploads/FD_PASTILHA_DE_FREIO.mp4" loop muted playsinline preload="metadata" id="vid1"></video>
+        <div class="vid-overlay">
+          <span class="vid-tag">Reel · Educativo</span>
+          <div class="vid-title">PASTILHA DE FREIO</div>
+        </div>
+        <button class="vid-play-btn" onclick="toggleVideo('vid1',this)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="#000"/></svg>
+        </button>
+      </div>
+      <div class="vid-meta">FD_PASTILHA_DE_FREIO · Vertical</div>
+    </div>
+
+    <div class="vid-wrap">
+      <div class="vid-frame">
+        <video src="/mnt/user-data/uploads/FEED.mp4" loop muted playsinline preload="metadata" id="vid2"></video>
+        <div class="vid-overlay">
+          <span class="vid-tag">Feed · Institucional</span>
+          <div class="vid-title">IDENTIDADE FEED</div>
+        </div>
+        <button class="vid-play-btn" onclick="toggleVideo('vid2',this)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="#000"/></svg>
+        </button>
+      </div>
+      <div class="vid-meta">FEED · Quadrado</div>
+    </div>
+
+    <div class="vid-wrap">
+      <div class="vid-frame">
+        <video src="/mnt/user-data/uploads/AMORTECEDORES_FEED.mp4" loop muted playsinline preload="metadata" id="vid3"></video>
+        <div class="vid-overlay">
+          <span class="vid-tag">Feed · Técnico</span>
+          <div class="vid-title">AMORTECEDORES</div>
+        </div>
+        <button class="vid-play-btn" onclick="toggleVideo('vid3',this)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="#000"/></svg>
+        </button>
+      </div>
+      <div class="vid-meta">AMORTECEDORES_FEED · Quadrado</div>
+    </div>
+
+    <div class="vid-wrap">
+      <div class="vid-frame">
+        <video src="/mnt/user-data/uploads/MUDANC_A.mp4" loop muted playsinline preload="metadata" id="vid4"></video>
+        <div class="vid-overlay">
+          <span class="vid-tag">Reel · Rebranding</span>
+          <div class="vid-title">A MUDANÇA</div>
+        </div>
+        <button class="vid-play-btn" onclick="toggleVideo('vid4',this)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="#000"/></svg>
+        </button>
+      </div>
+      <div class="vid-meta">MUDANÇA · Vertical</div>
+    </div>
+
+    <div class="vid-wrap" style="grid-column:span 2;">
+      <div class="vid-frame" style="aspect-ratio:16/9;">
+        <video src="/mnt/user-data/uploads/NAVE.mp4" loop muted playsinline preload="metadata" id="vid5" style="width:100%;height:100%;object-fit:cover;"></video>
+        <div class="vid-overlay">
+          <span class="vid-tag">Destaque · KV</span>
+          <div class="vid-title">NAVE · Key Visual Motion</div>
+        </div>
+        <button class="vid-play-btn" onclick="toggleVideo('vid5',this)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="#000"/></svg>
+        </button>
+      </div>
+      <div class="vid-meta">NAVE · Horizontal · Key Visual Motion</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ SISTEMA DE IDENTIDADE ═══ -->
+<div class="identity-section" id="identidade">
+  <span class="showcase-label">Sistema de Identidade Visual</span>
+
+  <div class="identity-grid">
+
+    <!-- Color Palette -->
+    <div class="id-card">
+      <h4>Paleta de Cores</h4>
+      <div class="palette" style="flex-wrap:wrap;gap:16px;">
+        <div class="swatch-wrap">
+          <div class="swatch sw-main" style="border-radius:6px;"></div>
+          <span>#F5C518</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.3);">Primária</span>
+        </div>
+        <div class="swatch-wrap">
+          <div class="swatch sw-dark" style="width:55px;height:55px;border-radius:6px;"></div>
+          <span>#111111</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.3);">Base</span>
+        </div>
+        <div class="swatch-wrap">
+          <div class="swatch sw-white" style="width:45px;height:45px;border-radius:6px;"></div>
+          <span>#F0EDE8</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.3);">Off-white</span>
+        </div>
+        <div class="swatch-wrap">
+          <div class="swatch sw-orange" style="width:45px;height:45px;border-radius:6px;"></div>
+          <span>#E8732A</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.3);">Acento</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="id-card">
+      <h4>Tipografia</h4>
+      <div class="type-display">
+        <div class="type-row">
+          <span class="type-label">Display</span>
+          <div class="type-sample">
+            <div class="type-begas">BEBAS NEUE</div>
+          </div>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Labels</span>
+          <div class="type-sample">
+            <div class="type-mono">SPACE MONO</div>
+          </div>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Body</span>
+          <div class="type-sample">
+            <div class="type-body" style="font-family:'DM Sans',sans-serif;font-size:15px;color:var(--light);">DM Sans · Regular</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vector Icons used in materials -->
+    <div class="id-card">
+      <h4>Ícones & Vetores</h4>
+      <div class="vectors">
+        <!-- Wheel -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="16" stroke="#F5C518" stroke-width="2" opacity="0.7"/>
+            <circle cx="20" cy="20" r="10" stroke="#F5C518" stroke-width="1.5" opacity="0.4"/>
+            <circle cx="20" cy="20" r="4" fill="#F5C518" opacity="0.5"/>
+            <line x1="20" y1="4" x2="20" y2="10" stroke="#F5C518" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+            <line x1="20" y1="30" x2="20" y2="36" stroke="#F5C518" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+            <line x1="4" y1="20" x2="10" y2="20" stroke="#F5C518" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+            <line x1="30" y1="20" x2="36" y2="20" stroke="#F5C518" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </div>
+        <!-- Suspension -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="17" y="2" width="6" height="20" rx="2" fill="#F5C518" opacity="0.5"/>
+            <path d="M12 22 Q20 26 28 22" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M14 26 Q17 24 20 26 Q23 28 26 26" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <circle cx="20" cy="34" r="5" stroke="#F5C518" stroke-width="2" opacity="0.6"/>
+            <circle cx="20" cy="34" r="2" fill="#F5C518" opacity="0.4"/>
+          </svg>
+        </div>
+        <!-- Wrench -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M28 6 C32 6 35 9 35 13 C35 14.5 34.5 15.8 33.6 16.8 L20 30.4 L20 35 L15 35 L15 30 L8 23 L12 19 L16.8 23.8 L29.2 11.4 C28.5 11 28 10.1 28 9 C28 7.3 28 6 28 6Z" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.7"/>
+            <line x1="7" y1="24" x2="12" y2="29" stroke="#F5C518" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </div>
+        <!-- Warning -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="20,4 36,34 4,34" stroke="#F5C518" stroke-width="2" fill="none" opacity="0.7"/>
+            <line x1="20" y1="14" x2="20" y2="24" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+            <circle cx="20" cy="29" r="2" fill="#F5C518" opacity="0.7"/>
+          </svg>
+        </div>
+        <!-- Gear -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="8" stroke="#F5C518" stroke-width="2" opacity="0.6"/>
+            <circle cx="20" cy="20" r="3" fill="#F5C518" opacity="0.4"/>
+            <circle cx="20" cy="20" r="13" fill="none" stroke="#F5C518" stroke-width="2" stroke-dasharray="6 3" opacity="0.35"/>
+          </svg>
+        </div>
+        <!-- Car top view -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="8" width="20" height="28" rx="4" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <rect x="13" y="12" width="14" height="10" rx="2" fill="#F5C518" opacity="0.2"/>
+            <circle cx="11" cy="12" r="3" fill="#F5C518" opacity="0.3"/>
+            <circle cx="29" cy="12" r="3" fill="#F5C518" opacity="0.3"/>
+            <circle cx="11" cy="30" r="3" fill="#F5C518" opacity="0.3"/>
+            <circle cx="29" cy="30" r="3" fill="#F5C518" opacity="0.3"/>
+          </svg>
+        </div>
+        <!-- Brake -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="15" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <path d="M10 20 A10 10 0 0 1 20 10" stroke="#F5C518" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+            <path d="M20 10 A10 10 0 0 1 30 20" stroke="#F5C518" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+            <circle cx="20" cy="20" r="5" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.5"/>
+          </svg>
+        </div>
+        <!-- Checkmark/quality -->
+        <div class="vec-item">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="14" stroke="#F5C518" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <polyline points="12,20 18,26 28,14" stroke="#F5C518" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tire Tread Pattern Detail -->
+  <div style="margin-top:40px;border:1px solid rgba(255,255,255,0.06);padding:28px;background:var(--card);">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--yellow);text-transform:uppercase;margin-bottom:20px;">Textura de Pneu · Pattern de Fundo</div>
+    <div style="display:flex;gap:24px;align-items:center;">
+      <svg width="240" height="80" viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- tire tread pattern demonstration -->
+        <rect x="0" y="0" width="240" height="80" fill="#111"/>
+        <!-- Center groove -->
+        <rect x="116" y="0" width="8" height="80" fill="#0a0a0a"/>
+        <!-- Tread blocks left -->
+        <rect x="80" y="4" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="80" y="26" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="80" y="48" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="80" y="70" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="40" y="12" width="28" height="16" rx="3" fill="#F5C518" opacity="0.5"/>
+        <rect x="40" y="34" width="28" height="16" rx="3" fill="#F5C518" opacity="0.5"/>
+        <rect x="40" y="56" width="28" height="16" rx="3" fill="#F5C518" opacity="0.5"/>
+        <rect x="4" y="4" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <rect x="4" y="22" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <rect x="4" y="40" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <rect x="4" y="58" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <!-- Right side mirrored -->
+        <rect x="132" y="4" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="132" y="26" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="132" y="48" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="132" y="70" width="28" height="16" rx="3" fill="#F5C518" opacity="0.7"/>
+        <rect x="172" y="12" width="28" height="16" rx="3" fill="#F5C518" opacity="0.5"/>
+        <rect x="172" y="34" width="28" height="16" rx="3" fill="#F5C518" opacity="0.5"/>
+        <rect x="172" y="56" width="28" height="16" rx="3" fill="#F5C518" opacity="0.5"/>
+        <rect x="218" y="4" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <rect x="218" y="22" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <rect x="218" y="40" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+        <rect x="218" y="58" width="18" height="12" rx="2" fill="#F5C518" opacity="0.35"/>
+      </svg>
+      <div>
+        <div style="font-size:14px;color:var(--light);line-height:1.7;">Padrão de banda de rodagem utilizado como textura de fundo em vídeos e materiais de produto. Reforça a identidade automotiva sem competir com o conteúdo principal.</div>
+        <div class="tags" style="margin-top:12px;">
+          <span class="tag">Textura Asfalto</span><span class="tag">Pattern Pneu</span><span class="tag">Vetores Técnicos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ 03 ESTRATÉGIA ═══ -->
+<section class="sec" id="estrategia">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <div><span class="sec-eye">A Solução</span><h2 class="sec-title">Estratégia de<br>Reposicionamento</h2></div>
+  </div>
+  <div class="strat-grid">
+    <div class="strat-card">
+      <span class="strat-num-bg">01</span>
+      <span class="strat-icon">🎨</span>
+      <div class="strat-eye">Rebranding Visual</div>
+      <h3 class="strat-h">Sistema Visual<br>Novo</h3>
+      <p class="strat-p">Paleta restrita — preto, dourado e off-white. Grid editorial definido com hierarquia clara. Tipografia Bebas Neue como âncora visual em todos os formatos. O seguidor reconhece a Help antes de ler o texto.</p>
+      <div class="tags"><span class="tag">Paleta restrita</span><span class="tag">Grid editorial</span><span class="tag">Hierarquia visual</span></div>
+    </div>
+    <div class="strat-card">
+      <span class="strat-num-bg">02</span>
+      <span class="strat-icon">✍️</span>
+      <div class="strat-eye">Copy Estratégico</div>
+      <h3 class="strat-h">Texto que<br>Converte</h3>
+      <p class="strat-p">Estrutura Problem-Solution em todas as legendas. Carrosséis como micro-tutoriais com cada slide justificando o próximo. Anúncios com contexto antes da oferta — reduzindo resistência e aumentando conversão.</p>
+      <div class="tags"><span class="tag o">Problem-Solution</span><span class="tag o">CTA estruturado</span><span class="tag o">Funil no carrossel</span></div>
+    </div>
+    <div class="strat-card">
+      <span class="strat-num-bg">03</span>
+      <span class="strat-icon">📋</span>
+      <div class="strat-eye">Linha Editorial</div>
+      <h3 class="strat-h">4 Pilares de<br>Conteúdo</h3>
+      <p class="strat-p">Autoridade, Dicas, Engajamento e Oferta em equilíbrio planejado. Tom técnico-acessível que posiciona a Help como "o mecânico de confiança que te explica, não só cobra".</p>
+      <div class="tags"><span class="tag">4 pilares</span><span class="tag">Tom calibrado</span><span class="tag">Grade semanal</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 04 IA ═══ -->
+<div class="ia-section" id="ia">
+  <div class="ia-top">
+    <div>
+      <span class="sec-eye">Tecnologia</span>
+      <h2 class="ia-h">IA como<br><em>Alavanca</em><br>de Resultado.</h2>
+    </div>
+    <div>
+      <p class="ia-p">A inteligência artificial não substituiu a estratégia — acelerou a execução. Cada ferramenta teve um papel específico: da pesquisa de pauta à produção de vídeo, passando por copy assistida e análise de mercado.</p>
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag">Pesquisa de Pauta</span>
+        <span class="tag">Produção Escalável</span>
+        <span class="tag">Copy Assistida</span>
+        <span class="tag">Análise Competitiva</span>
+      </div>
+    </div>
+  </div>
+  <div class="ia-grid">
+    <div class="ia-card"><div class="ia-tool">Pesquisa de Pauta</div><div class="ia-desc">IA generativa para mapear dúvidas reais do público automotivo — termos de busca, perguntas frequentes e gaps editoriais dos concorrentes. Informou toda a estratégia antes do primeiro post.</div></div>
+    <div class="ia-card"><div class="ia-tool">CapCut IA</div><div class="ia-desc">Edição de vídeo acelerada por recursos de IA — corte automático, transições, remoção de fundo e efeitos. Reduziu o tempo de produção de reels em até 60%.</div></div>
+    <div class="ia-card"><div class="ia-tool">HeyGen</div><div class="ia-desc">Criação de apresentadores virtuais para vídeos educativos e institucionais. Narração e lip-sync automático, permitindo produção de conteúdo em escala sem necessidade de câmera.</div></div>
+    <div class="ia-card"><div class="ia-tool">ElevenLabs</div><div class="ia-desc">Narração realista em voz para vídeos educativos. Eliminou a dependência de gravação presencial e garantiu consistência de locução em todos os formatos de conteúdo.</div></div>
+    <div class="ia-card"><div class="ia-tool">Copy Assistida</div><div class="ia-desc">Geração de múltiplas variações de legendas e títulos para testar ângulos diferentes de abordagem. Velocidade de ideação sem perder o controle criativo e estratégico da comunicação.</div></div>
+    <div class="ia-card"><div class="ia-tool">Análise de Mercado</div><div class="ia-desc">Mapeamento automatizado de perfis concorrentes no segmento automotivo — identificando padrões de engajamento, lacunas editoriais e oportunidades claras de diferenciação para a Help.</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ 05 PILARES EDITORIAIS ═══ -->
+<section class="sec">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <div><span class="sec-eye">Estrutura de Conteúdo</span><h2 class="sec-title">Os 4 Pilares<br>Editoriais</h2></div>
+  </div>
+  <div class="ed-grid">
+    <div class="ed-col"><span class="ed-col-num">01</span><span class="ed-icon">🏆</span><span class="ed-cat">Pilar 01</span><h3 class="ed-h">Autoridade</h3><ul class="ed-list"><li>Explicações técnicas acessíveis</li><li>Tipos de peças e serviços</li><li>Curiosidades do setor auto</li><li>Notícias relevantes do mercado</li><li>Help como referência técnica</li></ul></div>
+    <div class="ed-col"><span class="ed-col-num">02</span><span class="ed-icon">💡</span><span class="ed-cat">Pilar 02</span><h3 class="ed-h">Dicas</h3><ul class="ed-list"><li>Sintomas que indicam revisão</li><li>Quando trocar cada peça</li><li>Cuidados preventivos</li><li>Alertas sazonais</li><li>O que o mecânico verifica</li></ul></div>
+    <div class="ed-col"><span class="ed-col-num">03</span><span class="ed-icon">🔥</span><span class="ed-cat">Pilar 03</span><h3 class="ed-h">Engajamento</h3><ul class="ed-list"><li>Perguntas ao seguidor</li><li>Reels com humor e identidade</li><li>Bastidores da oficina</li><li>Enquetes e interações</li><li>Conteúdo de identificação</li></ul></div>
+    <div class="ed-col"><span class="ed-col-num">04</span><span class="ed-icon">🎯</span><span class="ed-cat">Pilar 04</span><h3 class="ed-h">Oferta</h3><ul class="ed-list"><li>Serviços com contexto</li><li>Promoções com urgência</li><li>Prova social</li><li>Anúncios com copy estruturado</li><li>CTA claro e direto</li></ul></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 06 RESULTADOS ═══ -->
+<section class="sec" id="resultados">
+  <div class="sec-head">
+    <span class="sec-num">06</span>
+    <div><span class="sec-eye">Entregas & Impacto</span><h2 class="sec-title">O que foi<br>construído</h2></div>
+  </div>
+  <div class="results-grid" style="margin-bottom:2px;">
+    <div class="res feat">
+      <span class="res-label">Transformação Central</span>
+      <span class="res-num">Sistema<br>Visual<br>Novo</span>
+      <p class="res-desc">Identidade completa para o Instagram — paleta, tipografia, grid e iconografia técnica — criando reconhecimento imediato e consistência em todos os formatos.</p>
+    </div>
+    <div class="res">
+      <span class="res-label">Formatos</span>
+      <span class="res-num">4+</span>
+      <p class="res-desc">Carrossel, reel, post estático e criativo de anúncio</p>
+    </div>
+    <div class="res">
+      <span class="res-label">Pilares</span>
+      <span class="res-num">4</span>
+      <p class="res-desc">Autoridade, Dicas, Engajamento e Oferta</p>
+    </div>
+  </div>
+  <div class="results-grid2">
+    <div class="res"><span class="res-label">Ferramentas IA</span><span class="res-num">5+</span><p class="res-desc">CapCut, HeyGen, ElevenLabs e IA generativa</p></div>
+    <div class="res"><span class="res-label">Eficiência Produção</span><span class="res-num">3×</span><p class="res-desc">Aceleração na produção de vídeos com IA</p></div>
+    <div class="res"><span class="res-label">Tom de Voz</span><span class="res-num">1</span><p class="res-desc">Voz única, técnica e acessível documentada</p></div>
+    <div class="res"><span class="res-label">Posicionamento</span><span class="res-num">↑</span><p class="res-desc">Marca reposicionada como referência técnica</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ 07 APRENDIZADO ═══ -->
+<section class="sec">
+  <div class="sec-head">
+    <span class="sec-num">07</span>
+    <div><span class="sec-eye">Reflexão Estratégica</span><h2 class="sec-title">O que eu faria<br>diferente</h2></div>
+  </div>
+  <div class="learn-block">
+    <p>Com mais tempo e acesso a dados de performance, teria implementado <strong>testes A/B sistemáticos</strong> nos criativos de anúncio para validar qual ângulo de copy convertia mais antes de escalar. Também estruturaria um <strong>processo contínuo de coleta de prova social</strong> — depoimentos e avaliações integrados à grade de conteúdo teriam acelerado a recuperação da reputação. Por fim, com a identidade visual consolidada, o próximo passo natural seria <strong>expandir para YouTube Shorts</strong> — os formatos de dica educativa têm alto potencial de alcance orgânico e reforçariam ainda mais o posicionamento de autoridade no segmento.</p>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<div class="contact-section">
+  <div class="contact-asphalt"></div>
+  <div class="contact-inner">
+    <div class="contact-left">
+      <h2>Vamos<br><em>conversar.</em></h2>
+      <p>Estratégia de conteúdo, direção de arte e uso inteligente de IA. Disponível para posições de Head de Conteúdo e parcerias criativas.</p>
+      <a href="https://www.behance.net/gallery/159748045/Help" target="_blank" class="behance-btn">↗ Ver projeto completo no Behance</a>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:flavioguedesmkt@gmail.com" class="clink"><span class="clink-lbl">Email</span>flavioguedesmkt@gmail.com</a>
+      <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" class="clink"><span class="clink-lbl">LinkedIn</span>linkedin.com/in/flávio-guedes</a>
+      <a href="tel:+5521999719474" class="clink"><span class="clink-lbl">WhatsApp</span>(21) 99971-9474</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span class="footer-brand">Flávio<span>.</span>Guedes</span>
+  <span class="footer-copy">CASE STUDY · HELP AUTOMOTIVA · 2023</span>
+</div>
+
+<script>
+function toggleVideo(id, btn) {
+  const vid = document.getElementById(id);
+  if (vid.paused) {
+    vid.play();
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="4" height="12" rx="1" fill="#000"/><rect x="8" y="1" width="4" height="12" rx="1" fill="#000"/></svg>';
+  } else {
+    vid.pause();
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="#000"/></svg>';
+  }
+}
+</script>
+
+</body>
+</html>

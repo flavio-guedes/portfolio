@@ -1,0 +1,201 @@
+{
+  "services": [
+    {
+      "slug": "produto-ux-design",
+      "title": "Produto & UX Design",
+      "subtitle": "Decisões de produto com base em problema, não em opinião.",
+      "description": "UX, pesquisa, prototipação e design systems para reduzir risco e aumentar previsibilidade.",
+      "problems": [
+        "Telas bonitas que não resolvem o problema real.",
+        "Decisões baseadas em gosto, não em dados.",
+        "Retrabalho caro após o build.",
+        "Falta de métrica e priorização."
+      ],
+      "deliverables": [
+        "Diagnóstico de produto e UX",
+        "Pesquisa com usuários",
+        "Wireframes e protótipos",
+        "Design system com tokens e componentes",
+        "MVP orientado a aprendizado"
+      ],
+      "benefits": [
+        "Menos retrabalho",
+        "Decisões com evidência",
+        "Time alinhado",
+        "Entrega enxuta"
+      ],
+      "process": [
+        "ENTENDER",
+        "DIAGNOSTICAR",
+        "PESQUISAR",
+        "PROTOTIPAR",
+        "VALIDAR",
+        "ENTREGAR"
+      ],
+      "cases": ["epq-painel-conteudo", "epq-governanca"],
+      "related": ["design-system", "consultoria"]
+    },
+    {
+      "slug": "design-system",
+      "title": "Design System",
+      "subtitle": "Tokens, componentes e governança para escala e consistência.",
+      "description": "Estrutura visual que permite evoluir rápido sem perder qualidade.",
+      "problems": [
+        "Inconsistência entre telas e squads.",
+        "Componentes duplicados.",
+        "Onboarding lento de novos designers/devs."
+      ],
+      "deliverables": [
+        "Tokens semânticos",
+        "Biblioteca de componentes",
+        "Documentação viva",
+        "Governança visual"
+      ],
+      "benefits": [
+        "Escala com qualidade",
+        "Menos retrabalho",
+        "Velocidade de execução"
+      ],
+      "process": [
+        "AUDITAR",
+        "DEFINIR TOKENS",
+        "CONSTRUIR",
+        "DOCUMENTAR",
+        "GOVERNAR"
+      ],
+      "cases": ["epq-painel-conteudo"],
+      "related": ["produto-ux-design", "consultoria"]
+    },
+    {
+      "slug": "direcao-criativa",
+      "title": "Direção Criativa",
+      "subtitle": "Para marcas que querem ter algo a dizer.",
+      "description": "Branding, campanhas e conteúdo com opinião, estratégia e tecnologia.",
+      "problems": [
+        "Comunicação sem posicionamento.",
+        "Conteúdo genérico.",
+        "Campanhas que não geram identificação."
+      ],
+      "deliverables": [
+        "Posicionamento de marca",
+        "Conceito criativo",
+        "Campanhas",
+        "Guia de marca",
+        "Conteúdo editorial"
+      ],
+      "benefits": [
+        "Marca reconhecível",
+        "Comunicação com densidade",
+        "Conteúdo com intenção"
+      ],
+      "process": [
+        "ENTENDER",
+        "DIAGNOSTICAR",
+        "CONCEITUAR",
+        "CRIAR",
+        "IMPLEMENTAR",
+        "MEDIR"
+      ],
+      "cases": ["hershey", "colgate", "my-dream-foods"],
+      "related": ["estrategia-conteudo", "design-system"]
+    },
+    {
+      "slug": "estrategia-conteudo",
+      "title": "Estratégia de Conteúdo",
+      "subtitle": "Do planejamento à execução, com copy e formato.",
+      "description": "Conteúdo que comunica, posiciona e gera ação.",
+      "problems": [
+        "Conteúdo sem estratégia.",
+        "Falta de consistência.",
+        "Dificuldade de transformar conhecimento em pauta."
+      ],
+      "deliverables": [
+        "Planejamento editorial",
+        "Pillars de conteúdo",
+        "Copy e roteiros",
+        "Cronograma",
+        "Métricas de conteúdo"
+      ],
+      "benefits": [
+        "Consistência",
+        "Posicionamento",
+        "Ação do público"
+      ],
+      "process": [
+        "ENTENDER",
+        "DEFINIR TERRITÓRIOS",
+        "PLANEJAR",
+        "CRIAR",
+        "DISTRIBUIR",
+        "OTIMIZAR"
+      ],
+      "cases": ["epq-conteudo", "epq-planejamento"],
+      "related": ["direcao-criativa", "trafego-pago"]
+    },
+    {
+      "slug": "trafego-pago",
+      "title": "Tráfego Pago & Growth",
+      "subtitle": "Campanhas com métrica, funil e otimização.",
+      "description": "Meta Ads e tráfego orientado a resultado, não a clique.",
+      "problems": [
+        "Gasto sem retorno claro.",
+        "Funil desalinhado.",
+        "Criativos sem copy estratégica."
+      ],
+      "deliverables": [
+        "Plano de mídia",
+        "Criativos e copy",
+        "Gestão de campanhas",
+        "Relatórios de performance",
+        "Otimização contínua"
+      ],
+      "benefits": [
+        "Investimento com clareza",
+        "Funil estruturado",
+        "Escala medida"
+      ],
+      "process": [
+        "ENTENDER",
+        "PLANEJAR",
+        "CRIAR",
+        "PUBLICAR",
+        "MEDIR",
+        "OTIMIZAR"
+      ],
+      "cases": ["epq-ads", "epq-relatorio-ago"],
+      "related": ["estrategia-conteudo", "consultoria"]
+    },
+    {
+      "slug": "consultoria",
+      "title": "Consultoria Executiva",
+      "subtitle": "Sessões, diagnósticos e planos de ação.",
+      "description": "Orientações práticas em produto, marketing e operação.",
+      "problems": [
+        "Time sem priorização.",
+        "Decisões lentas e caras.",
+        "Falta de métrica."
+      ],
+      "deliverables": [
+        "Diagnóstico",
+        "Plano de ação",
+        "Priorização",
+        "Acompanhamento"
+      ],
+      "benefits": [
+        "Clareza executiva",
+        "Menos ruído",
+        "Resultado mensurável"
+      ],
+      "process": [
+        "ENTENDER",
+        "DIAGNOSTICAR",
+        "PRIORIZAR",
+        "PLANEJAR",
+        "IMPLEMENTAR",
+        "ACOMPANHAR"
+      ],
+      "cases": ["epq-governanca", "epq-painel-conteudo"],
+      "related": ["produto-ux-design", "trafego-pago"]
+    }
+  ]
+}

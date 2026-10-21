@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<meta name="theme-color" content="#02060D">
+<title>EPQ Central V10 — Inteligência Operacional</title>
+<style>
+:root{--bg:#02070F;--line:rgba(0,191,255,.16);--hair:rgba(255,255,255,.06);--cyan:#00BFFF;--cyan2:#8FE6FF;--title:#F2F9FF;--text:#A9C3DB;--dim:#5F7B97;--green:#12C7A0;--amber:#FFB547;--violet:#7C8CFF;--red:#E84C62;--pink:#F06CA1;--teal:#2DD4BF;--app-pad:16px;--nav-w:210px;--gap:16px;--chat-left:calc(var(--app-pad) + var(--nav-w) + var(--gap) + 4px);--chat-right:calc(var(--app-pad) + 12px)}
+@media(max-width:980px){:root{--app-pad:12px;--nav-w:64px;--gap:14px}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;overflow:hidden;font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--text);font-size:13.5px;line-height:1.6;background:radial-gradient(1100px 640px at 85% -10%,rgba(0,191,255,.14),transparent 62%),radial-gradient(850px 520px at -10% 110%,rgba(124,140,255,.12),transparent 62%),var(--bg);position:relative}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background-image:url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.05;mix-blend-mode:overlay}
+button,input,textarea{font:inherit;color:var(--text)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:8px}
+.glass,.card,.kpi-c,.att-item,.opp-item,.qchip,.radar-strip,.alert-line,.alert-sub{background:linear-gradient(135deg,rgba(14,32,56,.32),rgba(7,18,36,.26));backdrop-filter:blur(34px) saturate(175%);-webkit-backdrop-filter:blur(34px) saturate(175%);border:1px solid rgba(255,255,255,.05);box-shadow:0 8px 34px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.05)}
+.app{position:relative;display:grid;grid-template-columns:var(--nav-w) 1fr;gap:var(--gap);height:100vh;padding:var(--app-pad);z-index:1}
+aside{display:flex;flex-direction:column;gap:4px;padding:14px 10px;border-radius:20px;min-height:0;overflow-y:auto}
+aside::-webkit-scrollbar{width:5px}
+aside::-webkit-scrollbar-thumb{background:rgba(0,191,255,.15);border-radius:5px}
+.brand{display:flex;gap:11px;align-items:center;padding:4px 8px 14px;border-bottom:1px solid var(--hair);margin-bottom:6px}
+.logo{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(0,191,255,.5),rgba(124,140,255,.42));border:1px solid var(--line);color:#DFF6FF;flex-shrink:0}
+.brand b{display:block;font-size:12px;letter-spacing:.08em;color:var(--title)}
+.brand small{color:var(--dim);font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-top:2px;display:block}
+nav{display:flex;flex-direction:column;gap:2px}
+nav .grp{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:700;padding:10px 12px 4px;opacity:.6}
+nav button{display:flex;align-items:center;gap:9px;background:none;border:1px solid transparent;color:var(--dim);padding:8px 11px;border-radius:10px;text-align:left;cursor:pointer;transition:.2s;font-size:12.5px;width:100%}
+nav button:hover{color:var(--title);background:rgba(0,191,255,.06)}
+nav button[aria-current=page]{color:var(--cyan2);font-weight:600;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 22%,transparent),transparent);border-color:color-mix(in srgb,var(--c) 34%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--c) 18%,transparent)}
+.ic{color:var(--c,var(--cyan));filter:drop-shadow(0 0 4px currentColor);flex-shrink:0}
+main{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;overflow-y:auto;padding:2px 12px 90px 2px}
+main::-webkit-scrollbar{width:8px}
+main::-webkit-scrollbar-thumb{background:rgba(0,191,255,.2);border-radius:8px}
+.demo-line{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:10px;letter-spacing:.06em;color:var(--amber);padding:0 2px}
+.radar-strip{display:flex;align-items:center;gap:12px;padding:8px 14px;border-radius:11px;cursor:pointer;transition:.2s;flex-wrap:wrap;font-size:11.5px}
+.radar-strip .rlab{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);font-weight:700;flex-shrink:0}
+.radar-strip .ritem{display:flex;align-items:center;gap:5px}
+.radar-strip .ritem i{width:5px;height:5px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+.radar-strip .ritem b{color:var(--c);font-weight:600}
+.radar-strip .rmore{font-size:10px;color:var(--cyan);opacity:.7;margin-left:auto}
+.front-head{display:flex;flex-direction:column;gap:2px;padding:0 2px}
+.front-head .fname{font-size:20px;font-weight:700;color:var(--title);letter-spacing:-.01em;line-height:1.2}
+.front-head .fpurp{color:var(--dim);font-size:12px}
+.kpis-c{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.kpi-c{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:11px;border-left:2px solid var(--c);cursor:pointer;transition:.2s;text-align:left;width:100%}
+.kpi-c .kcol{display:flex;flex-direction:column;gap:1px;min-width:0}
+.kpi-c .kl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;white-space:nowrap}
+.kpi-c .kv{font-size:20px;font-weight:700;color:var(--c);line-height:1.05}
+.kpi-c .ka{font-size:10px;color:var(--c);opacity:.7;white-space:nowrap}
+.sec{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px}
+.sec h2{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c);margin:0;display:flex;align-items:center;gap:10px;flex:1}
+.sec h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 40%,transparent),transparent)}
+.block{display:flex;flex-direction:column;min-width:0}
+.alert-line{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;margin-bottom:5px;overflow:hidden;transition:.2s;cursor:pointer;border-left:2px solid var(--c)}
+.alert-line .al-badge{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-radius:999px;padding:2px 8px;white-space:nowrap;background:color-mix(in srgb,var(--c) 10%,transparent);flex-shrink:0}
+.alert-line .al-title{color:var(--title);font-weight:600;font-size:12.5px;white-space:nowrap;flex-shrink:0;max-width:32%;overflow:hidden;text-overflow:ellipsis}
+.alert-line .al-inline{display:flex;gap:8px;flex:1;min-width:0;overflow:hidden;color:var(--dim);font-size:11px}
+.alert-line .al-inline .item{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(0,0,0,.18);border-radius:5px;padding:1px 7px;font-size:10.5px}
+.alert-line .al-inline .item b{color:var(--cyan2);font-weight:600}
+.alert-line .al-toggle{font-size:10px;color:var(--cyan);flex-shrink:0;padding:2px 6px;border-radius:5px;background:rgba(0,191,255,.08);white-space:nowrap}
+.alert-line .al-actions{display:flex;gap:4px;margin-left:auto;flex-shrink:0}
+.alert-line .al-actions .btn{padding:3px 9px;font-size:10.5px;border-radius:7px}
+.alert-sub{padding:6px 12px 10px 24px;border-radius:0 0 11px 11px;margin:-8px 0 5px;border-left:2px solid var(--c);border-top:none;background:linear-gradient(180deg,rgba(14,32,56,.22),rgba(7,18,36,.16))}
+.alert-sub .as-line{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:11.5px;border-bottom:1px dashed var(--hair);color:var(--dim)}
+.alert-sub .as-line:last-child{border-bottom:none}
+.alert-sub .as-line b{color:var(--title);font-weight:600;min-width:130px}
+.alert-sub .as-line .as-meta{color:var(--dim);flex:1}
+.alert-sub .as-line .btn{padding:2px 8px;font-size:10px;border-radius:6px}
+.funnel-row{display:grid;grid-template-columns:140px 1fr 36px;gap:12px;align-items:center;padding:5px 0;font-size:12px}
+.funnel-row span:first-child{color:var(--text)}
+.funnel-row .fbar{height:5px;background:rgba(255,255,255,.05);border-radius:5px;overflow:hidden}
+.funnel-row .fbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.funnel-row .fcount{color:var(--cyan2);font-weight:700;text-align:right;font-size:13px}
+.opp-item{--c:#12C7A0;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;margin-bottom:5px;border-left:2px solid var(--c)}
+.opp-item .otitle{color:var(--title);font-weight:600;font-size:12.5px;white-space:nowrap;flex-shrink:0;max-width:38%;overflow:hidden;text-overflow:ellipsis}
+.opp-item .obody{color:var(--dim);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.opp-item .oactions{display:flex;gap:4px;margin-left:auto}
+.opp-item .oactions .btn{padding:3px 9px;font-size:10.5px;border-radius:7px}
+.qwrap{display:flex;flex-direction:column;gap:8px}
+.qchips{display:flex;flex-wrap:wrap;gap:6px}
+.qchip{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;font-size:11.5px;color:var(--text);cursor:pointer;transition:.2s;border:1px solid var(--line);text-align:left;line-height:1.4}
+.qchip::before{content:"›";color:var(--cyan);font-weight:700;font-size:13px}
+.qchip:hover{color:var(--cyan2);border-color:var(--cyan);transform:translateY(-1px)}
+.btn{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:10.5px;cursor:pointer;transition:.2s;color:var(--text);white-space:nowrap}
+.btn:hover{border-color:var(--cyan);color:var(--cyan2)}
+.btn.p{background:linear-gradient(90deg,#00BFFF,#7C8CFF);color:#031120;border:none;font-weight:700}
+.btn.acc{background:rgba(0,191,255,.09);border-color:rgba(0,191,255,.28);color:var(--cyan2)}
+.btn.acc:hover{background:rgba(0,191,255,.18)}
+.rec-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:600;border:1px solid;background:rgba(0,0,0,.22)}
+.rec-chip.abrir{color:#12C7A0;border-color:rgba(18,199,160,.5);background:rgba(18,199,160,.14)}
+.rec-chip.aguardar{color:#FFB547;border-color:rgba(255,181,71,.5);background:rgba(255,181,71,.14)}
+.rec-chip.descartar{color:#E84C62;border-color:rgba(232,76,98,.5);background:rgba(232,76,98,.14)}
+.rec-chip.conf{color:#F2F9FF;border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.055)}
+.empty{text-align:center;color:var(--dim);padding:20px 16px;border:1px dashed var(--line);border-radius:11px;font-size:12px}
+#chat{position:fixed;left:var(--chat-left);right:var(--chat-right);bottom:14px;height:58px;z-index:40;display:flex;flex-direction:column;overflow:hidden;border-radius:16px;border:1px solid rgba(0,191,255,.28);background:linear-gradient(180deg,rgba(10,26,48,.72),rgba(8,20,38,.72));backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);box-shadow:0 14px 44px rgba(0,0,0,.42);transition:height .4s cubic-bezier(.2,.8,.2,1)}
+#chat.open{height:min(88vh,820px)}
+#chat .chead{display:none;justify-content:space-between;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--hair)}
+#chat.open .chead{display:flex}
+.ct{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan2)}
+.ct small{font-size:10px;color:var(--dim);letter-spacing:.08em;font-weight:500;text-transform:none}
+.sp{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.32}}
+#chat .log{display:none;flex:1;min-height:0;overflow-y:auto;padding:16px 20px;flex-direction:column;gap:11px}
+#chat.open .log{display:flex}
+#chat .bar2{display:flex;gap:10px;align-items:center;height:58px;padding:10px 12px 10px 16px}
+#chat.open .bar2{border-top:1px solid var(--hair)}
+#chat .bar2 input{flex:1;padding:10px 14px;border-radius:11px;background:rgba(0,0,0,.32);border:1px solid var(--line);color:var(--title);font-size:12.5px}
+#chat .bar2 input::placeholder{color:var(--dim)}
+.bub{max-width:88%;padding:12px 16px;border-radius:14px;font-size:12.5px;line-height:1.65;animation:rise .3s ease both}
+.bub.u{align-self:flex-end;background:rgba(0,191,255,.16);border:1px solid rgba(0,191,255,.28);color:#E2F3FF}
+.bub.b{align-self:flex-start;background:rgba(124,140,255,.12);border:1px solid rgba(124,140,255,.3);color:#E6DEFF}
+.bub h4{margin:9px 0 4px;color:var(--cyan2);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:700}
+.bub h4:first-child{margin-top:0}
+.bub p{margin:0 0 6px}
+.bub ul{margin:0;padding-left:16px}
+.bub b{color:#F2F9FF;font-weight:600}
+.bub .bnote{color:var(--dim);font-size:10px;font-style:italic;margin-top:6px;display:block}
+.followups{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.08)}
+.followups .flab{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:6px}
+.followups .fgrid{display:flex;flex-wrap:wrap;gap:5px}
+.followups button{background:rgba(0,191,255,.08);border:1px solid rgba(0,191,255,.24);color:var(--cyan2);border-radius:999px;padding:4px 10px;font-size:11px;cursor:pointer;text-align:left;line-height:1.3}
+.followups button:hover{background:rgba(0,191,255,.16)}
+.records-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--hair)}
+.records-head h2{font-size:18px;color:var(--title);margin:0;font-weight:700}
+.records-head p{margin:0;color:var(--dim);font-size:12px}
+.records-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.records-table th{color:var(--dim);font-weight:600;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;text-align:left;padding:7px 9px;border-bottom:1px solid var(--hair);position:sticky;top:0;background:rgba(7,26,48,.72);cursor:pointer;white-space:nowrap}
+.records-table td{padding:8px 9px;border-bottom:1px solid var(--hair);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.records-table tbody tr{cursor:pointer;transition:.15s}
+.records-table tbody tr:hover{background:rgba(0,191,255,.05)}
+.records-table tbody tr.sel{background:rgba(0,191,255,.12);box-shadow:inset 2px 0 0 var(--cyan)}
+.record-detail{display:flex;flex-direction:column;gap:11px;padding:14px 16px;border-radius:13px;background:rgba(255,255,255,.02);border:1px solid var(--hair)}
+.record-detail h3{margin:0;font-size:14.5px;color:var(--title);font-weight:700}
+.record-detail .rd-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.record-detail .rd-grid>div{background:rgba(0,0,0,.2);border:1px solid var(--hair);border-radius:8px;padding:7px 9px}
+.record-detail .rd-grid span{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:block}
+.record-detail .rd-grid b{display:block;color:var(--cyan2);font-size:12px;margin-top:3px;font-weight:600}
+@media(max-width:980px){.brand b,.brand small,nav .lbl,nav .grp{display:none}.brand{justify-content:center;padding:4px 0 12px}nav button{justify-content:center;padding:9px 0}.kpis-c{grid-template-columns:1fr}.kpi-c .ka{display:none}.alert-line .al-inline{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.pan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:9px}
+.pan-card{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:7px;padding:10px 13px;text-align:left;font-size:12px}
+.pan-card .pc-top{display:flex;align-items:center;gap:8px;color:var(--title);font-weight:600;font-size:12.5px}
+.pan-card .pc-top .ka{margin-left:auto;font-size:10px;color:var(--c);opacity:.6}
+.pan-card .pc-row{display:flex;align-items:baseline;gap:8px}
+.pan-card .kv{font-size:21px}
+.pan-card .pc-l{color:var(--dim);font-size:11px}
+.pan-card .pc-s{color:var(--text);opacity:.8;font-size:11px;border-top:1px dashed var(--hair);padding-top:6px}
+.pan-card .pc-s b{color:var(--c);font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="glass">
+<div class="brand"><div class="brand-txt"><b>EPQ CENTRAL</b><small>Inteligência</small></div></div>
+<nav id="nav"></nav>
+</aside>
+<main id="main"></main>
+</div>
+<section id="chat" aria-label="Assistente EPQ">
+<div class="chead"><span class="ct"><span class="sp"></span>Assistente EPQ <small>· modo local</small></span>
+<div style="display:flex;gap:6px"><button class="btn ghost" data-chat="clear">Limpar</button><button class="btn" data-chat="close">Recolher</button></div></div>
+<div class="log" id="log"></div>
+<form class="bar2" id="cf" autocomplete="off"><span class="ct" style="font-size:10px"><span class="sp"></span>Assistente</span><input id="ci" placeholder="Pergunte sobre qualquer área…"><button class="btn p" type="submit">Enviar</button></form>
+</section>
+<script>
+"use strict";
+let REF='2026-10-16';
+let DEMO_TAG='AMBIENTE DE DEMONSTRAÇÃO · DADOS FICTÍCIOS · DATAS NÃO VERIFICADAS';
+const DATA_INITIAL={
+leads:[
+{id:'L001',nome:'Gustavo Almeida',concurso:'PMERJ',origem:'Instagram',etapa:'Interesse qualificado',ultimoContato:'2026-10-15',prioridade:'alta',responsavel:'Clara',objecoes:['valor'],proximaAcao:'Enviar proposta',historico:[],falta:['Confirmação'],msgSugerida:'Gustavo, consigo condição especial se fecharmos até sexta. Quer que eu separe a vaga?'},
+{id:'L002',nome:'Ramon Souza',concurso:'GCM Maricá',origem:'Indicação',etapa:'Aguardando decisão',ultimoContato:'2026-10-16',prioridade:'alta',responsavel:'Clara',objecoes:[],proximaAcao:'Enviar link hoje',historico:[],falta:['Forma de pagamento'],msgSugerida:'Ramon, consigo parcelar em 6x sem juros. Te envio o link agora?'},
+{id:'L003',nome:'Carlos Eduardo',concurso:'ESA',origem:'Site',etapa:'Em conversa',ultimoContato:'2026-10-14',prioridade:'alta',responsavel:'Ronan',objecoes:['tempo'],proximaAcao:'Enviar grade noturna',historico:[],falta:['Rotina'],msgSugerida:'Carlos, temos turma noturna. Te mando a grade?'},
+{id:'L004',nome:'Patrícia Lima',concurso:'PMERJ',origem:'Google',etapa:'Novo lead',ultimoContato:'2026-10-16',prioridade:'media',responsavel:'—',objecoes:[],proximaAcao:'Primeiro contato',historico:[],falta:['Contato'],msgSugerida:'Patrícia, obrigado pelo interesse. Conversamos hoje?'},
+{id:'L005',nome:'Bruno Tavares',concurso:'EEAR',origem:'Facebook',etapa:'Primeiro contato',ultimoContato:'2026-10-12',prioridade:'media',responsavel:'Clara',objecoes:['valor'],proximaAcao:'Recontatar',historico:[],falta:['Escolaridade'],msgSugerida:'Bruno, temos condição para EEAR. Qual seu objetivo?'},
+{id:'L006',nome:'Renata Silva',concurso:'GCM Maricá',origem:'WhatsApp',etapa:'Interesse qualificado',ultimoContato:'2026-10-11',prioridade:'alta',responsavel:'Ronan',objecoes:[],proximaAcao:'Solicitar documentos',historico:[],falta:['Docs'],msgSugerida:'Renata, te envio o checklist?'},
+{id:'L007',nome:'Diego Martins',concurso:'PMERJ',origem:'Indicação',etapa:'Em conversa',ultimoContato:'2026-10-13',prioridade:'media',responsavel:'Clara',objecoes:['valor','tempo'],proximaAcao:'Turma sábado',historico:[],falta:['Horário'],msgSugerida:'Diego, temos sábado manhã. Faz sentido?'},
+{id:'L008',nome:'Amanda Rocha',concurso:'ESA',origem:'Instagram',etapa:'Aguardando decisão',ultimoContato:'2026-10-15',prioridade:'alta',responsavel:'Ronan',objecoes:[],proximaAcao:'Confirmar',historico:[],falta:['Final'],msgSugerida:'Amanda, mantém desconto até amanhã?'},
+{id:'L009',nome:'Felipe Nunes',concurso:'EEAR',origem:'Site',etapa:'Novo lead',ultimoContato:'2026-10-15',prioridade:'baixa',responsavel:'—',objecoes:[],proximaAcao:'Contato',historico:[],falta:['Contato'],msgSugerida:'Felipe, obrigado pelo interesse.'},
+{id:'L010',nome:'Juliana Prado',concurso:'PMERJ',origem:'Google',etapa:'Matrícula confirmada',ultimoContato:'2026-10-14',prioridade:'baixa',responsavel:'Clara',objecoes:[],proximaAcao:'Enviar acesso',historico:[],falta:[],msgSugerida:'Bem-vinda!'}
+],
+alunos:[
+{id:'A001',nome:'Maria Souza',turma:'GCM Maricá Noturno',risco:'atencao',sinal:'Interesse em reposição',ultimaInteracao:'2026-10-15',responsavel:'Andressa',proximaAcao:'Plano de reposição',situacao:'em andamento'},
+{id:'A002',nome:'João Pedro Alves',turma:'PMERJ Manhã',risco:'alto',sinal:'Faltas consecutivas (3)',ultimaInteracao:'2026-10-14',responsavel:'Andressa',proximaAcao:'Contato ativo',situacao:'aberto'},
+{id:'A003',nome:'Fernanda Lima',turma:'ESA Tarde',risco:'critico',sinal:'Pausa + insatisfação',ultimaInteracao:'2026-10-12',responsavel:'Andressa',proximaAcao:'Reunião urgente',situacao:'aberto'},
+{id:'A004',nome:'Ricardo Pereira',turma:'GCM Maricá Noturno',risco:'atencao',sinal:'Queda de participação',ultimaInteracao:'2026-10-11',responsavel:'Andressa',proximaAcao:'Verificar',situacao:'em andamento'}
+],
+campanhas:[
+{id:'C001',nome:'PMERJ · Lista de espera',concurso:'PMERJ',canal:'Meta · Instagram',status:'ativa',investimento:1800,leads:64,matriculas:3,meta_cpl:25},
+{id:'C002',nome:'ESA · Noturno',concurso:'ESA',canal:'Meta · Facebook',status:'ativa',investimento:1200,leads:42,matriculas:4,meta_cpl:28},
+{id:'C003',nome:'GCM Maricá · Edital',concurso:'GCM Maricá',canal:'Google Ads',status:'ativa',investimento:900,leads:55,matriculas:6,meta_cpl:18},
+{id:'C004',nome:'EEAR · Geral',concurso:'EEAR',canal:'Meta · Instagram',status:'pausada',investimento:600,leads:14,matriculas:0,meta_cpl:35}
+],
+turmas:[
+{id:'T001',concurso:'PMERJ',carreira:'Policial',regiao:'Nilópolis',status:'Em avaliação',leads:12,capacidade:35,meta:25,professor:'A definir',edital:'previsto',prazo:'2026-11-01',confianca:0.72,recomendacao:'testar',responsavel:'Ronan',riscos:['Edital pode atrasar'],proximaAcao:'Campanha lista de espera 7d'},
+{id:'T003',concurso:'GCM Maricá',carreira:'Guarda Municipal',regiao:'Maricá',status:'Aguardando decisão',leads:18,capacidade:35,meta:30,professor:'Prof. Marcos',edital:'publicado',prazo:'2026-10-25',confianca:0.81,recomendacao:'abrir',responsavel:'Ronan',riscos:['Sala noite'],proximaAcao:'Confirmar professor e sala'}
+],
+ocorrencias:[
+{id:'O001',turma:'GCM Maricá Noturno',disciplina:'Português',problema:'Queda de acerto em interpretação',responsavel:'Prof. Ronan',prazo:'2026-10-30',situacao:'aberta'},
+{id:'O002',turma:'PMERJ Manhã',disciplina:'Direito Penal',problema:'Conteúdo atrasado 2 aulas',responsavel:'Prof. Marcos',prazo:'2026-10-22',situacao:'aberta'}
+],
+radar:[
+{concurso:'GCM Maricá',situacao:'inscricoes_abertas',inscricoes:'2026-10-05 a 2026-11-05',fonte:'Diário Oficial Maricá',tipo:'aberto'},
+{concurso:'ESA',situacao:'edital_publicado',inscricoes:'2026-11-01 a 2026-12-10',fonte:'Portal EsSA',tipo:'edital'},
+{concurso:'PMERJ',situacao:'previsao',inscricoes:'a confirmar',fonte:'Portal oficial',tipo:'prev'},
+{concurso:'EEAR',situacao:'sem_data',inscricoes:'—',fonte:'Monitoramento',tipo:'aguardo'}
+],
+alertas:[
+{id:'AL001',tipo:'P0',grupo:'Comercial',texto:'Lead Ramon (L002) mandou áudio perguntando se fecha hoje.',acao:'Responder agora',responsavel:'Clara',prazo:'2026-10-16',lido:false,frente:'comercial'},
+{id:'AL002',tipo:'P0',grupo:'Sucesso do Cliente',texto:'Aluna Fernanda Lima (A003) em risco crítico sem retorno há 4 dias.',acao:'Contato urgente',responsavel:'Andressa',prazo:'2026-10-16',lido:false,frente:'cs'},
+{id:'AL003',tipo:'P1',grupo:'Pedagógica',texto:'Aula da noite GCM Maricá cancelada por falta de professor.',acao:'Avisar alunos e repor',responsavel:'Coordenação',prazo:'2026-10-17',lido:false,frente:'pedagogica'},
+{id:'AL004',tipo:'P1',grupo:'Marketing',texto:'Campanha EEAR (C004) com R$ 600 investidos e 0 matrículas.',acao:'Revisar ou pausar',responsavel:'Flávio',prazo:'2026-10-18',lido:false,frente:'marketing'},
+{id:'AL005',tipo:'P1',grupo:'Comercial',texto:'6 leads sem retorno há mais de 24h no funil.',acao:'Priorizar contatos',responsavel:'Ronan',prazo:'2026-10-17',lido:false,frente:'comercial'},
+{id:'AL006',tipo:'P2',grupo:'Turmas',texto:'Decisão sobre T003 (GCM Maricá) próxima do prazo.',acao:'Revisar evidências',responsavel:'Ronan',prazo:'2026-10-25',lido:false,frente:'turmas'}
+],
+financeiro:[
+{id:'F001',aluno:'João Pedro Alves',turma:'PMERJ Manhã',valor:850,vencimento:'2026-09-10',diasAtraso:36,status:'vencido',responsavel:'Adm'},
+{id:'F002',aluno:'Priscila Barros',turma:'GCM Maricá Noturno',valor:850,vencimento:'2026-09-15',diasAtraso:31,status:'vencido',responsavel:'Adm'},
+{id:'F003',aluno:'Rodrigo Salles',turma:'ESA Tarde',valor:850,vencimento:'2026-09-20',diasAtraso:26,status:'vencido',responsavel:'Adm'}
+],
+financeiroContas:[
+{id:'FC01',descricao:'Aluguel sede Nilópolis',valor:4500,vencimento:'2026-10-05',status:'pago'},
+{id:'FC02',descricao:'Internet + telefonia',valor:380,vencimento:'2026-10-10',status:'pago'},
+{id:'FC03',descricao:'Material didático impressão',valor:1200,vencimento:'2026-10-18',status:'a_pagar'}
+],
+estrutura:[
+{id:'E001',item:'Projetor sala 2',local:'Sala 2 · Nilópolis',problema:'Não liga',severidade:'alta',aberto:'2026-10-13',responsavel:'Manutenção'},
+{id:'E002',item:'Ar-condicionado sala 3',local:'Sala 3 · Nilópolis',problema:'Ruído excessivo',severidade:'media',aberto:'2026-10-10',responsavel:'Manutenção'}
+],
+rh:[
+{id:'R001',nome:'Prof. Marcos',cargo:'Professor',turmas:4,carga:32,status:'sobrecarga',alerta:'3 turmas consecutivas sem folga',prazo:'2026-10-22',responsavel:'Ronan'},
+{id:'R002',nome:'Prof. Renata',cargo:'Professora',turmas:2,carga:16,status:'ok',alerta:'—',prazo:null,responsavel:'Ronan'},
+{id:'R004',nome:'Clara',cargo:'Comercial',turmas:0,carga:40,status:'sobrecarga',alerta:'Carteira grande de leads',prazo:'2026-10-25',responsavel:'Ronan'}
+],
+rhBeneficios:[
+{id:'RB01',item:'Vale transporte',status:'ativo'},
+{id:'RB02',item:'Vale refeição',status:'ativo'},
+{id:'RB03',item:'Plano de carreira por titulação',status:'em_revisao'}
+],
+filiais:[
+{id:'FI1',nome:'Nilópolis (sede)',alunos:180,turmasAtivas:8,ticketMedio:720,receitaMensal:129600,ocupacao:0.82,status:'estavel'},
+{id:'FI2',nome:'Maricá (projeto)',alunos:0,turmasAtivas:0,ticketMedio:850,receitaMensal:0,ocupacao:0,status:'em_avaliacao'},
+{id:'FI3',nome:'Nova Iguaçu (estudo)',alunos:0,turmasAtivas:0,ticketMedio:700,receitaMensal:0,ocupacao:0,status:'em_avaliacao'}
+],
+ti:[
+{id:'TI01',servico:'Painel central',status:'online',porta:8766,uptime:'99.8%',alerta:null},
+{id:'TI02',servico:'Chat server',status:'online',porta:8766,uptime:'99.5%',alerta:null},
+{id:'TI03',servico:'Scanner grupos',status:'atencao',porta:null,uptime:'85%',alerta:'Backup não roda há 5 dias'},
+{id:'TI04',servico:'Bridge WhatsApp',status:'online',porta:3000,uptime:'98.2%',alerta:null}
+],
+agenda:[
+{id:'AG01',titulo:'Aula GCM Maricá Noturno',data:'2026-10-16',hora:'19:00',sala:'Sala 1',responsavel:'Prof. Marcos',status:'confirmada'},
+{id:'AG02',titulo:'Aula PMERJ Manhã',data:'2026-10-17',hora:'08:00',sala:'Sala 3',responsavel:'Prof. Ronan',status:'confirmada'},
+{id:'AG03',titulo:'Reposição ESA',data:'2026-10-19',hora:'14:00',sala:'A definir',responsavel:'Coordenação',status:'pendente'}
+]
+};
+const AGENTES_SIM=[
+{id:'AG1',nome:'Atlas',cargo:'Estrategista',titulo:'Analisa turmas e oportunidades de abertura',status:'ativo',cor:'#7C8CFF',icon:'compass',tarefas:24,feitas:18,sucesso:87},
+{id:'AG2',nome:'Hermes',cargo:'Comercial',titulo:'Acompanha leads, follow-ups e conversão',status:'ativo',cor:'#00BFFF',icon:'crosshair',tarefas:32,feitas:28,sucesso:92},
+{id:'AG3',nome:'Clio',cargo:'Pedagógica',titulo:'Monitora desempenho e ocorrências de turmas',status:'ativo',cor:'#FFB547',icon:'scroll',tarefas:18,feitas:14,sucesso:89},
+{id:'AG4',nome:'Íris',cargo:'Marketing',titulo:'Analisa campanhas, CPL e retorno',status:'atencao',cor:'#7C8CFF',icon:'bolt',tarefas:15,feitas:11,sucesso:84},
+{id:'AG5',nome:'Héstia',cargo:'CS',titulo:'Identifica alunos em risco e retenção',status:'ativo',cor:'#12C7A0',icon:'pulse',tarefas:21,feitas:16,sucesso:90},
+{id:'AG6',nome:'Pluto',cargo:'Financeira',titulo:'Monitora inadimplência e contas a pagar',status:'sobrecarga',cor:'#F06CA1',icon:'dollar',tarefas:28,feitas:20,sucesso:82}
+];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dt=s=>{if(!s)return'—';const[d]=String(s).split('T');const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;};
+const daysAgo=s=>s?Math.round((new Date(REF)-new Date(s))/864e5):null;
+const el=id=>document.getElementById(id);
+const empty=m=>`<div class="empty">${esc(m)}</div>`;
+const deepClone=o=>JSON.parse(JSON.stringify(o));
+let state={data:deepClone(DATA_INITIAL),edits:{},view:'principal',detail:null,expanded:{},qExpanded:{},selRecord:null};
+function M(key){const list=state.data[key]||[];const edits=state.edits[key]||{};return list.map(x=>Object.assign({},x,edits[x.id]||{}))}
+const L=()=>M('leads'),A=()=>M('alunos'),C=()=>M('campanhas'),T=()=>M('turmas'),O=()=>M('ocorrencias'),AL=()=>M('alertas');
+const FN=()=>M('financeiro'),FT=()=>M('financeiroContas'),ES=()=>M('estrutura'),RH=()=>M('rh'),RHB=()=>M('rhBeneficios');
+const FIL=()=>M('filiais'),TI=()=>M('ti'),AG=()=>M('agenda');
+const R=()=>state.data.radar;
+function calc(){const leads=L(),alunos=A(),camp=C();const ativos=x=>x.etapa!=='Perdido'&&x.etapa!=='Matrícula confirmada';
+const leadsAtivos=leads.filter(ativos).length;const matriculas=leads.filter(x=>x.etapa==='Matrícula confirmada').length;
+const semRet=leads.filter(x=>ativos(x)&&daysAgo(x.ultimoContato)>1);const alunosRisco=alunos.filter(x=>x.risco!=='OK'&&x.situacao!=='resolvido').length;
+const alunosCriticos=alunos.filter(x=>x.risco==='critico'&&x.situacao!=='resolvido').length;
+const invest=camp.reduce((s,x)=>s+x.investimento,0);const leadsCamp=camp.reduce((s,x)=>s+x.leads,0);const matricCamp=camp.reduce((s,x)=>s+x.matriculas,0);
+const cpl=leadsCamp?invest/leadsCamp:0;const investSemMat=camp.filter(x=>x.matriculas===0&&x.investimento>0).reduce((s,x)=>s+x.investimento,0);
+return{leadsAtivos,matriculas,semRet,alunosRisco,alunosCriticos,invest,leadsCamp,matricCamp,cpl,investSemMat};}
+const IC={shield:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',crosshair:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/>',scroll:'<path d="M6 3h10a2 2 0 0 1 2 2v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a4 4 0 0 1 2-4"/>',bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',pulse:'<path d="M2 12h4l3-7 4 14 3-7h6"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6z"/>',dollar:'<circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 0 0-3-1.5c-1.7 0-3 .8-3 2 0 3 6 1.5 6 4.5 0 1.2-1.3 2-3 2a3 3 0 0 1-3-1.5M12 6v2M12 16v2"/>',tools:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2 2-3-3z"/>',users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',building:'<rect x="4" y="3" width="16" height="18" rx="1"/>',chip:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 2v6M8 2v6M3 11h18"/>'};
+const NAV=[{grp:'Principal',items:[['principal','shield','Principal','#00BFFF'],['agentes','chip','Agentes','#8FE6FF']]},{grp:'Operação',items:[['comercial','crosshair','Comercial','#00BFFF'],['pedagogica','scroll','Pedagógica','#FFB547'],['marketing','bolt','Marketing','#7C8CFF'],['cs','pulse','Sucesso','#12C7A0'],['turmas','compass','Turmas','#E84C62']]},{grp:'Back-office',items:[['financeira','dollar','Financeira','#12C7A0'],['estrutura','tools','Estrutura','#FFB547'],['rh','users','RH','#F06CA1'],['filiais','building','Filiais','#7C8CFF'],['ti','chip','TI','#2DD4BF'],['agenda','calendar','Agenda','#8FE6FF']]}];
+function ico(n,s=16){return`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`}
+function renderNav(){el('nav').innerHTML=NAV.map(g=>`<div class="grp">${g.grp}</div>`+g.items.map(([k,i,l,c])=>`<button data-r="${k}" style="--c:${c}" ${state.view===k&&!state.detail?'aria-current="page"':''}>${ico(i,15)}<span class="lbl">${l}</span></button>`).join('')).join('');}
+function alertLine({id,level,color,title,items,query,frontKey}){const expanded=!!state.expanded[id];const preview=items.slice(0,3);
+const inlineHTML=preview.map(i=>`<span class="item"><b>${esc(i.label)}</b>${i.meta?' · '+esc(i.meta):''}</span>`).join('');const more=items.length-3;
+const expandBtn=items.length>3?`<span class="al-toggle">${expanded?'▲ ocultar':'▼ ver +'+more}</span>`:'';
+const subHTML=expanded?`<div class="alert-sub" style="--c:${color}">${items.map(it=>`<div class="as-line"><b>${esc(it.label)}</b><span class="as-meta">${esc(it.meta||'')}</span>${it.action?`<button class="btn acc" data-ask="${esc(it.action.query)}">${esc(it.action.label)}</button>`:''}</div>`).join('')}</div>`:'';
+return`<div class="alert-line" data-alert="${esc(id)}" style="--c:${color}"><span class="al-badge">${esc(level)}</span><span class="al-title">${esc(title)}</span>${inlineHTML?`<span class="al-inline">${inlineHTML}</span>`:''}${expandBtn}<div class="al-actions"><button class="btn acc" data-ask="${esc(query)}">Investigar</button><button class="btn" data-records-front="${frontKey||id}">Registros</button></div></div>${subHTML}`;}
+function oppLine({title,body,query}){return`<div class="opp-item"><span class="otitle" title="${esc(title)}">${esc(title)}</span><span class="obody">${esc(body)}</span><div class="oactions"><button class="btn acc" data-ask="${esc(query)}">Investigar</button></div></div>`;}
+function kpi(label,value,color,q){return`<button class="kpi-c" data-ask="${esc(q)}" style="--c:${color}"><div class="kcol"><span class="kl">${esc(label)}</span><span class="kv">${value}</span></div><span class="ka">investigar →</span></button>`;}
+function qBlock(front,allQ){const ex=!!state.qExpanded[front];const sh=ex?allQ:allQ.slice(0,3);const more=allQ.length-3;
+return`<div class="qwrap"><div class="qchips">${sh.map(q=>`<button class="qchip" data-ask="${esc(q)}">${esc(q)}</button>`).join('')}${!ex&&more>0?`<button class="qchip" data-q-toggle="${front}" style="color:var(--dim)">+${more}…</button>`:''}${ex?`<button class="qchip" data-q-toggle="${front}" style="color:var(--dim)">− menos</button>`:''}</div></div>`;}
+function demoLine(){return`<div class="demo-line"><span>${DEMO_TAG}</span><span>Ref: ${dt(REF)}</span></div>`}
+function radarStrip(){const r=R();const ab=r.find(x=>x.tipo==='aberto');const pv=r.find(x=>x.tipo==='prev');
+const items=[];if(ab)items.push({...ab,c:'#12C7A0',l:'inscrições abertas'});if(pv)items.push({...pv,c:'#FFB547',l:'edital a confirmar'});
+return`<div class="radar-strip" data-radar role="button"><span class="rlab">Radar</span>${items.map(i=>`<span class="ritem" style="--c:${i.c}"><i></i><b>${esc(i.concurso)}</b>: ${esc(i.l)}</span>`).join('')}<span class="rmore">+${r.length-items.length} →</span></div>`;}
+function panorama(k){const card=(r,icon,name,color,big,label,sub)=>`<button class="kpi-c pan-card" data-r="${r}" style="--c:${color}"><span class="pc-top">${ico(icon,14)}<span>${name}</span><span class="ka">abrir →</span></span><span class="pc-row"><span class="kv">${big}</span><span class="pc-l">${label}</span></span><span class="pc-s">${sub}</span></button>`;
+const ocor=O(),turmas=T(),vencidos=FN().filter(x=>x.status==='vencido'),totalVenc=vencidos.reduce((s,x)=>s+x.valor,0);
+const es=ES(),estPrio=es.filter(x=>x.severidade==='alta'||x.severidade==='media').length;const rh=RH(),sobrec=rh.filter(x=>x.status==='sobrecarga'||x.status==='atencao').length;
+const fil=FIL(),ti=TI(),tiOk=ti.filter(x=>x.status==='online').length;const ag=AG(),pend=ag.filter(x=>x.status==='pendente').length;
+const cards=[card('comercial','crosshair','Comercial','#00BFFF',k.leadsAtivos,'leads ativos',`<b>${k.semRet.length}</b> sem retorno · ${k.matriculas} matrículas`),
+card('pedagogica','scroll','Pedagógica','#FFB547',ocor.length,'pendências',`${new Set(ocor.map(o=>o.disciplina)).size} disciplinas afetadas`),
+card('marketing','bolt','Marketing','#7C8CFF','R$ '+k.invest.toLocaleString('pt-BR'),'investidos',`CPL <b>R$ ${k.cpl.toFixed(2)}</b> · ${k.matricCamp} matr.`),
+card('cs','pulse','Sucesso','#12C7A0',k.alunosRisco,'alunos em risco',`<b>${k.alunosCriticos}</b> críticos`),
+card('turmas','compass','Turmas','#E84C62',turmas.length,'oportunidades',`<b>${turmas.filter(t=>t.recomendacao==='abrir').length}</b> pronta(s)`),
+card('financeira','dollar','Financeira','#12C7A0',vencidos.length,'vencidas',`<b>R$ ${totalVenc.toLocaleString('pt-BR')}</b> em atraso`),
+card('estrutura','tools','Estrutura','#FFB547',es.length,'itens',`<b>${estPrio}</b> prioritários`),
+card('rh','users','RH','#F06CA1',sobrec,'em atenção',`${rh.length} no time`),
+card('filiais','building','Filiais','#7C8CFF',fil.length,'unidades',`${fil.filter(f=>f.status==='estavel').length} estável`),
+card('ti','chip','TI','#2DD4BF',tiOk+'/'+ti.length,'online',`<b>${ti.length-tiOk}</b> com alerta`),
+card('agenda','calendar','Agenda','#8FE6FF',pend,'pendente(s)',`${ag.length} compromissos`)];
+return`<section class="block"><div class="sec"><h2 style="--c:#00BFFF">Panorama das frentes</h2></div><div class="pan-grid">${cards.join('')}</div></section>`;}
+function viewPrincipal(){const k=calc();const alertas=AL().filter(a=>!a.lido&&a.tipo!=='OK').sort((a,b)=>({P0:0,P1:1,P2:2}[a.tipo]-{P0:0,P1:1,P2:2}[b.tipo]));
+const items=alertas.map(a=>({label:`${a.tipo} · ${a.grupo}`,meta:a.texto.slice(0,70),action:{label:'Investigar',query:`Investigue: ${a.texto}`}}));
+const attHTML=alertas.length?alertLine({id:'principal',level:'ATENÇÃO',color:'#E84C62',title:`${alertas.length} prioridades em aberto`,items,query:'Quais são as prioridades críticas?',frontKey:'principal'}):empty('Nenhuma prioridade.');
+const turmaTop=T().sort((a,b)=>b.confianca-a.confianca)[0];const campTop=C().filter(c=>c.leads>0).map(c=>({c,cpl:c.investimento/c.leads})).sort((a,b)=>a.cpl-b.cpl)[0];
+const opps=[];if(turmaTop)opps.push({title:`${turmaTop.concurso} · ${turmaTop.regiao} — ${turmaTop.recomendacao}`,body:`${turmaTop.leads} leads · ${Math.round(turmaTop.confianca*100)}%`,query:`Analise ${turmaTop.concurso}.`});
+if(campTop)opps.push({title:`Menor CPL: ${campTop.c.nome}`,body:`R$ ${campTop.cpl.toFixed(2)} · ${campTop.c.leads} leads`,query:`Analise ${campTop.c.nome}.`});
+const qs=['O que precisa da minha atenção hoje?','Qual é o principal gargalo?','Quais oportunidades merecem prioridade?','Onde estamos perdendo dinheiro ou tempo?'];
+return demoLine()+radarStrip()+`<div class="front-head"><div class="fname">Principal</div><div class="fpurp">O que merece sua atenção agora e qual deve ser o próximo passo.</div></div>`
++`<div class="kpis-c">${kpi('Leads ativos',k.leadsAtivos,'#00BFFF','Como os leads estão distribuídos?')}${kpi('Matrículas',k.matriculas,'#12C7A0','Como estão as matrículas?')}${kpi('Alunos em risco',k.alunosRisco,'#FFB547','Quais alunos precisam de intervenção?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#12C7A0">Oportunidades</h2></div>${opps.slice(0,2).map(oppLine).join('')||empty('Sem oportunidades.')}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('principal',qs)}</section>`+panorama(k);}
+function viewComercial(){const k=calc();const leads=L();const semRet=leads.filter(l=>l.etapa!=='Perdido'&&l.etapa!=='Matrícula confirmada'&&daysAgo(l.ultimoContato)>1).sort((a,b)=>daysAgo(b.ultimoContato)-daysAgo(a.ultimoContato));
+const quase=L().filter(l=>l.etapa==='Aguardando decisão');
+const items=semRet.map(l=>({label:l.nome,meta:`${l.concurso} · ${daysAgo(l.ultimoContato)}d · ${l.responsavel}`,action:{label:'Investigar',query:`Investigue o lead ${l.nome}.`}}));
+const attHTML=semRet.length?alertLine({id:'comercial',level:'ALTO',color:'#E84C62',title:`${semRet.length} leads sem retorno há +24h`,items,query:'Por que os leads estão travando?',frontKey:'comercial'}):empty('Nenhum lead com atraso.');
+const etapas=['Novo lead','Primeiro contato','Em conversa','Interesse qualificado','Aguardando decisão','Matrícula confirmada','Perdido'];
+const maxE=Math.max(1,...etapas.map(e=>leads.filter(l=>l.etapa===e).length));
+const funnel=etapas.map(e=>{const n=leads.filter(l=>l.etapa===e).length;return`<div class="funnel-row"><span>${esc(e)}</span><div class="fbar"><i style="width:${(n/maxE)*100}%"></i></div><span class="fcount">${n}</span></div>`;}).join('');
+const oppLineHTML=quase.length?oppLine({title:`${quase.length} leads em Aguardando decisão`,body:quase.map(x=>x.nome).slice(0,3).join(' · '),query:'Quais leads estão mais próximos de fechar?'}):empty('Sem leads avançados.');
+const qs=['Quais leads devo priorizar hoje?','Por que os leads não estão avançando?','Quem está aguardando retorno há mais tempo?','Quais são as objeções mais frequentes?'];
+return demoLine()+`<div class="front-head"><div class="fname">Comercial</div><div class="fpurp">Funil, contatos e conversão de leads em matrícula.</div></div>`
++`<div class="kpis-c">${kpi('Leads ativos',k.leadsAtivos,'#00BFFF','Como estão distribuídos?')}${kpi('Sem retorno',semRet.length,'#E84C62','Quem está travado?')}${kpi('Matrículas',k.matriculas,'#12C7A0','Como estão as matrículas?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#00BFFF">Funil comercial</h2></div><div class="card" style="padding:12px 16px">${funnel}</div></section>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#12C7A0">Oportunidade</h2></div>${oppLineHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('comercial',qs)}</section>`;}
+function viewPedagogica(){const ocor=O().filter(o=>o.situacao==='aberta').sort((a,b)=>(a.prazo||'').localeCompare(b.prazo||''));
+const items=ocor.map(o=>({label:o.turma,meta:`${o.disciplina} · ${o.problema}`,action:{label:'Investigar',query:`Analise ${o.turma} · ${o.disciplina}.`}}));
+const attHTML=ocor.length?alertLine({id:'pedagogica',level:'ALTO',color:'#FFB547',title:`${ocor.length} ocorrências em aberto`,items,query:'Qual turma precisa de intervenção?',frontKey:'pedagogica'}):empty('Nenhuma ocorrência.');
+const qs=['Qual turma precisa de intervenção primeiro?','Em quais disciplinas há mais dificuldades?','Quais ocorrências estão próximas do prazo?'];
+return demoLine()+`<div class="front-head"><div class="fname">Pedagógica</div><div class="fpurp">Desempenho, ocorrências e qualidade das turmas.</div></div>`
++`<div class="kpis-c">${kpi('Pendências',ocor.length,'#FFB547','Qual turma precisa de intervenção?')}${kpi('Disciplinas',[...new Set(ocor.map(o=>o.disciplina))].length,'#E84C62','Em quais disciplinas há problemas?')}${kpi('Prazos',ocor.filter(o=>o.prazo).length,'#7C8CFF','Quais vencem logo?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('pedagogica',qs)}</section>`;}
+function viewMarketing(){const k=calc();const camp=C();const semMat=camp.filter(c=>c.investimento>0&&c.matriculas===0);
+const items=semMat.map(c=>({label:c.nome,meta:`R$ ${c.investimento} · ${c.leads} leads · 0 matr.`,action:{label:'Investigar',query:`Analise ${c.nome}.`}}));
+const attHTML=semMat.length?alertLine({id:'marketing',level:'ALTO',color:'#7C8CFF',title:`${semMat.length} campanhas sem matrícula · R$ ${k.investSemMat}`,items,query:'Onde investimos sem retorno?',frontKey:'marketing'}):empty('Sem anomalias.');
+const maxInv=Math.max(1,...camp.map(c=>c.investimento));
+const rows=camp.slice().sort((a,b)=>b.investimento-a.investimento).map(c=>{const cpl=c.leads?c.investimento/c.leads:0;const cor=c.meta_cpl&&cpl>c.meta_cpl?'#E84C62':'#12C7A0';
+return`<div style="display:grid;grid-template-columns:1.6fr 1fr 60px 70px 60px;gap:12px;align-items:center;font-size:11.5px;padding:6px 0;border-bottom:1px solid var(--hair)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><b style="color:var(--title);font-weight:600">${esc(c.nome)}</b></span><div style="height:5px;background:rgba(255,255,255,.05);border-radius:5px;overflow:hidden"><i style="display:block;height:100%;width:${(c.investimento/maxInv)*100}%;background:linear-gradient(90deg,var(--violet),var(--cyan))"></i></div><span style="color:var(--dim);text-align:right">R$ ${c.investimento}</span><span style="color:${cor};text-align:right;font-weight:600">R$ ${cpl.toFixed(2)}</span><span style="color:var(--cyan2);text-align:right;font-weight:600">${c.matriculas} m.</span></div>`;}).join('');
+const qs=['Qual campanha apresenta o menor CPL?','Quais campanhas merecem investigação?','Onde investimos sem matrícula?','Que campanhas devem ser mantidas?'];
+return demoLine()+`<div class="front-head"><div class="fname">Marketing</div><div class="fpurp">Aquisição, custo por lead e retorno das campanhas.</div></div>`
++`<div class="kpis-c">${kpi('Investimento','R$ '+k.invest.toLocaleString('pt-BR'),'#7C8CFF','Onde investimos?')}${kpi('CPL','R$ '+k.cpl.toFixed(2),'#FFB547','O que explica o CPL?')}${kpi('Matr.',k.matricCamp,'#12C7A0','Quais convertem?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#00BFFF">Comparativo de campanhas</h2></div><div class="card" style="padding:12px 16px">${rows}</div></section>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('marketing',qs)}</section>`;}
+function viewCS(){const alunos=A();const criticos=alunos.filter(a=>a.risco==='critico'&&a.situacao!=='resolvido').sort((a,b)=>daysAgo(b.ultimaInteracao)-daysAgo(a.ultimaInteracao));
+const emRisco=alunos.filter(a=>a.risco!=='OK'&&a.situacao!=='resolvido');
+const items=emRisco.map(a=>({label:a.nome,meta:`${a.turma} · ${a.risco} · ${daysAgo(a.ultimaInteracao)}d`,action:{label:'Investigar',query:`Analise ${a.nome}.`}}));
+const attHTML=emRisco.length?alertLine({id:'cs',level:'CRÍTICO',color:'#E84C62',title:`${emRisco.length} alunos em atenção · ${criticos.length} críticos`,items,query:'Quais alunos precisam de acompanhamento urgente?',frontKey:'cs'}):empty('Nenhum caso.');
+const qs=['Quais alunos precisam de acompanhamento urgente?','Quem teve faltas consecutivas?','Quais casos estão sem retorno?'];
+return demoLine()+`<div class="front-head"><div class="fname">Sucesso do Cliente</div><div class="fpurp">Retenção, sinais de atenção e recuperação de alunos.</div></div>`
++`<div class="kpis-c">${kpi('Em atenção',alunos.filter(a=>a.risco==='atencao'&&a.situacao!=='resolvido').length,'#FFB547','Quais alunos?')}${kpi('Críticos',criticos.length,'#E84C62','Quem precisa de contato?')}${kpi('Abertos',alunos.filter(a=>a.situacao==='aberto').length,'#7C8CFF','Quais sem solução?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('cs',qs)}</section>`;}
+function viewTurmas(){const turmas=T();const sorted=turmas.slice().sort((a,b)=>{const rw={abrir:0,testar:1,aguardar:2,descartar:3};const d=rw[a.recomendacao]-rw[b.recomendacao];return d||(a.prazo||'').localeCompare(b.prazo||'')});
+const items=sorted.map(t=>({label:t.concurso,meta:`${t.regiao} · ${t.recomendacao} · ${Math.round(t.confianca*100)}%`,action:{label:'Investigar',query:`Analise ${t.concurso}.`}}));
+const proximo=turmas.slice().sort((a,b)=>(a.prazo||'').localeCompare(b.prazo||''))[0];
+const attHTML=proximo?alertLine({id:'turmas',level:'ATENÇÃO',color:'#FFB547',title:`Decisão próxima: ${proximo.concurso} · ${dt(proximo.prazo)}`,items,query:'Quais decisões estão próximas?',frontKey:'turmas'}):empty('Sem decisões.');
+const melhor=turmas.slice().sort((a,b)=>b.confianca-a.confianca)[0];
+const qs=['Qual turma apresenta a melhor oportunidade?','Quais turmas deveriam ser testadas?','Que evidências faltam?','Quais decisões estão próximas?'];
+return demoLine()+`<div class="front-head"><div class="fname">Caminhos de Turma</div><div class="fpurp">Decidir quais novas turmas abrir, testar, aguardar ou descartar.</div></div>`
++`<div class="kpis-c">${kpi('Oportunidades',turmas.length,'#00BFFF','Qual turma é a melhor?')}${kpi('Prontas abrir',turmas.filter(t=>t.recomendacao==='abrir').length,'#12C7A0','Qual está pronta?')}${kpi('Aguardando',turmas.filter(t=>t.recomendacao==='aguardar').length,'#FFB547','Que evidências faltam?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#12C7A0">Oportunidade em destaque</h2></div>${melhor?oppLine({title:`Maior confiança: ${melhor.concurso}`,body:`${melhor.leads} leads · ${Math.round(melhor.confianca*100)}% · "${melhor.recomendacao}"`,query:'Qual turma apresenta a melhor oportunidade?'}):empty('Sem oportunidades.')}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('turmas',qs)}</section>`;}
+function viewFinanceira(){const fn=FN();const vencidos=fn.filter(x=>x.status==='vencido').sort((a,b)=>b.diasAtraso-a.diasAtraso);const totalVenc=vencidos.reduce((s,x)=>s+x.valor,0);
+const contas=FT().filter(x=>x.status==='a_pagar');
+const items=vencidos.map(x=>({label:x.aluno,meta:`${x.turma} · R$ ${x.valor} · ${x.diasAtraso}d`,action:{label:'Investigar',query:`Analise ${x.aluno}.`}}));
+const attHTML=vencidos.length?alertLine({id:'financeira',level:'CRÍTICO',color:'#E84C62',title:`${vencidos.length} mensalidades vencidas · R$ ${totalVenc.toLocaleString('pt-BR')}`,items,query:'Qual a situação da inadimplência?',frontKey:'financeira'}):empty('Sem mensalidades vencidas.');
+const qs=['Qual a situação da inadimplência?','Quem está com pagamento atrasado?','Quais contas vencem essa semana?'];
+const recTotal=fn.filter(x=>x.status!=='vencido').reduce((s,x)=>s+x.valor,0);
+return demoLine()+`<div class="front-head"><div class="fname">Financeira</div><div class="fpurp">Receitas, inadimplência e contas a pagar.</div></div>`
++`<div class="kpis-c">${kpi('Vencidos',vencidos.length,'#E84C62','Quem está inadimplente?')}${kpi('Total vencido','R$ '+totalVenc.toLocaleString('pt-BR'),'#FFB547','Qual o impacto?')}${kpi('Contas a pagar',contas.length,'#7C8CFF','O que vence em breve?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('financeira',qs)}</section>`;}
+function viewEstrutura(){const es=ES();const abertos=es.filter(x=>x.severidade==='alta'||x.severidade==='media');
+const items=es.map(x=>({label:x.item,meta:`${x.local} · ${x.problema}`,action:{label:'Investigar',query:`Analise ${x.item}.`}}));
+const attHTML=es.length?alertLine({id:'estrutura',level:abertos.length?'ALTO':'MÉDIO',color:abertos.length?'#FFB547':'#7C8CFF',title:`${es.length} itens com pendência · ${abertos.length} prioritários`,items,query:'Quais itens precisam de atenção?',frontKey:'estrutura'}):empty('Sem pendências.');
+const qs=['Quais equipamentos precisam de reparo?','Quais salas têm problema?','Qual o impacto no aluno?'];
+return demoLine()+`<div class="front-head"><div class="fname">Estrutura</div><div class="fpurp">Salas, equipamentos e material.</div></div>`
++`<div class="kpis-c">${kpi('Pendências',es.length,'#FFB547','O que está quebrado?')}${kpi('Prioritários',abertos.length,'#E84C62','O que resolver primeiro?')}${kpi('Salas afetadas',new Set(es.map(x=>x.local)).size,'#7C8CFF','Quais salas?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('estrutura',qs)}</section>`;}
+function viewRH(){const rh=RH();const sobrec=rh.filter(x=>x.status==='sobrecarga'||x.status==='atencao');
+const items=sobrec.map(x=>({label:x.nome,meta:`${x.cargo} · ${x.alerta}`,action:{label:'Investigar',query:`Analise ${x.nome}.`}}));
+const attHTML=sobrec.length?alertLine({id:'rh',level:'ATENÇÃO',color:'#F06CA1',title:`${sobrec.length} pessoa(s) em atenção`,items,query:'Quem está sobrecarregado?',frontKey:'rh'}):empty('Ninguém sobrecarregado.');
+const ben=RHB();const qs=['Quem está sobrecarregado?','Como está o plano de carreira?','Quais benefícios estão ativos?'];
+return demoLine()+`<div class="front-head"><div class="fname">RH</div><div class="fpurp">Time, carga, plano de carreira, benefícios.</div></div>`
++`<div class="kpis-c">${kpi('Time ativo',rh.length,'#F06CA1','Quem compõe o time?')}${kpi('Sobrecarregados',sobrec.length,'#E84C62','Quem está no limite?')}${kpi('Benefícios',ben.length,'#12C7A0','O que oferecemos?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('rh',qs)}</section>`;}
+function viewFiliais(){const fil=FIL();const items=fil.map(f=>({label:f.nome,meta:`${f.alunos} alunos · ticket R$ ${f.ticketMedio}`,action:{label:'Investigar',query:`Analise ${f.nome}.`}}));
+const attHTML=fil.length?alertLine({id:'filiais',level:'INFO',color:'#7C8CFF',title:`${fil.length} unidades mapeadas`,items,query:'Como estão as filiais?',frontKey:'filiais'}):empty('Sem filiais.');
+const qs=['Como está cada unidade?','Qual filial é mais rentável?','Vale abrir nova unidade?'];
+return demoLine()+`<div class="front-head"><div class="fname">Filiais</div><div class="fpurp">Unidades, comparativos e decisão de expansão.</div></div>`
++`<div class="kpis-c">${kpi('Unidades',fil.length,'#7C8CFF','Quantas unidades?')}${kpi('Estáveis',fil.filter(f=>f.status==='estavel').length,'#12C7A0','Quantas saudáveis?')}${kpi('Em avaliação',fil.filter(f=>f.status==='em_avaliacao').length,'#FFB547','Quantas em estudo?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('filiais',qs)}</section>`;}
+function viewTI(){const ti=TI();const problemas=ti.filter(x=>x.status!=='online');
+const items=ti.map(x=>({label:x.servico,meta:`${x.status}${x.alerta?' · '+x.alerta:''}`,action:{label:'Investigar',query:`Analise ${x.servico}.`}}));
+const attHTML=problemas.length?alertLine({id:'ti',level:'ATENÇÃO',color:'#2DD4BF',title:`${problemas.length} serviço(s) com alerta`,items,query:'Quais serviços estão com problema?',frontKey:'ti'}):empty('Todos os serviços online.');
+const qs=['Quais serviços estão fora?','Último backup rodou?','Como está a segurança?'];
+return demoLine()+`<div class="front-head"><div class="fname">TI</div><div class="fpurp">Serviços, integrações, backups e infraestrutura.</div></div>`
++`<div class="kpis-c">${kpi('Serviços',ti.length,'#2DD4BF','Quantos serviços?')}${kpi('Online',ti.filter(x=>x.status==='online').length,'#12C7A0','Quantos ok?')}${kpi('Com alerta',problemas.length,'#FFB547','O que está travado?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('ti',qs)}</section>`;}
+function viewAgenda(){const ag=AG();const pendentes=ag.filter(x=>x.status==='pendente');
+const items=ag.map(x=>({label:x.titulo,meta:`${dt(x.data)} ${x.hora} · ${x.sala}`,action:{label:'Investigar',query:`Analise ${x.titulo}.`}}));
+const attHTML=pendentes.length?alertLine({id:'agenda',level:'ATENÇÃO',color:'#8FE6FF',title:`${pendentes.length} compromisso(s) pendente(s)`,items,query:'O que está pendente?',frontKey:'agenda'}):empty('Nada pendente.');
+const qs=['O que tenho hoje?','Quais reposições estão pendentes?','O que está sem confirmação?'];
+return demoLine()+`<div class="front-head"><div class="fname">Agenda</div><div class="fpurp">Aulas, reposições, reuniões e compromissos.</div></div>`
++`<div class="kpis-c">${kpi('Compromissos',ag.length,'#8FE6FF','O que temos marcado?')}${kpi('Confirmados',ag.filter(x=>x.status==='confirmada').length,'#12C7A0','O que está ok?')}${kpi('Pendentes',pendentes.length,'#FFB547','O que falta confirmar?')}</div>`
++`<section class="block"><div class="sec"><h2 style="--c:#E84C62">Atenção prioritária</h2></div>${attHTML}</section>`
++`<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>${qBlock('agenda',qs)}</section>`;}
+function viewAgentes(){const agentes=AGENTES_SIM;const total=agentes.length;const ativos=agentes.filter(a=>a.status==='ativo').length;const tarefasTotal=agentes.reduce((s,a)=>s+a.tarefas,0);const tarefasFeitas=agentes.reduce((s,a)=>s+a.feitas,0);const andamento=tarefasTotal-tarefasFeitas;const sucesso=Math.round(agentes.reduce((s,a)=>s+a.sucesso,0)/total);const atencao=agentes.filter(a=>a.status!=='ativo').length;const alertas=AL().filter(a=>!a.lido&&a.tipo!=='OK').slice(0,4);const items=alertas.map(a=>({label:a.grupo,meta:a.texto.slice(0,70),action:{label:'Investigar',query:'Investigue: '+a.texto}}));const attHTML=alertas.length?alertLine({id:'agentes',level:'ATENÇÃO',color:'#E84C62',title:alertas.length+' alertas gerados pelos agentes',items:items,query:'Quais alertas os agentes geraram?',frontKey:'agentes'}):empty('Nenhum alerta.');const sc={ativo:'abrir',atencao:'aguardar',sobrecarga:'descartar'};const agentsHTML=agentes.map(a=>'<div class="opp-item" style="--c:'+a.cor+'"><span class="otitle" style="display:flex;align-items:center;gap:8px">'+ico(a.icon,14)+' '+esc(a.nome)+'</span><span class="obody">'+esc(a.cargo)+' · '+esc(a.titulo)+'</span><div class="oactions"><span class="rec-chip '+(sc[a.status]||'conf')+'">'+esc(a.status)+'</span><button class="btn acc" data-ask="Investigar o que o agente '+esc(a.nome)+' ('+esc(a.cargo)+') está fazendo.">Investigar</button></div></div>').join('');const sugestoes=[{title:'Reativar leads sem retorno',body:'Hermes identificou '+calc().semRet.length+' leads aguardando follow-up',query:'Quais leads estão sem retorno?'},{title:'Revisar campanha sem matrícula',body:'Íris sinalizou R$ '+calc().investSemMat+' investidos sem retorno',query:'Onde investimos sem retorno?'},{title:'Intervir com '+calc().alunosCriticos+' aluno(s) crítico(s)',body:'Héstia recomenda contato urgente antes do fim da semana',query:'Quais alunos precisam de acompanhamento?'},{title:'Confirmar turma GCM Maricá',body:'Atlas detectou prazo próximo — decisão ainda pendente',query:'Qual turma apresenta a melhor oportunidade?'}];const sugestoesHTML=sugestoes.map(oppLine).join('');const qs=['O que os agentes identificaram hoje?','Quais ações os agentes recomendam?','Qual agente tem mais tarefas pendentes?','Como está a taxa de sucesso dos agentes?'];return demoLine()+'<div class="front-head"><div class="fname">Agentes</div><div class="fpurp">Inteligência operacional em tempo real — o que cada agente está fazendo, recomendando e priorizando.</div></div>'+'<div class="kpis-c">'+kpi('Agentes ativos',ativos+'/'+total,'#00BFFF','Como estão os agentes?')+kpi('Em andamento',andamento,'#FFB547','O que está pendente?')+kpi('Concluídas',tarefasFeitas,'#12C7A0','O que foi entregue?')+'</div>'+'<div class="kpis-c">'+kpi('Taxa sucesso',sucesso+'%','#12C7A0','Como está o desempenho?')+kpi('Sugestões',sugestoes.length,'#7C8CFF','O que precisa de decisão?')+kpi('Em atenção',atencao,'#E84C62','Quem precisa de ajuda?')+'</div>'+'<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Agentes em operação</h2></div>'+agentsHTML+'</section>'+'<section class="block"><div class="sec"><h2 style="--c:#E84C62">Alertas dos agentes</h2></div>'+attHTML+'</section>'+'<section class="block"><div class="sec"><h2 style="--c:#12C7A0">Sugestões de ação</h2></div>'+sugestoesHTML+'</section>'+'<section class="block"><div class="sec"><h2 style="--c:#7C8CFF">Perguntas sugeridas</h2></div>'+qBlock('agentes',qs)+'</section>';}
+const VIEWS={principal:viewPrincipal,agentes:viewAgentes,comercial:viewComercial,pedagogica:viewPedagogica,marketing:viewMarketing,cs:viewCS,turmas:viewTurmas,financeira:viewFinanceira,estrutura:viewEstrutura,rh:viewRH,filiais:viewFiliais,ti:viewTI,agenda:viewAgenda};
+const RECORDS_CFG={agentes:{title:'Registros de Agentes',sub:'Atividades dos agentes.',build:()=>AGENTES_SIM,cols:['Agente','Cargo','Tarefas','Sucesso','Status'],row:a=>['<b>'+esc(a.nome)+'</b>',esc(a.cargo),a.feitas+'/'+a.tarefas,a.sucesso+'%',esc(a.status)]},principal:{title:'Registros de Principal',sub:'Alertas.',build:()=>AL(),cols:['Tipo','Grupo','Texto','Resp.'],row:a=>[`<b>${esc(a.tipo)}</b>`,esc(a.grupo),esc(a.texto),esc(a.responsavel)]},comercial:{title:'Registros de Comercial',sub:'Leads.',build:()=>L(),cols:['Nome','Concurso','Etapa','Prior.'],row:l=>[`<b>${esc(l.nome)}</b>`,esc(l.concurso),esc(l.etapa),esc(l.prioridade)]},pedagogica:{title:'Registros de Pedagógica',sub:'Ocorrências.',build:()=>O(),cols:['Turma','Disciplina','Problema','Prazo'],row:o=>[`<b>${esc(o.turma)}</b>`,esc(o.disciplina),esc(o.problema),dt(o.prazo)]},marketing:{title:'Registros de Marketing',sub:'Campanhas.',build:()=>C(),cols:['Nome','Canal','Invest.','Leads','Matr.'],row:c=>[`<b>${esc(c.nome)}</b>`,esc(c.canal),'R$ '+c.investimento,c.leads,c.matriculas]},cs:{title:'Registros de CS',sub:'Alunos.',build:()=>A(),cols:['Nome','Turma','Risco','Situação'],row:a=>[`<b>${esc(a.nome)}</b>`,esc(a.turma),esc(a.risco),esc(a.situacao)]},turmas:{title:'Registros de Turmas',sub:'Oportunidades.',build:()=>T(),cols:['Concurso','Região','Leads','Recom.'],row:t=>[`<b>${esc(t.concurso)}</b>`,esc(t.regiao),t.leads,esc(t.recomendacao)]},financeira:{title:'Registros Financeiros',sub:'Mensalidades.',build:()=>FN(),cols:['Aluno','Turma','Valor','Status'],row:f=>[`<b>${esc(f.aluno)}</b>`,esc(f.turma),'R$ '+f.valor,esc(f.status)]},estrutura:{title:'Registros de Estrutura',sub:'Itens.',build:()=>ES(),cols:['Item','Local','Problema','Sever.'],row:e=>[`<b>${esc(e.item)}</b>`,esc(e.local),esc(e.problema),esc(e.severidade)]},rh:{title:'Registros de RH',sub:'Time.',build:()=>RH(),cols:['Nome','Cargo','Carga','Status'],row:r=>[`<b>${esc(r.nome)}</b>`,esc(r.cargo),r.carga+'h',esc(r.status)]},filiais:{title:'Registros de Filiais',sub:'Unidades.',build:()=>FIL(),cols:['Nome','Alunos','Ticket','Status'],row:f=>[`<b>${esc(f.nome)}</b>`,f.alunos,'R$ '+f.ticketMedio,esc(f.status)]},ti:{title:'Registros de TI',sub:'Serviços.',build:()=>TI(),cols:['Serviço','Status','Uptime','Alerta'],row:t=>[`<b>${esc(t.servico)}</b>`,esc(t.status),t.uptime,t.alerta||'—']},agenda:{title:'Registros de Agenda',sub:'Compromissos.',build:()=>AG(),cols:['Título','Data','Hora','Status'],row:a=>[`<b>${esc(a.titulo)}</b>`,dt(a.data),a.hora,esc(a.status)]}};
+function viewRecords(frontKey){const cfg=RECORDS_CFG[frontKey]||RECORDS_CFG.principal;const list=cfg.build();const sel=state.selRecord?list.find(x=>x.id===state.selRecord):null;
+const rows=list.map(it=>{const cells=cfg.row(it);const isSel=it.id===state.selRecord;return`<tr data-rec="${esc(it.id)}" class="${isSel?'sel':''}">${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;}).join('');
+return demoLine()+`<div class="records-head"><div><h2>${esc(cfg.title)}</h2><p>${esc(cfg.sub)}</p></div><button class="btn" data-back>← Voltar</button></div>`
++`<div class="card" style="padding:6px 10px;overflow:auto;max-height:60vh"><table class="records-table"><thead><tr>${cfg.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;}
+const chatHistory=[];
+function chatInitial(){chatHistory.length=0;chatHistory.push({r:'b',html:`<p><b>Assistente EPQ · modo local.</b> Consulto dados desta demonstração.</p><p>Clique em um indicador, alerta ou pergunta.</p>`,followups:['O que precisa da minha atenção hoje?','Quem está inadimplente?','Qual campanha apresenta o menor CPL?','Como está o RH?']});}
+function chatDraw(){const log=el('log');log.innerHTML=chatHistory.map(m=>{const fu=m.followups&&m.followups.length?`<div class="followups"><span class="flab">Investigar mais</span><div class="fgrid">${m.followups.map(f=>`<button data-followup="${esc(f)}">${esc(f)}</button>`).join('')}</div></div>`:'';return`<div class="bub ${m.r}">${m.html}${fu}</div>`;}).join('');log.scrollTop=log.scrollHeight;}
+function openChat(){el('chat').classList.add('open')}
+function pushUser(q){chatHistory.push({r:'u',html:esc(q),followups:[]});chatDraw()}
+function pushBot(html,fu){chatHistory.push({r:'b',html,followups:fu||[]});chatDraw()}
+const S=(t,b)=>`<h4>${esc(t)}</h4>${b}`;
+const UL=items=>`<ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+const LIM=m=>`<span class="bnote">Limitação: ${esc(m)}</span>`;
+function findEntity(q){const ql=q.toLowerCase();const tries=[{list:L(),label:l=>l.nome,type:'lead'},{list:A(),label:a=>a.nome,type:'aluno'},{list:T(),label:t=>t.concurso,type:'turma'},{list:C(),label:c=>c.nome,type:'campanha'},{list:FN(),label:f=>f.aluno,type:'financeiro'}];
+for(const t of tries)for(const i of t.list){const k=t.label(i).toLowerCase();if(k&&ql.includes(k))return{type:t.type,item:i}}return null;}
+function askAssistant(qRaw){const q=qRaw.toLowerCase();const k=calc();const ent=findEntity(qRaw);
+if(ent&&ent.type==='lead'){const l=ent.item;return{html:S('Resumo',`<p><b>${esc(l.nome)}</b> — ${esc(l.etapa)} · ${esc(l.concurso)} · resp. ${esc(l.responsavel)}.</p>`)+S('Fatos',UL([`Últ. contato: ${dt(l.ultimoContato)} (${daysAgo(l.ultimoContato)}d)`,`Objeções: ${l.objecoes.length?esc(l.objecoes.join(', ')):'—'}`]))+S('Próximo passo',`<p>${esc(l.proximaAcao||'Contato.')}</p>`),followups:['Quais leads estão sem retorno?','Quais são as objeções mais frequentes?']};}
+if(ent&&ent.type==='turma'){const t=ent.item;return{html:S('Resumo',`<p>Turma <b>${esc(t.concurso)}</b> (${esc(t.regiao)}) — "${esc(t.recomendacao)}" · conf ${Math.round(t.confianca*100)}%.</p>`)+S('Fatos',UL([`${t.leads} leads · cap ${t.capacidade}`,`Prof: ${esc(t.professor||'a definir')} · prazo ${dt(t.prazo)}`])),followups:['Que evidências faltam?']};}
+if(ent&&ent.type==='campanha'){const c=ent.item;const cpl=c.leads?c.investimento/c.leads:0;return{html:S('Resumo',`<p>Campanha <b>${esc(c.nome)}</b> — CPL R$ ${cpl.toFixed(2)}.</p>`)+S('Fatos',UL([`R$ ${c.investimento} · ${c.leads} leads · ${c.matriculas} matrículas`]))+LIM('Atribuição estimada.'),followups:['Como comparar com outras campanhas?']};}
+if(ent&&ent.type==='aluno'){const a=ent.item;return{html:S('Resumo',`<p>Aluno <b>${esc(a.nome)}</b> (${esc(a.turma)}) — ${esc(a.risco)} · ${esc(a.situacao)}.</p>`)+S('Sinal',`<p>${esc(a.sinal)}</p>`)+S('Recomendação',`<p>${esc(a.proximaAcao)}</p>`),followups:['Quais outros alunos estão em risco?']};}
+if(ent&&ent.type==='financeiro'){const f=ent.item;return{html:S('Resumo',`<p><b>${esc(f.aluno)}</b> — ${esc(f.turma)} · R$ ${f.valor} · ${esc(f.status)}.</p>`)+S('Fatos',UL([`Vencimento: ${dt(f.vencimento)}`,`Dias em atraso: ${f.diasAtraso>0?f.diasAtraso:0}`])),followups:['Quem mais está inadimplente?']};}
+if(/agente|atlas|hermes|clio|íris|héstia|pluto/i.test(q)){const ag=AGENTES_SIM;const t=ag.reduce((s,x)=>s+x.tarefas,0);const f=ag.reduce((s,x)=>s+x.feitas,0);const m=Math.round(ag.reduce((s,x)=>s+x.sucesso,0)/ag.length);return{html:S('Resumo','<p><b>'+ag.length+'</b> agentes em operação · '+(t-f)+' tarefas em andamento · '+m+'% taxa de sucesso.</p>')+S('Status por agente',UL(ag.map(x=>'<b>'+esc(x.nome)+'</b> ('+esc(x.cargo)+') — '+x.feitas+'/'+x.tarefas+' tarefas · '+x.sucesso+'%'))),followups:['Quais ações os agentes recomendam?','Qual agente tem mais tarefas pendentes?']};}
+if(/sugestões.*agente|ações.*agente/i.test(q)){return{html:S('Resumo','<p>Os agentes recomendam 4 ações prioritárias.</p>')+S('Sugestões',UL(['Reativar leads sem retorno (Hermes)','Revisar campanha sem matrícula (Íris)','Intervir com alunos críticos (Héstia)','Confirmar turma GCM Maricá (Atlas)'])),followups:['Quais leads estão sem retorno?']};}
+if(/atenção hoje|o que precisa|gargalo/i.test(q)){const al=AL().filter(a=>!a.lido&&a.tipo!=='OK').sort((a,b)=>({P0:0,P1:1,P2:2}[a.tipo]-{P0:0,P1:1,P2:2}[b.tipo]));return{html:S('Resumo',`<p>Há <b>${al.length}</b> alertas abertos.</p>`)+S('Top sinais',UL(al.slice(0,6).map(a=>`<b>${esc(a.tipo)}</b> · ${esc(a.grupo)} · ${esc(a.texto)}`)))+S('Recomendação',`<p>Atacar P0 primeiro.</p>`),followups:['Quais P0 estão abertos?','Quais leads estão sem retorno?']};}
+if(/inadimplência|inadimplente|vencido/i.test(q)){const v=FN().filter(x=>x.status==='vencido').sort((a,b)=>b.diasAtraso-a.diasAtraso);return{html:S('Resumo',`<p><b>${v.length}</b> mensalidades vencidas — R$ ${v.reduce((s,x)=>s+x.valor,0).toLocaleString('pt-BR')}.</p>`)+UL(v.map(x=>`<b>${esc(x.aluno)}</b> — R$ ${x.valor} · ${x.diasAtraso}d atrás`))+S('Recomendação',`<p>Começar pelos +30d.</p>`),followups:['Qual a situação do fluxo de caixa?']};}
+if(/fluxo de caixa|receita|contas.*pagar/i.test(q)){const fn=FN(),ct=FT();const venc=fn.filter(x=>x.status==='vencido').reduce((s,x)=>s+x.valor,0);const aPag=ct.filter(x=>x.status==='a_pagar').reduce((s,x)=>s+x.valor,0);return{html:S('Resumo',`<p>Vencidos: <b>R$ ${venc.toLocaleString('pt-BR')}</b> · Contas a pagar: <b>R$ ${aPag.toLocaleString('pt-BR')}</b>.</p>`),followups:['Quem está inadimplente?']};}
+if(/sobrecarreg|quem está no limite/i.test(q)){const rh=RH().filter(x=>x.status==='sobrecarga'||x.status==='atencao');return{html:S('Resumo',`<p><b>${rh.length}</b> pessoa(s) em atenção.</p>`)+UL(rh.map(r=>`<b>${esc(r.nome)}</b> (${esc(r.cargo)}) — ${esc(r.alerta)}`)),followups:['Como está o plano de carreira?']};}
+if(/plano de carreira|benefíc/i.test(q)){const b=RHB();return{html:S('Resumo',`<p>${b.length} benefícios.</p>`)+UL(b.map(x=>`<b>${esc(x.item)}</b> — ${esc(x.status)}`)),followups:['Quem está sobrecarregado?']};}
+if(/estrutura|equipament|reparo/i.test(q)){const es=ES();return{html:S('Resumo',`<p><b>${es.length}</b> itens com pendência.</p>`)+UL(es.slice(0,6).map(x=>`<b>${esc(x.item)}</b> — ${esc(x.problema)}`)),followups:['Qual o impacto no aluno?']};}
+if(/serviço.*fora|backup|infra/i.test(q)){const ti=TI();return{html:S('Resumo',`<p>${ti.filter(x=>x.status==='online').length}/${ti.length} serviços online.</p>`)+UL(ti.map(x=>`<b>${esc(x.servico)}</b> — ${esc(x.status)}`)),followups:['Último backup rodou?']};}
+if(/agenda.*hoje|o que tenho hoje/i.test(q)){const ag=AG().sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora)).slice(0,6);return{html:S('Resumo',`<p>Próximos compromissos:</p>`)+UL(ag.map(x=>`<b>${dt(x.data)} ${x.hora}</b> — ${esc(x.titulo)}`)),followups:['O que está sem confirmação?']};}
+if(/unidade|filial/i.test(q)){const f=FIL();return{html:S('Resumo',`<p><b>${f.length}</b> unidades.</p>`)+UL(f.map(x=>`<b>${esc(x.nome)}</b> — ${x.alunos} alunos · ${esc(x.status)}`)),followups:['Qual filial é mais rentável?']};}
+if(/priorizar.*lead|leads.*hoje/i.test(q)){const p=L().filter(l=>l.prioridade==='alta'&&l.etapa!=='Perdido'&&l.etapa!=='Matrícula confirmada');return{html:S('Resumo',`<p><b>${p.length}</b> leads alta prioridade.</p>`)+UL(p.map(l=>`<b>${esc(l.nome)}</b> — ${esc(l.concurso)}, ${esc(l.etapa)}`)),followups:['Quais leads estão sem retorno?']};}
+if(/sem retorno|24h/i.test(q)){const l=L().filter(x=>x.etapa!=='Perdido'&&x.etapa!=='Matrícula confirmada'&&daysAgo(x.ultimoContato)>1).sort((a,b)=>daysAgo(b.ultimoContato)-daysAgo(a.ultimoContato));return{html:S('Resumo',`<p><b>${l.length}</b> lead(s) sem retorno +24h.</p>`)+UL(l.slice(0,8).map(x=>`<b>${esc(x.nome)}</b> — ${daysAgo(x.ultimoContato)}d`)),followups:['Quais estão próximos de fechar?']};}
+if(/menor cpl/i.test(q)){const c=C().filter(x=>x.leads>0).map(x=>({x,cpl:x.investimento/x.leads})).sort((a,b)=>a.cpl-b.cpl);return{html:S('Resumo',`<p>Menor CPL: <b>${esc(c[0]?.x.nome||'—')}</b> — R$ ${(c[0]?.cpl||0).toFixed(2)}.</p>`)+S('Comparativo',UL(c.slice(0,5).map(v=>`${esc(v.x.nome)}: R$ ${v.cpl.toFixed(2)}`))),followups:['Onde investimos sem retorno?']};}
+if(/investindo sem|sem.*matrícul/i.test(q)){const s=C().filter(x=>x.investimento>0&&x.matriculas===0);return{html:S('Resumo',`<p><b>${s.length}</b> campanha(s) sem matrícula — R$ ${k.investSemMat.toLocaleString('pt-BR')}.</p>`)+UL(s.map(x=>`<b>${esc(x.nome)}</b> — R$ ${x.investimento}`)),followups:['Qual campanha tem menor CPL?']};}
+if(/aluno.*acompanhament/i.test(q)){const a=A().filter(x=>x.situacao!=='resolvido'&&x.risco!=='OK');return{html:S('Resumo',`<p><b>${a.length}</b> aluno(s) em atenção.</p>`)+UL(a.slice(0,8).map(x=>`<b>${esc(x.nome)}</b> — ${esc(x.sinal)}`)),followups:['Quem teve faltas consecutivas?']};}
+if(/melhor oportunidade|turma.*melhor/i.test(q)){const t=T().sort((a,b)=>b.confianca-a.confianca)[0];return{html:S('Resumo',`<p>Maior confiança: <b>${esc(t.concurso)}</b> — ${Math.round(t.confianca*100)}%.</p>`)+S('Próximo passo',`<p>${esc(t.proximaAcao)}</p>`),followups:['Que evidências faltam?']};}
+return{html:S('Resumo','<p>Não identifiquei consulta específica.</p>')+S('Sugestões',UL(['O que precisa da minha atenção hoje?','Quem está inadimplente?','Qual campanha apresenta o menor CPL?','Quem está sobrecarregado no RH?'])),followups:[]};}
+function render(){renderNav();if(state.detail)el('main').innerHTML=viewRecords(state.detail.front);else el('main').innerHTML=(VIEWS[state.view]||viewPrincipal)();el('main').scrollTop=0;}
+document.addEventListener('click',e=>{
+const nav=e.target.closest('[data-r]');if(nav){state.view=nav.dataset.r;state.detail=null;state.selRecord=null;render();return}
+const rec=e.target.closest('[data-records-front]');if(rec){state.detail={front:rec.dataset.recordsFront};state.selRecord=null;render();return}
+if(e.target.closest('[data-back]')){state.detail=null;state.selRecord=null;render();return}
+const tr=e.target.closest('tr[data-rec]');if(tr){state.selRecord=tr.dataset.rec;render();return}
+const alertLine=e.target.closest('[data-alert]');if(alertLine&&!e.target.closest('button')){const id=alertLine.dataset.alert;state.expanded[id]=!state.expanded[id];render();return;}
+const ask=e.target.closest('[data-ask]');if(ask){submitQuestion(ask.dataset.ask);return}
+const fu=e.target.closest('[data-followup]');if(fu){submitQuestion(fu.dataset.followup);return}
+const qt=e.target.closest('[data-q-toggle]');if(qt){const f=qt.dataset.qToggle;state.qExpanded[f]=!state.qExpanded[f];render();return}
+const radar=e.target.closest('[data-radar]');if(radar){submitQuestion('Mostre um panorama do radar.');return}
+if(e.target.closest('[data-chat="close"]')){el('chat').classList.remove('open');return}
+if(e.target.closest('[data-chat="clear"]')){chatInitial();chatDraw();return}
+});
+el('cf').addEventListener('submit',e=>{e.preventDefault();const inp=el('ci');const q=inp.value.trim();if(!q)return;inp.value='';submitQuestion(q);});
+el('chat').addEventListener('click',e=>{if(!el('chat').classList.contains('open')&&!e.target.closest('button'))openChat();});
+async function submitQuestion(q){if(!q)return;openChat();pushUser(q);setTimeout(()=>{const a=askAssistant(q);pushBot(a.html,a.followups);},160);}
+chatInitial();render();chatDraw();
+</script>
+</body>
+</html>

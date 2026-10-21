@@ -1,0 +1,141 @@
+/* ============================================================
+   MASTER CSS · Landing Pages de Serviços
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap');
+
+@import './master-design-tokens.css';
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-off);
+  color: var(--color-black);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Utilitários ── */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+.section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .section { padding: var(--space-2xl) 0; }
+}
+
+/* ── Tipografia base ── */
+.display { font-family: var(--font-display); text-transform: uppercase; letter-spacing: -0.01em; }
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-red);
+  margin-bottom: var(--space-md);
+  text-transform: uppercase;
+}
+h1, h2, h3 { line-height: 1.1; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+p.lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-gray-600);
+  max-width: 680px;
+}
+
+/* ── Botões ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+  border: none;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--color-black);
+  color: var(--color-off);
+  box-shadow: var(--shadow-md);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--color-black);
+  border: 2px solid var(--color-black);
+}
+.btn-secondary:hover {
+  background: var(--color-black);
+  color: var(--color-off);
+}
+.btn-white {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+.btn-white:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--color-white);
+  border: 2px solid var(--color-black);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Grid utilitário ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--grid-gap);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gap);
+}
+@media (max-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Animação de entrada ── */
+.fade-in {
+  animation: fadeInUp var(--motion-slow) var(--ease-out) both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Divider editorial ── */
+.divider {
+  width: 100%;
+  height: 2px;
+  background: var(--color-black);
+  border: none;
+  margin: var(--space-xl) 0;
+}

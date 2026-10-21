@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Semanal — Flávio Guedes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f6f7fb; color: #111827; font-family: 'Inter', system-ui, sans-serif; padding: 0; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 28px 22px 60px; }
+  header { margin-bottom: 22px; }
+  header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; }
+  header p { color: #475569; font-size: 14px; margin-top: 6px; }
+
+  .kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 720px) { .kpi { grid-template-columns: repeat(2, 1fr); } }
+  .kpi .item { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: #0f172a; }
+  .kpi .value.red { color: #e11d48; }
+  .kpi .value.blue { color: #2563eb; }
+  .kpi .value.green { color: #15803d; }
+  .kpi .value.amber { color: #b45309; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tabs button { padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; cursor: pointer; }
+  .tabs button:hover { background: #1e293b; }
+  .tabs button.active { background: #4169E1; border-color: #4169E1; color: #ffffff; }
+
+  .panel { display: none; }
+  .panel.open { display: block; }
+
+  details { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  summary { font-size: 15px; font-weight: 700; color: #0f172a; cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  summary::after { content: '+'; font-size: 18px; color: #4169E1; }
+  details[open] summary::after { content: '-'; }
+  .details-body { margin-top: 12px; }
+  .details-body h4 { font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 10px; margin-bottom: 4px; }
+  .details-body p, .details-body li { font-size: 13.5px; color: #334155; line-height: 1.45; }
+  .details-body ul { margin-left: 18px; }
+  .details-body li { margin-bottom: 6px; }
+  code { background: #f1f5f9; padding: 2px 7px; border-radius: 7px; font-size: 12px; color: #0f172a; border: 1px solid #e5e7eb; }
+  a.link { color: #4169E1; text-decoration: underline; }
+
+  .front { background: #f8fafc; border-left: 3px solid #4169E1; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+  .front h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #0f172a; }
+  .front div { font-size: 13px; color: #334155; }
+  .bar { height: 6px; background: #e5e7eb; border-radius: 999px; margin-top: 10px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 999px; background: #4169E1; }
+
+  .project { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 10px; }
+  .project summary { font-size: 14px; font-weight: 700; color: #0f172a; }
+  .project .details-body { margin-top: 10px; }
+
+  .day { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .day h2 { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+  .day .meta { font-size: 12px; color: #64748b; margin-bottom: 12px; }
+  .day .goal { background: #f8fafc; border-left: 3px solid #4169E1; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; }
+  .day .goal strong { font-size: 12px; font-weight: 700; color: #0f172a; display: block; margin-bottom: 2px; }
+  .day .goal p { font-size: 12px; color: #334155; line-height: 1.4; }
+  .day ul { margin-left: 18px; }
+  .day li { font-size: 13px; color: #334155; margin-bottom: 8px; line-height: 1.4; }
+  .day a { color: #4169E1; text-decoration: none; font-size: 12px; }
+  .day a:hover { text-decoration: underline; }
+
+  .risk { background: #fff1f2; border-left: 3px solid #e11d48; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px 16px; margin-top: 4px; }
+  .risk h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #881337; }
+  .risk div { font-size: 13px; color: #4b5563; }
+
+  .suggestion-box { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .suggestion-box h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #0f172a; }
+  .suggestion-box ul { margin-left: 18px; }
+  .suggestion-box li { margin-bottom: 6px; font-size: 13.5px; color: #334155; line-height: 1.45; }
+
+  .download-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .download-bar button { padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; border: 1px solid #334155; color: #e2e8f0; background: #0f172a; cursor: pointer; }
+  .download-bar button:hover { background: #1e293b; }
+
+  .cycle { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .cycle h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #0f172a; }
+  .cycle ul { margin-left: 18px; }
+  .cycle li { margin-bottom: 6px; font-size: 13.5px; color: #334155; }
+
+  .grid-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+  @media (max-width: 1024px) { .grid-week { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px) { .grid-week { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Painel Semanal</h1>
+      <p>Relatório + Agenda em uma página.</p>
+    </header>
+
+    <div class="kpi">
+      <div class="item"><div class="label">Concluídas</div><div class="value green">8</div></div>
+      <div class="item"><div class="label">Pendentes</div><div class="value red">6</div></div>
+      <div class="item"><div class="label">Frentes ativas</div><div class="value blue">7</div></div>
+      <div class="item"><div class="label">Risco principal</div><div class="value amber">1</div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="active" onclick="switchTab('report', this)">Relatório</button>
+      <button onclick="switchTab('agenda', this)">Agenda</button>
+    </div>
+
+    <!-- RELATÓRIO -->
+    <div id="report" class="panel open">
+      <details open>
+        <summary>Portfolio</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('portfolio')">Download tarefas — Portfolio</button>
+          </div>
+          <details class="project" open>
+            <summary>Páginas foco</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Ajustes em <code>produto.html</code>, <code>parceria.html</code>, <code>designhead.html</code>. Remoção do LinkedIn do Flávio, cases do EPQ inseridos em <code>produto.html</code>.</p>
+              <h4>Problemas</h4><p>Apenas validação visual final de <code>designhead.html</code> pendente.</p>
+              <h4>Skills</h4><p>HTML/CSS avançado, Git/Web publishing, UI/UX Design.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de revisão visual executa.</p>
+              <h4>Resumo</h4><p>Portfolio alinhado às frentes definidas. Páginas foco prontas para uso.</p>
+              <h4>Sugestões</h4><ul><li>Validar <code>designhead.html</code> em diferentes dispositivos.</li><li>Adicionar cases recentes.</li></ul>
+            </div>
+          </details>
+          <details class="project">
+            <summary>Proposta e CV</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code>proposta_v3.html</code>, <code>proposta_padrao.html</code>, <code>cv-product-designer.html</code> e PDF gerados.</p>
+              <h4>Problemas</h4><p>Nenhum.</p>
+              <h4>Skills</h4><p>Copywriting comercial, Design editorial, PDF automation.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de conteúdo executa.</p>
+              <h4>Resumo</h4><p>Materiais prontos para envio e publicação.</p>
+              <h4>Sugestões</h4><ul><li>Criar versões por nicho.</li><li>Adicionar depoimentos/cases.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>LinkedIn Prospecção</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('linkedin')">Download tarefas — LinkedIn</button>
+          </div>
+          <details class="project">
+            <summary>Painel pipelkd.html</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code>pipelkd.html</code> criado e publicado com rolagem vertical clean, paginação 10 em 10, temperatura por lead e link direto para o perfil.</p>
+              <h4>Problemas</h4><p>Alguns contatos não abriam corretamente em versão anterior; ajustado após retroação.</p>
+              <h4>Skills</h4><p>Análise de dados CSV, JavaScript/HTML, Inteligência comercial.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de dados + agente de produto executam.</p>
+              <h4>Resumo</h4><p>Painel estável e publicado. Leads priorizados por score e temperatura.</p>
+              <h4>Sugestões</h4><ul><li>Adicionar filtros por temperatura e score.</li><li>Criar modo offline.</li></ul>
+            </div>
+          </details>
+          <details class="project">
+            <summary>Top 30 Leads</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Top 30 prospecção LinkedIn gerada e estruturada.</p>
+              <h4>Problemas</h4><p>Nenhum.</p>
+              <h4>Skills</h4><p>Análise de relacionamento, classificação de oportunidades.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de análise executa.</p>
+              <h4>Resumo</h4><p>Lista pronta para ação.</p>
+              <h4>Sugestões</h4><ul><li>Atualizar lista semanalmente.</li><li>Adicionar notas de follow-up.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>Email Prospecção</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('email')">Download tarefas — Email</button>
+          </div>
+          <details class="project">
+            <summary>Painel email.html</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code>email.html</code> criado com base em <code>leads_filtrados_2026-08-04.csv</code>, paginação 10 em 10.</p>
+              <h4>Problemas</h4><p>Dados iniciais limitados; planilha Google Sheets ainda não integrada.</p>
+              <h4>Skills</h4><p>CSV/JSON parsing, Frontend, Gestão de leads.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de dados + agente de produto executam.</p>
+              <h4>Resumo</h4><p>Painel funcional; dados parciais. Integração com Sheets pendente.</p>
+              <h4>Sugestões</h4><ul><li>Conectar com Google Sheets via API.</li><li>Adicionar status de follow-up automático.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>Gmail/CRM</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('gmail')">Download tarefas — Gmail/CRM</button>
+          </div>
+          <details class="project">
+            <summary>CRM do Gmail</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Estrutura iniciada. Acesso ao Gmail ainda não integrado ao painel.</p>
+              <h4>Problemas</h4><p>Autenticação e leitura automatizada pendentes.</p>
+              <h4>Skills</h4><p>Gmail API, Python, Automação.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de integração executa.</p>
+              <h4>Resumo</h4><p>Pendente de conexão segura.</p>
+              <h4>Sugestões</h4><ul><li>Implementar OAuth com fallback.</li><li>Sincronizar leads com painel.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>CRM/Drive</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('crm')">Download tarefas — CRM/Drive</button>
+          </div>
+          <details class="project">
+            <summary>Base local</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Base local criada com dados do Drive.</p>
+              <h4>Problemas</h4><p>Leitura automatizada do Drive indisponível. Dados precisam ser copiados para pasta local.</p>
+              <h4>Skills</h4><p>Integração Google Drive, Python, Automação.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de integração executa.</p>
+              <h4>Resumo</h4><p>Estrutura iniciada; acesso automatizado pendente.</p>
+              <h4>Sugestões</h4><ul><li>Usar API Google Drive com OAuth.</li><li>Agendar sincronização local periódica.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>EPQ/Forecast</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('epq')">Download tarefas — EPQ/Forecast</button>
+          </div>
+          <details class="project">
+            <summary>forecast.html</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code>forecast.html</code> criado e publicado com explicação didática da planilha, gráficos interativos e explorador por mês.</p>
+              <h4>Problemas</h4><p>Ajustes mobile pendentes para melhor experiência em telas pequenas.</p>
+              <h4>Skills</h4><p>Análise financeira, Visualização de dados, Educação/Didática.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de análise + agente de frontend executam.</p>
+              <h4>Resumo</h4><p>Conteúdo didático completo publicado. Experiência mobile pode melhorar.</p>
+              <h4>Sugestões</h4><ul><li>Refinar CSS para mobile.</li><li>Adicionar suporte a offline.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beni/Áudios</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('beni')">Download tarefas — Beni/Áudios</button>
+          </div>
+          <details class="project">
+            <summary>Áudios do Benício</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Textos preparados. Geração bloqueada por quota da ElevenLabs.</p>
+              <h4>Problemas</h4><p>Créditos insuficientes no provedor TTS.</p>
+              <h4>Skills</h4><p>TTS/Áudio, Conteúdo infantil, Storytelling.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de conteúdo executa.</p>
+              <h4>Resumo</h4><p>Aguardando liberação de quota ou provedor alternativo.</p>
+              <h4>Sugestões</h4><ul><li>Usar provedor gratuito como fallback.</li><li>Comprar créditos adicionais.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <div class="cycle">
+        <h2>Ciclos de aprimoramento</h2>
+        <ul>
+          <li><strong>Framework:</strong> SCAN → PRIORIZAÇÃO → DELEGAÇÃO → EXECUÇÃO → VALIDAÇÃO → DESTRAVAMENTO → REPORT.</li>
+          <li><strong>Papel do MASTER:</strong> orquestrador — define prioridades, delega para agentes especializados e valida entregas. O MASTER não executa tarefas operacionais.</li>
+          <li><strong>Status:</strong> ciclos ativos nas frentes Portfolio, LinkedIn, Email, CRM/Drive, EPQ/Forecast e Gmail/CRM.</li>
+          <li><strong>Ecossistema:</strong> 7 frentes, 10 projetos, 8 tarefas concluídas, 6 pendentes.</li>
+          <li><strong>Melhoria contínua:</strong> ajustes baseados em feedback, retrabalho reduzido e rituais de validação.</li>
+        </ul>
+      </div>
+
+      <div class="suggestion-box">
+        <h2>Sugestões globais por frente</h2>
+        <ul>
+          <li><strong>Portfolio:</strong> Padronizar tom e CTA em todas as páginas. Criar template reutilizável para novos cases.</li>
+          <li><strong>LinkedIn:</strong> Automatizar atualização da lista de leads. Integrar com CRM para follow-up.</li>
+          <li><strong>Email:</strong> Conectar com Google Sheets para atualização automática. Adicionar filtros e status.</li>
+          <li><strong>CRM/Drive:</strong> Implementar sincronização automática com API. Criar alertas para novos arquivos.</li>
+          <li><strong>Beni/áudios:</strong> Definir provedor TTS padrão com fallback. Criar biblioteca de áudios por tema.</li>
+          <li><strong>EPQ/Forecast:</strong> Finalizar mobile e adicionar modo offline. Criar versão white-label para clientes.</li>
+          <li><strong>Proposta/CV:</strong> Criar versões por segmento e idioma. Automatizar geração de PDF.</li>
+          <li><strong>Gmail/CRM:</strong> Finalizar autenticação e sincronização de leads com o painel.</li>
+        </ul>
+      </div>
+
+      <div class="suggestion-box">
+        <h2>Sugestões globais para o ecossistema</h2>
+        <ul>
+          <li>Criar um <strong>Integration Hub central</strong> para conectar todos os painéis e fontes de dados.</li>
+          <li>Adotar um <strong>layout unificado</strong> para todos os painéis do portfolio, garantindo consistência visual.</li>
+          <li>Implementar <strong>autenticação unificada</strong> para LinkedIn/Gmail, reduzindo bloqueios.</li>
+          <li>Criar um <strong>modo offline</strong> para painéis críticos, permitindo acesso sem internet.</li>
+          <li>Adicionar <strong>monitoramento automatizado</strong> de saúde dos painéis e fontes de dados.</li>
+          <li>Estabelecer <strong>convenções de nomenclatura</strong> e versionamento para todos os arquivos.</li>
+        </ul>
+      </div>
+
+      <div class="risk">
+        <h3>Risco principal</h3>
+        <div>Bloqueios externos de quota/autenticação podem atrasar integrações de dados em tempo real.</div>
+      </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div id="agenda" class="panel">
+      <div class="grid-week">
+        <div class="day">
+          <h2>Segunda</h2>
+          <div class="meta">Foco: Produto</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Concluir ajustes de produto.html e validar mobile</p>
+          </div>
+          <ul>
+            <li>Revisar cases do EPQ em <a href="https://flavio-guedes.github.io/portfolio/produto.html" target="_blank">produto.html</a></li>
+            <li>Validar responsividade mobile</li>
+            <li>Atualizar <a href="https://flavio-guedes.github.io/portfolio/forecast.html" target="_blank">forecast.html</a></li>
+            <li>Documentar alterações</li>
+          </ul>
+        </div>
+
+        <div class="day">
+          <h2>Terça</h2>
+          <div class="meta">Foco: LinkedIn</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Ampliar prospecção e atualizar painel</p>
+          </div>
+          <ul>
+            <li>Enviar 10 mensagens do Top 30</li>
+            <li>Atualizar <a href="https://flavio-guedes.github.io/portfolio/pipelkd.html" target="_blank">pipelkd.html</a></li>
+            <li>Registrar respostas e follow-ups</li>
+            <li>Atualizar score de leads</li>
+          </ul>
+        </div>
+
+        <div class="day">
+          <h2>Quarta</h2>
+          <div class="meta">Foco: Email</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Sincronizar leads e melhorar painel</p>
+          </div>
+          <ul>
+            <li>Integrar Google Sheets</li>
+            <li>Atualizar <a href="https://flavio-guedes.github.io/portfolio/email.html" target="_blank">email.html</a></li>
+            <li>Criar follow-up automático</li>
+            <li>Validar botões de mensagem</li>
+          </ul>
+        </div>
+
+        <div class="day">
+          <h2>Quinta</h2>
+          <div class="meta">Foco: Portfolio</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Publicar versão revisada do portfolio</p>
+          </div>
+          <ul>
+            <li>Ajustar <a href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank">designhead.html</a></li>
+            <li>Validar <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank">parceria.html</a></li>
+            <li>Remover links quebrados</li>
+            <li>Atualizar relatório</li>
+          </ul>
+        </div>
+
+        <div class="day">
+          <h2>Sexta</h2>
+          <div class="meta">Foco: CRM/Drive</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Automatizar acesso e sincronização</p>
+          </div>
+          <ul>
+            <li>Implementar OAuth</li>
+            <li>Sincronizar pasta local</li>
+            <li>Testar leitura do Drive</li>
+            <li>Documentar processo</li>
+          </ul>
+        </div>
+
+        <div class="day">
+          <h2>Sábado</h2>
+          <div class="meta">Foco: EPQ</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Melhorar mobile e criar white-label</p>
+          </div>
+          <ul>
+            <li>Ajustar CSS responsivo</li>
+            <li>Testar modo offline</li>
+            <li>Criar versão white-label</li>
+            <li>Validar com usuário</li>
+          </ul>
+        </div>
+
+        <div class="day">
+          <h2>Domingo</h2>
+          <div class="meta">Foco: Revisão</div>
+          <div class="goal">
+            <strong>Meta</strong>
+            <p>Revisão semanal e planejamento</p>
+          </div>
+          <ul>
+            <li>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a></li>
+            <li>Planejar próxima semana</li>
+            <li>Backup dos arquivos</li>
+            <li>Atualizar lembretes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="risk">
+      <h3>Risco principal</h3>
+      <div>Bloqueios externos de quota/autenticação podem atrasar integrações de dados em tempo real.</div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab).classList.add('open');
+      btn.classList.add('active');
+    }
+    function downloadTasks(front){
+      const map = {
+        portfolio: ['Páginas foco','Proposta e CV'],
+        linkedin: ['Painel pipelkd.html','Top 30 Leads'],
+        email: ['Painel email.html'],
+        crm: ['Base local'],
+        epq: ['forecast.html'],
+        beni: ['Áudios do Benício'],
+        gmail: ['CRM do Gmail']
+      };
+      const projects = map[front] || [];
+      let text = `Tarefas - ${front}\n\n`;
+      projects.forEach(p => { text += `- ${p}\n`; });
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tarefas-${front}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

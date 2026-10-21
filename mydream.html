@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case MyDream — Flávio Guedes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#E8617A;--pink-light:#F2A0AF;--pink-pale:#FDF0F2;--pink-soft:#FAD9DF;--black:#1A1A1A;--gray:#5A5A5A;--gray-light:#9A9A9A;--cream:#FBF8F5;--white:#FFFFFF;--accent:#C94B64;--green:#3DAA6F;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black);overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;background:rgba(251,248,245,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,97,122,0.12);}
+.nav-logo{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--pink);}
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:72px;overflow:hidden;}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:60px 48px 60px 72px;}
+.htag{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--pink);margin-bottom:28px;}
+.htag::before{content:'';width:20px;height:1px;background:var(--pink);}
+.htitle{font-family:'Playfair Display',serif;font-size:clamp(48px,5.5vw,82px);font-weight:900;line-height:.95;color:var(--black);margin-bottom:6px;}
+.htitle em{color:var(--pink);font-style:italic;}
+.hsub{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,32px);font-weight:400;font-style:italic;color:var(--gray-light);margin-bottom:28px;}
+.hdesc{font-size:14px;line-height:1.75;color:var(--gray);max-width:400px;margin-bottom:44px;}
+.hmeta{display:flex;gap:32px;flex-wrap:wrap;}
+.hmi label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink-light);display:block;margin-bottom:3px;}
+.hmi span{font-size:13px;font-weight:600;color:var(--black);}
+.hero-right{position:relative;display:flex;align-items:center;justify-content:center;background:var(--pink-pale);}
+.hbg{position:absolute;width:500px;height:500px;background:radial-gradient(ellipse,var(--pink-soft) 0%,transparent 68%);border-radius:50%;animation:pulse 4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.1);opacity:1;}}
+.cstack{position:relative;width:320px;height:420px;z-index:2;}
+.hcard{position:absolute;border-radius:18px;box-shadow:0 16px 48px rgba(232,97,122,.22);}
+.cmain{width:260px;height:340px;background:linear-gradient(150deg,var(--white),var(--pink-pale));top:38px;left:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;border:1px solid rgba(232,97,122,.18);animation:float 3.2s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.ca1{width:130px;height:170px;background:linear-gradient(140deg,var(--pink),var(--accent));top:0;right:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;animation:float 3.2s ease-in-out infinite .6s;}
+.ca2{width:104px;height:130px;background:var(--black);bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;animation:float 3.2s ease-in-out infinite 1.1s;}
+.blog{width:72px;height:72px;background:var(--pink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:14px;}
+.cn{font-family:'Playfair Display',serif;font-size:33px;font-weight:700;color:white;line-height:1;}
+.cn2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;line-height:1;}
+.csub{font-size:8px;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase;}
+.cmt{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--black);text-align:center;margin-bottom:5px;}
+.cms{font-size:10px;color:var(--gray);text-align:center;line-height:1.5;}
+.clabel{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--pink);text-align:center;margin-bottom:6px;}
+section{padding:88px 72px;max-width:1360px;margin:0 auto;}
+.sechd{display:flex;align-items:flex-start;gap:20px;margin-bottom:56px;}
+.secn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--pink);padding-top:5px;white-space:nowrap;}
+.sect{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.1;color:var(--black);}
+.sect em{color:var(--pink);font-style:italic;}
+.sect-w{color:white;}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--pink),transparent);opacity:.25;}
+.ctx3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(232,97,122,.13);border-radius:14px;overflow:hidden;}
+.cxc{background:var(--white);padding:36px;transition:background .3s;}
+.cxc:hover{background:var(--pink-pale);}
+.cxic{width:44px;height:44px;background:var(--pink-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:18px;}
+.cxc h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--black);margin-bottom:10px;}
+.cxc p{font-size:13px;line-height:1.7;color:var(--gray);}
+.ctxfull{margin-top:28px;background:var(--black);border-radius:14px;padding:44px;display:grid;grid-template-columns:1fr 2fr;gap:44px;align-items:center;}
+.ctxfull h3{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:white;line-height:1.25;}
+.ctxfull h3 em{color:var(--pink-light);font-style:italic;}
+.ctxfull p{font-size:14px;line-height:1.85;color:rgba(255,255,255,.6);}
+.roles{background:var(--pink-pale);}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.rc{background:var(--white);border-radius:14px;padding:28px;border-left:3px solid var(--pink);transition:transform .2s,box-shadow .2s;}
+.rc:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(232,97,122,.1);}
+.rc h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--black);margin-bottom:8px;}
+.rc p{font-size:13px;line-height:1.65;color:var(--gray);}
+.rhl{background:linear-gradient(135deg,var(--pink),var(--accent));border-radius:14px;padding:44px;color:white;}
+.rhl h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:14px;}
+.rhl p{font-size:14px;line-height:1.8;opacity:.9;}
+.ais{background:var(--black);}
+.aig{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.ac{background:rgba(255,255,255,.05);border:1px solid rgba(232,97,122,.18);border-radius:14px;padding:24px 20px;transition:background .3s,border-color .3s;}
+.ac:hover{background:rgba(232,97,122,.1);border-color:var(--pink);}
+.aic{font-size:26px;margin-bottom:14px;}
+.ac h4{font-size:12px;font-weight:600;color:var(--pink-light);margin-bottom:7px;line-height:1.35;}
+.ac p{font-size:11px;line-height:1.6;color:rgba(255,255,255,.45);}
+.aift{margin-top:36px;background:rgba(232,97,122,.09);border:1px solid rgba(232,97,122,.22);border-radius:10px;padding:20px 28px;display:flex;align-items:center;gap:18px;}
+.aift span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);white-space:nowrap;}
+.aift p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.65;}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:36px;}
+.pc{background:var(--white);border-radius:14px;padding:28px;position:relative;overflow:hidden;transition:transform .2s;}
+.pc:hover{transform:translateY(-3px);}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--pink-light));}
+.pc h4{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--black);margin-bottom:10px;}
+.pc p{font-size:13px;line-height:1.7;color:var(--gray);}
+.ptag{display:inline-block;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--pink);background:var(--pink-pale);padding:3px 9px;border-radius:20px;margin-bottom:10px;}
+.funnel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(232,97,122,.1);border-radius:14px;overflow:hidden;}
+.fc{background:var(--white);padding:32px 28px;position:relative;}
+.fc::after{content:attr(data-l);position:absolute;top:18px;right:18px;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--pink-light);}
+.fc h4{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:10px;}
+.fi{list-style:none;}
+.fi li{font-size:12px;color:var(--gray);padding:5px 0;border-bottom:1px solid var(--pink-pale);display:flex;align-items:center;gap:7px;}
+.fi li::before{content:'→';color:var(--pink-light);font-size:10px;}
+.mets{background:var(--pink-pale);}
+.mt4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px;}
+.mk{background:var(--white);border-radius:14px;padding:24px;transition:transform .2s,box-shadow .2s;}
+.mk:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(232,97,122,.13);}
+.mk.feat{background:linear-gradient(135deg,var(--pink),var(--accent));}
+.mlb{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray-light);margin-bottom:10px;}
+.mk.feat .mlb{color:rgba(255,255,255,.55);}
+.mv{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--black);line-height:1;margin-bottom:5px;}
+.mk.feat .mv{color:white;}
+.mc{font-size:11px;font-weight:600;color:var(--green);}
+.mk.feat .mc{color:rgba(255,255,255,.8);}
+.mbot{display:grid;grid-template-columns:2fr 1fr;gap:20px;}
+.ctab{background:var(--white);border-radius:14px;overflow:hidden;}
+.cth{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--black);padding:14px 22px;gap:12px;}
+.cth span{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.ctr{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:14px 22px;gap:12px;border-bottom:1px solid var(--pink-pale);align-items:center;transition:background .2s;}
+.ctr:hover{background:var(--pink-pale);}
+.ctr span{font-size:12px;color:var(--gray);}
+.ctr .mn{font-weight:600;color:var(--black);}
+.ctr .bef{color:var(--gray-light);}
+.ctr .aft{color:var(--black);font-weight:600;}
+.ctr .dlt{color:var(--green);font-weight:700;font-size:13px;}
+.bch{background:var(--white);border-radius:14px;padding:24px;}
+.bch h4{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--black);margin-bottom:18px;}
+.bi{margin-bottom:14px;}
+.bl{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-bottom:5px;}
+.bl strong{color:var(--black);}
+.bt{height:7px;background:var(--pink-pale);border-radius:4px;overflow:hidden;}
+.bf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--pink),var(--pink-light));}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.pm{border-radius:14px;overflow:hidden;aspect-ratio:4/5;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;}
+.pm:hover{transform:translateY(-7px) scale(1.02);box-shadow:0 20px 48px rgba(0,0,0,.16);}
+.pbg{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:18px;position:relative;}
+.pov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,transparent 58%);}
+.pct{position:relative;z-index:2;text-align:center;}
+.ptyp{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--pink-light);background:rgba(0,0,0,.38);padding:3px 7px;border-radius:20px;margin-bottom:7px;}
+.ptit{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:white;line-height:1.3;margin-bottom:3px;}
+.pmt{font-size:9px;color:rgba(255,255,255,.55);}
+.p1 .pbg{background:linear-gradient(135deg,#E8617A,#C94B64 50%,#1A1A1A);}
+.p2 .pbg{background:linear-gradient(135deg,#F5E6C8,#E8617A 65%,#C94B64);}
+.p3 .pbg{background:linear-gradient(135deg,#2D4A3E,#4CAF80 55%,#F2A0AF);}
+.p4 .pbg{background:linear-gradient(135deg,#1A1A1A,#3D2B2B 50%,#E8617A);}
+.p5 .pbg{background:linear-gradient(135deg,#FDF0F2,#F2A0AF 50%,#E8617A);}
+.pico{font-size:34px;margin-bottom:10px;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.28));}
+.imps{background:var(--black);}
+.ig3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px;}
+.icc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:32px 24px;transition:border-color .3s,background .3s;}
+.icc:hover{border-color:rgba(232,97,122,.38);background:rgba(232,97,122,.05);}
+.iiico{width:48px;height:48px;background:linear-gradient(135deg,var(--pink),var(--accent));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+.icc h4{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:white;margin-bottom:10px;}
+.icc p{font-size:12px;line-height:1.75;color:rgba(255,255,255,.45);}
+.synth{background:linear-gradient(135deg,var(--pink),var(--accent));border-radius:18px;padding:52px;text-align:center;}
+.synth h3{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,40px);font-weight:700;color:white;margin-bottom:18px;line-height:1.2;}
+.synth p{font-size:15px;color:rgba(255,255,255,.85);line-height:1.85;max-width:640px;margin:0 auto 28px;}
+.sig{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+footer{background:var(--cream);padding:40px 72px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(232,97,122,.1);}
+.fb{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--black);}
+.fb span{color:var(--pink);}
+.fc2{font-size:11px;color:var(--gray-light);font-family:'Space Mono',monospace;letter-spacing:.08em;}
+.fu{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.fu.v{opacity:1;transform:translateY(0);}
+@media(max-width:900px){
+  nav{padding:14px 20px;}.nav-links{display:none;}
+  section{padding:56px 20px;}
+  .hero{grid-template-columns:1fr;}.hero-right{display:none;}
+  .hero-left{padding:36px 20px;}
+  .ctx3,.rg,.sg,.mt4,.ig3,.pgrid,.aig{grid-template-columns:1fr 1fr;}
+  .mbot,.funnel,.ctxfull{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:28px 20px;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Flávio Guedes · Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#ctx">Contexto</a></li>
+    <li><a href="#role">Atuação</a></li>
+    <li><a href="#ai">IA</a></li>
+    <li><a href="#str">Estratégia</a></li>
+    <li><a href="#met">Métricas</a></li>
+    <li><a href="#imp">Impacto</a></li>
+  </ul>
+</nav>
+<div class="hero">
+  <div class="hero-left fu">
+    <div class="htag">Case de Performance · Social Media</div>
+    <h1 class="htitle">My<em>Dream</em></h1>
+    <p class="hsub">Branding + Growth + Conteúdo</p>
+    <p class="hdesc">Estratégia integrada de conteúdo orgânico que conectou branding, trade marketing e comercial — gerando crescimento expressivo de alcance, engajamento e autoridade de marca no segmento de alimentação saudável.</p>
+    <div class="hmeta">
+      <div class="hmi"><label>Período</label><span>Q1 · 2023</span></div>
+      <div class="hmi"><label>Segmento</label><span>Food · Saúde</span></div>
+      <div class="hmi"><label>Frente</label><span>Orgânico + Brand</span></div>
+      <div class="hmi"><label>Profissional</label><span>Flávio Guedes</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hbg"></div>
+    <div class="cstack">
+      <div class="hcard ca1"><div class="cn">+178%</div><div class="csub">Engajamento IG</div></div>
+      <div class="hcard cmain">
+        <div class="blog">MD</div>
+        <div class="clabel">MyDream · Social Performance</div>
+        <div class="cmt">Alimentos Saudáveis</div>
+        <div class="cms">Sem glúten · Sem lactose<br>Sem açúcar adicionado</div>
+      </div>
+      <div class="hcard ca2"><div class="cn2">+62%</div><div class="csub">Visitas IG</div></div>
+    </div>
+  </div>
+</div>
+<div class="rule"></div>
+<section id="ctx">
+  <div class="sechd fu"><span class="secn">01 —</span><h2 class="sect">Contexto<br><em>do Projeto</em></h2></div>
+  <div class="ctx3">
+    <div class="cxc fu"><div class="cxic">🏷️</div><h3>Posicionamento</h3><p>MyDream é uma marca de alimentos saudáveis — brigadeiros, ganaches, misturas para bolos e snacks — todos sem glúten, sem lactose e sem açúcar adicionado. A proposta conecta prazer ao autocuidado, traduzindo escolhas saudáveis em experiências afetivas e saborosas.</p></div>
+    <div class="cxc fu"><div class="cxic">📊</div><h3>Cenário Inicial</h3><p>A marca estava em fase de consolidação digital. O Facebook acumulava queda de alcance (–60%) e visitas (–54%), sinalizando envelhecimento de base. O Instagram mostrava potencial orgânico, mas precisava de estratégia editorial consistente para sustentar o momentum.</p></div>
+    <div class="cxc fu"><div class="cxic">🎯</div><h3>Objetivo Estratégico</h3><p>Fortalecer o branding com identidade editorial coesa, ampliar o alcance orgânico nas redes prioritárias e criar estrutura de conteúdo que suportasse ações comerciais e de trade marketing, acelerando crescimento de seguidores e autoridade de nicho.</p></div>
+  </div>
+  <div class="ctxfull fu"><h3>O desafio central<br><em>era de coerência</em></h3><p>A MyDream precisava transformar sua presença digital de vitrine de produtos em ecossistema de marca — onde conteúdo educativo, receitas, logística e brand design trabalhassem juntos para construir relação, não apenas alcance. A estratégia precisava ser ao mesmo tempo emocional e orientada a dados, conectando o desejo do público por uma vida mais saudável à proposta singular da marca.</p></div>
+</section>
+<div class="rule"></div>
+<section id="role" class="roles">
+  <div class="sechd fu"><span class="secn">02 —</span><h2 class="sect">Meu Papel<br><em>no Projeto</em></h2></div>
+  <div class="rg">
+    <div class="rc fu"><h4>✍️ Redação e Copy</h4><p>Criação de copies para publicações orgânicas, stories e campanhas sazonais com tom de voz natural, empático e orientado à ação. Textos que conectavam saúde, afeto e produto sem soar promocionais.</p></div>
+    <div class="rc fu"><h4>📅 Planejamento Editorial</h4><p>Estruturação do calendário editorial mensal, definindo cadência, mix de formatos e pilares de conteúdo. Integração de datas sazonais (Páscoa, Dia das Mães) com a narrativa de marca.</p></div>
+    <div class="rc fu"><h4>📡 Estratégia de Conteúdo</h4><p>Desenvolvimento da linha editorial com pilares de receitas, educativo, logística e brand design. Criação de funil de conteúdo que conduzia a audiência do awareness à consideração e conversão.</p></div>
+    <div class="rc fu"><h4>🤝 Integração Comercial + Trade</h4><p>Alinhamento do conteúdo digital com ações de trade marketing, garantindo que publicações suportassem presença de prateleira e pontos de contato físicos da marca no mercado.</p></div>
+    <div class="rc fu"><h4>🎨 Direção de Arte</h4><p>Curadoria e orientação da identidade visual dos criativos — garantindo coerência entre tipografia, paleta, fotografia de produto e brand design em publicações e campanhas.</p></div>
+    <div class="rc fu"><h4>🔗 Branding + Produto</h4><p>Mediação entre diretrizes de marca e necessidades de comunicação de cada linha, garantindo que cada conteúdo reforçasse o propósito da MyDream e os atributos funcionais dos itens.</p></div>
+  </div>
+  <div class="rhl fu"><h3>Visão Integrada: Marketing · Trade · Comercial</h3><p>Atuei como ponto de convergência entre estratégia de conteúdo digital, ações de trade marketing e objetivos comerciais da marca. Essa visão sistêmica garantiu que cada post publicado tivesse intenção clara — seja para construir autoridade, aproximar a audiência ou impulsionar uma decisão de compra. O resultado foi uma operação de conteúdo coesa, eficiente e com impacto mensurável em crescimento de base, engajamento e reconhecimento de marca.</p></div>
+</section>
+<div class="rule"></div>
+<section id="ai" class="ais">
+  <div class="sechd fu"><span class="secn">03 —</span><h2 class="sect sect-w">Inteligência Artificial<br><em>no Processo</em></h2></div>
+  <div class="aig">
+    <div class="ac fu"><div class="aic">🔍</div><h4>Pesquisa de Pauta</h4><p>Mapeamento de tendências em alimentação saudável, comportamento do consumidor e temas de alta relevância para o público-alvo da marca.</p></div>
+    <div class="ac fu"><div class="aic">📊</div><h4>Benchmarking Competitivo</h4><p>Análise comparativa de linguagem, formatos e posicionamento de marcas concorrentes para identificar lacunas e oportunidades de diferenciação.</p></div>
+    <div class="ac fu"><div class="aic">✍️</div><h4>Suporte ao Copy</h4><p>IA como ferramenta de apoio à escrita — gerando variações, testando tons de voz e acelerando produção com curadoria criativa humana posterior.</p></div>
+    <div class="ac fu"><div class="aic">📅</div><h4>Calendário Editorial</h4><p>Estruturação e organização de publicações com base em sazonalidade, comportamento de plataforma e objetivos de campanha.</p></div>
+    <div class="ac fu"><div class="aic">💬</div><h4>Análise Qualitativa</h4><p>Apoio na categorização de comentários e interações para extrair insights de audiência e orientar ajustes na linha editorial.</p></div>
+  </div>
+  <div class="aift fu"><span>Princípio →</span><p>A IA funcionou como acelerador estratégico — jamais como substituto criativo. Toda produção final passou por revisão, curadoria e direção humana. O papel da IA foi ampliar a capacidade analítica e produtiva sem comprometer a autenticidade que a comunicação da MyDream exige.</p></div>
+</section>
+<div class="rule"></div>
+<section id="str">
+  <div class="sechd fu"><span class="secn">04 —</span><h2 class="sect">Estratégia<br><em>de Conteúdo</em></h2></div>
+  <div class="sg">
+    <div class="pc fu"><div class="ptag">Pilar 01</div><h4>🍫 Receitas e Culinária Saudável</h4><p>Conteúdo prático que demonstrava os produtos em uso real, combinando apelo visual com informação nutricional. Formato ideal para alcance orgânico via reels e salvamentos elevados.</p></div>
+    <div class="pc fu"><div class="ptag">Pilar 02</div><h4>📚 Educativo e Informativo</h4><p>Conteúdo sobre intolerâncias alimentares (glúten, lactose, açúcar) e estilo de vida saudável — construindo autoridade de nicho e gerando compartilhamentos orgânicos expressivos.</p></div>
+    <div class="pc fu"><div class="ptag">Pilar 03</div><h4>📦 Logística e Transparência</h4><p>Conteúdo sobre o processo de entrega e rastreabilidade, reforçando confiança e fidelização — diferencial competitivo pouco explorado no segmento.</p></div>
+    <div class="pc fu"><div class="ptag">Pilar 04</div><h4>🎨 Brand Design e Sazonalidade</h4><p>Peças institucionais e sazonais (Páscoa, Dia das Mães) alinhadas à identidade visual, reforçando reconhecimento e conexão emocional com a audiência.</p></div>
+  </div>
+  <div class="funnel fu">
+    <div class="fc" data-l="Topo"><h4>Awareness</h4><ul class="fi"><li>Reels de receitas</li><li>Conteúdo educativo</li><li>Posts sazonais</li><li>Brand design</li></ul></div>
+    <div class="fc" data-l="Meio"><h4>Consideração</h4><ul class="fi"><li>Fotos de produto</li><li>Benefícios dos itens</li><li>Logística e confiança</li><li>Stories interativos</li></ul></div>
+    <div class="fc" data-l="Fundo"><h4>Conversão</h4><ul class="fi"><li>CTAs em bio e stories</li><li>Ativação de trade</li><li>Prova social</li><li>Carrosseis de produto</li></ul></div>
+  </div>
+</section>
+<div class="rule"></div>
+<section id="met" class="mets">
+  <div class="sechd fu"><span class="secn">05 —</span><h2 class="sect">Métricas de<br><em>Performance</em></h2></div>
+  <div class="mt4">
+    <div class="mk feat fu"><div class="mlb">Engajamento Instagram</div><div class="mv">+178%</div><div class="mc">↑ vs período anterior</div></div>
+    <div class="mk fu"><div class="mlb">Novos Seguidores (28 dias)</div><div class="mv">450</div><div class="mc">↑ +337% acima da média do setor</div></div>
+    <div class="mk fu"><div class="mlb">Visitas ao Perfil IG</div><div class="mv">+62%</div><div class="mc">↑ 8.163 visitas no período</div></div>
+    <div class="mk fu"><div class="mlb">Novas Curtidas Facebook</div><div class="mv">+46%</div><div class="mc">↑ Taxa conversão: 5,36%</div></div>
+  </div>
+  <div class="mbot fu">
+    <div class="ctab">
+      <div class="cth"><span>Indicador</span><span>Antes</span><span>Depois</span><span>Variação</span></div>
+      <div class="ctr"><span class="mn">Alcance IG (orgânico)</span><span class="bef">315 mil</span><span class="aft">371 mil</span><span class="dlt">+16,8%</span></div>
+      <div class="ctr"><span class="mn">Alcance médio por post</span><span class="bef">base</span><span class="aft">953 (vídeos)</span><span class="dlt">+14,5%</span></div>
+      <div class="ctr"><span class="mn">Engajamento total IG</span><span class="bef">~600</span><span class="aft">1.700</span><span class="dlt">+178,3%</span></div>
+      <div class="ctr"><span class="mn">Novos seguidores IG</span><span class="bef">~880</span><span class="aft">1.439</span><span class="dlt">+29,5%</span></div>
+      <div class="ctr"><span class="mn">Visitas ao perfil IG</span><span class="bef">~5.000</span><span class="aft">8.163</span><span class="dlt">+62,4%</span></div>
+      <div class="ctr"><span class="mn">Interações vs setor</span><span class="bef">772</span><span class="aft">941</span><span class="dlt">+21,9%</span></div>
+      <div class="ctr"><span class="mn">Seguidores novos vs setor</span><span class="bef">103 (média)</span><span class="aft">450</span><span class="dlt">+337%</span></div>
+    </div>
+    <div class="bch">
+      <h4>Performance por formato</h4>
+      <div class="bi"><div class="bl"><strong>Reels</strong><span>Alcance 953</span></div><div class="bt"><div class="bf" style="width:100%"></div></div></div>
+      <div class="bi"><div class="bl"><strong>Carrossel</strong><span>Alcance 745</span></div><div class="bt"><div class="bf" style="width:78%"></div></div></div>
+      <div class="bi"><div class="bl"><strong>Outras pub.</strong><span>Alcance 707</span></div><div class="bt"><div class="bf" style="width:74%"></div></div></div>
+      <div class="bi"><div class="bl"><strong>Reels</strong><span>Engaj. 28</span></div><div class="bt"><div class="bf" style="width:100%"></div></div></div>
+      <div class="bi"><div class="bl"><strong>Outras pub.</strong><span>Engaj. 11</span></div><div class="bt"><div class="bf" style="width:39%"></div></div></div>
+      <div class="bi"><div class="bl"><strong>Carrossel</strong><span>Engaj. 8</span></div><div class="bt"><div class="bf" style="width:28%"></div></div></div>
+    </div>
+  </div>
+</section>
+<div class="rule"></div>
+<section id="posts">
+  <div class="sechd fu"><span class="secn">06 —</span><h2 class="sect">Criativos<br><em>em Destaque</em></h2></div>
+  <div class="pgrid fu">
+    <div class="pm p1"><div class="pbg"><div class="pov"></div><span class="pico">🏷️</span><div class="pct"><div class="ptyp">Institucional</div><div class="ptit">Identidade &amp; Propósito da Marca</div><div class="pmt">Brand awareness · Alto alcance</div></div></div></div>
+    <div class="pm p2"><div class="pbg"><div class="pov"></div><span class="pico">📚</span><div class="pct"><div class="ptyp">Educativo</div><div class="ptit">Vida saudável para celíacos</div><div class="pmt">Compartilhamentos · Salvamentos</div></div></div></div>
+    <div class="pm p3"><div class="pbg"><div class="pov"></div><span class="pico">🍫</span><div class="pct"><div class="ptyp">Produto</div><div class="ptit">Ganache de Avelã · Zero açúcar</div><div class="pmt">Consideração · Conversão</div></div></div></div>
+    <div class="pm p4"><div class="pbg"><div class="pov"></div><span class="pico">🚚</span><div class="pct"><div class="ptyp">Trade + Logística</div><div class="ptit">Como a MyDream chega em você?</div><div class="pmt">Confiança · Fidelização</div></div></div></div>
+    <div class="pm p5"><div class="pbg"><div class="pov"></div><span class="pico">🥞</span><div class="pct"><div class="ptyp">Receita · Conversão</div><div class="ptit">Panqueca saudável c/ cobertura</div><div class="pmt">Maior engajamento do período</div></div></div></div>
+  </div>
+</section>
+<div class="rule"></div>
+<section id="imp" class="imps">
+  <div class="sechd fu"><span class="secn">07 —</span><h2 class="sect sect-w">Impacto<br><em>no Negócio</em></h2></div>
+  <div class="ig3">
+    <div class="icc fu"><div class="iiico">📈</div><h4>Crescimento de Marca</h4><p>MyDream tornou-se a marca mais ativa e com mais interações no segmento — 941 vs 772 da concorrência — consolidando liderança em presença digital no nicho de alimentos saudáveis.</p></div>
+    <div class="icc fu"><div class="iiico">🤝</div><h4>Integração Comercial</h4><p>Conteúdo alinhado com objetivos comerciais gerou base qualificada de seguidores engajados que facilitou abertura de novos pontos de venda e parcerias B2B.</p></div>
+    <div class="icc fu"><div class="iiico">🏪</div><h4>Suporte ao Trade Marketing</h4><p>Publicações sobre logística e disponibilidade reforçaram presença de prateleira e geraram demanda pull — consumidores motivados pela comunicação digital ao ponto de venda.</p></div>
+    <div class="icc fu"><div class="iiico">🎓</div><h4>Autoridade de Nicho</h4><p>A linha editorial educativa posicionou a MyDream como referência em alimentação livre de glúten, lactose e açúcar, atraindo seguidores altamente qualificados.</p></div>
+    <div class="icc fu"><div class="iiico">💡</div><h4>Eficiência Criativa com IA</h4><p>Integração de IA ao processo criativo aumentou velocidade de produção sem comprometer qualidade — escalando volume com coerência editorial e cuidado com a voz da marca.</p></div>
+    <div class="icc fu"><div class="iiico">🌱</div><h4>Base para Escalabilidade</h4><p>Estrutura editorial, processos e identidade de conteúdo desenvolvidos no Q1 criaram fundação sólida para escalar resultados com metas definidas para o Q2.</p></div>
+  </div>
+  <div class="synth fu">
+    <h3>Branding que converte.<br>Conteúdo que conecta.</h3>
+    <p>Este case demonstra que marketing orgânico de performance é, acima de tudo, uma questão de visão sistêmica — onde cada conteúdo tem papel claro no funil, cada pilar editorial serve a um objetivo de negócio, e a tecnologia amplifica sem substituir o pensamento estratégico e criativo humano. O resultado da MyDream no Q1/2023 prova que consistência editorial orientada a dados e propósito gera crescimento real e mensurável.</p>
+    <div class="sig">Flávio Guedes · Estratégia de Conteúdo &amp; Brand · 2023</div>
+  </div>
+</section>
+<footer>
+  <div class="fb">Flávio <span>Guedes</span></div>
+  <div class="fc2">Case MyDream · Q1 2023 · Social Media &amp; Brand Strategy</div>
+</footer>
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(n=>{if(n.isIntersecting)n.target.classList.add('v');}),{threshold:0.08});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

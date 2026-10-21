@@ -553,13 +553,13 @@ function renderVideoBlock(containerId, items){
         <div class="video-placeholder">
           <div class="play">${isImg ? '&#128247;' : '&#9654;'}</div>
           <div class="cap"><strong>${item.titulo}</strong>${item.desc}</div>
-          <div class="tag">${isImg ? 'IMAGEM EM BREVE' : 'VÍDEO EM BREVE'}</div>
+          <div class="tag">${isImg ? 'IMAGE COMING SOON' : 'VIDEO COMING SOON'}</div>
         </div>
       `));
     }
   });
   const allImg = items.every(i=> i.tipo === 'imagem');
-  container.appendChild(el(`<div class="video-label">${allImg ? 'Imagem' : 'Vídeo'}</div>`));
+  container.appendChild(el(`<div class="video-label">${allImg ? 'Image' : 'Video'}</div>`));
   container.appendChild(row);
 }
 

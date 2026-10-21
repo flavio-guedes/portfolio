@@ -27,3 +27,4 @@ build/
 99_Legacy/
 _BACKUPS_/
 09_ScriptsSoltos/
+03_Ops/hermes-ops/state/baseline.json

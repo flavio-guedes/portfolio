@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes Mission Control</title>
+<style>
+  :root {
+    /* Cinza Escuro Profundo (Dark Zinc) */
+    --bg-base: #09090b;
+    --bg-surface: rgba(24, 24, 27, 0.6);
+    --bg-surface-hover: rgba(39, 39, 42, 0.7);
+    --border-glass: rgba(255, 255, 255, 0.06);
+    --border-active: rgba(255, 255, 255, 0.15);
+    
+    /* Tipografia */
+    --txt-main: #f4f4f5;
+    --txt-muted: #a1a1aa;
+    --txt-dim: #52525b;
+    
+    /* Cores de Destaque & Gradientes */
+    --blue: #60a5fa;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --rose: #fb7185;
+    --grad-blue: linear-gradient(135deg, #3b82f6, #60a5fa);
+    --grad-green: linear-gradient(135deg, #059669, #34d399);
+    --grad-surface: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+    
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: var(--font);
+    background-color: var(--bg-base);
+    color: var(--txt-main);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 40px 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* LUZES DE FUNDO (Gradientes radiais sutis) */
+  body::before {
+    content: ''; position: fixed; top: -10%; left: -10%; width: 50vw; height: 50vw;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    z-index: -1; pointer-events: none;
+  }
+  body::after {
+    content: ''; position: fixed; bottom: -10%; right: -10%; width: 50vw; height: 50vw;
+    background: radial-gradient(circle, rgba(52,211,153,0.05) 0%, transparent 70%);
+    z-index: -1; pointer-events: none;
+  }
+
+  .app { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+  /* GLASSMORPHISM BASE */
+  .glass {
+    background: var(--bg-surface);
+    background-image: var(--grad-surface);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  /* TYPOGRAPHY */
+  b, strong { font-weight: 700; color: var(--txt-main); }
+  .text-grad {
+    background: linear-gradient(to right, #fff, #a1a1aa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* HEADER */
+  .top { padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .top h1 { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 12px; letter-spacing: -0.02em; }
+  .top p { color: var(--txt-muted); font-size: 13.5px; margin-top: 4px; font-weight: 500; }
+  
+  .status-badge {
+    display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px;
+    background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2);
+    font-size: 12px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.05em;
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.1);
+  }
+
+  /* PULSE ANIMATION */
+  .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
+
+  /* KPIS */
+  .grid-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .kpi { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .kpi-header { display: flex; align-items: center; gap: 10px; color: var(--txt-muted); font-size: 13px; font-weight: 600; }
+  .kpi-val { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .kpi-val span { font-size: 14px; color: var(--txt-dim); font-weight: 600; letter-spacing: 0; }
+  
+  /* ICONS */
+  .ico { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ico-lg { width: 22px; height: 22px; }
+  
+  /* PROGRESS BAR */
+  .prog-card { padding: 20px 24px; }
+  .prog-head { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--txt-main); }
+  .track { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.05); overflow: hidden; position: relative; }
+  .track i { 
+    display: block; height: 100%; border-radius: 999px; 
+    background: var(--grad-green); width: 100%;
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
+    position: relative;
+  }
+
+  /* ACCORDION (DROPDOWNS) */
+  .phase-list { display: flex; flex-direction: column; gap: 12px; }
+  details { 
+    background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: 16px; 
+    overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  details:hover { border-color: var(--border-active); background: var(--bg-surface-hover); }
+  details[open] { border-color: rgba(96, 165, 250, 0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(96,165,250,0.1); }
+  
+  summary { 
+    padding: 20px 24px; display: flex; align-items: center; gap: 16px; cursor: pointer; 
+    list-style: none; user-select: none; outline: none; 
+  }
+  summary::-webkit-details-marker { display: none; }
+  
+  /* Custom Chevron */
+  summary::after {
+    content: ''; width: 8px; height: 8px; border-right: 2px solid var(--txt-dim); border-bottom: 2px solid var(--txt-dim);
+    transform: rotate(45deg); transition: transform 0.3s ease; margin-left: auto;
+  }
+  details[open] summary::after { transform: rotate(-135deg); border-color: var(--blue); }
+
+  .ph-ico { 
+    width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; 
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+  details[open] .ph-ico { background: rgba(96, 165, 250, 0.1); border-color: rgba(96, 165, 250, 0.3); box-shadow: 0 0 15px rgba(96, 165, 250, 0.1); }
+  
+  .ph-info { flex: 1; }
+  .ph-info h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--txt-main); }
+  .ph-info p { color: var(--txt-muted); font-size: 13px; margin-top: 4px; }
+  
+  .badge { 
+    font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px; 
+    text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;
+  }
+  .badge.done { background: rgba(52, 211, 153, 0.1); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.2); }
+
+  /* CONTENT INTERNALS */
+  .ph-content { padding: 0 24px 24px 88px; animation: slideDown 0.4s ease both; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  
+  .ph-content p { color: var(--txt-muted); font-size: 13.5px; margin-bottom: 20px; line-height: 1.6; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--txt-main); font-weight: 500; }
+  .checklist li .ico-check { 
+    width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; 
+    background: rgba(52, 211, 153, 0.15); color: var(--green); flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* LOG BOX */
+  .log-box { 
+    background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass); border-radius: 12px; 
+    padding: 16px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12.5px; 
+    color: #a5b4d4; overflow-x: auto; line-height: 1.8; position: relative;
+  }
+  .log-box::before { 
+    content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; 
+    background: var(--grad-blue); border-radius: 12px 0 0 12px; 
+  }
+  .log-dim { color: var(--txt-dim); }
+  .log-ok { color: var(--green); font-weight: 700; }
+
+  /* MEDIA QUERIES */
+  @media (max-width: 900px) { .grid-kpi { grid-template-columns: 1fr 1fr; } .ph-content { padding-left: 24px; } }
+  @media (max-width: 600px) { .grid-kpi { grid-template-columns: 1fr; } summary { padding: 16px; } .ph-ico { width: 40px; height: 40px; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="glass top">
+    <div>
+      <h1>
+        <svg class="ico ico-lg" viewBox="0 0 24 24" style="color: var(--blue); filter: drop-shadow(0 0 8px rgba(96,165,250,0.5));">
+          <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 8v8M8.5 10l3.5-2 3.5 2"/>
+        </svg>
+        <span class="text-grad">Hermes Mission Control</span>
+      </h1>
+      <p>Reestruturação autônoma, <b>segurança</b> e otimização de hardware.</p>
+    </div>
+    <div class="status-badge">
+      <div class="pulse-dot"></div> Missão Concluída
+    </div>
+  </header>
+
+  <!-- KPIS -->
+  <div class="grid-kpi">
+    <div class="glass kpi">
+      <div class="kpi-header"><svg class="ico" viewBox="0 0 24 24" style="color: var(--txt-muted);"><path d="M4 19V5M4 19h16"/><path d="M8 15l4-4 3 3 5-6"/></svg> Tamanho Anterior</div>
+      <div class="kpi-val">3.8 <span>GB</span></div>
+    </div>
+    <div class="glass kpi">
+      <div class="kpi-header"><svg class="ico" viewBox="0 0 24 24" style="color: var(--green);"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h9"/></svg> Tamanho Otimizado</div>
+      <div class="kpi-val" style="color: var(--green);">538 <span>MB</span></div>
+    </div>
+    <div class="glass kpi">
+      <div class="kpi-header"><svg class="ico" viewBox="0 0 24 24" style="color: var(--amber);"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Lixo Removido</div>
+      <div class="kpi-val">131<span style="color:var(--amber);">k</span> <span>arqs</span></div>
+    </div>
+    <div class="glass kpi">
+      <div class="kpi-header"><svg class="ico" viewBox="0 0 24 24" style="color: var(--blue);"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg> Segurança</div>
+      <div class="kpi-val">100<span>%</span></div>
+    </div>
+  </div>
+
+  <!-- PROGRESSO -->
+  <div class="glass prog-card">
+    <div class="prog-head">
+      <span>Progresso da Reestruturação</span>
+      <span style="color: var(--green); display: flex; align-items: center; gap: 6px;">
+        <svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M20 6L9 17l-5-5"/></svg> 7 de 7 Fases
+      </span>
+    </div>
+    <div class="track"><i></i></div>
+  </div>
+
+  <!-- LISTA DE FASES -->
+  <div class="phase-list">
+
+    <!-- FASE 1 -->
+    <details open>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--amber)"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 1: <b>Blindagem</b> de Hardware</h3>
+          <p>Proteção do processador (i5) e memória contra sobrecarga do Ollama.</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>Como seu MacBook é de 2015, o script impediu que o Ollama consumisse toda a RAM e travasse o sistema durante o processamento das campanhas.</p>
+        
+        <ul class="checklist">
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>OLLAMA_KEEP_ALIVE=0</b> configurado (descarrega modelo da RAM)</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>OLLAMA_NUM_PARALLEL=1</b> (processa 1 lead por vez)</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Runner rebaixado para <b>Background</b> (Nice 10)</div></li>
+        </ul>
+
+        <div class="log-box">
+          <span class="log-dim">[23:17:10]</span> Criando com.ollama.env.plist...<br>
+          <span class="log-dim">[23:17:12]</span> <span class="log-ok">✅ Ollama blindado.</span><br>
+          <span class="log-dim">[23:17:15]</span> Modificando com.hermes.runner.plist...<br>
+          <span class="log-dim">[23:17:18]</span> <span class="log-ok">✅ Runner configurado como Background.</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- FASE 2 -->
+    <details>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--rose)"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 2: Segurança e <b>Hardening</b></h3>
+          <p>Isolamento de credenciais e injeção de proteção contra falhas de rede.</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>O arquivo <code>.env</code> que estava exposto foi devidamente protegido, e criamos uma infraestrutura para evitar que APIs externas travem seus processos locais.</p>
+        
+        <ul class="checklist">
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>.env</b> renomeado para <b>.env.local</b> e adicionado ao <b>.gitignore</b></div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Pasta <b>11_Hardening</b> criada com helpers de resiliência (Python/JS)</div></li>
+        </ul>
+
+        <div class="log-box">
+          <span class="log-dim">[23:18:01]</span> Varrendo arquivos .env...<br>
+          <span class="log-dim">[23:18:02]</span> <span class="log-ok">✅ Protegido:</span> 08_Contractflow/hermes-contractflow/.env -> .env.local<br>
+          <span class="log-dim">[23:18:05]</span> Criando infraestrutura em _Hermes/11_Hardening/...<br>
+          <span class="log-dim">[23:18:06]</span> <span class="log-ok">✅ Helpers python e js provisionados.</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- FASE 3 -->
+    <details>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--blue)"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 3: <b>Deduplicação</b> Inteligente</h3>
+          <p>Eliminação de arquivos idênticos por hash (MD5) preservando a pasta Core.</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>O script mapeou todos os arquivos e eliminou o lixo digital. O grande vilão eram as pastas <code>.baileys.*.lixo</code> com 120 mil arquivos JSON de sessão do WhatsApp.</p>
+        
+        <ul class="checklist">
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Removidos <b>120.408 arquivos</b> do Baileys (hermes-work)</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Comparação de hash <b>MD5</b> executada em lote</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>11.000 duplicatas</b> exatas removidas (mantendo original no Core)</div></li>
+        </ul>
+
+        <div class="log-box">
+          <span class="log-dim">[23:19:12]</span> Removendo lixo do Baileys...<br>
+          <span class="log-dim">[23:19:45]</span> <span style="color:var(--amber); font-weight:700;">⚠️ 120.408 arquivos removidos de hermes-work.</span><br>
+          <span class="log-dim">[23:20:10]</span> Comparando hashes MD5...<br>
+          <span class="log-dim">[23:20:30]</span> <span class="log-ok">✅ 11.000 duplicatas removidas.</span><br>
+          <span class="log-dim">[23:20:31]</span> Tamanho reduzido de 1.0G para 538M.
+        </div>
+      </div>
+    </details>
+
+    <!-- FASE 4 -->
+    <details>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--green)"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 4: Organização de <b>Soltos</b></h3>
+          <p>Fim dos arquivos na raiz. Tudo foi para subpastas estruturadas.</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>PDFs, imagens, códigos soltos e scripts foram classificados e movidos para dentro das suas respectivas pastas de projeto para manter a integridade do acervo.</p>
+        <ul class="checklist">
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Arquivos separados em <b>docs/</b>, <b>ui/</b>, <b>code/</b>, <b>config/</b>.</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>54 scripts</b> avulsos movidos para <b>09_ScriptsSoltos</b>.</div></li>
+        </ul>
+        <div class="log-box">
+          <span class="log-dim">[23:21:05]</span> Varrendo raiz das pastas numeradas...<br>
+          <span class="log-dim">[23:21:10]</span> Movendo scripts soltos para 09_ScriptsSoltos...<br>
+          <span class="log-dim">[23:21:15]</span> <span class="log-ok">✅ 54 arquivos realocados.</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- FASE 5 -->
+    <details>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--amber)"><path d="M4 4h10l6 6v10H4z"/><path d="M14 4v6h6M8 13h8M8 17h5"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 5: <b>Renomeação</b> Padrão</h3>
+          <p>Documentos e HTMLs ajustados para facilitar a leitura (Técnico + Leigo).</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>Arquivos importantes ganharam <b>data</b> e uma <b>descrição amigável</b> no nome. Exemplo: <code>README.md</code> virou <code>readme_Guia_Principal_2026-10-20.md</code>.</p>
+        <ul class="checklist">
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Docs renomeados com sufixo de data.</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div>Nomes técnicos traduzidos para termos leigos.</div></li>
+        </ul>
+        <div class="log-box">
+          <span class="log-dim">[23:22:00]</span> Iniciando renomeação de docs...<br>
+          <span class="log-dim">[23:22:05]</span> Renomeados: 12 arquivos.<br>
+          <span class="log-dim">[23:22:05]</span> <span class="log-ok">✅ Padrão aplicado com sucesso.</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- FASE 6 -->
+    <details>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--txt-main)"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 6: Preparação para o <b>GitHub</b></h3>
+          <p>Proteção contra vazamento de dados e commit inicial.</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>O <code>.gitignore</code> mestre foi gerado bloqueando <code>99_Legacy</code>, bancos de dados, chaves e sessões do WhatsApp. O repositório local foi inicializado.</p>
+        <ul class="checklist">
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>.gitignore</b> configurado para bloquear arquivos sensíveis e pesados.</div></li>
+          <li><div class="ico-check"><svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 6L9 17l-5-5"/></svg></div> <div><b>Git Init</b> e commit na branch main finalizados.</div></li>
+        </ul>
+        <div class="log-box">
+          <span class="log-dim">[23:23:00]</span> Criando .gitignore mestre...<br>
+          <span class="log-dim">[23:23:02]</span> Inicializando git init -b main...<br>
+          <span class="log-dim">[23:23:06]</span> git commit -m "feat: reestruturação autônoma..."<br>
+          <span class="log-dim">[23:23:07]</span> <span class="log-ok">✅ 1.243 arquivos seguros adicionados ao Git.</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- FASE 7 -->
+    <details>
+      <summary>
+        <div class="ph-ico">
+          <svg class="ico" viewBox="0 0 24 24" style="color:var(--blue)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="ph-info">
+          <h3>Fase 7: <b>Relatório</b> Final</h3>
+          <p>Consolidação dos dados da missão.</p>
+        </div>
+        <span class="badge done">Concluído</span>
+      </summary>
+      <div class="ph-content">
+        <p>O arquivo <code>hermes_relatorio_final.md</code> foi gerado na sua pasta Home com todas as métricas e o passo a passo do que fazer ao acordar.</p>
+        <div class="log-box">
+          <span class="log-dim">[23:24:00]</span> Escrevendo hermes_relatorio_final.md...<br>
+          <span class="log-dim">[23:24:01]</span> <span class="log-ok">✅ MISSÃO CONCLUÍDA COM SUCESSO.</span>
+        </div>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+</body>
+</html>

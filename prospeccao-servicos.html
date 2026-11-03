@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Prospecção Automática no WhatsApp — para prestadores de serviço</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0d0d12;--fg:#f0f0f4;--fg-dim:#aeaebb;--fg-faint:#74747f;--blue:#9cc9ff;--lilac:#c9b8ff;--mint:#8fe3cf;--gold:#e9c97f;--rose:#f0a1a1;--sky:#7fd3e8;--hair:rgba(255,255,255,.085);--surf:rgba(255,255,255,.03);--grad:linear-gradient(120deg,var(--blue),var(--lilac) 55%,var(--mint));--ease:cubic-bezier(.25,.46,.45,.94);--fast:250ms;--base:350ms}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15.5px/1.7 Manrope,system-ui,sans-serif;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 64px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}p{margin:0}strong{font-weight:600;color:var(--fg)}
+:focus-visible{outline:1px solid var(--blue);outline-offset:3px}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
+.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
+.top-cta svg{width:15px;height:15px}
+.hero{position:relative;overflow:hidden;padding-block:56px 40px}
+.halo{position:absolute;border-radius:50%;pointer-events:none}
+.halo.h1{width:520px;height:520px;top:-240px;right:-160px;background:radial-gradient(closest-side,rgba(156,201,255,.12),transparent)}
+.halo.h2{width:420px;height:420px;bottom:-260px;left:-140px;background:radial-gradient(closest-side,rgba(143,227,207,.07),transparent)}
+.hero-in{position:relative;z-index:1;max-width:760px}
+.kicker{font:500 11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+.hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px}
+.lede{color:var(--fg-dim);max-width:62ch;font-size:16px;line-height:1.75}
+.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
+.cta-main svg{width:20px;height:20px}
+.cta-sub{display:block;margin-top:12px;font-size:13px;color:var(--fg-faint)}.cta-sub strong{color:var(--fg-dim)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:40px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.stat{padding:20px 18px 18px;background:var(--bg);min-width:0;position:relative}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
+.stat b{display:block;font:600 1.35rem Sora,sans-serif;letter-spacing:-.01em;background:linear-gradient(100deg,var(--c),var(--c2,var(--c)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;font-size:13px;line-height:1.5;color:var(--fg-dim);margin-top:4px}
+.sec{margin-top:64px}
+.sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.sec-h h2{font-size:1.5rem;font-weight:600;line-height:1.25}
+.lede-s{color:var(--fg-dim);max-width:60ch;font-size:15px;line-height:1.7}
+.sec-rule{height:1px;margin-top:6px;background:linear-gradient(90deg,var(--g1),var(--g2),transparent)}
+.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
+.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative;transition:border-color var(--fast) var(--ease)}
+.surf:hover{border-color:rgba(255,255,255,.14)}
+.tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
+.card{padding:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px 24px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);transition:border-color var(--fast) var(--ease)}
+.steps li:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
+.steps .num{font:600 13px "JetBrains Mono",monospace;color:var(--c);padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);min-width:fit-content}
+.steps .txt{min-width:0;color:var(--fg-dim);font-size:15px;line-height:1.7}
+.steps .txt strong{color:var(--fg);display:block;margin-bottom:4px;font-size:15.5px;font-family:Sora,sans-serif;font-weight:600}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14.5px;line-height:1.65}
+.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
+.check strong{color:var(--fg)}
+.cta-band{margin-top:72px;padding:40px 32px;border-radius:20px;background:radial-gradient(120% 140% at 0% 0%,rgba(143,227,207,.15),transparent 60%),radial-gradient(120% 140% at 100% 100%,rgba(156,201,255,.12),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(143,227,207,.25);text-align:center}
+.cta-band h2{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:14px}
+.cta-band p{color:var(--fg-dim);max-width:560px;margin:0 auto 28px;font-size:15.5px;line-height:1.7}
+.cta-band .cta-main{margin-top:0}
+.cta-band .cta-sub{color:var(--fg-faint);font-size:12.5px;margin-top:16px}
+.cta-band .cta-sub code{font-family:"JetBrains Mono",monospace;color:var(--mint);background:rgba(143,227,207,.08);padding:2px 8px;border-radius:6px}
+.faq details{border-top:1px solid var(--hair);padding:0}
+.faq details:first-child{border-top:0}
+.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:500;font-size:15px;color:var(--fg);transition:color var(--fast) var(--ease)}
+.faq summary:hover{color:var(--blue)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:8px;height:8px;border-right:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg);transition:transform var(--fast) var(--ease);flex:0 0 auto}
+.faq details[open] summary::after{transform:rotate(225deg)}
+.faq .dd-body{padding:0 0 18px;color:var(--fg-dim);font-size:14.5px;line-height:1.7}
+.foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
+.foot a:hover{color:var(--mint)}
+.foot .contact{display:flex;gap:20px;flex-wrap:wrap}
+.js .rv:not(.in){opacity:0;transform:translateY(8px)}
+.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
+.rv.in{opacity:1;transform:none}
+.float-cta{position:fixed;bottom:max(16px,env(safe-area-inset-bottom,0px));right:16px;z-index:50;display:none;align-items:center;gap:10px;padding:14px 20px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 14px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -8px rgba(143,227,207,.8)}
+.float-cta svg{width:18px;height:18px}
+@media (max-width:720px){.float-cta{display:inline-flex}}
+@media (max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+<header class="top">
+<div class="top-in">
+<span class="brand">Prospecção Automática <i>· para prestadores de serviço</i></span>
+<a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20automa%C3%A7%C3%A3o%20de%20prospec%C3%A7%C3%A3o%20para%20aumentar%20minhas%20vendas." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<span>Falar no WhatsApp</span>
+</a>
+</div>
+</header>
+<main class="wrap">
+<section class="hero" aria-labelledby="titulo">
+<div class="halo h1" aria-hidden="true"></div>
+<div class="halo h2" aria-hidden="true"></div>
+<div class="hero-in">
+<p class="kicker gt rv" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">Para prestadores de serviço</p>
+<h1 id="titulo" class="rv">Seu WhatsApp pode <span class="grad-text">vender todos os dias</span> — sem você virar escravo dele.</h1>
+<p class="lede rv">Se você é encanador, eletricista, personal, dentista, consultor, agência, arquiteto ou qualquer prestador de serviço, sabe que a diferença entre um mês bom e um mês ruim é <strong>quantos clientes você consegue abordar</strong>. O problema é que abordar no manual consome o dia inteiro — e não sobra tempo para executar o serviço.</p>
+<p class="lede rv" style="margin-top:16px">A <strong>prospecção automática</strong> resolve isso: uma lista de contatos entra todos os dias na sua fila, o sistema envia as mensagens com <strong>cadência, pausa e segurança</strong>, e você só aparece quando o cliente responde. Menos trabalho. Mais conversas. Mais vendas.</p>
+<a class="cta-main rv" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20automa%C3%A7%C3%A3o%20de%20prospec%C3%A7%C3%A3o%20para%20aumentar%20minhas%20vendas." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Quero vender mais pelo WhatsApp
+</a>
+<span class="cta-sub rv">Atendimento direto no <strong>21 99971-9474</strong> · diagnóstico gratuito</span>
+<div class="stats">
+<div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">Dias inteiros</b><span>economizados por semana em abordagem manual</span></div>
+<div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono">100%</b><span>dos contatos abordados sem esquecer nenhum</span></div>
+<div class="stat rv" style="--c:#e9c97f;--c2:#f0a1a1"><b class="mono">Ritmo seguro</b><span>pausas automáticas que protegem sua conta</span></div>
+<div class="stat rv" style="--c:#c9b8ff;--c2:#9cc9ff"><b class="mono">21 99971-9474</b><span>falar com especialista agora</span></div>
+</div>
+</div>
+</section>
+<section class="sec" style="--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">O problema real</p>
+<h2 class="gt rv">Por que prestadores de serviço perdem tantas vendas</h2>
+<p class="lede-s rv">Não é falta de cliente. É falta de <strong>ritmo</strong> para abordá-los com consistência.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#f0a1a1">
+<p class="eyebrow" style="color:var(--c)">Sem automação</p>
+<h3 style="margin-bottom:12px">O dia acaba antes de prospectar</h3>
+<p style="color:var(--fg-dim);font-size:14.5px;line-height:1.7">Você passa o dia atendendo, executando, resolvendo. Sobra meia hora no fim da tarde — tempo insuficiente para abordar todos os contatos que você deveria. Resultado: a lista de leads vira uma pilha intocada.</p>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Com automação</p>
+<h3 style="margin-bottom:12px">O ritmo trabalha por você</h3>
+<p style="color:var(--fg-dim);font-size:14.5px;line-height:1.7">Todos os dias, uma nova leva de contatos é abordada com a mesma consistência. Você acorda com respostas na fila — e dedica sua energia ao que de fato gera receita: <strong>fechar negócio</strong>.</p>
+</div>
+</div>
+</section>
+<section class="sec" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">Como funciona, passo a passo</p>
+<h2 class="gt rv">A lógica da automação, sem jargão</h2>
+<p class="lede-s rv">Quatro etapas que rodam sozinhas. Você só precisa ter a lista e deixar o sistema fazer o resto.</p>
+<div class="sec-rule"></div>
+</div>
+<ol class="steps">
+<li class="rv" style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Sua lista vira uma fila organizada</strong>Você envia (ou cola) um arquivo com os contatos — nome, telefone e qualquer observação útil. O sistema <strong>lê a lista uma vez</strong>, marca cada contato como "pendente" e organiza tudo. Nada se perde, nada se repete.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">02</span><div class="txt"><strong>O envio acontece com pausa inteligente</strong>A cada mensagem enviada, o sistema espera entre <strong>3 e 6 minutos</strong> antes de mandar a próxima. Isso é fundamental: enviar tudo de uma vez é o caminho mais curto para o WhatsApp bloquear sua conta. A pausa protege seu número.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">03</span><div class="txt"><strong>Falhas acionam um "freio de segurança"</strong>Se três envios seguidos falharem (por instabilidade da rede ou qualquer outro motivo), o sistema <strong>para automaticamente</strong> e devolve os contatos para a fila. Ele não insiste às cegas — o que evita que você queime a conta tentando resolver um problema momentâneo.</div></li>
+<li class="rv" style="--c:#e9c97f"><span class="num">04</span><div class="txt"><strong>O progresso fica salvo</strong>Cada contato já abordado fica registrado. Se o computador desligar, o script travar, você fechar o terminal — quando rodar de novo, ele <strong>retoma de onde parou</strong>, sem repetir mensagens nem perder o histórico.</div></li>
+</ol>
+</section>
+<section class="sec" style="--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Por que é seguro</p>
+<h2 class="gt rv">Automação com rédea curta</h2>
+<p class="lede-s rv">Qualquer um consegue disparar mensagem em massa. <strong>Poucos conseguem fazer isso sem queimar o número em uma semana.</strong> É aí que a engenharia faz diferença.</p>
+<div class="sec-rule"></div>
+</div>
+<ul class="check">
+<li class="rv"><strong>Pausa aleatória entre envios</strong> — cada disparo espera entre 3 e 6 minutos, imitando o ritmo de uma pessoa real. O WhatsApp identifica padrões repetitivos; o sistema quebra esse padrão.</li>
+<li class="rv"><strong>Freio automático em 3 falhas</strong> — se algo der errado três vezes seguidas, o sistema para sozinho. Você não perde a conta por insistência.</li>
+<li class="rv"><strong>Progresso salvo entre execuções</strong> — nenhum contato é abordado duas vezes por acidente. Nada de "oi" duplicado queimando sua reputação.</li>
+<li class="rv"><strong>Personalização mínima e honesta</strong> — a mensagem é personalizada apenas com o nome do negócio. Isso reduz a chance de denúncia por spam e mantém a conversa genuína.</li>
+<li class="rv"><strong>Sem dependência de você estar online</strong> — o sistema roda em segundo plano. Você executa o serviço, ele prospecta.</li>
+</ul>
+</section>
+<section class="sec" style="--g1:#e9c97f;--g2:#8fe3cf;--g3:#7fd3e8">
+<div class="sec-h">
+<p class="eyebrow gt rv">O que muda na prática</p>
+<h2 class="gt rv">Mais conversas, mais fechamentos, menos desgaste</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#9cc9ff">
+<p class="eyebrow" style="color:var(--c)">Antes</p>
+<ul class="check" style="margin-top:12px">
+<li>A lista de leads fica guardada "para quando der tempo"</li>
+<li>Prospecção acontece em surtos, sem consistência</li>
+<li>Você não sabe se o contato já foi abordado ou não</li>
+<li>Perde o timing — o cliente esfria ou fecha com outro</li>
+</ul>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Depois</p>
+<ul class="check" style="margin-top:12px">
+<li>Todos os dias uma nova leva é abordada automaticamente</li>
+<li>Você recebe respostas prontas para trabalhar</li>
+<li>Histórico completo: quem foi, quando, o que respondeu</li>
+<li>Sua energia fica 100% no fechamento</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="sec faq" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Perguntas frequentes</p>
+<h2 class="gt rv">O que prestadores costumam perguntar</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="stack">
+<div class="surf card rv" style="--c:#9cc9ff"><details><summary>Isso vai bloquear minha conta de WhatsApp?</summary><div class="dd-body">O sistema foi desenhado exatamente para <strong>reduzir</strong> esse risco. Pausas de 3 a 6 minutos entre envios, freio automático em 3 falhas e personalização mínima — tudo isso existe porque bloqueio é o principal medo (e o principal problema real). Nenhuma automação elimina 100% do risco, mas essa é a versão com o maior cuidado que existe.</div></details></div>
+<div class="surf card rv" style="--c:#8fe3cf"><details><summary>Minha lista de contatos é pequena. Vale a pena?</summary><div class="dd-body">Sim. O sistema funciona tanto com 50 contatos quanto com 5.000. Se sua lista é pequena, ele aborda todos com a mesma consistência diária — e você cresce sem precisar contratar ninguém.</div></details></div>
+<div class="surf card rv" style="--c:#c9b8ff"><details><summary>Preciso saber programar para usar?</summary><div class="dd-body">Não. Você envia a lista, o sistema roda, você recebe as respostas. Se quiser algo mais avançado (integrar com seu CRM, gerar relatórios, personalizar mensagens por segmento), isso também é possível — mas o básico funciona sem você tocar em código.</div></details></div>
+<div class="surf card rv" style="--c:#e9c97f"><details><summary>Quanto tempo leva para começar?</summary><div class="dd-body">A configuração inicial é rápida. O que define o ritmo é o tamanho da sua lista: 100 contatos em ~6 a 10 horas de execução contínua (com as pausas). Você não precisa estar presente — o sistema roda sozinho.</div></details></div>
+<div class="surf card rv" style="--c:#f0a1a1"><details><summary>E se o cliente reclamar de receber mensagem?</summary><div class="dd-body">A mensagem é direta e honesta, feita para gerar conversa real — não spam. E se o cliente pedir para não receber, é fácil remover da lista e não abordar de novo. O sistema respeita isso.</div></details></div>
+</div>
+</section>
+<div class="cta-band rv">
+<h2 class="grad-text">Pronto para vender mais sem virar escravo do WhatsApp?</h2>
+<p>Manda uma mensagem agora e vamos olhar a sua situação. Eu te mostro quanto dá para automatizar, quanto tempo você economiza por semana e qual o ritmo seguro para o seu tipo de serviço.</p>
+<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20automa%C3%A7%C3%A3o%20de%20prospec%C3%A7%C3%A3o%20para%20aumentar%20minhas%20vendas." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Chamar no WhatsApp · 21 99971-9474
+</a>
+<span class="cta-sub">Resposta em até 24h · diagnóstico sem compromisso · <code>21 99971-9474</code></span>
+</div>
+<footer class="foot">
+<span>© Prospecção Automática · para prestadores de serviço</span>
+<div class="contact">
+<a href="https://wa.me/5521999719474" target="_blank" rel="noopener">WhatsApp · 21 99971-9474</a>
+<a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+</div>
+</footer>
+</main>
+<a class="float-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20automa%C3%A7%C3%A3o%20de%20prospec%C3%A7%C3%A3o%20para%20aumentar%20minhas%20vendas." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Falar agora
+</a>
+<script>
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  function reveal(el){ el.classList.add('in'); }
+  if (reduce || !('IntersectionObserver' in window)) { items.forEach(reveal); }
+  else {
+    var io = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(en){ if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+    items.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

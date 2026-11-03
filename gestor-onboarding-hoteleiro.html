@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gestor de Onboarding — Setor Hoteleiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0d0d12;--fg:#f0f0f4;--fg-dim:#aeaebb;--fg-faint:#74747f;--blue:#9cc9ff;--lilac:#c9b8ff;--mint:#8fe3cf;--gold:#e9c97f;--rose:#f0a1a1;--sky:#7fd3e8;--hair:rgba(255,255,255,.085);--surf:rgba(255,255,255,.03);--grad:linear-gradient(120deg,var(--blue),var(--lilac) 55%,var(--mint));--ease:cubic-bezier(.25,.46,.45,.94);--fast:250ms;--base:350ms}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15.5px/1.7 Manrope,system-ui,sans-serif;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 64px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}p{margin:0}strong{font-weight:600;color:var(--fg)}
+:focus-visible{outline:1px solid var(--blue);outline-offset:3px}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
+.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
+.top-cta svg{width:15px;height:15px}
+.hero{position:relative;overflow:hidden;padding-block:56px 40px}
+.halo{position:absolute;border-radius:50%;pointer-events:none}
+.halo.h1{width:520px;height:520px;top:-240px;right:-160px;background:radial-gradient(closest-side,rgba(156,201,255,.12),transparent)}
+.halo.h2{width:420px;height:420px;bottom:-260px;left:-140px;background:radial-gradient(closest-side,rgba(143,227,207,.07),transparent)}
+.hero-in{position:relative;z-index:1;max-width:800px}
+.kicker{font:500 11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+.hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px}
+.lede{color:var(--fg-dim);max-width:64ch;font-size:16px;line-height:1.75}
+.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
+.cta-main svg{width:20px;height:20px}
+.cta-sub{display:block;margin-top:12px;font-size:13px;color:var(--fg-faint)}.cta-sub strong{color:var(--fg-dim)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:40px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.stat{padding:20px 18px 18px;background:var(--bg);min-width:0;position:relative}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
+.stat b{display:block;font:600 1.35rem Sora,sans-serif;letter-spacing:-.01em;background:linear-gradient(100deg,var(--c),var(--c2,var(--c)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;font-size:13px;line-height:1.5;color:var(--fg-dim);margin-top:4px}
+.sec{margin-top:64px}
+.sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.sec-h h2{font-size:1.5rem;font-weight:600;line-height:1.25}
+.lede-s{color:var(--fg-dim);max-width:62ch;font-size:15px;line-height:1.7}
+.sec-rule{height:1px;margin-top:6px;background:linear-gradient(90deg,var(--g1),var(--g2),transparent)}
+.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
+.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative;transition:border-color var(--fast) var(--ease)}
+.surf:hover{border-color:rgba(255,255,255,.14)}
+.tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
+.card{padding:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px 24px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);transition:border-color var(--fast) var(--ease)}
+.steps li:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
+.steps .num{font:600 13px "JetBrains Mono",monospace;color:var(--c);padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);min-width:fit-content;white-space:nowrap}
+.steps .txt{min-width:0;color:var(--fg-dim);font-size:15px;line-height:1.7}
+.steps .txt strong{color:var(--fg);display:block;margin-bottom:4px;font-size:15.5px;font-family:Sora,sans-serif;font-weight:600}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14.5px;line-height:1.65}
+.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
+.check strong{color:var(--fg)}
+.front{display:flex;flex-direction:column;gap:8px;padding:20px 22px}
+.front h3{font-size:1rem;font-family:Sora,sans-serif;font-weight:600;color:var(--fg);margin-bottom:4px}
+.front p{color:var(--fg-dim);font-size:14px;line-height:1.65}
+.front .tag{display:inline-flex;align-items:center;gap:6px;font:500 10px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 32%,transparent);width:fit-content;margin-top:10px}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:8px}
+.tl-item{padding:22px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);position:relative}
+.tl-item::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:2px;background:var(--c);opacity:.7;border-radius:2px}
+.tl-item .when{font:600 12px "JetBrains Mono",monospace;color:var(--c);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:block}
+.tl-item h3{font-size:1rem;margin-bottom:8px}
+.tl-item p{color:var(--fg-dim);font-size:13.5px;line-height:1.6}
+.cta-band{margin-top:72px;padding:40px 32px;border-radius:20px;background:radial-gradient(120% 140% at 0% 0%,rgba(143,227,207,.15),transparent 60%),radial-gradient(120% 140% at 100% 100%,rgba(156,201,255,.12),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(143,227,207,.25);text-align:center}
+.cta-band h2{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:14px}
+.cta-band p{color:var(--fg-dim);max-width:580px;margin:0 auto 28px;font-size:15.5px;line-height:1.7}
+.cta-band .cta-main{margin-top:0}
+.cta-band .cta-sub{color:var(--fg-faint);font-size:12.5px;margin-top:16px}
+.cta-band .cta-sub code{font-family:"JetBrains Mono",monospace;color:var(--mint);background:rgba(143,227,207,.08);padding:2px 8px;border-radius:6px}
+.faq details{border-top:1px solid var(--hair);padding:0}
+.faq details:first-child{border-top:0}
+.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:500;font-size:15px;color:var(--fg);transition:color var(--fast) var(--ease)}
+.faq summary:hover{color:var(--blue)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:8px;height:8px;border-right:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg);transition:transform var(--fast) var(--ease);flex:0 0 auto}
+.faq details[open] summary::after{transform:rotate(225deg)}
+.faq .dd-body{padding:0 0 18px;color:var(--fg-dim);font-size:14.5px;line-height:1.7}
+.foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
+.foot a:hover{color:var(--mint)}
+.foot .contact{display:flex;gap:20px;flex-wrap:wrap}
+.js .rv:not(.in){opacity:0;transform:translateY(8px)}
+.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
+.rv.in{opacity:1;transform:none}
+.float-cta{position:fixed;bottom:max(16px,env(safe-area-inset-bottom,0px));right:16px;z-index:50;display:none;align-items:center;gap:10px;padding:14px 20px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 14px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -8px rgba(143,227,207,.8)}
+.float-cta svg{width:18px;height:18px}
+@media (max-width:720px){.float-cta{display:inline-flex}}
+@media (max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+<header class="top">
+<div class="top-in">
+<span class="brand">Gestor de Onboarding <i>· Setor Hoteleiro</i></span>
+<a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20hotelaria." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<span>Falar com especialista</span>
+</a>
+</div>
+</header>
+<main class="wrap">
+
+<section class="hero" aria-labelledby="titulo">
+<div class="halo h1" aria-hidden="true"></div>
+<div class="halo h2" aria-hidden="true"></div>
+<div class="hero-in">
+<p class="kicker gt rv" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">Para gestão hoteleira</p>
+<h1 id="titulo" class="rv">Onboarding de gestor que coloca o novo líder em <span class="grad-text">plena operação</span> em dias, não em meses.</h1>
+<p class="lede rv">Recepção, governança, A&B, eventos, revenue, manutenção — cada frente da hotelaria tem sua lógica, sua equipe e suas ferramentas. O <strong>Gestor de Onboarding</strong> identifica o perfil do novo colaborador, define onde ele será alocado, mapeia sua equipe, libera os acessos corretos, apresenta a rotina e acompanha até a ambientação total.</p>
+<p class="lede rv" style="margin-top:16px">Do primeiro dia ao 90º, o gestor não fica perdido: ele sabe <strong>quem é quem</strong>, <strong>onde está</strong>, <strong>o que faz</strong> e <strong>como medir resultado</strong>. Sem retrabalho de RH, sem TI travada, sem equipe esperando.</p>
+<a class="cta-main rv" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20hotelaria." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Quero estruturar meu onboarding hoteleiro
+</a>
+<span class="cta-sub rv">Atendimento direto no <strong>21 99971-9474</strong> · diagnóstico gratuito</span>
+<div class="stats">
+<div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono">7 etapas</b><span>do perfil à ambientação total</span></div>
+<div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">D1 → D90</b><span>acompanhamento estruturado</span></div>
+<div class="stat rv" style="--c:#e9c97f;--c2:#f0a1a1"><b class="mono">10 frentes</b><span>hoteleiras cobertas no mapa</span></div>
+<div class="stat rv" style="--c:#c9b8ff;--c2:#9cc9ff"><b class="mono">Zero retrabalho</b><span>acessos, equipe e rotina definidos antes da chegada</span></div>
+</div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">O problema</p>
+<h2 class="gt rv">Onboarding tradicional em hotelaria é um caos silencioso</h2>
+<p class="lede-s rv">O gestor chega, recebe um manual e um crachá. O resto ele descobre sozinho — no meio do turno, com o hóspede esperando.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#f0a1a1">
+<p class="eyebrow" style="color:var(--c)">Sem o Gestor de Onboarding</p>
+<h3 style="margin-bottom:12px">Primeiras semanas em modo sobrevivência</h3>
+<ul class="check" style="margin-top:12px">
+<li>Não sabe quem é o gerente de cada área</li>
+<li>Descobre na prática qual é a rotina — e erra</li>
+<li>TI libera acessos em semanas, não em horas</li>
+<li>Equipe não foi avisada da chegada do novo líder</li>
+<li>As frentes da casa (recepção, governança, A&B...) ficam opacas</li>
+<li>Sem métrica de ambientação — ninguém sabe se deu certo</li>
+</ul>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Com o Gestor de Onboarding</p>
+<h3 style="margin-bottom:12px">Do D1 ao D90 com mapa, equipe e rotina</h3>
+<ul class="check" style="margin-top:12px">
+<li>Perfil mapeado antes da chegada</li>
+<li>Alocação definida: unidade, setor, turno</li>
+<li>Equipe apresentada nominalmente</li>
+<li>Acessos liberados no primeiro dia útil</li>
+<li>Rotina e frentes documentadas e entregues</li>
+<li>Ambientação medida semana a semana</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">A lógica da automação</p>
+<h2 class="gt rv">Sete etapas, do perfil à ambientação</h2>
+<p class="lede-s rv">Cada etapa produz uma saída concreta — não um slide motivacional. O gestor entra no turno sabendo exatamente o que fazer.</p>
+<div class="sec-rule"></div>
+</div>
+<ol class="steps">
+<li class="rv" style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Identificação do perfil</strong>Nome, formação, experiência anterior, especialidade (operações, A&B, revenue, eventos, hospitalidade de luxo...). A automação lê a ficha do colaborador e cruza com o banco de perfis da rede para definir o <strong>trilho de onboarding</strong> correto — cada perfil tem uma trilha própria.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">02</span><div class="txt"><strong>Alocação</strong>Unidade, setor, turno, gestor imediato e pares diretos. A alocação é definida <strong>antes da chegada</strong>, não improvisada no primeiro dia. O gestor sabe onde vai trabalhar, com quem e em qual horário — antes de pisar no hotel.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">03</span><div class="txt"><strong>Mapa da equipe</strong>Quem é quem: nomes, funções, tempo de casa, especialidades e canais de contato. O gestor conhece o organograma real da unidade — não o organograma de PowerPoint, mas o que efetivamente funciona no turno.</div></li>
+<li class="rv" style="--c:#e9c97f"><span class="num">04</span><div class="txt"><strong>Ferramentas e acessos</strong>PMS, channel manager, CRM, sistema de governança, ponto eletrônico, e-mail, grupo de WhatsApp operacional, dashboards de revenue. Cada perfil tem uma <strong>matriz de acessos</strong> própria — o gestor chega no D1 com login ativo e treinamento inicial de cada ferramenta.</div></li>
+<li class="rv" style="--c:#7fd3e8"><span class="num">05</span><div class="txt"><strong>Rotina e frentes</strong>A rotina diária, semanal e mensal do cargo é documentada e entregue. As <strong>frentes da casa</strong> — recepção, governança, A&B, eventos, manutenção, reservas, revenue — são apresentadas com seus responsáveis, rituais e indicadores. O gestor entende o hotel como sistema, não como caixa-preta.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">06</span><div class="txt"><strong>Frentes e ações da empresa</strong>Segmento hoteleiro: posicionamento, política comercial, padrão de atendimento, experiência do hóspede, protocolos de emergência, cultura da rede. O gestor conhece as <strong>ações da empresa</strong> — o que está em curso, o que muda e como o cargo dele contribui.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">07</span><div class="txt"><strong>Acompanhamento até a ambientação total</strong>Checkpoints em D1, D7, D30, D60 e D90. A automação mede: acessos concluídos, treinamentos feitos, reuniões realizadas, rotina executada, frentes dominadas. Quando o gestor atinge o marco de ambientação, o ciclo fecha com <strong>avaliação e feedback estruturado</strong>.</div></li>
+</ol>
+</section>
+
+<section class="sec" style="--g1:#e9c97f;--g2:#8fe3cf;--g3:#7fd3e8">
+<div class="sec-h">
+<p class="eyebrow gt rv">Frentes hoteleiras cobertas</p>
+<h2 class="gt rv">O mapa completo do hotel no onboarding</h2>
+<p class="lede-s rv">Cada frente é apresentada com responsável, rotina, ferramentas e indicadores próprios. O gestor não precisa adivinhar onde cada área se conecta.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid3">
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Recepção / Front Office</h3><p>Check-in, check-out, atendimento ao hóspede, upgrades, gestão de reclamações.</p><span class="tag">operação</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>Governança / Housekeeping</h3><p>Arrumação, inspeção, controle de enxoval, padrão de qualidade dos quartos.</p><span class="tag">operação</span></div>
+<div class="surf tint front rv" style="--c:#8fe3cf"><h3>A&B / Alimentos e Bebidas</h3><p>Café da manhã, restaurante, bar, room service, custos, equipe e padrão.</p><span class="tag">operação</span></div>
+<div class="surf tint front rv" style="--c:#e9c97f"><h3>Eventos e Grupos</h3><p>Salas, banquetes, propostas, execução, relacionamento com organizadores.</p><span class="tag">comercial</span></div>
+<div class="surf tint front rv" style="--c:#7fd3e8"><h3>Revenue Management</h3><p>Precificação dinâmica, previsão de demanda, análise de mix e canal.</p><span class="tag">estratégia</span></div>
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Reservas</h3><p>Central de reservas, OTA, política de cancelamento, upsell de tarifa.</p><span class="tag">comercial</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>Manutenção</h3><p>Preventiva, corretiva, fornecedores, chamados críticos.</p><span class="tag">operação</span></div>
+<div class="surf tint front rv" style="--c:#8fe3cf"><h3>Experiência do Hóspede</h3><p>NPS, reviews, jornada completa, pontos de encantamento e de atrito.</p><span class="tag">qualidade</span></div>
+<div class="surf tint front rv" style="--c:#e9c97f"><h3>Comercial / Vendas</h3><p>Contratos corporativos, agências, metas, funil de vendas.</p><span class="tag">comercial</span></div>
+<div class="surf tint front rv" style="--c:#7fd3e8"><h3>Administrativo / Financeiro</h3><p>Contas a pagar e receber, conciliação, custos, fechamento.</p><span class="tag">estratégia</span></div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Linha do tempo</p>
+<h2 class="gt rv">Do primeiro dia ao 90º</h2>
+<p class="lede-s rv">Cada marco entrega um estado verificável — não uma promessa de "está ambientado".</p>
+<div class="sec-rule"></div>
+</div>
+<div class="timeline">
+<div class="tl-item rv" style="--c:#9cc9ff"><span class="when">D1</span><h3>Identificação e alocação</h3><p>Perfil mapeado, alocação confirmada, crachá emitido, login ativo nas ferramentas essenciais (PMS, e-mail, ponto).</p></div>
+<div class="tl-item rv" style="--c:#c9b8ff"><span class="when">Semana 1</span><h3>Equipe e ferramentas</h3><p>Equipe apresentada, acessos completos liberados, primeiros treinamentos concluídos, rotina básica em execução.</p></div>
+<div class="tl-item rv" style="--c:#8fe3cf"><span class="when">Mês 1</span><h3>Frentes dominadas</h3><p>As 10 frentes hoteleiras apresentadas, ações da empresa compreendidas, primeiras entregas do cargo realizadas.</p></div>
+<div class="tl-item rv" style="--c:#e9c97f"><span class="when">D90</span><h3>Ambientação total</h3><p>Ciclo fechado com avaliação estruturada. O gestor opera com autonomia, sua equipe o reconhece como líder e as frentes estão sob sua responsabilidade.</p></div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">O que muda na prática</p>
+<h2 class="gt rv">Menos improviso, mais operação</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#f0a1a1">
+<p class="eyebrow" style="color:var(--c)">Antes</p>
+<ul class="check" style="margin-top:12px">
+<li>RH entrega manual e crachá</li>
+<li>TI libera acesso em 2 a 3 semanas</li>
+<li>Equipe não foi avisada da chegada</li>
+<li>Rotina aprendida no susto</li>
+<li>Frentes descobertas por acidente</li>
+<li>Sem métrica de ambientação</li>
+</ul>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Depois</p>
+<ul class="check" style="margin-top:12px">
+<li>Onboarding estruturado antes do D1</li>
+<li>Acessos prontos no primeiro dia útil</li>
+<li>Equipe ciente e preparada para receber</li>
+<li>Rotina documentada e entregue</li>
+<li>10 frentes com responsável e indicador</li>
+<li>Ambientação medida em D1, D7, D30, D60 e D90</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="sec faq" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">Perguntas frequentes</p>
+<h2 class="gt rv">O que gestores hoteleiros costumam perguntar</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="stack">
+<div class="surf card rv" style="--c:#9cc9ff"><details><summary>Serve para redes com múltiplas unidades?</summary><div class="dd-body">Sim. A automação mapeia o perfil do gestor e o aloca em uma unidade específica — ou em mais de uma, se o cargo for regional. Cada unidade tem seu próprio mapa de equipe, ferramentas e frentes.</div></details></div>
+<div class="surf card rv" style="--c:#8fe3cf"><details><summary>Como funciona a liberação de acessos?</summary><div class="dd-body">Cada perfil tem uma matriz de acessos (PMS, channel manager, CRM, governança, ponto, e-mail, WhatsApp operacional, dashboards). A automação aciona o TI e o RH com a lista pronta, e acompanha a conclusão — sem o gestor precisar correr atrás de ninguém.</div></details></div>
+<div class="surf card rv" style="--c:#c9b8ff"><details><summary>E se o gestor for promovido de dentro da casa?</summary><div class="dd-body">O onboarding é adaptado. Nesse caso, a etapa de identificação detecta que o colaborador já conhece parte da operação e encurta as trilhas onde ele já tem bagagem, focando nos novos escopos (gestão de equipe, visão de frentes, indicadores).</div></details></div>
+<div class="surf card rv" style="--c:#e9c97f"><details><summary>O que mede a ambientação total?</summary><div class="dd-body">Cinco marcos: acessos concluídos, treinamentos feitos, reuniões realizadas, rotina executada e frentes dominadas. Quando os cinco estão completos em D90, o ciclo fecha com avaliação e feedback estruturado do gestor imediato.</div></details></div>
+<div class="surf card rv" style="--c:#f0a1a1"><details><summary>Quanto tempo leva para implantar?</summary><div class="dd-body">A configuração inicial é rápida. O que define o cronograma é o tamanho da rede e a quantidade de perfis diferentes. Para uma unidade-piloto, o setup costuma ser concluído em poucos dias — e a partir do primeiro gestor já produz resultado.</div></details></div>
+</div>
+</section>
+
+<div class="cta-band rv">
+<h2 class="grad-text">Pronto para colocar seu próximo gestor em plena operação em 90 dias?</h2>
+<p>Manda uma mensagem agora e vamos mapear a situação da sua operação hoteleira. Eu te mostro como o Gestor de Onboarding se adapta à sua rede, quais frentes priorizar e quanto tempo você economiza por ciclo de contratação.</p>
+<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20hotelaria." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Chamar no WhatsApp · 21 99971-9474
+</a>
+<span class="cta-sub">Resposta em até 24h · diagnóstico sem compromisso · <code>21 99971-9474</code></span>
+</div>
+
+<footer class="foot">
+<span>© Gestor de Onboarding · Setor Hoteleiro</span>
+<div class="contact">
+<a href="https://wa.me/5521999719474" target="_blank" rel="noopener">WhatsApp · 21 99971-9474</a>
+<a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+</div>
+</footer>
+</main>
+
+<a class="float-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20hotelaria." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Falar agora
+</a>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  function reveal(el){ el.classList.add('in'); }
+  if (reduce || !('IntersectionObserver' in window)) { items.forEach(reveal); }
+  else {
+    var io = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(en){ if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+    items.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

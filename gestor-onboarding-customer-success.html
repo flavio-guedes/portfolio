@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gestor de Onboarding para Customer Success | Empresas de Desenvolvimento de Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0d0d12;--fg:#f0f0f4;--fg-dim:#aeaebb;--fg-faint:#74747f;--blue:#9cc9ff;--lilac:#c9b8ff;--mint:#8fe3cf;--gold:#e9c97f;--rose:#f0a1a1;--sky:#7fd3e8;--hair:rgba(255,255,255,.085);--surf:rgba(255,255,255,.03);--grad:linear-gradient(120deg,var(--blue),var(--lilac) 55%,var(--mint));--ease:cubic-bezier(.25,.46,.45,.94);--fast:250ms;--base:350ms}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15.5px/1.7 Manrope,system-ui,sans-serif;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 64px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}p{margin:0}strong{font-weight:600;color:var(--fg)}
+:focus-visible{outline:1px solid var(--blue);outline-offset:3px}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
+.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
+.top-cta svg{width:15px;height:15px}
+.hero{position:relative;overflow:hidden;padding-block:56px 40px}
+.halo{position:absolute;border-radius:50%;pointer-events:none}
+.halo.h1{width:520px;height:520px;top:-240px;right:-160px;background:radial-gradient(closest-side,rgba(156,201,255,.12),transparent)}
+.halo.h2{width:420px;height:420px;bottom:-260px;left:-140px;background:radial-gradient(closest-side,rgba(143,227,207,.07),transparent)}
+.hero-in{position:relative;z-index:1;max-width:820px}
+.kicker{font:500 11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+.hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px}
+.lede{color:var(--fg-dim);max-width:64ch;font-size:16px;line-height:1.75}
+.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
+.cta-main svg{width:20px;height:20px}
+.cta-sub{display:block;margin-top:12px;font-size:13px;color:var(--fg-faint)}.cta-sub strong{color:var(--fg-dim)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:40px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.stat{padding:20px 18px 18px;background:var(--bg);min-width:0;position:relative}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
+.stat b{display:block;font:600 1.35rem Sora,sans-serif;letter-spacing:-.01em;background:linear-gradient(100deg,var(--c),var(--c2,var(--c)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;font-size:13px;line-height:1.5;color:var(--fg-dim);margin-top:4px}
+.sec{margin-top:64px}
+.sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.sec-h h2{font-size:1.5rem;font-weight:600;line-height:1.25}
+.lede-s{color:var(--fg-dim);max-width:64ch;font-size:15px;line-height:1.7}
+.sec-rule{height:1px;margin-top:6px;background:linear-gradient(90deg,var(--g1),var(--g2),transparent)}
+.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
+.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative;transition:border-color var(--fast) var(--ease)}
+.surf:hover{border-color:rgba(255,255,255,.14)}
+.tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
+.card{padding:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px 24px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);transition:border-color var(--fast) var(--ease)}
+.steps li:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
+.steps .num{font:600 13px "JetBrains Mono",monospace;color:var(--c);padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);min-width:fit-content;white-space:nowrap}
+.steps .txt{min-width:0;color:var(--fg-dim);font-size:15px;line-height:1.7}
+.steps .txt strong{color:var(--fg);display:block;margin-bottom:4px;font-size:15.5px;font-family:Sora,sans-serif;font-weight:600}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14.5px;line-height:1.65}
+.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
+.check strong{color:var(--fg)}
+.front{display:flex;flex-direction:column;gap:8px;padding:20px 22px}
+.front h3{font-size:1rem;font-family:Sora,sans-serif;font-weight:600;color:var(--fg);margin-bottom:4px}
+.front p{color:var(--fg-dim);font-size:14px;line-height:1.65}
+.front .tag{display:inline-flex;align-items:center;gap:6px;font:500 10px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 32%,transparent);width:fit-content;margin-top:10px}
+.journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden;margin-top:16px}
+.jstep{background:var(--bg);padding:20px 18px;position:relative}
+.jstep::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
+.jstep .jnum{font:600 11px "JetBrains Mono",monospace;color:var(--c);letter-spacing:.1em;margin-bottom:8px}
+.jstep h3{font-size:.95rem;margin-bottom:6px;font-family:Sora,sans-serif}
+.jstep p{color:var(--fg-dim);font-size:13px;line-height:1.55}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:8px}
+.tl-item{padding:22px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);position:relative}
+.tl-item::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:2px;background:var(--c);opacity:.7;border-radius:2px}
+.tl-item .when{font:600 12px "JetBrains Mono",monospace;color:var(--c);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:block}
+.tl-item h3{font-size:1rem;margin-bottom:8px}
+.tl-item p{color:var(--fg-dim);font-size:13.5px;line-height:1.6}
+.cta-band{margin-top:72px;padding:40px 32px;border-radius:20px;background:radial-gradient(120% 140% at 0% 0%,rgba(143,227,207,.15),transparent 60%),radial-gradient(120% 140% at 100% 100%,rgba(156,201,255,.12),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(143,227,207,.25);text-align:center}
+.cta-band h2{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:14px}
+.cta-band p{color:var(--fg-dim);max-width:600px;margin:0 auto 28px;font-size:15.5px;line-height:1.7}
+.cta-band .cta-main{margin-top:0}
+.cta-band .cta-sub{color:var(--fg-faint);font-size:12.5px;margin-top:16px}
+.cta-band .cta-sub code{font-family:"JetBrains Mono",monospace;color:var(--mint);background:rgba(143,227,207,.08);padding:2px 8px;border-radius:6px}
+.faq details{border-top:1px solid var(--hair);padding:0}
+.faq details:first-child{border-top:0}
+.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:500;font-size:15px;color:var(--fg);transition:color var(--fast) var(--ease)}
+.faq summary:hover{color:var(--blue)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:8px;height:8px;border-right:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg);transition:transform var(--fast) var(--ease);flex:0 0 auto}
+.faq details[open] summary::after{transform:rotate(225deg)}
+.faq .dd-body{padding:0 0 18px;color:var(--fg-dim);font-size:14.5px;line-height:1.7}
+.foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
+.foot a:hover{color:var(--mint)}
+.foot .contact{display:flex;gap:20px;flex-wrap:wrap}
+.js .rv:not(.in){opacity:0;transform:translateY(8px)}
+.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+<header class="top">
+<div class="top-in">
+<span class="brand">Gestor de Onboarding <i>· Customer Success</i></span>
+<a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20Customer%20Success." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<span>Falar com especialista</span>
+</a>
+</div>
+</header>
+<main class="wrap">
+
+<section class="hero" aria-labelledby="titulo">
+<div class="halo h1" aria-hidden="true"></div>
+<div class="halo h2" aria-hidden="true"></div>
+<div class="hero-in">
+<p class="kicker gt rv" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">Para empresas de desenvolvimento de software</p>
+<h1 id="titulo" class="rv">Customer Success que retém clientes começa com um <span class="grad-text">onboarding duplo</span>: do CS e do cliente.</h1>
+<p class="lede rv">Em empresas de desenvolvimento de software, o CS é a ponte entre o produto e o cliente. Se o próprio profissional de CS não é bem onboardado, ele não consegue onboardar bem o cliente. E se o cliente não é bem onboardado, o churn aparece antes do primeiro renewal. O <strong>Gestor de Onboarding para Customer Success</strong> organiza as duas pontas: perfil do CS, alocação, equipe, acessos, rotina e frentes, e o playbook de onboarding de cliente, com marcos verificáveis do D1 ao D90.</p>
+<p class="lede rv" style="margin-top:16px">A lógica é simples: CS bem onboardado entende o produto, o cliente e a operação. Cliente bem onboardado entende o valor, adota o produto e renova. As duas coisas não acontecem por acaso. Acontecem por estrutura.</p>
+<a class="cta-main rv" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20Customer%20Success." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Quero estruturar o onboarding de CS
+</a>
+<span class="cta-sub rv">Atendimento direto no <strong>21 99971-9474</strong> · diagnóstico gratuito</span>
+<div class="stats">
+<div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono">2 onboardings</b><span>do CS e do cliente, em paralelo</span></div>
+<div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">D1 → D90</b><span>com marcos verificáveis nas duas pontas</span></div>
+<div class="stat rv" style="--c:#e9c97f;--c2:#f0a1a1"><b class="mono">12 frentes</b><span>de Customer Success mapeadas</span></div>
+<div class="stat rv" style="--c:#c9b8ff;--c2:#9cc9ff"><b class="mono">NRR, GRR, churn</b><span>KPIs conectados ao ciclo de ambientação</span></div>
+</div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">O problema em duas camadas</p>
+<h2 class="gt rv">CS sem onboarding estruturado falha nas duas pontas</h2>
+<p class="lede-s rv">Falha internamente, porque o profissional demora a entender produto e operação. Falha externamente, porque o cliente sente a falta de preparo.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#f0a1a1">
+<p class="eyebrow" style="color:var(--c)">Sem o Gestor de Onboarding</p>
+<h3 style="margin-bottom:12px">O churn começa no D30</h3>
+<ul class="check" style="margin-top:12px">
+<li>CS novo não entende o produto a fundo</li>
+<li>Não sabe quem acionar em cada tipo de problema</li>
+<li>Playbook de onboarding do cliente não existe</li>
+<li>Acessos a CRM, produto e dashboards chegam tarde</li>
+<li>Health score vira número solto, sem ação</li>
+<li>Renewal é tratado quando já está em risco</li>
+</ul>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Com o Gestor de Onboarding</p>
+<h3 style="margin-bottom:12px">Retenção com sistema, não com sorte</h3>
+<ul class="check" style="margin-top:12px">
+<li>CS entende produto, cliente e operação no D1</li>
+<li>Escalonamento documentado por tipo de problema</li>
+<li>Playbook de onboarding de cliente pronto para usar</li>
+<li>Acessos prontos no primeiro dia útil</li>
+<li>Health score com plano de ação por faixa</li>
+<li>Renewal trabalhado 90 dias antes</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">A lógica da automação</p>
+<h2 class="gt rv">Sete etapas, do perfil à autonomia do CS</h2>
+<p class="lede-s rv">Cada etapa entrega um resultado concreto. A estrutura é aplicada tanto para o profissional de CS quanto para o playbook que ele vai usar com o cliente.</p>
+<div class="sec-rule"></div>
+</div>
+<ol class="steps">
+<li class="rv" style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Identificação do perfil</strong>Formação, experiência anterior, especialidade (onboarding técnico, gestão de contas estratégicas, CS para SaaS, CS para projetos customizados, suporte, retenção). A automação cruza com o banco de perfis e define o <strong>trilho de onboarding</strong>. Um CS de conta enterprise tem trilha diferente de um CS de SMB.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">02</span><div class="txt"><strong>Alocação e carteira</strong>Segmento, tipo de cliente (SaaS, custom, híbrido), quantidade de contas, MRR sob responsabilidade, gestor imediato e pares. A alocação é definida <strong>antes da chegada</strong>, com carteira atribuída por escrito. O CS já entra sabendo quais clientes são dele e qual o perfil de cada um.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">03</span><div class="txt"><strong>Mapa da equipe e escalonamento</strong>Quem é quem: produto, engenharia, suporte técnico, comercial, financeiro, líder de CS. Inclui <strong>quem acionar em cada tipo de situação</strong> e em qual prazo. Isso elimina o maior gargalo de CS novo: não saber para quem escalar. Cada problema tem um caminho claro.</div></li>
+<li class="rv" style="--c:#e9c97f"><span class="num">04</span><div class="txt"><strong>Ferramentas e acessos</strong>CRM, plataforma de CS, produto (staging e produção), analytics, dashboard de health score, ferramenta de tickets, BI, e-mail corporativo. Cada perfil tem sua <strong>matriz de acessos</strong>. O CS chega no D1 com login ativo nas ferramentas essenciais e treinamento do produto agendado.</div></li>
+<li class="rv" style="--c:#7fd3e8"><span class="num">05</span><div class="txt"><strong>Rotina e rituais</strong>A rotina diária, semanal e mensal do cargo é documentada. Inclui rituais de QBR, revisão de health score, cadência de contato com cliente, reuniões de pipeline com comercial e alinhamento com produto. O CS sabe o que se espera dele em cada semana do mês.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">06</span><div class="txt"><strong>Frentes e playbook de onboarding do cliente</strong>As 12 frentes de CS são apresentadas com responsáveis, metas e indicadores. Além disso, o CS recebe o <strong>playbook de onboarding de cliente</strong>: como fazer kickoff, como definir metas de sucesso, como treinar, como medir adoção e como conduzir o primeiro QBR. É o que garante que o CS não improvise a experiência do cliente.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">07</span><div class="txt"><strong>Acompanhamento até a autonomia</strong>Checkpoints em D1, D7, D30, D60 e D90. A automação mede: acessos concluídos, treinamentos feitos, rituais realizados, rotina executada, frentes dominadas e <strong>KPIs de CS em acompanhamento</strong> (NRR, GRR, churn, CSAT, adoção, time to value). Quando o marco é atingido, o ciclo fecha com avaliação estruturada.</div></li>
+</ol>
+</section>
+
+<section class="sec" style="--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Onboarding do cliente, guiado pelo CS</p>
+<h2 class="gt rv">Cinco etapas que o CS aplica em cada cliente novo</h2>
+<p class="lede-s rv">O profissional de CS recebe o playbook pronto. Ele não improvisa a experiência do cliente, ele executa um método.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="journey">
+<div class="jstep rv" style="--c:#9cc9ff"><div class="jnum">ETAPA 1</div><h3>Kickoff</h3><p>Alinhamento de expectativa, definição de metas de sucesso, mapa de stakeholders do cliente.</p></div>
+<div class="jstep rv" style="--c:#c9b8ff"><div class="jnum">ETAPA 2</div><h3>Setup</h3><p>Configuração, integrações, treinamento inicial, primeiros usuários ativos.</p></div>
+<div class="jstep rv" style="--c:#8fe3cf"><div class="jnum">ETAPA 3</div><h3>Adoção</h3><p>Acompanhamento de uso, ajustes de onboarding, resolução de atritos.</p></div>
+<div class="jstep rv" style="--c:#e9c97f"><div class="jnum">ETAPA 4</div><h3>Time to value</h3><p>Primeiro resultado mensurável entregue ao cliente. É o que sustenta a renovação.</p></div>
+<div class="jstep rv" style="--c:#7fd3e8"><div class="jnum">ETAPA 5</div><h3>Primeiro QBR</h3><p>Revisão de resultado, ajuste de metas, plano de expansão.</p></div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#e9c97f;--g2:#8fe3cf;--g3:#7fd3e8">
+<div class="sec-h">
+<p class="eyebrow gt rv">Frentes de Customer Success</p>
+<h2 class="gt rv">As 12 frentes que sustentam a retenção</h2>
+<p class="lede-s rv">Cada frente tem responsável, rotina, ferramenta e indicador. Todas conectadas ao ciclo de vida do cliente.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid3">
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Onboarding de cliente</h3><p>Kickoff, setup, treinamento, primeiros resultados.</p><span class="tag">entrada</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>Gestão de carteira</h3><p>Segmentação, priorização, contas estratégicas, planos por conta.</p><span class="tag">operação</span></div>
+<div class="surf tint front rv" style="--c:#8fe3cf"><h3>Health score</h3><p>Indicadores de uso, engajamento, tickets, sentimento, risco de churn.</p><span class="tag">dados</span></div>
+<div class="surf tint front rv" style="--c:#e9c97f"><h3>Adoção e treinamento</h3><p>Uso do produto, treinamento contínuo, base de conhecimento, certificação.</p><span class="tag">produto</span></div>
+<div class="surf tint front rv" style="--c:#7fd3e8"><h3>Renewal</h3><p>Renovação, negociação, gestão de contrato, antecipação de riscos.</p><span class="tag">retenção</span></div>
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Expansão e upsell</h3><p>Novos módulos, mais usuários, upgrade de plano, cross-sell.</p><span class="tag">receita</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>QBR e revisões</h3><p>Reuniões trimestrais, resultados, metas, plano de valor.</p><span class="tag">relacionamento</span></div>
+<div class="surf tint front rv" style="--c:#8fe3cf"><h3>Escalonamento técnico</h3><p>Integração com engenharia, tickets críticos, bugs, SLA.</p><span class="tag">técnico</span></div>
+<div class="surf tint front rv" style="--c:#e9c97f"><h3>Gestão de insatisfação</h3><p>Recuperação, plano de ação, comunicação com cliente insatisfeito.</p><span class="tag">risco</span></div>
+<div class="surf tint front rv" style="--c:#7fd3e8"><h3>Voice of customer</h3><p>Feedback para produto, pesquisa de satisfação, NPS, CSAT.</p><span class="tag">produto</span></div>
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Integração com comercial</h3><p>Pipeline de renovação, alinhamento de forecast, handoff de venda.</p><span class="tag">comercial</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>Documentação e playbooks</h3><p>Playbooks de onboarding, renovação, escalonamento, comunicação.</p><span class="tag">processo</span></div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Linha do tempo</p>
+<h2 class="gt rv">Do D1 ao D90 com marcos de retenção</h2>
+<p class="lede-s rv">Cada marco entrega um estado concreto, do onboarding interno do CS ao primeiro resultado entregue aos clientes dele.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="timeline">
+<div class="tl-item rv" style="--c:#9cc9ff"><span class="when">D1</span><h3>Identificação, carteira e acessos</h3><p>Perfil mapeado, carteira atribuída, crachá emitido, login ativo em CRM, plataforma de CS e produto (staging e produção).</p></div>
+<div class="tl-item rv" style="--c:#c9b8ff"><span class="when">Semana 1</span><h3>Equipe, escalonamento e playbook</h3><p>Equipe e stakeholders apresentados, mapa de escalonamento documentado, playbook de onboarding de cliente entregue.</p></div>
+<div class="tl-item rv" style="--c:#8fe3cf"><span class="when">Mês 1</span><h3>Primeiros onboardings de cliente</h3><p>As 12 frentes apresentadas, primeiros kickoffs conduzidos com acompanhamento, health score configurado por conta.</p></div>
+<div class="tl-item rv" style="--c:#e9c97f"><span class="when">D60</span><h3>Indicadores em acompanhamento</h3><p>NRR, GRR, churn, CSAT e adoção monitorados. O CS já atua sobre contas em risco de forma proativa.</p></div>
+<div class="tl-item rv" style="--c:#7fd3e8"><span class="when">D90</span><h3>Autonomia plena com resultado</h3><p>Ciclo fechado com avaliação estruturada. O CS opera sem supervisão constante, conduz QBR com autonomia, os clientes da carteira têm plano de sucesso documentado e os KPIs estão sob controle.</p></div>
+</div>
+</section>
+
+<section class="sec" style="--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">O que muda na prática</p>
+<h2 class="gt rv">Menos churn, mais tempo de casa</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#f0a1a1">
+<p class="eyebrow" style="color:var(--c)">Antes</p>
+<ul class="check" style="margin-top:12px">
+<li>CS novo descobre o produto no atendimento</li>
+<li>Não sabe para quem escalar cada tipo de problema</li>
+<li>Onboarding de cliente depende do improviso</li>
+<li>Acessos chegam com semanas de atraso</li>
+<li>Health score existe, mas não gera ação</li>
+<li>Churn aparece sem sinal prévio mapeado</li>
+</ul>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Depois</p>
+<ul class="check" style="margin-top:12px">
+<li>CS entende produto e operação no D1</li>
+<li>Escalonamento claro por tipo de problema</li>
+<li>Playbook de onboarding de cliente pronto</li>
+<li>Acessos ativos no primeiro dia útil</li>
+<li>Health score com plano de ação por faixa</li>
+<li>Renovação trabalhada 90 dias antes</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="sec faq" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">Perguntas frequentes</p>
+<h2 class="gt rv">O que líderes de CS costumam perguntar</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="stack">
+<div class="surf card rv" style="--c:#9cc9ff"><details><summary>Serve para SaaS e para software customizado?</summary><div class="dd-body">Sim. A automação identifica o modelo de negócio (SaaS puro, customizado, híbrido) e ajusta a trilha. SaaS exige foco em adoção e renewal contínuo. Customizado exige foco em implementação, escopo e relacionamento com engenharia. Cada modelo tem sua trilha e seu playbook.</div></details></div>
+<div class="surf card rv" style="--c:#8fe3cf"><details><summary>Como funciona a liberação de acessos técnicos?</summary><div class="dd-body">Cada perfil tem uma matriz de acessos que inclui CRM, plataforma de CS, produto (staging e produção), analytics e ferramenta de tickets. A automação aciona TI e liderança com a lista pronta, com prazo definido, e acompanha a conclusão. Acessos de produção seguem política de segurança da empresa.</div></details></div>
+<div class="surf card rv" style="--c:#c9b8ff"><details><summary>O playbook de onboarding de cliente é customizável?</summary><div class="dd-body">Sim. O playbook base vem estruturado em 5 etapas (kickoff, setup, adoção, time to value, primeiro QBR), mas cada empresa pode adaptar linguagem, cadência e checkpoints. O importante é que ele exista e seja executado com consistência. Sem playbook, cada CS conduz o onboarding de um jeito.</div></details></div>
+<div class="surf card rv" style="--c:#e9c97f"><details><summary>O que mede a autonomia em D90?</summary><div class="dd-body">Seis marcos: acessos concluídos, treinamentos feitos, rituais realizados, rotina executada, frentes dominadas e KPIs em patamar saudável (NRR, GRR, churn, CSAT, adoção, time to value). Quando os seis estão completos, o ciclo fecha com avaliação e feedback estruturado.</div></details></div>
+<div class="surf card rv" style="--c:#f0a1a1"><details><summary>Quanto tempo leva para implantar?</summary><div class="dd-body">A configuração inicial é rápida. O que define o cronograma é o tamanho do time de CS e a variedade de perfis (onboarding técnico, gestão de contas enterprise, CS de SMB). Para uma empresa-piloto, o setup costuma ser concluído em poucos dias, e a partir do primeiro CS já produz resultado.</div></details></div>
+</div>
+</section>
+
+<div class="cta-band rv">
+<h2 class="grad-text">Pronto para reduzir churn com onboarding estruturado nas duas pontas?</h2>
+<p>Manda uma mensagem agora e vamos mapear a situação do seu time de CS. Eu te mostro como o Gestor de Onboarding se adapta aos perfis que você contrata, ao modelo do seu produto e ao ciclo de retenção que você quer construir.</p>
+<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Gestor%20de%20Onboarding%20para%20Customer%20Success." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Chamar no WhatsApp · 21 99971-9474
+</a>
+<span class="cta-sub">Resposta em até 24h · diagnóstico sem compromisso · <code>21 99971-9474</code></span>
+</div>
+
+<footer class="foot">
+<span>© Gestor de Onboarding · Customer Success</span>
+<div class="contact">
+<a href="https://wa.me/5521999719474" target="_blank" rel="noopener">WhatsApp · 21 99971-9474</a>
+<a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+</div>
+</footer>
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  function reveal(el){ el.classList.add('in'); }
+  if (reduce || !('IntersectionObserver' in window)) { items.forEach(reveal); }
+  else {
+    var io = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(en){ if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+    items.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

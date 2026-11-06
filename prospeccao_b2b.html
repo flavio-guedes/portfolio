@@ -1,887 +1,277 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<script>document.documentElement.classList.add('js')</script>
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>Case Hermes</title>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hermes V6.0 · Ecossistema de Aquisição Multicanal com IA Generativa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Versão 8: revisão de desempenho. Animações curtas (250–400 ms), deslocamentos de 6–12 px,
-   só opacity e transform. Sem loops decorativos, sem blur, sem backdrop-filter. */
-:root{
-  color-scheme:dark;
-  --bg:#0d0d12;
-  --fg:#f0f0f4;
-  --fg-dim:#aeaebb;
-  --fg-faint:#74747f;
-  --blue:#9cc9ff;
-  --lilac:#c9b8ff;
-  --mint:#8fe3cf;
-  --gold:#e9c97f;
-  --rose:#f0a1a1;
-  --sky:#7fd3e8;
-  --hair:rgba(255,255,255,.085);
-  --surf:rgba(255,255,255,.03);
-  --grad:linear-gradient(120deg,var(--blue),var(--lilac) 55%,var(--mint));
-  --ease:cubic-bezier(.25,.46,.45,.94);
-  --fast:250ms;
-  --base:350ms;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--fg);
-  font:400 15px/1.7 Manrope,system-ui,sans-serif;
-  padding-left:max(18px,env(safe-area-inset-left,0px));
-  padding-right:max(18px,env(safe-area-inset-right,0px));
-  padding-block:0 64px;
-  overflow-x:hidden;
-}
+:root{color-scheme:dark;--bg:#0d0d12;--fg:#f0f0f4;--fg-dim:#aeaebb;--fg-faint:#74747f;--blue:#9cc9ff;--lilac:#c9b8ff;--mint:#8fe3cf;--gold:#e9c97f;--rose:#f0a1a1;--sky:#7fd3e8;--hair:rgba(255,255,255,.085);--surf:rgba(255,255,255,.03);--grad:linear-gradient(120deg,var(--blue),var(--lilac) 55%,var(--mint));--ease:cubic-bezier(.25,.46,.45,.94);--fast:250ms;--base:350ms}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15.5px/1.7 Manrope,system-ui,sans-serif;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 64px;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}
-h3{font-size:1.05rem;line-height:1.35}
-p{margin:0}
-strong{font-weight:600;color:var(--fg)}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}p{margin:0}strong{font-weight:600;color:var(--fg)}
 :focus-visible{outline:1px solid var(--blue);outline-offset:3px}
-.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}
-.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
-
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 .gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-
-/* Progresso da rolagem: transform only, sem JavaScript */
-.progress{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:2px;width:100%;transform-origin:0 50%;z-index:20;background:linear-gradient(90deg,var(--blue),var(--lilac),var(--mint),var(--gold),var(--rose));transform:scaleX(0)}
-@supports (animation-timeline:scroll()){
-  .progress{animation:grow linear both;animation-timeline:scroll(root)}
-}
-@keyframes grow{to{transform:scaleX(1)}}
-
-/* Cabeçalho: fundo sólido, sem blur */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
-.top-in{max-width:1080px;margin:0 auto;padding:14px 18px 0}
-.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}
-.brand i{font-style:normal;color:var(--fg-faint)}
-.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;max-width:1080px;margin:0 auto;padding-inline:12px}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;background:none;border:0;color:var(--fg-faint);font:500 14px Manrope,sans-serif;padding:14px 14px 13px;cursor:pointer;position:relative;white-space:nowrap;transition:color var(--fast) var(--ease)}
-.tab:hover{color:var(--fg-dim)}
-.tab[aria-selected="true"]{color:var(--fg)}
-.tab svg{width:15px;height:15px;flex:0 0 auto;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.5;transition:opacity var(--fast) var(--ease)}
-.tab:hover svg,.tab[aria-selected="true"] svg{opacity:1}
-.tab::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--blue),var(--lilac),var(--mint));transform:scaleX(0);transform-origin:left;transition:transform var(--base) var(--ease)}
-.tab[aria-selected="true"]::after{transform:scaleX(1)}
-
-/* Entrada da aba: fade curto e deslocamento mínimo */
-.panel.on{animation:panelIn var(--fast) var(--ease) both}
-@keyframes panelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-/* Revelação: só opacity e transform. Sem JavaScript, tudo aparece normalmente. */
-.js .rv:not(.in){opacity:0;transform:translateY(8px)}
-.rv,.surf{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease),border-color var(--fast) var(--ease),background var(--fast) var(--ease);transition-delay:var(--d,0ms)}
-.rv.in{opacity:1;transform:none}
-
-/* Hero */
-.hero{position:relative;overflow:hidden;padding-block:56px 36px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:32px;align-items:center}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
+.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
+.top-cta svg{width:15px;height:15px}
+.hero{position:relative;overflow:hidden;padding-block:56px 40px}
 .halo{position:absolute;border-radius:50%;pointer-events:none}
 .halo.h1{width:520px;height:520px;top:-240px;right:-160px;background:radial-gradient(closest-side,rgba(156,201,255,.12),transparent)}
 .halo.h2{width:420px;height:420px;bottom:-260px;left:-140px;background:radial-gradient(closest-side,rgba(143,227,207,.07),transparent)}
-.hero-in{position:relative;z-index:1}
+.hero-in{position:relative;z-index:1;max-width:820px}
 .kicker{font:500 11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
-.hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px;max-width:20ch}
-.lede{color:var(--fg-dim);max-width:56ch;font-size:15.5px;line-height:1.75}
-
-/* Status: glow único e curto, sem loop */
-.status{display:inline-flex;align-items:center;gap:12px;margin-top:26px;padding:9px 16px 9px 12px;border-radius:999px;background:linear-gradient(90deg,rgba(233,201,127,.12),rgba(240,161,161,.04));border:1px solid rgba(233,201,127,.22);font-size:14px;color:var(--fg-dim);max-width:100%}
-.status strong{color:var(--fg)}
-.status.in{animation:softGlow var(--base) var(--ease) 1 both}
-@keyframes softGlow{from{box-shadow:0 0 0 0 rgba(233,201,127,0)}to{box-shadow:0 0 14px 0 rgba(233,201,127,.14)}}
-.beat{width:8px;height:8px;flex:0 0 auto;border-radius:50%;background:var(--gold)}
-
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:36px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
-.stat{padding:18px 18px 16px;background:var(--bg);min-width:0;position:relative}
+.hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px}
+.lede{color:var(--fg-dim);max-width:64ch;font-size:16px;line-height:1.75}
+.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
+.cta-main svg{width:20px;height:20px}
+.cta-sub{display:block;margin-top:12px;font-size:13px;color:var(--fg-faint)}.cta-sub strong{color:var(--fg-dim)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:40px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.stat{padding:20px 18px 18px;background:var(--bg);min-width:0;position:relative}
 .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
 .stat b{display:block;font:600 1.35rem Sora,sans-serif;letter-spacing:-.01em;background:linear-gradient(100deg,var(--c),var(--c2,var(--c)));-webkit-background-clip:text;background-clip:text;color:transparent}
 .stat span{display:block;font-size:13px;line-height:1.5;color:var(--fg-dim);margin-top:4px}
-
-/* Ilustração vetorial do hero: estática, sem loops */
-.illo{position:relative;width:100%;max-width:440px;justify-self:center;margin:0}
-.illo svg{width:100%;height:auto;display:block;overflow:visible}
-.illo .card-l{fill:rgba(255,255,255,.035);stroke:rgba(255,255,255,.14);stroke-width:1}
-.illo .ln{fill:none;stroke:url(#gl);stroke-width:1.4;stroke-linecap:round;stroke-dasharray:3 7;opacity:.8}
-.illo .dot{fill:var(--mint);opacity:.9}
-.illo .bar{fill:rgba(255,255,255,.12)}
-.illo .db{fill:rgba(127,211,232,.07);stroke:url(#gl);stroke-width:1.2}
-.illo .db-line{fill:none;stroke:rgba(127,211,232,.35);stroke-width:1}
-.illo .ring{fill:none;stroke:var(--sky);stroke-width:1;opacity:.25}
-.illo .glow{fill:url(#gg)}
-
-/* Superfícies */
-.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative}
-.surf:hover{border-color:rgba(255,255,255,.14)}
-.tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
-.tint:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
-.card{padding:24px}
-.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
 .sec{margin-top:64px}
 .sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
-.sec-h h2{font-size:1.4rem;font-weight:600;line-height:1.25}
-.lede-s{color:var(--fg-dim);max-width:60ch;font-size:14.5px;line-height:1.7}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
-.stack{display:flex;flex-direction:column;gap:12px}
+.sec-h h2{font-size:1.5rem;font-weight:600;line-height:1.25}
+.lede-s{color:var(--fg-dim);max-width:64ch;font-size:15px;line-height:1.7}
 .sec-rule{height:1px;margin-top:6px;background:linear-gradient(90deg,var(--g1),var(--g2),transparent)}
-
-/* Ícones: luz estática e suave, sem pulso contínuo */
-.orb{--c:var(--blue);position:relative;width:44px;height:44px;display:grid;place-items:center;flex:0 0 auto;isolation:isolate}
-.orb::before{content:"";position:absolute;inset:-10px;border-radius:50%;z-index:-1;background:radial-gradient(closest-side,var(--c),transparent 75%);opacity:.28}
-.orb-box{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,rgba(255,255,255,.02));border:1px solid color-mix(in srgb,var(--c) 36%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
-.ic{width:21px;height:21px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-
-/* Dropdowns */
-details.dd{border-top:1px solid var(--hair);margin-top:14px}
-details.dd>summary{list-style:none;cursor:pointer;padding:13px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:500;font-size:14px;color:var(--fg-dim);transition:color var(--fast) var(--ease)}
-details.dd>summary:hover{color:var(--fg)}
-details.dd>summary::-webkit-details-marker{display:none}
-details.dd>summary::after{content:"";width:7px;height:7px;border-right:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg) translateY(-2px);transition:transform var(--fast) var(--ease);flex:0 0 auto;margin-left:auto}
-details.dd[open]>summary::after{transform:rotate(225deg) translateY(-2px)}
-details.dd[open] .dd-body{animation:fadeDown var(--fast) var(--ease) both}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.dd-body{padding:0 0 14px;color:var(--fg-dim);font-size:14px;line-height:1.7}
-.dd-body p+p{margin-top:8px}
-dl.kv{display:grid;grid-template-columns:auto 1fr;gap:12px 22px;margin:0}
-dl.kv dt{font:500 11px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--c,var(--fg-faint));padding-top:3px}
-dl.kv dd{margin:0;min-width:0;overflow-wrap:anywhere;color:var(--fg-dim);font-size:14.5px}
-
-/* Pílulas */
-.pill{display:inline-flex;align-items:center;gap:6px;font:500 10.5px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.1);color:var(--fg-dim);white-space:nowrap;max-width:100%;background:rgba(255,255,255,.02)}
-.pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.8}
-.pill.high{color:var(--rose);border-color:rgba(240,161,161,.25);background:linear-gradient(90deg,rgba(240,161,161,.13),transparent)}
-.pill.mid{color:var(--gold);border-color:rgba(233,201,127,.25);background:linear-gradient(90deg,rgba(233,201,127,.12),transparent)}
-.pill.low{color:var(--mint);border-color:rgba(143,227,207,.25);background:linear-gradient(90deg,rgba(143,227,207,.11),transparent)}
-.pill.ok{color:var(--mint);border-color:rgba(143,227,207,.25)}
-.pill.blue{color:var(--blue);border-color:rgba(156,201,255,.25);background:linear-gradient(90deg,rgba(156,201,255,.11),transparent)}
-.pill.lilac{color:var(--lilac);border-color:rgba(201,184,255,.25);background:linear-gradient(90deg,rgba(201,184,255,.11),transparent)}
-.tag{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;border:1px solid var(--hair);font-size:13.5px;color:var(--fg-dim);margin:0 8px 8px 0;background:rgba(255,255,255,.015);transition:border-color var(--fast) var(--ease),opacity var(--base) var(--ease),transform var(--base) var(--ease)}
-.tag:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
-.tag b{width:6px;height:6px;border-radius:50%;background:var(--c)}
-
-/* Chips */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 22px}
-.chip{font:500 13px Manrope,sans-serif;padding:8px 15px;border-radius:999px;border:1px solid var(--hair);background:transparent;color:var(--fg-faint);cursor:pointer;transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease)}
-.chip:hover{color:var(--fg-dim);border-color:rgba(255,255,255,.16)}
-.chip[aria-pressed="true"]{color:var(--fg);border:1px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(100deg,var(--blue),var(--lilac),var(--mint)) border-box}
-
-/* Filtros: saída curta, sem repintura pesada */
-[data-k].out{opacity:0;transform:translateY(6px);pointer-events:none}
-
-/* Critérios */
-.crit{padding:4px 22px;display:block}
-.crit summary{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:17px 0;cursor:pointer;list-style:none;font-weight:500;color:var(--fg)}
-.crit summary::-webkit-details-marker{display:none}
-.crit .pills{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
-.crit .dd-body{padding-bottom:18px}
-
-/* Arquitetura */
-.layer{padding:4px 22px 6px}
-.layer summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:17px 0;flex-wrap:wrap}
-.layer summary::-webkit-details-marker{display:none}
-.layer .head{display:flex;align-items:center;gap:14px;min-width:0;flex:1 1 220px}
-.layer .head h3{font-size:1.02rem}
-.layer .head small{display:block;color:var(--fg-faint);font-size:13px;margin-top:3px}
-.layer .dd-open{padding-bottom:20px}
-
-/* Fluxo */
-.flow-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start}
-.flow{padding:20px}
-.flow svg{width:100%;height:auto;display:block}
-.flow .n{fill:rgba(255,255,255,.03);stroke:rgba(255,255,255,.16);stroke-width:1}
-.flow .dm{fill:rgba(156,201,255,.05);stroke:url(#gl);stroke-width:1}
-.flow .stop{fill:rgba(240,161,161,.06);stroke:rgba(240,161,161,.42);stroke-width:1}
-.flow .ln{fill:none;stroke:rgba(255,255,255,.28);stroke-width:1.2}
-.flow .loop{fill:none;stroke:url(#gl);stroke-width:1.3;stroke-dasharray:5 6}
-.flow .t{font:600 13px Manrope,sans-serif;fill:var(--fg)}
-.flow .s{font:500 11px "JetBrains Mono",monospace;fill:var(--fg-faint)}
-.flow .lb{font:500 10.5px "JetBrains Mono",monospace;fill:var(--fg-faint)}
-.flow .lbA{font:500 10.5px "JetBrains Mono",monospace;fill:var(--mint)}
-.flow .lbR{font:500 10.5px "JetBrains Mono",monospace;fill:var(--rose)}
-.timeline{position:relative;height:60px;margin:18px 0 28px}
-.track{position:absolute;left:0;right:0;top:14px;height:6px;border-radius:999px;background:rgba(255,255,255,.06)}
-.band{position:absolute;top:14px;height:6px;left:50%;right:0;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--blue),var(--lilac))}
-.tick{position:absolute;top:34px;font:500 11.5px "JetBrains Mono",monospace;color:var(--fg-faint);transform:translateX(-50%)}
-.tick.l{transform:none}
-.tick.r{transform:translateX(-100%)}
-.breaker{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.bdot{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;font:500 11px "JetBrains Mono",monospace;color:var(--fg-faint)}
-
-/* Riscos */
-.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.bars{display:grid;gap:14px;margin-top:8px}
-.bar-row{display:grid;grid-template-columns:104px minmax(0,1fr) 24px;align-items:center;gap:12px;font-size:13px;color:var(--fg-dim)}
-.track2{height:4px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
-.fill{height:100%;border-radius:999px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform var(--base) var(--ease) 100ms}
-.in .fill,.fill.go{transform:scaleX(1)}
-.fill.high{background:linear-gradient(90deg,rgba(240,161,161,.5),var(--rose))}
-.fill.mid{background:linear-gradient(90deg,rgba(233,201,127,.5),var(--gold))}
-.fill.low{background:linear-gradient(90deg,rgba(143,227,207,.5),var(--mint))}
-.bar-row b{font:500 12.5px "JetBrains Mono",monospace;color:var(--fg);text-align:right}
-.water{position:relative;margin:52px 0 16px;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--lilac),var(--mint),transparent);opacity:.7}
-.water span{position:absolute;left:50%;top:-11px;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:var(--bg);border:1px solid rgba(201,184,255,.22);font:500 10.5px "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
-.water-note{text-align:center;color:var(--fg-faint);font-size:13px;margin-top:10px}
-.item{display:flex;flex-direction:column;gap:10px;padding:20px 22px}
-.item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
-.item-head h3{font-size:.96rem;font-weight:500;font-family:Manrope,sans-serif;min-width:0;overflow-wrap:anywhere;color:var(--fg);line-height:1.45}
-.item p{color:var(--fg-dim);font-size:14px;line-height:1.7}
-
-/* Estado */
-.rings{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.ring{display:flex;align-items:center;gap:20px;padding:24px;min-width:0}
-.ring svg{width:104px;height:104px;flex:0 0 auto;overflow:visible}
-.ring b{display:block;font:600 1.1rem Sora,sans-serif;margin-bottom:4px}
-.ring span{font-size:13.5px;line-height:1.6;color:var(--fg-dim)}
-.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.steps li{display:flex;gap:16px;align-items:center;padding:17px 20px;border-radius:14px;border:1px solid var(--hair);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 7%,transparent),transparent 60%),rgba(255,255,255,.012);transition:opacity var(--base) var(--ease),transform var(--base) var(--ease),border-color var(--fast) var(--ease);transition-delay:var(--d,0ms)}
+.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
+.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative;transition:border-color var(--fast) var(--ease)}
+.surf:hover{border-color:rgba(255,255,255,.14)}
+.tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
+.card{padding:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px 24px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);transition:border-color var(--fast) var(--ease)}
 .steps li:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
-.steps .num{font:500 12px "JetBrains Mono",monospace;color:var(--c);min-width:26px}
-.steps .txt{min-width:0;flex:1;color:var(--fg-dim);font-size:14.5px;line-height:1.6}
-.steps .txt strong{color:var(--fg)}
+.steps .num{font:600 13px "JetBrains Mono",monospace;color:var(--c);padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);min-width:fit-content;white-space:nowrap}
+.steps .txt{min-width:0;color:var(--fg-dim);font-size:15px;line-height:1.7}
+.steps .txt strong{color:var(--fg);display:block;margin-bottom:4px;font-size:15.5px;font-family:Sora,sans-serif;font-weight:600}
 .check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
-.check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14px;line-height:1.65}
-.check li::before{content:"";flex:0 0 auto;width:14px;height:14px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
+.check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14.5px;line-height:1.65}
+.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
 .check strong{color:var(--fg)}
-.foot{margin-top:72px;padding-top:22px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:12.5px}
-
-/* Hover de cards: deslocamento mínimo */
-.surf.in:hover{transform:translateY(-2px)}
-
-@media (max-width:860px){
-  .hero-grid{grid-template-columns:minmax(0,1fr);gap:12px}
-  .illo{max-width:360px;order:2}
-}
-@media (max-width:700px){
-  .flow-wrap{grid-template-columns:minmax(0,1fr)}
-  .bar-row{grid-template-columns:86px minmax(0,1fr) 22px}
-  dl.kv{grid-template-columns:1fr;gap:4px 0}
-  dl.kv dt{margin-top:10px}
-  .card{padding:20px}
-  .item{padding:18px 18px}
-  .tab{padding:14px 11px 13px}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  .js .rv:not(.in){opacity:1;transform:none}
-  .fill{transform:scaleX(1)}
-}
+.front{display:flex;flex-direction:column;gap:8px;padding:20px 22px}
+.front h3{font-size:1rem;font-family:Sora,sans-serif;font-weight:600;color:var(--fg);margin-bottom:4px}
+.front p{color:var(--fg-dim);font-size:14px;line-height:1.65}
+.front .tag{display:inline-flex;align-items:center;gap:6px;font:500 10px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 32%,transparent);width:fit-content;margin-top:10px}
+.cta-band{margin-top:72px;padding:40px 32px;border-radius:20px;background:radial-gradient(120% 140% at 0% 0%,rgba(143,227,207,.15),transparent 60%),radial-gradient(120% 140% at 100% 100%,rgba(156,201,255,.12),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(143,227,207,.25);text-align:center}
+.cta-band h2{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:14px}
+.cta-band p{color:var(--fg-dim);max-width:600px;margin:0 auto 28px;font-size:15.5px;line-height:1.7}
+.cta-band .cta-main{margin-top:0}
+.cta-band .cta-sub{color:var(--fg-faint);font-size:12.5px;margin-top:16px}
+.cta-band .cta-sub code{font-family:"JetBrains Mono",monospace;color:var(--mint);background:rgba(143,227,207,.08);padding:2px 8px;border-radius:6px}
+.faq details{border-top:1px solid var(--hair);padding:0}
+.faq details:first-child{border-top:0}
+.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:500;font-size:15px;color:var(--fg);transition:color var(--fast) var(--ease)}
+.faq summary:hover{color:var(--blue)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:8px;height:8px;border-right:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg);transition:transform var(--fast) var(--ease);flex:0 0 auto}
+.faq details[open] summary::after{transform:rotate(225deg)}
+.faq .dd-body{padding:0 0 18px;color:var(--fg-dim);font-size:14.5px;line-height:1.7}
+.foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
+.foot a:hover{color:var(--mint)}
+.foot .contact{display:flex;gap:20px;flex-wrap:wrap}
+.js .rv:not(.in){opacity:0;transform:translateY(8px)}
+.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
 </style>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9cc9ff"/>
-      <stop offset=".55" stop-color="#c9b8ff"/>
-      <stop offset="1" stop-color="#8fe3cf"/>
-    </linearGradient>
-    <linearGradient id="gw" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#e9c97f"/>
-      <stop offset="1" stop-color="#f0a1a1"/>
-    </linearGradient>
-    <radialGradient id="gg">
-      <stop offset="0" stop-color="#9cc9ff" stop-opacity=".2"/>
-      <stop offset="1" stop-color="#9cc9ff" stop-opacity="0"/>
-    </radialGradient>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M0 0L10 5L0 10z" fill="#9cc9ff" fill-opacity=".8"/>
-    </marker>
-  </defs>
-</svg>
-
-<div class="progress" aria-hidden="true"></div>
-
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
 <header class="top">
-  <div class="top-in">
-    <span class="brand">Case Hermes <i>· Prospecção WhatsApp</i></span>
-  </div>
-  <nav class="tabs" role="tablist" aria-label="Seções do case">
-    <button class="tab" role="tab" data-tab="visao" aria-selected="true" tabindex="0" style="--c:#9cc9ff">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Visão geral</button>
-    <button class="tab" role="tab" data-tab="arq" aria-selected="false" tabindex="-1" style="--c:#c9b8ff">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="8.5" y="14" width="7" height="7" rx="2"/></svg>Arquitetura</button>
-    <button class="tab" role="tab" data-tab="fluxo" aria-selected="false" tabindex="-1" style="--c:#8fe3cf">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v6a4 4 0 0 0 4 4h6a4 4 0 0 1 4 4v2"/><circle cx="5" cy="4" r="1.6"/><circle cx="19" cy="20" r="1.6"/></svg>Fluxo</button>
-    <button class="tab" role="tab" data-tab="riscos" aria-selected="false" tabindex="-1" style="--c:#f0a1a1">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/></svg>Riscos</button>
-    <button class="tab" role="tab" data-tab="estado" aria-selected="false" tabindex="-1" style="--c:#e9c97f">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Estado e próximos passos</button>
-  </nav>
+<div class="top-in">
+<span class="brand">Hermes V6.0 <i>· Ecossistema de Aquisição Multicanal</i></span>
+<a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20conhecer%20o%20Hermes%20V6.0." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<span>Falar com especialista</span>
+</a>
+</div>
 </header>
-
 <main class="wrap">
 
-  <!-- VISÃO GERAL -->
-  <div class="panel on" role="tabpanel" data-panel="visao">
+<section class="hero" aria-labelledby="titulo">
+<div class="halo h1" aria-hidden="true"></div>
+<div class="halo h2" aria-hidden="true"></div>
+<div class="hero-in">
+<p class="kicker gt rv" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">IA Generativa · Automação · Orquestração</p>
+<h1 id="titulo" class="rv">Hermes V6.0: o ecossistema que orquestra <span class="grad-text">prospecção omnichannel</span> com IA local e cadência segura.</h1>
+<p class="lede rv">Prospecção manual não escala, e disparos em massa derrubam contas. O Hermes V6.0 resolve as duas pontas: um ecossistema completo que busca contatos, valida a saúde do ambiente, gera copies contextuais com IA e dispara de forma orquestrada via WhatsApp e E-mail, com proteção anti-ban e monitoramento em tempo real.</p>
+<p class="lede rv" style="margin-top:16px">Construído em Python, roda 100% localmente com Ollama (privacidade total) e integra neonize, SQLite e SMTP. É um projeto de engenharia de automação aplicada, pensado para operar de ponta a ponta sem intervenção manual.</p>
+<a class="cta-main rv" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20conhecer%20o%20Hermes%20V6.0." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Quero discutir automação com IA
+</a>
+<span class="cta-sub rv">Disponível para projetos e posições em IA generativa e automação · <strong>21 99971-9474</strong></span>
+<div class="stats">
+<div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono">2 canais</b><span>WhatsApp (neonize) e E-mail (SMTP)</span></div>
+<div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">70/30</b><span>divisão inteligente de abordagem</span></div>
+<div class="stat rv" style="--c:#e9c97f;--c2:#f0a1a1"><b class="mono">100% local</b><span>IA rodando no Mac (Ollama)</span></div>
+<div class="stat rv" style="--c:#c9b8ff;--c2:#9cc9ff"><b class="mono">8 módulos</b><span>orquestrados do checklist ao disparo</span></div>
+</div>
+</div>
+</section>
 
-    <section class="hero" aria-labelledby="titulo">
-      <div class="halo h1" aria-hidden="true"></div>
-      <div class="halo h2" aria-hidden="true"></div>
-      <div class="hero-grid">
-        <div class="hero-in">
-          <p class="kicker gt rv" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">Case · Automação comercial</p>
-          <h1 id="titulo" class="rv">Disparo de prospecção B2B no <span class="grad-text">WhatsApp</span>, a partir de leads pendentes em <span class="gt" style="--g1:#8fe3cf;--g2:#7fd3e8">SQLite</span>.</h1>
-          <p class="lede rv">Prospecção manual é <span class="gt" style="--g1:#f0a1a1;--g2:#e9c97f">lenta</span> e perde o <span class="gt" style="--g1:#9cc9ff;--g2:#c9b8ff">timing</span> com os leads. Este case mostra a solução, a arquitetura, o fluxo, os riscos e o estado real do projeto.</p>
-          <div class="status rv"><span class="beat" aria-hidden="true"></span><span><strong>Integração compilada.</strong> Primeira execução real ainda não feita.</span></div>
-        </div>
+<section class="sec" style="--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Visão geral</p>
+<h2 class="gt rv">O que é o Hermes V6.0</h2>
+<p class="lede-s rv">Um ecossistema de aquisição multicanal que combina busca híbrida, geração de copy contextual e disparo protegido. Cada etapa é validada por um checklist de voo antes de qualquer lote ser liberado.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#9cc9ff">
+<p class="eyebrow" style="color:var(--c)">Problema</p>
+<h3 style="margin-bottom:12px">Abordagem manual e disparos cegos</h3>
+<p style="color:var(--fg-dim);font-size:14.5px;line-height:1.7">Prospecção manual perde timing e não escala. Disparos em massa, sem validação de ambiente e sem copy contextual, resultam em bloqueios de conta e baixa conversão.</p>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<p class="eyebrow" style="color:var(--c)">Solução</p>
+<h3 style="margin-bottom:12px">Orquestração com IA e proteção</h3>
+<p style="color:var(--fg-dim);font-size:14.5px;line-height:1.7">O Hermes valida o ambiente (banco, IA, sessão, horário), gera copies únicas com base no segmento, divide os disparos entre WhatsApp e E-mail e aplica pausas anti-ban. Tudo com monitoramento em painel TUI.</p>
+</div>
+</div>
+</section>
 
-        <figure class="illo rv" aria-label="Ilustração: leads pendentes seguem por um fluxo até o banco SQLite e o WhatsApp">
-          <svg viewBox="0 0 440 320" role="img" aria-hidden="true">
-            <ellipse class="glow" cx="300" cy="160" rx="170" ry="140"/>
-            <circle class="ring" cx="330" cy="160" r="54"/>
+<section class="sec" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">Arquitetura V6.0</p>
+<h2 class="gt rv">Os 8 módulos do ecossistema</h2>
+<p class="lede-s rv">Cada módulo tem uma responsabilidade clara e se integra aos demais por meio de arquivos de configuração e estado compartilhado.</p>
+<div class="sec-rule"></div>
+</div>
+<ol class="steps">
+<li class="rv" style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Checklist de Voo (Pré-Disparo)</strong>Auditoria de 5 etapas antes de liberar qualquer lote: banco (colunas críticas), Ollama (IA online e modelo carregado), sessão do WhatsApp, horário permitido (09h–22h) e qualidade das copies. Se algo falhar, o lote é bloqueado automaticamente.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">02</span><div class="txt"><strong>Gestor de Campanhas</strong>Define a estratégia: segmento (B2B ou Vagas), localidades e serviço ofertado. Suporta múltiplos alvos (ex: SP, RJ, Remoto) e altera o foco do sistema com um comando.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">03</span><div class="txt"><strong>Loop de Busca Híbrido 70/30</strong>Varre sites em busca de WhatsApp e E-mail, aplicando a regra matemática de 70% WhatsApp e 30% E-mail para proteger as contas. A IA valida se o contato é real e extrai os dados.</div></li>
+<li class="rv" style="--c:#e9c97f"><span class="num">04</span><div class="txt"><strong>Agente-08 (Copywriter Contextual)</strong>Lê o tipo de campanha, deduz uma dor provável para a empresa e escreve um pitch exclusivo com o Case EPQ. O Motor Blindado só envia se a mensagem tiver sido gerada por este agente.</div></li>
+<li class="rv" style="--c:#7fd3e8"><span class="num">05</span><div class="txt"><strong>Motor Blindado (WhatsApp)</strong>Verifica se o número tem WhatsApp em 1 segundo. Se o envio for bem-sucedido, aplica pausa de 10 minutos (proteção anti-ban) e roda em background.</div></li>
+<li class="rv" style="--c:#c9b8ff"><span class="num">06</span><div class="txt"><strong>Motor de E-mail (SMTP)</strong>Lê a fila, gera anexo (CV) e envia e-mail em HTML profissional via Gmail (SMTP SSL 465), com pausas de 5 a 10 minutos entre disparos.</div></li>
+<li class="rv" style="--c:#8fe3cf"><span class="num">07</span><div class="txt"><strong>Lote Rápido (Disparo Imediato)</strong>Comando único que executa o checklist, recicla contatos se a fila estiver vazia, aciona a IA para gerar copies e dispara o primeiro lead na hora, respeitando a quantidade autorizada.</div></li>
+<li class="rv" style="--c:#e9c97f"><span class="num">08</span><div class="txt"><strong>Painel TUI Avançado</strong>Exibe os próximos 10 leads do WhatsApp com empresa, segmento, tipo, horário e countdown exato para o próximo disparo. Monitoramento em tempo real no terminal.</div></li>
+</ol>
+</section>
 
-            <g>
-              <rect class="card-l" x="18" y="38" width="130" height="46" rx="12"/>
-              <circle class="dot" cx="38" cy="61" r="4"/>
-              <rect class="bar" x="52" y="56" width="70" height="5" rx="2.5"/>
-              <rect class="bar" x="52" y="66" width="46" height="5" rx="2.5"/>
-            </g>
-            <g>
-              <rect class="card-l" x="18" y="134" width="130" height="46" rx="12"/>
-              <circle class="dot" cx="38" cy="157" r="4" style="fill:#c9b8ff"/>
-              <rect class="bar" x="52" y="152" width="64" height="5" rx="2.5"/>
-              <rect class="bar" x="52" y="162" width="50" height="5" rx="2.5"/>
-            </g>
-            <g>
-              <rect class="card-l" x="18" y="230" width="130" height="46" rx="12"/>
-              <circle class="dot" cx="38" cy="253" r="4" style="fill:#e9c97f"/>
-              <rect class="bar" x="52" y="248" width="74" height="5" rx="2.5"/>
-              <rect class="bar" x="52" y="258" width="40" height="5" rx="2.5"/>
-            </g>
+<section class="sec" style="--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Fluxo Omnichannel</p>
+<h2 class="gt rv">Do checklist ao disparo, sem intervenção manual</h2>
+<p class="lede-s rv">O fluxo é desenhado para garantir que nenhuma mensagem seja enviada sem contexto e que o ambiente esteja sempre saudável.</p>
+<div class="sec-rule"></div>
+</div>
+<div class="grid3">
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>1. Validação</h3><p>Checklist de Voo audita banco, IA, sessão, horário e qualidade das copies.</p><span class="tag">segurança</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>2. Estratégia</h3><p>Gestor de Campanhas define segmento, localidade e serviço ofertado.</p><span class="tag">direção</span></div>
+<div class="surf tint front rv" style="--c:#8fe3cf"><h3>3. Busca</h3><p>Loop híbrido varre sites e aplica a regra 70/30 entre WhatsApp e E-mail.</p><span class="tag">aquisição</span></div>
+<div class="surf tint front rv" style="--c:#e9c97f"><h3>4. Copy</h3><p>Agente-08 gera pitch contextual com base na dor provável da empresa.</p><span class="tag">personalização</span></div>
+<div class="surf tint front rv" style="--c:#7fd3e8"><h3>5. Disparo</h3><p>Motor Blindado (WhatsApp) e Motor de E-mail (SMTP) executam com pausas anti-ban.</p><span class="tag">execução</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>6. Monitoramento</h3><p>Painel TUI exibe fila, status e countdown em tempo real.</p><span class="tag">observabilidade</span></div>
+</div>
+</section>
 
-            <path class="ln" d="M150 61 C 200 61, 210 140, 250 150"/>
-            <path class="ln" d="M150 157 L 250 160"/>
-            <path class="ln" d="M150 253 C 200 253, 210 180, 250 170"/>
+<section class="sec" style="--g1:#e9c97f;--g2:#8fe3cf;--g3:#7fd3e8">
+<div class="sec-h">
+<p class="eyebrow gt rv">Diferenciais técnicos</p>
+<h2 class="gt rv">O que torna o Hermes diferente</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card rv" style="--c:#9cc9ff">
+<h3>IA 100% local com Ollama</h3>
+<p style="color:var(--fg-dim);margin-top:8px">O modelo de linguagem roda no próprio Mac, sem enviar dados para a nuvem. Privacidade total e custo marginal zero por inferência.</p>
+</div>
+<div class="surf tint card rv" style="--c:#8fe3cf">
+<h3>Proteção anti-ban em duas camadas</h3>
+<p style="color:var(--fg-dim);margin-top:8px">Pausa de 10 minutos entre disparos no WhatsApp e 5 a 10 minutos no E-mail. O loop 70/30 distribui a carga entre canais para reduzir o risco de bloqueio.</p>
+</div>
+<div class="surf tint card rv" style="--c:#c9b8ff">
+<h3>Checklist obrigatório antes de cada lote</h3>
+<p style="color:var(--fg-dim);margin-top:8px">Nenhum disparo acontece sem validação de banco, IA, sessão, horário e qualidade das copies. Isso elimina mensagens genéricas e falhas operacionais.</p>
+</div>
+<div class="surf tint card rv" style="--c:#e9c97f">
+<h3>Orquestração com painel em tempo real</h3>
+<p style="color:var(--fg-dim);margin-top:8px">O Painel TUI mostra a fila, o status e o countdown para o próximo envio, permitindo acompanhar toda a operação sem abrir várias ferramentas.</p>
+</div>
+</div>
+</section>
 
-            <g>
-              <path class="db" d="M262 118 v84 a52 16 0 0 0 104 0 v-84"/>
-              <ellipse class="db" cx="314" cy="118" rx="52" ry="16"/>
-              <path class="db-line" d="M262 150 a52 16 0 0 0 104 0"/>
-              <path class="db-line" d="M262 178 a52 16 0 0 0 104 0"/>
-            </g>
+<section class="sec" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">
+<div class="sec-h">
+<p class="eyebrow gt rv">Stack e comandos</p>
+<h2 class="gt rv">Tecnologias e operação</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="grid3">
+<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Python + Ollama</h3><p>Orquestração, IA generativa local (llama3) e scripts de automação.</p><span class="tag">core</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>SQLite</h3><p>Persistência de leads, estado de campanha e filas de disparo.</p><span class="tag">dados</span></div>
+<div class="surf tint front rv" style="--c:#8fe3cf"><h3>neonize</h3><p>Integração com WhatsApp para envio e verificação de números.</p><span class="tag">canal</span></div>
+<div class="surf tint front rv" style="--c:#e9c97f"><h3>SMTP Gmail</h3><p>Envio de e-mails HTML com anexo e pausas configuráveis.</p><span class="tag">canal</span></div>
+<div class="surf tint front rv" style="--c:#7fd3e8"><h3>Painel TUI</h3><p>Monitoramento em terminal com countdown e status da fila.</p><span class="tag">ops</span></div>
+<div class="surf tint front rv" style="--c:#c9b8ff"><h3>launchd</h3><p>Automação periódica: busca, geração de copies e preparação de fila a cada 3 horas.</p><span class="tag">agendamento</span></div>
+</div>
+</section>
 
-            <g>
-              <path d="M372 44 h42 a10 10 0 0 1 10 10 v20 a10 10 0 0 1 -10 10 h-22 l-10 9 v-9 h-10 a10 10 0 0 1 -10 -10 v-20 a10 10 0 0 1 10 -10z" fill="rgba(143,227,207,.09)" stroke="rgba(143,227,207,.55)" stroke-width="1.2"/>
-              <circle cx="385" cy="64" r="2.6" fill="#8fe3cf"/>
-              <circle cx="396" cy="64" r="2.6" fill="#8fe3cf"/>
-              <circle cx="407" cy="64" r="2.6" fill="#8fe3cf"/>
-            </g>
-            <path class="ln" d="M330 110 V 88"/>
-          </svg>
-        </figure>
-      </div>
+<section class="sec faq" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
+<div class="sec-h">
+<p class="eyebrow gt rv">Perguntas frequentes</p>
+<h2 class="gt rv">O que costumam perguntar sobre o Hermes</h2>
+<div class="sec-rule"></div>
+</div>
+<div class="stack">
+<div class="surf card rv" style="--c:#9cc9ff"><details><summary>O Hermes substitui um SDR humano?</summary><div class="dd-body">Não. Ele automatiza a prospecção e a triagem, mas o fechamento e a negociação continuam com o time humano. O Hermes libera o SDR para focar em conversas qualificadas, em vez de tarefas repetitivas de disparo.</div></details></div>
+<div class="surf card rv" style="--c:#8fe3cf"><details><summary>Como a IA local funciona na prática?</summary><div class="dd-body">O Ollama roda o modelo llama3 no próprio Mac. O Agente-08 consome esse modelo para gerar as copies contextuais. Nenhum dado de lead ou texto é enviado para serviços de nuvem.</div></details></div>
+<div class="surf card rv" style="--c:#c9b8ff"><details><summary>É possível usar apenas um canal?</summary><div class="dd-body">Sim. O Hermes foi desenhado para operar com WhatsApp, E-mail ou ambos. O modo híbrido 70/30 é o padrão recomendado para reduzir risco de bloqueio, mas a configuração pode ser ajustada conforme a estratégia.</div></details></div>
+<div class="surf card rv" style="--c:#e9c97f"><details><summary>Qual o volume máximo suportado?</summary><div class="dd-body">O volume é limitado pelas pausas anti-ban: 10 minutos entre disparos no WhatsApp e 5 a 10 minutos no E-mail. O sistema foi projetado para operar dentro desses limites, priorizando a saúde das contas em vez de volume bruto.</div></details></div>
+</div>
+</section>
 
-      <div class="stats">
-        <div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono" data-count="3">3</b><span>falhas seguidas param o circuit breaker</span></div>
-        <div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">180 a 360 s</b><span>pausa aleatória após cada envio</span></div>
-        <div class="stat rv" style="--c:#c9b8ff;--c2:#f0a1a1"><b class="mono" data-count="4">4</b><span>testes unitários passando</span></div>
-        <div class="stat rv" style="--c:#e9c97f;--c2:#f0a1a1"><b class="mono" data-count="0">0</b><span>execuções reais até hoje</span></div>
-      </div>
-    </section>
+<div class="cta-band rv">
+<h2 class="grad-text">Quer aplicar essa arquitetura no seu negócio ou projeto?</h2>
+<p>Estou disponível para projetos de automação, consultoria em IA generativa e posições que envolvam orquestração de agentes e engenharia de automação. Vamos conversar sobre o que você precisa.</p>
+<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20conversar%20sobre%20automa%C3%A7%C3%A3o%20e%20IA%20generativa." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+Chamar no WhatsApp · 21 99971-9474
+</a>
+<span class="cta-sub">Resposta em até 24h · aberto a projetos e posições · <code>21 99971-9474</code></span>
+</div>
 
-    <section class="sec" style="margin-top:0;--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">
-      <div class="sec-h"><p class="eyebrow gt rv">Problema e solução</p><h2 class="gt rv">Por que existe e o que faz</h2><div class="sec-rule"></div></div>
-      <div class="grid2">
-        <article class="surf tint card rv" style="--c:#f0a1a1">
-          <div style="display:flex;gap:14px;align-items:center">
-            <span class="orb"><span class="orb-box"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/></svg></span></span>
-            <p class="eyebrow" style="margin:0;color:var(--c)">Problema</p>
-          </div>
-          <h3 style="margin-top:20px">Prospecção manual perde timing</h3>
-          <p style="margin-top:8px">Prospecção manual é lenta e perde o <strong>timing</strong> com os leads.</p>
-          <details class="dd"><summary>Detalhes</summary>
-            <div class="dd-body"><p>Sem automação, o envio depende de alguém lembrar de cada lead na hora certa.</p></div>
-          </details>
-        </article>
-        <article class="surf tint card rv" style="--c:#8fe3cf">
-          <div style="display:flex;gap:14px;align-items:center">
-            <span class="orb"><span class="orb-box"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span></span>
-            <p class="eyebrow" style="margin:0;color:var(--c)">Solução</p>
-          </div>
-          <h3 style="margin-top:20px">Disparo a partir do SQLite</h3>
-          <p style="margin-top:8px">Disparo de prospecção B2B no <strong>WhatsApp</strong> a partir de leads pendentes em <strong>SQLite</strong>.</p>
-          <details class="dd"><summary>Detalhes</summary>
-            <div class="dd-body"><p>Leads com <strong>status = 'Pendente'</strong> e telefone preenchido entram na fila. O estado de cada lead fica guardado entre execuções.</p></div>
-          </details>
-        </article>
-      </div>
-    </section>
-
-    <section class="sec" style="--g1:#7fd3e8;--g2:#9cc9ff;--g3:#c9b8ff">
-      <div class="sec-h"><p class="eyebrow gt rv">Stack</p><h2 class="gt rv">Ferramentas do projeto</h2><div class="sec-rule"></div></div>
-      <div style="display:flex;flex-wrap:wrap">
-        <span class="tag rv" style="--c:#9cc9ff"><b></b><strong>Python</strong></span>
-        <span class="tag rv" style="--c:#c9b8ff"><b></b><strong>neonize</strong> · WhatsApp</span>
-        <span class="tag rv" style="--c:#8fe3cf"><b></b><strong>SQLite</strong></span>
-        <span class="tag rv" style="--c:#7fd3e8"><b></b><strong>mercurio_crm.db</strong></span>
-        <span class="tag rv" style="--c:#e9c97f"><b></b>tabela <strong>prospeccao</strong></span>
-      </div>
-    </section>
-
-    <section class="sec" style="--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
-      <div class="sec-h">
-        <p class="eyebrow gt rv">Critérios do canal</p>
-        <h2 class="gt rv">WhatsApp por critério</h2>
-        <p class="lede-s rv">Cada item traz só o que o case confirma.</p>
-        <div class="sec-rule"></div>
-      </div>
-      <div class="stack">
-        <details class="surf crit rv" style="--c:#f0a1a1">
-          <summary><span>Risco de bloqueio</span>
-            <span class="pills"><span class="pill high">alto</span></span></summary>
-          <div class="dd-body"><p>O bloqueio pode vir de volume ou padrão repetitivo.</p></div>
-        </details>
-        <details class="surf crit rv" style="--c:#e9c97f">
-          <summary><span>Esforço de setup</span>
-            <span class="pills"><span class="pill mid">compilada, falta instalar neonize</span></span></summary>
-          <div class="dd-body"><p>A integração está compilada. O <strong>neonize</strong> ainda não está instalado no <strong>python3</strong> do sistema.</p></div>
-        </details>
-        <details class="surf crit rv" style="--c:#8fe3cf">
-          <summary><span>Velocidade</span>
-            <span class="pills"><span class="pill low">3 a 6 min por lead</span></span></summary>
-          <div class="dd-body"><p>Cada envio é seguido de pausa aleatória de <strong>180 a 360 s</strong>.</p></div>
-        </details>
-      </div>
-    </section>
-  </div>
-
-  <!-- ARQUITETURA -->
-  <div class="panel" role="tabpanel" data-panel="arq" hidden>
-    <section class="sec" style="margin-top:0;--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
-      <div class="sec-h"><p class="eyebrow gt rv">Camadas</p><h2 class="gt rv">Três camadas com entrada e saída</h2><div class="sec-rule"></div></div>
-      <div class="chips rv" role="group" aria-label="Filtrar camadas" data-chips="arqList">
-        <button class="chip" aria-pressed="true" data-v="all">Todas</button>
-        <button class="chip" aria-pressed="false" data-v="captacao">Captação</button>
-        <button class="chip" aria-pressed="false" data-v="orquestracao">Orquestração</button>
-        <button class="chip" aria-pressed="false" data-v="canais">Canal</button>
-        <button class="chip" aria-pressed="false" data-v="persistencia">Persistência</button>
-      </div>
-      <div class="stack" id="arqList">
-
-        <details class="surf tint layer rv" data-k="captacao" style="--c:#9cc9ff" open>
-          <summary>
-            <span class="head">
-              <span class="orb"><span class="orb-box"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span></span>
-              <span><h3>Captação de leads</h3><small>Leitura da fila</small></span>
-            </span>
-            <span class="pill blue">captação</span>
-          </summary>
-          <dl class="kv dd-open" style="--c:#9cc9ff">
-            <dt>Entrada</dt><dd>Tabela <strong>prospeccao</strong> em <strong>mercurio_crm.db</strong>.</dd>
-            <dt>Saída</dt><dd>Lista de leads com <strong>status = 'Pendente'</strong> e telefone preenchido.</dd>
-            <dt>Responsabilidade</dt><dd>Ler a lista uma vez, no início da execução.</dd>
-            <dt>Limite</dt><dd>Leads inseridos durante a execução não entram.</dd>
-          </dl>
-        </details>
-
-        <details class="surf tint layer rv" data-k="orquestracao" style="--c:#c9b8ff">
-          <summary>
-            <span class="head">
-              <span class="orb"><span class="orb-box"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span></span>
-              <span><h3>Orquestração</h3><small>Função <strong>disparar</strong> e circuit breaker</small></span>
-            </span>
-            <span class="pill lilac">orquestração</span>
-          </summary>
-          <div class="dd-open" style="--c:#c9b8ff">
-            <dl class="kv">
-              <dt>Entrada</dt><dd>Fila de leads gerada pela captação.</dd>
-              <dt>Saída</dt><dd>Registro de cada envio e estado final da sequência.</dd>
-              <dt>Responsabilidade</dt><dd>Controlar envios, <strong>pausa de 180 a 360 s</strong> após envio bem-sucedido e parada após <strong>3 falhas seguidas</strong>.</dd>
-            </dl>
-            <p style="margin-top:16px;color:var(--fg-dim)">O script integrado expõe as funções <strong>fila</strong>, <strong>enviar</strong>, <strong>registrar</strong> e <strong>disparar</strong>.</p>
-          </div>
-        </details>
-
-        <details class="surf tint layer rv" data-k="canais" style="--c:#8fe3cf">
-          <summary>
-            <span class="head">
-              <span class="orb"><span class="orb-box"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12L3 20l4-8-4-8z"/></svg></span></span>
-              <span><h3>Canal WhatsApp</h3><small>Via <strong>neonize</strong></small></span>
-            </span>
-            <span class="pill low">canal</span>
-          </summary>
-          <dl class="kv dd-open" style="--c:#8fe3cf">
-            <dt>Entrada</dt><dd>Mensagem única, personalizada só com o nome do negócio.</dd>
-            <dt>Saída</dt><dd>Chamada a <strong>client.send_message</strong>.</dd>
-            <dt>Responsabilidade</dt><dd>Enviar a mensagem ao número do lead.</dd>
-          </dl>
-        </details>
-
-        <details class="surf tint layer rv" data-k="persistencia" style="--c:#e9c97f">
-          <summary>
-            <span class="head">
-              <span class="orb"><span class="orb-box"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 4v16"/></svg></span></span>
-              <span><h3>Persistência em SQLite</h3><small>Estado de cada lead entre execuções</small></span>
-            </span>
-            <span class="pill mid">persistência</span>
-          </summary>
-          <div class="dd-open">
-            <p style="color:var(--fg-dim)">O <strong>SQLite</strong> guarda o estado de cada lead entre execuções, no lugar de CSV.</p>
-          </div>
-        </details>
-      </div>
-    </section>
-  </div>
-
-  <!-- FLUXO -->
-  <div class="panel" role="tabpanel" data-panel="fluxo" hidden>
-    <section class="sec" style="margin-top:0;--g1:#8fe3cf;--g2:#7fd3e8;--g3:#e9c97f">
-      <div class="sec-h"><p class="eyebrow gt rv">Fluxo</p><h2 class="gt rv">Ciclo de disparo com desvio de falha</h2><div class="sec-rule"></div></div>
-      <div class="flow-wrap">
-        <div class="surf flow rv">
-          <svg viewBox="0 0 500 420" role="img" aria-label="Fluxograma de disparo: ler fila, enviar, verificar envio, registrar, pausar e repetir; em falha, contar até três falhas seguidas e então parar">
-            <rect class="n" x="60" y="10" width="180" height="54" rx="12"/>
-            <text class="t" x="150" y="32" text-anchor="middle">Ler fila</text>
-            <text class="s" x="150" y="50" text-anchor="middle">status Pendente e telefone</text>
-            <path class="ln" d="M150 64V96" marker-end="url(#ar)"/>
-
-            <rect class="n" x="60" y="96" width="180" height="54" rx="12"/>
-            <text class="t" x="150" y="118" text-anchor="middle">Enviar mensagem</text>
-            <text class="s" x="150" y="136" text-anchor="middle">client.send_message</text>
-            <path class="ln" d="M150 150V172" marker-end="url(#ar)"/>
-
-            <polygon class="dm" points="150,172 230,200 150,228 70,200"/>
-            <text class="t" x="150" y="205" text-anchor="middle">Envio ok?</text>
-            <path class="ln" d="M150 228V262" marker-end="url(#ar)"/>
-            <text class="lbA" x="158" y="250">sim</text>
-
-            <rect class="n" x="60" y="262" width="180" height="56" rx="12"/>
-            <text class="t" x="150" y="296" text-anchor="middle">Registrar envio</text>
-            <path class="ln" d="M150 318V350" marker-end="url(#ar)"/>
-
-            <rect class="n" x="60" y="350" width="180" height="56" rx="12"/>
-            <text class="t" x="150" y="372" text-anchor="middle">Pausa aleatória</text>
-            <text class="s" x="150" y="390" text-anchor="middle">180 a 360 s</text>
-
-            <path class="loop" d="M60 378H30V37H60" marker-end="url(#ar)"/>
-            <text class="lb" x="16" y="210" text-anchor="middle" transform="rotate(-90 16 210)">próximo lead</text>
-
-            <path class="ln" d="M230 200H290" marker-end="url(#ar)"/>
-            <text class="lb" x="258" y="192" text-anchor="middle">não</text>
-            <rect class="n" x="290" y="172" width="180" height="56" rx="12"/>
-            <text class="t" x="380" y="194" text-anchor="middle">Contar falha</text>
-            <text class="s" x="380" y="212" text-anchor="middle">consecutiva</text>
-            <path class="ln" d="M380 228V252" marker-end="url(#ar)"/>
-
-            <polygon class="dm" points="380,252 440,280 380,308 320,280"/>
-            <text class="t" x="380" y="285" text-anchor="middle">3 falhas?</text>
-            <path class="loop" d="M440 280H478V37H240" marker-end="url(#ar)"/>
-            <text class="lb" x="458" y="272" text-anchor="middle">não</text>
-
-            <path class="ln" d="M380 308V338" marker-end="url(#ar)"/>
-            <text class="lbR" x="388" y="328">sim</text>
-            <rect class="stop" x="290" y="340" width="180" height="60" rx="12"/>
-            <text class="t" x="380" y="364" text-anchor="middle">Parar</text>
-            <text class="s" x="380" y="382" text-anchor="middle">sequência volta para Pendente</text>
-          </svg>
-        </div>
-
-        <div class="stack">
-          <div class="surf card rv" style="--c:#7fd3e8">
-            <p class="eyebrow" style="color:var(--c)">Pausa entre envios</p>
-            <h3>Faixa sorteada de 180 a 360 s</h3>
-            <div class="timeline" aria-label="Escala de 0 a 360 segundos com faixa de 180 a 360 destacada">
-              <div class="track"></div>
-              <div class="band"></div>
-              <span class="tick l" style="left:0">0 s</span>
-              <span class="tick" style="left:50%">180 s</span>
-              <span class="tick r" style="left:100%">360 s</span>
-            </div>
-            <p style="color:var(--fg-dim);font-size:14px;line-height:1.7">Ciclo por lead: <strong>3 a 6 min</strong>. Uma fila grande leva horas.</p>
-          </div>
-
-          <div class="surf card rv" style="--c:#f0a1a1">
-            <p class="eyebrow" style="color:var(--c)">Circuit breaker</p>
-            <h3>Falhas seguidas: 0 de 3</h3>
-            <div class="breaker" style="margin-top:16px" aria-label="Contador de falhas seguidas, 0 de 3">
-              <span class="bdot" style="border-color:rgba(240,161,161,.3)">1</span><span class="bdot" style="border-color:rgba(240,161,161,.3)">2</span><span class="bdot" style="border-color:rgba(240,161,161,.3)">3</span>
-            </div>
-            <p style="color:var(--fg-dim);font-size:14px;line-height:1.7;margin-top:16px">O contador não foi exercitado em execução real.</p>
-          </div>
-
-          <div class="surf card rv" style="--c:#c9b8ff">
-            <details class="dd" style="margin-top:0;border-top:0">
-              <summary>Por que parar em 3 falhas</summary>
-              <div class="dd-body"><p>Insistir após falhas seguidas pode agravar um bloqueio. A parada devolve a sequência para <strong>Pendente</strong>.</p></div>
-            </details>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- RISCOS -->
-  <div class="panel" role="tabpanel" data-panel="riscos" hidden>
-    <section class="sec" style="margin-top:0;--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
-      <div class="sec-h"><p class="eyebrow gt rv">Riscos</p><h2 class="gt rv">Riscos ordenados por impacto</h2><div class="sec-rule"></div></div>
-      <div class="split">
-        <div class="surf card rv" style="--c:#e9c97f">
-          <p class="eyebrow" style="color:var(--c)">Distribuição por nível</p>
-          <div class="bars">
-            <div class="bar-row"><span style="color:var(--rose)">Alto</span><div class="track2"><div class="fill high" style="width:40%"></div></div><b>2</b></div>
-            <div class="bar-row"><span style="color:var(--gold)">Médio</span><div class="track2"><div class="fill mid" style="width:40%"></div></div><b>2</b></div>
-            <div class="bar-row"><span style="color:var(--mint)">Baixo</span><div class="track2"><div class="fill low" style="width:20%"></div></div><b>1</b></div>
-          </div>
-        </div>
-        <div class="surf card rv" style="--c:#c9b8ff">
-          <p class="eyebrow" style="color:var(--c)">Filtro</p>
-          <h3>Escolha um nível</h3>
-          <div class="chips" role="group" aria-label="Filtrar riscos por nível" data-chips="riscosList" style="margin:16px 0 0">
-            <button class="chip" aria-pressed="true" data-v="all">Todos</button>
-            <button class="chip" aria-pressed="false" data-v="alto">Alto</button>
-            <button class="chip" aria-pressed="false" data-v="medio">Médio</button>
-            <button class="chip" aria-pressed="false" data-v="baixo">Baixo</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="stack" id="riscosList" style="margin-top:16px">
-        <article class="surf tint item rv" data-k="alto" style="--c:#f0a1a1">
-          <div class="item-head"><h3>Bloqueio da conta WhatsApp por volume ou padrão repetitivo</h3><span class="pill high">alto</span></div>
-          <details class="dd" style="margin-top:0"><summary>Detalhes</summary>
-            <div class="dd-body"><p>O envio repetitivo aumenta o risco de bloqueio. Por isso existem a pausa entre envios e o limite de falhas.</p></div>
-          </details>
-        </article>
-        <article class="surf tint item rv" data-k="alto" style="--c:#f0a1a1">
-          <div class="item-head"><h3>Falha silenciosa: sem exceção, o circuit breaker não é acionado</h3><span class="pill high">alto</span></div>
-          <details class="dd" style="margin-top:0"><summary>Detalhes</summary>
-            <div class="dd-body"><p>Se o envio falhar sem gerar exceção, a sequência continua.</p></div>
-          </details>
-        </article>
-        <article class="surf tint item rv" data-k="medio" style="--c:#e9c97f">
-          <div class="item-head"><h3>Número de WhatsApp e link de terceiro fixos no corpo da mensagem</h3><span class="pill mid">médio</span></div>
-          <details class="dd" style="margin-top:0"><summary>Detalhes</summary>
-            <div class="dd-body"><p>Revisar antes de escalar.</p></div>
-          </details>
-        </article>
-        <article class="surf tint item rv" data-k="medio" style="--c:#e9c97f">
-          <div class="item-head"><h3>Leads novos não entram na execução em andamento</h3><span class="pill mid">médio</span></div>
-          <details class="dd" style="margin-top:0"><summary>Detalhes</summary>
-            <div class="dd-body"><p>A lista é lida uma vez, no início da execução.</p></div>
-          </details>
-        </article>
-        <article class="surf tint item rv" data-k="baixo" style="--c:#8fe3cf">
-          <div class="item-head"><h3>Duração de 3 a 6 minutos por lead</h3><span class="pill low">baixo</span></div>
-          <details class="dd" style="margin-top:0"><summary>Detalhes</summary>
-            <div class="dd-body"><p>Uma fila grande leva horas para concluir.</p></div>
-          </details>
-        </article>
-      </div>
-
-      <div class="water" aria-hidden="true"><span class="gt" style="--g1:#9cc9ff;--g2:#c9b8ff">linha da água</span></div>
-      <p class="water-note">Abaixo da linha: premissas confirmadas no código.</p>
-
-      <div class="split" style="margin-top:20px">
-        <div class="stack">
-          <article class="surf tint item rv" style="--c:#c9b8ff">
-            <div class="item-head"><h3>Leads válidos são os com status Pendente e telefone</h3><span class="pill lilac">no código</span></div>
-          </article>
-          <article class="surf tint item rv" style="--c:#8fe3cf">
-            <div class="item-head"><h3>A mesma mensagem vai a todos, personalizada só com o nome do negócio</h3><span class="pill low">no código</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ESTADO -->
-  <div class="panel" role="tabpanel" data-panel="estado" hidden>
-    <section class="sec" style="margin-top:0;--g1:#9cc9ff;--g2:#8fe3cf;--g3:#e9c97f">
-      <div class="sec-h"><p class="eyebrow gt rv">Estado</p><h2 class="gt rv">Integração concluída, primeira execução pendente</h2><div class="sec-rule"></div></div>
-      <div class="rings">
-        <div class="surf ring rv" style="--c:#9cc9ff">
-          <svg viewBox="0 0 110 110" aria-hidden="true">
-            <circle cx="55" cy="55" r="44" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="5"/>
-            <circle cx="55" cy="55" r="44" fill="none" stroke="url(#gl)" stroke-width="5" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="0" transform="rotate(-90 55 55)"/>
-            <text x="55" y="61" text-anchor="middle" style="font:600 18px Sora,sans-serif;fill:#f0f0f4">7/7</text>
-          </svg>
-          <div><b>Ações concluídas</b><span>Núcleo, testes, integração, limpeza e correção do case.</span></div>
-        </div>
-        <div class="surf ring rv" style="--c:#e9c97f">
-          <svg viewBox="0 0 110 110" aria-hidden="true">
-            <circle cx="55" cy="55" r="44" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="5"/>
-            <circle cx="55" cy="55" r="44" fill="none" stroke="url(#gw)" stroke-width="5" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="276.46" transform="rotate(-90 55 55)"/>
-            <text x="55" y="61" text-anchor="middle" style="font:600 18px Sora,sans-serif;fill:#f0f0f4">0/3</text>
-          </svg>
-          <div><b>Próximos passos</b><span>Nenhum passo concluído ainda.</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
-      <div class="sec-h"><p class="eyebrow gt rv">Próximos passos</p><h2 class="gt rv">Ordem de execução</h2><div class="sec-rule"></div></div>
-      <ol class="steps">
-        <li class="rv" style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Instalar neonize</strong> no Python do projeto.</div><span class="pill blue">pendente</span></li>
-        <li class="rv" style="--c:#c9b8ff"><span class="num">02</span><div class="txt">Confirmar em <strong>send_message</strong> se falha de entrega lança exceção.</div><span class="pill lilac">pendente</span></li>
-        <li class="rv" style="--c:#8fe3cf"><span class="num">03</span><div class="txt">Primeira execução real, acompanhada no terminal.</div><span class="pill low">pendente</span></li>
-      </ol>
-    </section>
-
-    <section class="sec" style="--g1:#f0a1a1;--g2:#c9b8ff;--g3:#9cc9ff">
-      <div class="sec-h"><p class="eyebrow gt rv">Problemas</p><h2 class="gt rv">Em aberto e resolvidos</h2><div class="sec-rule"></div></div>
-      <div class="chips rv" role="group" aria-label="Filtrar problemas por status" data-chips="probList">
-        <button class="chip" aria-pressed="true" data-v="all">Todos</button>
-        <button class="chip" aria-pressed="false" data-v="aberto">Em aberto</button>
-        <button class="chip" aria-pressed="false" data-v="resolvido">Resolvidos</button>
-      </div>
-      <div class="stack" id="probList">
-        <article class="surf tint item rv" data-k="aberto" style="--c:#e9c97f">
-          <div class="item-head"><h3>neonize não instalado no python3 do sistema</h3><span class="pill mid">em aberto</span></div>
-          <p>O script não roda nem pode ser inspecionado até a instalação.</p>
-        </article>
-        <article class="surf tint item rv" data-k="aberto" style="--c:#e9c97f">
-          <div class="item-head"><h3>Testes cobrem só disparo_core.py</h3><span class="pill mid">em aberto</span></div>
-          <p>O script integrado ainda não tem cobertura de teste.</p>
-        </article>
-        <article class="surf tint item rv" data-k="aberto" style="--c:#e9c97f">
-          <div class="item-head"><h3>check_same_thread=False com uso entre threads não testado</h3><span class="pill mid">em aberto</span></div>
-        </article>
-        <article class="surf tint item rv" data-k="resolvido" style="--c:#8fe3cf">
-          <div class="item-head"><h3>Erros de colagem no Terminal atrasaram a integração</h3><span class="pill ok">resolvido</span></div>
-          <p>Heredoc e aspas foram tratados durante a integração.</p>
-        </article>
-        <article class="surf tint item rv" data-k="resolvido" style="--c:#8fe3cf">
-          <div class="item-head"><h3>Números sem prova e funções inexistentes removidos do case</h3><span class="pill ok">resolvido</span></div>
-          <p>Afirmações sem código foram retiradas.</p>
-        </article>
-        <article class="surf tint item rv" data-k="resolvido" style="--c:#8fe3cf">
-          <div class="item-head"><h3>Linhas citadas no case estavam erradas</h3><span class="pill ok">resolvido</span></div>
-          <p>Referências conferidas com grep.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="sec" style="--g1:#7fd3e8;--g2:#8fe3cf;--g3:#9cc9ff">
-      <div class="sec-h"><p class="eyebrow gt rv">Ações</p><h2 class="gt rv">O que foi feito</h2><div class="sec-rule"></div></div>
-      <div class="surf card rv">
-        <ul class="check">
-          <li>Criado <strong>disparo_core.py</strong> com a função disparar e o circuit breaker.</li>
-          <li>Criados 4 testes em <strong>test_circuit_breaker.py</strong>, todos passando.</li>
-          <li>Integrado <strong>disparo_flavio.py</strong> ao núcleo: fila, enviar, registrar e disparar.</li>
-          <li>Removidos o <strong>time.sleep</strong> e o try/except por lead do script.</li>
-          <li>Texto da mensagem preservado e conferido por script antes da gravação.</li>
-          <li>Cópia de segurança: <strong>disparo_flavio.pre_integracao.py</strong>.</li>
-          <li>Case corrigido: afirmações sem código foram removidas.</li>
-        </ul>
-      </div>
-    </section>
-
-    <footer class="foot">Painel gerado com base no case de 2 de novembro de 2026. Nenhum número foi estimado.</footer>
-  </div>
-
+<footer class="foot">
+<span>© Hermes V6.0 · IA Generativa e Automação</span>
+<div class="contact">
+<a href="https://wa.me/5521999719474" target="_blank" rel="noopener">WhatsApp · 21 99971-9474</a>
+<a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+</div>
+</footer>
 </main>
 
 <script>
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* Contador rápido: uma única vez, ao ser revelado, em 350 ms */
-  function countUp(el){
-    var end = parseInt(el.getAttribute('data-count'), 10);
-    if (isNaN(end) || reduce) return;
-    var start = performance.now(), dur = 350;
-    function step(now){
-      var t = Math.min(1, (now - start) / dur);
-      el.textContent = Math.round(end * (1 - Math.pow(1 - t, 2)));
-      if (t < 1) requestAnimationFrame(step);
-    }
-    el.textContent = '0';
-    requestAnimationFrame(step);
-  }
-
-  /* Stagger de 50 ms entre irmãos, limitado a 6 itens para nunca atrasar o conteúdo */
-  var siblingGroups = document.querySelectorAll('.grid2, .stack, .rings, .stats, .steps, .check, .split, .flow-wrap, .tag-row');
-  siblingGroups.forEach(function(group){
-    var i = 0;
-    Array.prototype.forEach.call(group.children, function(child){
-      if (child.classList.contains('rv') || child.matches('.surf, details, article, li, .stat, .ring')) {
-        child.style.setProperty('--d', (Math.min(i, 6) * 50) + 'ms');
-        i++;
-      }
-    });
-  });
-
-  /* Um único observador para tudo. Cada elemento é revelado uma vez e deixa de ser observado.
-     Elementos de abas ocultas são observados mesmo assim: ao aparecer, revelam-se. */
   var items = document.querySelectorAll('.rv');
-  function reveal(el){
-    el.classList.add('in');
-    setTimeout(function(){ el.style.removeProperty('--d'); }, 600);
-    if (el.matches('.status')) return;
-    el.querySelectorAll('[data-count]').forEach(countUp);
-    if (el.matches('.stat')) el.querySelectorAll('[data-count]').forEach(countUp);
-    el.querySelectorAll('.fill').forEach(function(f){ f.classList.add('go'); });
-  }
-  if (reduce || !('IntersectionObserver' in window)) {
-    items.forEach(function(el){ reveal(el); });
-  } else {
+  function reveal(el){ el.classList.add('in'); }
+  if (reduce || !('IntersectionObserver' in window)) { items.forEach(reveal); }
+  else {
     var io = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(en){
-        if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); }
-      });
-    }, { threshold: 0.05, rootMargin: '0px 0px -4% 0px' });
+      entries.forEach(function(en){ if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
     items.forEach(function(el){ io.observe(el); });
   }
-
-  /* Abas: troca instantânea com fade curto; o conteúdo já revelado não repete animação */
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
-  var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
-  function show(name){
-    tabs.forEach(function(t){
-      var on = t.getAttribute('data-tab') === name;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      t.tabIndex = on ? 0 : -1;
-    });
-    panels.forEach(function(p){
-      var on = p.getAttribute('data-panel') === name;
-      p.hidden = !on;
-      p.classList.toggle('on', on);
-    });
-    window.scrollTo({ top: 0, behavior: 'auto' });
-  }
-  tabs.forEach(function(t, i){
-    t.addEventListener('click', function(){ show(t.getAttribute('data-tab')); });
-    t.addEventListener('keydown', function(e){
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-        var n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
-        tabs[n].focus();
-        show(tabs[n].getAttribute('data-tab'));
-      }
-    });
-  });
-  show('visao');
-
-  /* Filtros: saída curta; quando o item já está oculto, nada mais é animado */
-  document.querySelectorAll('[data-chips]').forEach(function(bar){
-    var scope = document.getElementById(bar.getAttribute('data-chips'));
-    bar.addEventListener('click', function(e){
-      var b = e.target.closest('button');
-      if (!b) return;
-      var v = b.getAttribute('data-v');
-      bar.querySelectorAll('button').forEach(function(x){
-        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
-      });
-      scope.querySelectorAll('[data-k]').forEach(function(el){
-        var ks = el.getAttribute('data-k').split(' ');
-        var on = (v === 'all' || ks.indexOf(v) !== -1);
-        clearTimeout(el._t);
-        if (on) {
-          el.hidden = false;
-          requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.remove('out'); }); });
-        } else if (!el.hidden) {
-          el.classList.add('out');
-          el._t = setTimeout(function(){ el.hidden = true; }, 260);
-        }
-      });
-    });
-  });
 })();
 </script>
-
-</body></html>
+</body>
+</html>

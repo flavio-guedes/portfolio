@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Hermes Estratégico · Inteligência de Mercado e Governança de Agentes</title>
+<title>Hermes Estratégico · Inteligência e Automação para a Livelo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -12,46 +12,50 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 15.5px/1.7 Manrope,system-ui,sans-serif;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 64px;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}p{margin:0}strong{font-weight:600;color:var(--fg)}
+h1,h2,h3,h4{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}h4{font-size:0.95rem;line-height:1.4;color:var(--fg-dim);margin-bottom:8px}p{margin:0}strong{font-weight:600;color:var(--fg)}
 :focus-visible{outline:1px solid var(--blue);outline-offset:3px}
 .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 .gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
-.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
-.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
-.top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
-.top-cta svg{width:15px;height:15px}
-.hero{position:relative;overflow:hidden;padding-block:56px 40px}
-.halo{position:absolute;border-radius:50%;pointer-events:none}
-.halo.h1{width:520px;height:520px;top:-240px;right:-160px;background:radial-gradient(closest-side,rgba(156,201,255,.12),transparent)}
-.halo.h2{width:420px;height:420px;bottom:-260px;left:-140px;background:radial-gradient(closest-side,rgba(143,227,207,.07),transparent)}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px 0}
+.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em;display:block;margin-bottom:14px}.brand i{font-style:normal;color:var(--fg-faint)}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;max-width:1080px;margin:0 auto;padding-inline:12px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;background:none;border:0;color:var(--fg-faint);font:500 14px Manrope,sans-serif;padding:14px 14px 13px;cursor:pointer;position:relative;white-space:nowrap;transition:color var(--fast) var(--ease)}
+.tab:hover{color:var(--fg-dim)}
+.tab[aria-selected="true"]{color:var(--fg)}
+.tab svg{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.5;transition:opacity var(--fast) var(--ease)}
+.tab:hover svg,.tab[aria-selected="true"] svg{opacity:1}
+.tab::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--blue),var(--lilac),var(--mint));transform:scaleX(0);transform-origin:left;transition:transform var(--base) var(--ease)}
+.tab[aria-selected="true"]::after{transform:scaleX(1)}
+.panel.on{animation:panelIn var(--fast) var(--ease) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.js .rv:not(.in){opacity:0;transform:translateY(8px)}
+.rv,.surf{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease),border-color var(--fast) var(--ease),background var(--fast) var(--ease);transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+.hero{position:relative;overflow:hidden;padding-block:56px 36px}
 .hero-in{position:relative;z-index:1;max-width:820px}
 .kicker{font:500 11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
 .hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px}
 .lede{color:var(--fg-dim);max-width:64ch;font-size:16px;line-height:1.75}
-.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
-.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
-.cta-main svg{width:20px;height:20px}
-.cta-sub{display:block;margin-top:12px;font-size:13px;color:var(--fg-faint)}.cta-sub strong{color:var(--fg-dim)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:40px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
-.stat{padding:20px 18px 18px;background:var(--bg);min-width:0;position:relative}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:36px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.stat{padding:20px 18px 16px;background:var(--bg);min-width:0;position:relative}
 .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
 .stat b{display:block;font:600 1.35rem Sora,sans-serif;letter-spacing:-.01em;background:linear-gradient(100deg,var(--c),var(--c2,var(--c)));-webkit-background-clip:text;background-clip:text;color:transparent}
 .stat span{display:block;font-size:13px;line-height:1.5;color:var(--fg-dim);margin-top:4px}
 .sec{margin-top:64px}
 .sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
-.sec-h h2{font-size:1.5rem;font-weight:600;line-height:1.25}
-.lede-s{color:var(--fg-dim);max-width:64ch;font-size:15px;line-height:1.7}
+.sec-h h2{font-size:1.4rem;font-weight:600;line-height:1.25}
+.lede-s{color:var(--fg-dim);max-width:64ch;font-size:14.5px;line-height:1.7}
 .sec-rule{height:1px;margin-top:6px;background:linear-gradient(90deg,var(--g1),var(--g2),transparent)}
-.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
-.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative;transition:border-color var(--fast) var(--ease)}
+.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative}
 .surf:hover{border-color:rgba(255,255,255,.14)}
 .tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
+.tint:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
 .card{padding:24px}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .stack{display:flex;flex-direction:column;gap:14px}
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .steps li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px 24px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);transition:border-color var(--fast) var(--ease)}
@@ -59,207 +63,396 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
 .steps .num{font:600 13px "JetBrains Mono",monospace;color:var(--c);padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);min-width:fit-content;white-space:nowrap}
 .steps .txt{min-width:0;color:var(--fg-dim);font-size:15px;line-height:1.7}
 .steps .txt strong{color:var(--fg);display:block;margin-bottom:4px;font-size:15.5px;font-family:Sora,sans-serif;font-weight:600}
-.check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14.5px;line-height:1.65}
-.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
+.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--c) 0 35%,transparent 40%);border:1px solid color-mix(in srgb,var(--c) 40%,transparent)}
 .check strong{color:var(--fg)}
-.front{display:flex;flex-direction:column;gap:8px;padding:20px 22px}
-.front h3{font-size:1rem;font-family:Sora,sans-serif;font-weight:600;color:var(--fg);margin-bottom:4px}
-.front p{color:var(--fg-dim);font-size:14px;line-height:1.65}
-.front .tag{display:inline-flex;align-items:center;gap:6px;font:500 10px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 32%,transparent);width:fit-content;margin-top:10px}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px;text-align:left}
+th,td{padding:14px 16px;border-bottom:1px solid var(--hair);color:var(--fg-dim)}
+th{font-family:Sora,sans-serif;font-weight:600;color:var(--fg);background:rgba(255,255,255,.02)}
+tr:last-child td{border-bottom:none}
+td strong{color:var(--fg)}
+.code-box{background:#050508;border:1px solid var(--hair);border-radius:12px;padding:20px;font-family:"JetBrains Mono",monospace;font-size:13px;line-height:1.6;color:var(--fg-dim);overflow-x:auto;margin-top:16px}
+.code-box .key{color:var(--mint)}
+.code-box .alert{color:var(--gold);font-weight:600}
 .cta-band{margin-top:72px;padding:40px 32px;border-radius:20px;background:radial-gradient(120% 140% at 0% 0%,rgba(143,227,207,.15),transparent 60%),radial-gradient(120% 140% at 100% 100%,rgba(156,201,255,.12),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(143,227,207,.25);text-align:center}
 .cta-band h2{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:14px}
 .cta-band p{color:var(--fg-dim);max-width:600px;margin:0 auto 28px;font-size:15.5px;line-height:1.7}
-.cta-band .cta-main{margin-top:0}
+.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
+.cta-main svg{width:20px;height:20px}
 .cta-band .cta-sub{color:var(--fg-faint);font-size:12.5px;margin-top:16px}
 .cta-band .cta-sub code{font-family:"JetBrains Mono",monospace;color:var(--mint);background:rgba(143,227,207,.08);padding:2px 8px;border-radius:6px}
 .foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
 .foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
 .foot a:hover{color:var(--mint)}
 .foot .contact{display:flex;gap:20px;flex-wrap:wrap}
-.js .rv:not(.in){opacity:0;transform:translateY(8px)}
-.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
-.rv.in{opacity:1;transform:none}
 .link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:24px}
 .link-item{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--hair);color:var(--fg);text-decoration:none;font-size:14px;transition:all .2s}
 .link-item:hover{background:rgba(255,255,255,.08);border-color:var(--mint);color:var(--mint)}
 .link-item svg{width:16px;height:16px;flex:0 0 auto;opacity:.7}
-@media (max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
+@media (max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}table{display:block;overflow-x:auto;white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
+
 <header class="top">
-<div class="top-in">
-<span class="brand">Hermes Estratégico <i>· Inteligência de Mercado e IA</i></span>
-<a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20a%20arquitetura%20de%20agentes%20para%20Planejamento%20Estrat%C3%A9gico." target="_blank" rel="noopener">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-<span>Falar com especialista</span>
-</a>
-</div>
+  <div class="top-in">
+    <span class="brand">Hermes Estratégico <i>· Automação e Inteligência para a Livelo</i></span>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Seções da apresentação">
+    <button class="tab" role="tab" data-tab="visao" aria-selected="true" tabindex="0" style="--c:#9cc9ff">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Visão Geral</button>
+    <button class="tab" role="tab" data-tab="problema" aria-selected="false" tabindex="-1" style="--c:#f0a1a1">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/></svg>O Gargalo</button>
+    <button class="tab" role="tab" data-tab="arquitetura" aria-selected="false" tabindex="-1" style="--c:#c9b8ff">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="8.5" y="14" width="7" height="7" rx="2"/></svg>Arquitetura</button>
+    <button class="tab" role="tab" data-tab="casos" aria-selected="false" tabindex="-1" style="--c:#8fe3cf">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v6a4 4 0 0 0 4 4h6a4 4 0 0 1 4 4v2"/><circle cx="5" cy="4" r="1.6"/><circle cx="19" cy="20" r="1.6"/></svg>Casos de Uso</button>
+    <button class="tab" role="tab" data-tab="diferenciais" aria-selected="false" tabindex="-1" style="--c:#e9c97f">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Diferenciais</button>
+    <button class="tab" role="tab" data-tab="plano" aria-selected="false" tabindex="-1" style="--c:#7fd3e8">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Plano de Ação</button>
+  </nav>
 </header>
+
 <main class="wrap">
 
-<section class="hero" aria-labelledby="titulo">
-<div class="halo h1" aria-hidden="true"></div>
-<div class="halo h2" aria-hidden="true"></div>
-<div class="hero-in">
-<p class="kicker gt rv" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">Arquitetura de Agentes · Planejamento Estratégico · IA Local</p>
-<h1 id="titulo" class="rv">Como a orquestração de agentes pode <span class="grad-text">escalar a Inteligência de Mercado</span> e a Governança de OKRs.</h1>
-<p class="lede rv">Este documento apresenta a arquitetura técnica de um ecossistema de agentes autônomos (Hermes V6.0) e como a mesma lógica de orquestração, resiliência e IA local pode ser aplicada para apoiar áreas de Planejamento Estratégico, Inteligência de Mercado e Growth Hacking.</p>
-<p class="lede rv" style="margin-top:16px">O foco não é substituir a visão estratégica e a experiência de liderança, mas sim construir o motor técnico que executa o plano: raspagem de dados de concorrência, geração de análises contextuais com IA e monitoramento contínuo de indicadores em tempo real.</p>
-<a class="cta-main rv" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20a%20arquitetura%20de%20agentes%20para%20Planejamento%20Estrat%C3%A9gico." target="_blank" rel="noopener">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-Vamos construir essa arquitetura juntos
-</a>
-<span class="cta-sub rv">Disponível para projetos e posições em IA generativa e automação · <strong>21 99971-9474</strong></span>
-<div class="stats">
-<div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono">8 módulos</b><span>orquestrados de ponta a ponta</span></div>
-<div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">100% local</b><span>IA rodando com Ollama (segurança de dados)</span></div>
-<div class="stat rv" style="--c:#e9c97f;--c2:#f0a1a1"><b class="mono">Resiliência</b><span>travas de segurança e tolerância a falhas</span></div>
-<div class="stat rv" style="--c:#c9b8ff;--c2:#9cc9ff"><b class="mono">TUI</b><span>observabilidade e monitoramento em tempo real</span></div>
-</div>
-</div>
-</section>
+  <!-- ABA 1: VISÃO GERAL -->
+  <div class="panel on" role="tabpanel" data-panel="visao">
+    <section class="hero" aria-labelledby="titulo">
+      <div class="hero-in">
+        <p class="kicker gt rv" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">Para: Alexandre · Livelo Brasil</p>
+        <h1 id="titulo" class="rv">Como transformar dados em <span class="grad-text">expansão de ecossistema</span>.</h1>
+        <p class="lede rv">A Livelo já opera um dos maiores ecossistemas de engajamento do Brasil, conectando mais de 61 milhões de participantes, mais de 600 parceiros e cerca de 70 instituições financeiras. A oportunidade não é apenas ampliar esse ecossistema, mas tornar sua expansão mais <strong>inteligente, priorizada, mensurável e executável</strong>.</p>
+        <p class="lede rv" style="margin-top:16px">"A estratégia define o mapa. A automação constrói o motor que executa esse mapa com velocidade, consistência e rastreabilidade."</p>
+        
+        <div class="stats" style="margin-top:36px">
+          <div class="stat rv" style="--c:#9cc9ff;--c2:#c9b8ff"><b class="mono">61M+</b><span>participantes conectados</span></div>
+          <div class="stat rv" style="--c:#c9b8ff;--c2:#f0a1a1"><b class="mono">600+</b><span>parceiros no ecossistema</span></div>
+          <div class="stat rv" style="--c:#8fe3cf;--c2:#7fd3e8"><b class="mono">70</b><span>instituições financeiras</span></div>
+          <div class="stat rv" style="--c:#e9c97f;--c2:#8fe3cf"><b class="mono">85%</b><span>de presença no e-commerce</span></div>
+        </div>
+      </div>
+    </section>
 
-<section class="sec" style="--g1:#f0a1a1;--g2:#e9c97f;--g3:#8fe3cf">
-<div class="sec-h">
-<p class="eyebrow gt rv">O Desafio</p>
-<h2 class="gt rv">Traduzir dados dispersos em decisões estratégicas rápidas</h2>
-<p class="lede-s rv">Áreas de Inteligência de Mercado e Planejamento geram e consomem um volume massivo de dados. O gargalo não é a falta de informação, mas a velocidade de transformá-la em inteligência acionável para a diretoria.</p>
-<div class="sec-rule"></div>
-</div>
-<div class="grid2">
-<div class="surf tint card rv" style="--c:#9cc9ff">
-<p class="eyebrow" style="color:var(--c)">O gargalo manual</p>
-<h3 style="margin-bottom:12px">Análises que levam dias</h3>
-<p style="color:var(--fg-dim);font-size:14.5px;line-height:1.7">Coletar dados de concorrentes, cruzar com o cenário interno, estruturar apresentações e acompanhar os OKRs exige horas de trabalho operacional. A alta gestão precisa da resposta antes da próxima reunião, e o time perde tempo montando planilhas em vez de gerar insights.</p>
-</div>
-<div class="surf tint card rv" style="--c:#8fe3cf">
-<p class="eyebrow" style="color:var(--c)">A solução com agentes</p>
-<h3 style="margin-bottom:12px">O motor de execução da estratégia</h3>
-<p style="color:var(--fg-dim);font-size:14.5px;line-height:1.7">Um ecossistema de agentes que varre o mercado, analisa dados, redige briefings executivos e monitora os OKRs de forma autônoma. O analista e o estrategista ganham um braço técnico que não dorme, transformando dados brutos em insumos prontos para a tomada de decisão.</p>
-</div>
-</div>
-</section>
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><p class="eyebrow gt rv">Contexto Estratégico</p><h2 class="gt rv">O próximo salto é a orquestração.</h2><div class="sec-rule"></div></div>
+      <div class="surf card rv">
+        <table>
+          <thead><tr><th>Dimensão</th><th>Situação Atual</th><th>Oportunidade com IA e Automação</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ecossistema</strong></td><td>Mais de 600 parceiros e 70 instituições.</td><td>Monitorar continuamente lacunas, sobreposições e oportunidades de expansão.</td></tr>
+            <tr><td><strong>Participantes</strong></td><td>Mais de 61 milhões de usuários.</td><td>Identificar padrões de engajamento, resgate e propensão a novas categorias.</td></tr>
+            <tr><td><strong>Cobertura</strong></td><td>Presença em ~85% do e-commerce.</td><td>Priorizar categorias e parceiros com maior potencial estratégico.</td></tr>
+            <tr><td><strong>Expansão</strong></td><td>Ampliação de parcerias B2B, turismo e utilities.</td><td>Transformar prospecção e análise de fit em um processo contínuo.</td></tr>
+            <tr><td><strong>Decisão</strong></td><td>Muitas fontes e iniciativas simultâneas.</td><td>Briefings, alertas e recomendações prontos para decisão.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-<section class="sec" style="--g1:#8fe3cf;--g2:#7fd3e8;--g3:#9cc9ff">
-<div class="sec-h">
-<p class="eyebrow gt rv">Arquitetura Proposta</p>
-<h2 class="gt rv">O que o Hermes V6.0 entrega na prática</h2>
-<p class="lede-s rv">Cada módulo do sistema foi desenhado com uma responsabilidade clara, focado em robustez e automação de processos complexos.</p>
-<div class="sec-rule"></div>
-</div>
-<ol class="steps">
-<li class="rv" style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Governança e Pré-checagem (Checklist de Voo)</strong>Antes de executar qualquer análise ou relatório, o sistema roda um checklist de 5 etapas: valida se o banco está saudável, se a IA local está online, se as fontes de dados estão acessíveis e se o horário permite processamento pesado. Isso garante que a diretoria nunca receba um dado corrompido ou incompleto.</div></li>
-<li class="rv" style="--c:#c9b8ff"><span class="num">02</span><div class="txt"><strong>Gestor de Foco (Configuração de Campanhas)</strong>Um painel de controle que define a estratégia do momento. Pode ser configurado para focar na análise de um concorrente específico, em um novo produto, ou na revisão de OKRs de um trimestre. Altera o foco de todos os agentes do sistema de forma centralizada.</div></li>
-<li class="rv" style="--c:#8fe3cf"><span class="num">03</span><div class="txt"><strong>Inteligência de Mercado (Loop Híbrido)</strong>O sistema varre fontes na internet, portais de notícias, concorrentes e bases internas, extraindo os dados de interesse. Utiliza algoritmos matemáticos para não sobrecarregar nenhuma fonte e validar se a informação extraída é real e útil.</div></li>
-<li class="rv" style="--c:#e9c97f"><span class="num">04</span><div class="txt"><strong>Analista IA (Agente-08)</strong>Aqui está o coração cognitivo. O agente lê os dados capturados, entende o contexto e escreve o material final: um briefing executivo, um resumo de notícias do setor ou uma proposta de ação. O sistema só entrega o texto para o humano se ele for gerado por este agente de análise.</div></li>
-<li class="rv" style="--c:#7fd3e8"><span class="num">05</span><div class="txt"><strong>Entrega Multicanal (WhatsApp e E-mail)</strong>Os relatórios prontos não ficam parados. O motor dispara os alertas via WhatsApp e envia os e-mails HTML formatados via SMTP, com pausas para garantir a entrega e não queimar as contas de comunicação.</div></li>
-<li class="rv" style="--c:#c9b8ff"><span class="num">06</span><div class="txt"><strong>Observabilidade (Painel TUI)</strong>Um painel em tempo real (no terminal) que mostra o status de cada agente, o volume de dados processados, a fila de entregas e a previsão de conclusão. É o controle total da operação na mão do estrategista.</div></li>
-</ol>
-</section>
+    <section class="sec">
+      <div class="sec-h"><p class="eyebrow gt rv">Conexão com OKRs</p><h2 class="gt rv">Automação como alavanca dos OKRs de ecossistema</h2><div class="sec-rule"></div></div>
+      <div class="surf card rv">
+        <table>
+          <thead><tr><th>OKR Estratégico</th><th>Como a automação contribui</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Expandir o ecossistema</strong></td><td>Mapeamento contínuo de prospects, categorias prioritárias e sinais de mercado.</td></tr>
+            <tr><td><strong>Ampliar categorias do cotidiano</strong></td><td>Radar de mercados, regulamentações, players e casos de uso.</td></tr>
+            <tr><td><strong>Aumentar a relevância</strong></td><td>Cruzamento de dados de comportamento, catálogo, campanhas e parceiros.</td></tr>
+            <tr><td><strong>Acelerar novas parcerias</strong></td><td>Funil de prospecção, scoring de fit e dossiê automatizado de parceiro.</td></tr>
+            <tr><td><strong>Melhorar governança</strong></td><td>Monitoramento de metas, riscos, dependências e desvios.</td></tr>
+            <tr><td><strong>Elevar qualidade da decisão</strong></td><td>Briefings, resumos e recomendações priorizadas para a liderança.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 
-<section class="sec" style="--g1:#c9b8ff;--g2:#9cc9ff;--g3:#8fe3cf">
-<div class="sec-h">
-<p class="eyebrow gt rv">Aplicação no Planejamento Estratégico</p>
-<h2 class="gt rv">Como essa arquitetura acelera o seu dia a dia</h2>
-<p class="lede-s rv">A mesma tecnologia desenhada para escalar comunicações pode ser adaptada para processar dados e apoiar as suas frentes de atuação.</p>
-<div class="sec-rule"></div>
-</div>
-<div class="grid3">
-<div class="surf tint front rv" style="--c:#9cc9ff"><h3>Governança de OKRs</h3><p>Criação de agentes que monitoram os indicadores das áreas, detectam desvios de rota e geram alertas automáticos para a liderança.</p><span class="tag">governança</span></div>
-<div class="surf tint front rv" style="--c:#c9b8ff"><h3>Inteligência Competitiva</h3><p>Robôs que acompanham movimentos de concorrentes e mudanças regulatórias, gerando um resumo diário com o que importa para a estratégia.</p><span class="tag">mercado</span></div>
-<div class="surf tint front rv" style="--c:#8fe3cf"><h3>Growth e Parcerias</h3><p>Sistemas de busca que mapeiam potenciais parceiros de acúmulo e resgate de pontos, com análise de fit estratégico para a Livelo.</p><span class="tag">growth</span></div>
-<div class="surf tint front rv" style="--c:#e9c97f"><h3>Análise de Dados</h3><p>Integração de IA local para cruzar dados de CRM e BI, encontrando correlações e oportunidades de otimização não mapeadas.</p><span class="tag">analytics</span></div>
-<div class="surf tint front rv" style="--c:#7fd3e8"><h3>Automação de Relatórios</h3><p>Geração automática de apresentações e briefings mensais para a diretoria, liberando o time para análises mais profundas.</p><span class="tag">eficiência</span></div>
-<div class="surf tint front rv" style="--c:#c9b8ff"><h3>Inovação em Produtos</h3><p>Uso de IA generativa para criar protótipos de novos produtos e testar hipóteses de mercado em velocidade recorde.</p><span class="tag">produto</span></div>
-</div>
-</section>
+  <!-- ABA 2: O PROBLEMA -->
+  <div class="panel" role="tabpanel" data-panel="problema" hidden>
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><p class="eyebrow gt rv">O Gargalo</p><h2 class="gt rv">O problema não é falta de informação. É velocidade de conversão em decisão.</h2><div class="sec-rule"></div></div>
+      <div class="grid2">
+        <div class="surf tint card rv" style="--c:#f0a1a1">
+          <h3 style="margin-bottom:16px">Consequências típicas na operação</h3>
+          <ul class="check" style="--c:#f0a1a1">
+            <li>Análises de mercado e concorrência consomem tempo manual excessivo.</li>
+            <li>Oportunidades de parceria demoram a ser identificadas ou priorizadas.</li>
+            <li>Indicadores de OKRs são acompanhados de forma fragmentada.</li>
+            <li>Riscos e dependências aparecem tarde no ciclo de execução.</li>
+            <li>A liderança recebe relatórios, mas nem sempre recomendações acionáveis.</li>
+            <li>O time estratégico gasta energia operacional em vez de gerar insight.</li>
+          </ul>
+        </div>
+        <div class="surf tint card rv" style="--c:#8fe3cf">
+          <p class="eyebrow" style="color:var(--c)">A Pergunta Central</p>
+          <h3 style="margin-top:8px; font-size:1.4rem; line-height:1.3; color:var(--fg)">Como transformar dados dispersos em decisões rápidas sobre onde expandir, com quem partnerizar e quais iniciativas priorizar?</h3>
+        </div>
+      </div>
+    </section>
+  </div>
 
-<section class="sec" style="--g1:#e9c97f;--g2:#8fe3cf;--g3:#7fd3e8">
-<div class="sec-h">
-<p class="eyebrow gt rv">Diferenciais Técnicos</p>
-<h2 class="gt rv">Por que essa arquitetura é segura e confiável</h2>
-<div class="sec-rule"></div>
-</div>
-<div class="grid2">
-<div class="surf tint card rv" style="--c:#9cc9ff">
-<h3>Privacidade e Soberania de Dados</h3>
-<p style="color:var(--fg-dim);margin-top:8px">A Inteligência Artificial roda 100% localmente (via Ollama). Isso significa que dados sensíveis de mercado, OKRs e informações estratégicas da empresa nunca são enviados para servidores externos ou APIs de terceiros.</p>
-</div>
-<div class="surf tint card rv" style="--c:#8fe3cf">
-<h3>Gestão de Risco e Travas de Segurança</h3>
-<p style="color:var(--fg-dim);margin-top:8px">O sistema possui um checklist de pré-disparo. Se a IA falhar, se a base de dados estiver offline ou se o dado extraído for inconsistente, o processo é bloqueado automaticamente. O erro nunca chega na mesa da diretoria.</p>
-</div>
-<div class="surf tint card rv" style="--c:#c9b8ff">
-<h3>Automação com Rastreabilidade</h3>
-<p style="color:var(--fg-dim);margin-top:8px">Todos os passos dados pelos agentes são logados. Se um briefing executivo for gerado com um dado estranho, é possível rastrear exatamente qual fonte originou a informação e como ela foi processada.</p>
-</div>
-<div class="surf tint card rv" style="--c:#e9c97f">
-<h3>Custo Marginal Zero de IA</h3>
-<p style="color:var(--fg-dim);margin-top:8px">Como o processamento de texto é local, não há custo por token ou por chamada de API. A empresa pode rodar milhares de análises e resumos diários sem aumentar o custo operacional de tecnologia.</p>
-</div>
-</div>
-</section>
+  <!-- ABA 3: ARQUITETURA -->
+  <div class="panel" role="tabpanel" data-panel="arquitetura" hidden>
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><p class="eyebrow gt rv">Arquitetura Proposta</p><h2 class="gt rv">Um sistema de agentes para execução estratégica</h2><p class="lede-s rv">O <strong>Hermes Estratégico</strong> é um ecossistema modular de agentes de IA e automação, desenhado para apoiar, e não substituir, a liderança estratégica.</p><div class="sec-rule"></div></div>
+      
+      <div class="surf card rv" style="text-align:center; padding:32px 20px; margin-bottom:24px;">
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--fg-dim)">
+          <span style="padding:6px 12px; background:rgba(255,255,255,.05); border-radius:6px; border:1px solid var(--hair)">Fontes Internas e Externas</span>
+          <span style="color:var(--mint)">↓</span>
+          <span style="padding:6px 12px; background:rgba(255,255,255,.05); border-radius:6px; border:1px solid var(--hair)">Coleta e Organização</span>
+          <span style="color:var(--mint)">↓</span>
+          <span style="padding:6px 12px; background:rgba(255,255,255,.05); border-radius:6px; border:1px solid var(--hair)">Validação e Scoring</span>
+          <span style="color:var(--mint)">↓</span>
+          <span style="padding:6px 12px; background:rgba(143,227,207,.1); border-radius:6px; border:1px solid var(--mint); color:var(--mint); font-weight:600">Agente Analista de IA</span>
+          <span style="color:var(--mint)">↓</span>
+          <span style="padding:6px 12px; background:rgba(255,255,255,.05); border-radius:6px; border:1px solid var(--hair)">Briefings e Alertas</span>
+          <span style="color:var(--mint)">↓</span>
+          <span style="padding:6px 12px; background:rgba(255,255,255,.05); border-radius:6px; border:1px solid var(--hair)">Governança Humana</span>
+        </div>
+      </div>
 
-<div class="cta-band rv">
-<h2 class="grad-text">Vamos construir o motor de Inteligência da sua área?</h2>
-<p>Alexandre, a sua visão estratégica e a experiência de mercado são o mapa. O meu papel é construir o motor técnico, os agentes de IA e a automação que executam esse plano com precisão e velocidade. Estou à disposição para apoiar a Livelo como um braço de engenharia de IA.</p>
-<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20a%20arquitetura%20de%20agentes%20para%20Planejamento%20Estrat%C3%A9gico." target="_blank" rel="noopener">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-Chamar no WhatsApp
-</a>
-<p style="margin-top:24px;font-size:14px;color:var(--fg-dim)">Ou se preferir, fale direto:</p>
-<p style="margin-top:4px;font-size:14px;color:var(--mint);font-family:'JetBrains Mono',monospace">flavioguedesmkt@gmail.com</p>
-<p style="font-size:14px;color:var(--mint);font-family:'JetBrains Mono',monospace">21 99971-9474</p>
+      <div class="grid2" style="margin-top:24px;">
+        <div class="surf tint card rv" style="--c:#9cc9ff"><h4>1. Governança e pré-checagem</h4><p>Valida fontes, dados, IA, acessos e qualidade antes da execução.</p></div>
+        <div class="surf tint card rv" style="--c:#c9b8ff"><h4>2. Gestor de foco estratégico</h4><p>Define se o sistema irá monitorar parceiros, concorrentes, OKRs, riscos ou categorias.</p></div>
+        <div class="surf tint card rv" style="--c:#8fe3cf"><h4>3. Inteligência de mercado</h4><p>Coleta e organiza sinais de mercado, concorrência, regulação e ecossistema.</p></div>
+        <div class="surf tint card rv" style="--c:#e9c97f"><h4>4. Agente Analista de IA</h4><p>Interpreta os dados e produz sínteses, hipóteses e recomendações.</p></div>
+        <div class="surf tint card rv" style="--c:#7fd3e8"><h4>5. Motor de parcerias</h4><p>Identifica, qualifica e prioriza potenciais parceiros.</p></div>
+        <div class="surf tint card rv" style="--c:#c9b8ff"><h4>6. Governança de OKRs</h4><p>Acompanha metas, iniciativas, responsáveis, prazos e desvios.</p></div>
+        <div class="surf tint card rv" style="--c:#8fe3cf"><h4>7. Entrega multicanal</h4><p>Distribui alertas e relatórios nos canais adequados.</p></div>
+        <div class="surf tint card rv" style="--c:#9cc9ff"><h4>8. Observabilidade</h4><p>Permite acompanhar execução, fontes, filas, alertas e rastreabilidade.</p></div>
+      </div>
+    </section>
+  </div>
 
-<div class="link-grid">
-<a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener" class="link-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-LinkedIn
-</a>
-<a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank" class="link-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-Estratégia e Growth IA Agência
-</a>
-<a href="https://flavio-guedes.github.io/portfolio/cases/epq.html" target="_blank" class="link-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-Case Principal (EPQ)
-</a>
-<a href="https://flavio-guedes.github.io/portfolio/agentes.html" target="_blank" class="link-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-Agentes (EPQ Central)
-</a>
-<a href="https://flavio-guedes.github.io/portfolio/estudo-ia-concursos.html" target="_blank" class="link-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-Estudo IA Concursos
-</a>
-</div>
-</div>
+  <!-- ABA 4: CASOS DE USO -->
+  <div class="panel" role="tabpanel" data-panel="casos" hidden>
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><p class="eyebrow gt rv">Casos Prioritários</p><h2 class="gt rv">Aplicações práticas no ecossistema</h2><div class="sec-rule"></div></div>
+      
+      <div class="stack">
+        <div class="surf tint card rv" style="--c:#9cc9ff">
+          <h3 style="color:var(--fg); margin-bottom:12px">1. Radar de expansão de ecossistema</h3>
+          <p style="color:var(--fg-dim); margin-bottom:16px"><strong>Objetivo:</strong> identificar continuamente onde a Livelo pode expandir acúmulo, resgate e relevância.</p>
+          <div class="grid2">
+            <div>
+              <h4>Perguntas estratégicas</h4>
+              <ul class="check" style="--c:#9cc9ff">
+                <li>Quais categorias ainda têm baixa cobertura?</li>
+                <li>Quais players estão ganhando relevância no consumo?</li>
+                <li>Onde estão as maiores oportunidades de frequência e ticket?</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Entregas do Agente</h4>
+              <ul class="check" style="--c:#9cc9ff">
+                <li>Mapa de categorias prioritárias.</li>
+                <li>Lista qualificada de parceiros potenciais.</li>
+                <li>Radar semanal de movimentos do mercado.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-<footer class="foot">
-<span>© Hermes Estratégico · Inteligência de Mercado e IA</span>
-<div class="contact">
-<a href="https://wa.me/5521999719474" target="_blank" rel="noopener">WhatsApp · 21 99971-9474</a>
-<a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
-</div>
-</footer>
+        <div class="surf tint card rv" style="--c:#8fe3cf">
+          <h3 style="color:var(--fg); margin-bottom:12px">2. Funil inteligente de parcerias</h3>
+          <p style="color:var(--fg-dim); margin-bottom:16px"><strong>Objetivo:</strong> reduzir o tempo entre identificar uma oportunidade e preparar uma decisão de parceria.</p>
+          <table>
+            <thead><tr><th>Etapa</th><th>Automação Aplicada</th><th>Entrega</th></tr></thead>
+            <tbody>
+              <tr><td>Descoberta</td><td>Monitoramento de mercado, notícias, categorias e players</td><td>Lista de oportunidades</td></tr>
+              <tr><td>Qualificação</td><td>Scoring por tamanho, relevância, sinergia, canal e risco</td><td>Ranking de prospects</td></tr>
+              <tr><td>Análise de fit</td><td>Cruzamento com ecossistema, público e estratégia</td><td>Tese de parceria</td></tr>
+              <tr><td>Preparação</td><td>Geração de dossiê, resumo executivo e perguntas-chave</td><td>Material pronto para reunião</td></tr>
+              <tr><td>Acompanhamento</td><td>Registro de status, responsáveis e próximos passos</td><td>Pipeline de parcerias</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="surf tint card rv" style="--c:#e9c97f">
+          <h3 style="color:var(--fg); margin-bottom:12px">3. Governança inteligente de OKRs</h3>
+          <p style="color:var(--fg-dim); margin-bottom:16px"><strong>Objetivo:</strong> transformar o acompanhamento de OKRs em um sistema de antecipação, e não apenas de registro.</p>
+          <p style="color:var(--fg-dim); margin-bottom:8px; font-size:14px;">O agente monitora progresso das metas, status das iniciativas, prazos, dependências, riscos e desvios.</p>
+          <div class="code-box">
+<span class="alert">ALERTA ESTRATÉGICO</span>
+<span class="key">Iniciativa:</span> Expansão de parcerias em utilities
+<span class="key">Status:</span> Atenção
+<span class="key">Desvio:</span> 18% abaixo do ritmo necessário
+<span class="key">Causa provável:</span> aprovação comercial pendente
+<span class="key">Impacto:</span> risco para meta trimestral
+<span class="key">Ação sugerida:</span> reunião entre Produtos, Comercial e Jurídico
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ABA 5: DIFERENCIAIS -->
+  <div class="panel" role="tabpanel" data-panel="diferenciais" hidden>
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><p class="eyebrow gt rv">Diferenciais</p><h2 class="gt rv">Automação com controle, segurança e rastreabilidade</h2><p class="lede-s rv">O princípio é claro: a IA não decide sozinha; ela prepara decisões melhores e mais rápidas para a liderança.</p><div class="sec-rule"></div></div>
+      
+      <div class="grid2">
+        <div class="surf tint card rv" style="--c:#9cc9ff">
+          <h3>IA Local (Ollama)</h3>
+          <p style="color:var(--fg-dim); margin-top:8px">Processamento focado na privacidade, reduzindo o envio de informações sensíveis da Livelo a serviços externos ou APIs de terceiros.</p>
+        </div>
+        <div class="surf tint card rv" style="--c:#c9b8ff">
+          <h3>Human-in-the-loop</h3>
+          <p style="color:var(--fg-dim); margin-top:8px">A IA prepara a análise e os briefings; a liderança estratégica valida, decide e direciona os próximos passos.</p>
+        </div>
+        <div class="surf tint card rv" style="--c:#8fe3cf">
+          <h3>Rastreabilidade Total</h3>
+          <p style="color:var(--fg-dim); margin-top:8px">Cada insight gerado pode ser vinculado à sua fonte original, data, critério de análise e etapa de processamento. Nada é caixa-preta.</p>
+        </div>
+        <div class="surf tint card rv" style="--c:#e9c97f">
+          <h3>Resiliência Operacional</h3>
+          <p style="color:var(--fg-dim); margin-top:8px">Travas de segurança impedem que dados inconsistentes ou incompletos sejam processados e entregues aos comitês de decisão.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ABA 6: PLANO DE AÇÃO -->
+  <div class="panel" role="tabpanel" data-panel="plano" hidden>
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><p class="eyebrow gt rv">Plano de 90 Dias</p><h2 class="gt rv">Do piloto à capacidade estratégica</h2><p class="lede-s rv">A meta do primeiro ciclo é entregar um sistema funcional em até 30 dias, com um caso de uso de alto impacto e baixo risco, e expandir para novas frentes após validação.</p><div class="sec-rule"></div></div>
+      
+      <div class="surf card rv">
+        <table>
+          <thead><tr><th>Fase</th><th>Período</th><th>Entregas</th><th>Indicador de Sucesso</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Diagnóstico</strong></td><td>Semanas 1 e 2</td><td>Mapeamento de OKRs, fontes, dores e prioridades</td><td>Caso de uso priorizado</td></tr>
+            <tr><td><strong>Protótipo</strong></td><td>Semanas 3 e 4</td><td>Primeiro agente funcional e fluxo de entrega</td><td>Briefing ou alerta validado</td></tr>
+            <tr><td><strong>Validação</strong></td><td>Semanas 5 e 6</td><td>Teste com dados reais e ajustes de rota</td><td>Qualidade e utilidade percebida</td></tr>
+            <tr><td><strong>Automação</strong></td><td>Semanas 7 e 8</td><td>Rotina recorrente e painel de acompanhamento</td><td>Redução de esforço manual</td></tr>
+            <tr><td><strong>Expansão</strong></td><td>Semanas 9 a 12</td><td>Novos casos de uso e integrações</td><td>Adoção pelas áreas estratégicas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><p class="eyebrow gt rv">Indicadores</p><h2 class="gt rv">Como mediremos o valor gerado</h2><div class="sec-rule"></div></div>
+      <div class="surf card rv">
+        <table>
+          <thead><tr><th>Indicador</th><th>Antes</th><th>Meta Inicial</th></tr></thead>
+          <tbody>
+            <tr><td>Tempo para consolidar radar de mercado</td><td>Dias</td><td>Horas</td></tr>
+            <tr><td>Tempo para preparar briefing executivo</td><td>Dias</td><td>Horas</td></tr>
+            <tr><td>Oportunidades de parceria mapeadas</td><td>Pontual</td><td>Contínuo</td></tr>
+            <tr><td>Antecipação de riscos e desvios de OKR</td><td>Reativa</td><td>Preditiva</td></tr>
+            <tr><td>Tempo do time em tarefas operacionais</td><td>Alto</td><td>Reduzido</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="cta-band rv" style="margin-top:48px">
+      <h2 class="grad-text">Um braço de IA para o Planejamento Estratégico</h2>
+      <p>Alexandre, a Livelo já tem escala, ecossistema e visão. A minha proposta é agregar a camada de inteligência artificial e automação que transforma essa escala em execução mais rápida: radar de mercado, funil de parcerias, monitoramento de OKRs e briefings prontos para decisão.</p>
+      <p style="margin-bottom:24px">Posso atuar como um braço técnico do seu time, construindo o motor que executa a sua visão com velocidade, precisão e escala.</p>
+      
+      <a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20a%20arquitetura%20de%20agentes%20para%20Planejamento%20Estrat%C3%A9gico." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Agendar reunião de alinhamento
+      </a>
+      
+      <p style="margin-top:24px;font-size:14px;color:var(--fg-dim)">Ou se preferir, fale direto:</p>
+      <p style="margin-top:4px;font-size:14px;color:var(--mint);font-family:'JetBrains Mono',monospace">flavioguedesmkt@gmail.com</p>
+      <p style="font-size:14px;color:var(--mint);font-family:'JetBrains Mono',monospace">21 99971-9474</p>
+
+      <div class="link-grid">
+        <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener" class="link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank" class="link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Estratégia e Growth IA Agência
+        </a>
+        <a href="https://flavio-guedes.github.io/portfolio/cases/epq.html" target="_blank" class="link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Case Principal (EPQ)
+        </a>
+        <a href="https://flavio-guedes.github.io/portfolio/agentes.html" target="_blank" class="link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          Agentes (EPQ Central)
+        </a>
+        <a href="https://flavio-guedes.github.io/portfolio/estudo-ia-concursos.html" target="_blank" class="link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Estudo IA Concursos
+        </a>
+      </div>
+    </div>
+  </div>
+
 </main>
+
+<footer class="foot wrap">
+  <span>© Hermes Estratégico · Livelo</span>
+  <div class="contact">
+    <a href="https://wa.me/5521999719474" target="_blank" rel="noopener">WhatsApp · 21 99971-9474</a>
+    <a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+  </div>
+</footer>
 
 <script>
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Animação de revelação
   var items = document.querySelectorAll('.rv');
   function reveal(el){ el.classList.add('in'); }
-  if (reduce || !('IntersectionObserver' in window)) { items.forEach(reveal); }
-  else {
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(reveal);
+  } else {
     var io = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(en){ if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); } });
-    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+      entries.forEach(function(en){
+        if (en.isIntersecting) { reveal(en.target); obs.unobserve(en.target); }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -4% 0px' });
     items.forEach(function(el){ io.observe(el); });
   }
+
+  // Controle das Abas
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+  
+  function show(name){
+    tabs.forEach(function(t){
+      var on = t.getAttribute('data-tab') === name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach(function(p){
+      var on = p.getAttribute('data-panel') === name;
+      p.hidden = !on;
+      p.classList.toggle('on', on);
+      if(on) {
+        p.querySelectorAll('.rv').forEach(reveal);
+      }
+    });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(t.getAttribute('data-tab')); });
+    t.addEventListener('keydown', function(e){
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        var n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        tabs[n].focus();
+        show(tabs[n].getAttribute('data-tab'));
+      }
+    });
+  });
+  
+  show('visao');
 })();
 </script>
 </body>

@@ -80,6 +80,11 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
 .foot .contact{display:flex;gap:20px;flex-wrap:wrap}
 @media(max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px;gap:10px}.top-cta span{display:none}.top-cta{padding:10px 12px}.brand i{display:none}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}.lang-pill{padding:6px 8px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.ml{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:5px;font-size:12.8px;color:var(--fg-dim);line-height:1.55}
+.ml li{padding-left:14px;position:relative}
+.ml li::before{content:"▸";position:absolute;left:0;color:var(--c,var(--mint));opacity:.85;font-size:11px;top:2px}
+.sub-h{font:600 12px "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-faint);margin:32px 0 14px;padding-top:8px;border-top:1px solid var(--hair)}
 </style>
 </head>
 <body>
@@ -186,27 +191,100 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
 <section class="sec" aria-labelledby="exemplo">
 <div class="sec-h">
 <p class="eyebrow" data-i18n="exEyebrow">Exemplo de treinamento</p>
-<h2 id="exemplo" data-i18n="exTitle">Copilot e GenAI para times de negócio</h2>
-<p class="lede-s" data-i18n="exLede">Um workshop real de 2 dias (16h) para 20 pessoas de operações, vendas e RH. Foco em produtividade com Copilot no M365, prompting avançado e governança de IA, com laboratórios guiados em casos reais da empresa.</p>
+<h2 id="exemplo" data-i18n="exTitle">Copilot + ChatGPT para times de negócio</h2>
+<p class="lede-s" data-i18n="exLede">Workshop imersivo de 2 dias (16h) para até 24 pessoas. Combina fundamentos de GenAI, prompting avançado, Copilot no Microsoft 365 (Word, Excel, PowerPoint, Outlook, Teams, Loop), Copilot Studio, automações e governança. Cada módulo tem laboratório guiado com casos reais da empresa, e cada área sai com plano de adoção próprio.</p>
 <div class="sec-rule" style="--g1:#8fe3cf;--g2:#c9b8ff"></div>
 </div>
-<div class="stats" style="margin-top:0;margin-bottom:20px">
-<div class="stat" style="--c:#8fe3cf;--c2:#7fd3e8"><b data-i18n="exStat1Val">2 dias</b><span data-i18n="exStat1Label">16h de workshop</span></div>
-<div class="stat" style="--c:#9cc9ff;--c2:#c9b8ff"><b data-i18n="exStat2Val">20 pessoas</b><span data-i18n="exStat2Label">times de negócio</span></div>
-<div class="stat" style="--c:#c9b8ff;--c2:#9cc9ff"><b data-i18n="exStat3Val">Presencial</b><span data-i18n="exStat3Label">ou remoto</span></div>
-<div class="stat" style="--c:#e9c97f;--c2:#f0a1a1"><b data-i18n="exStat4Val">PT ou EN</b><span data-i18n="exStat4Label">bilíngue</span></div>
+<div class="stats" style="margin-top:0;margin-bottom:8px">
+<div class="stat" style="--c:#8fe3cf;--c2:#7fd3e8"><b data-i18n="exStat1Val">2 dias</b><span data-i18n="exStat1Label">16h imersivas</span></div>
+<div class="stat" style="--c:#9cc9ff;--c2:#c9b8ff"><b data-i18n="exStat2Val">24 pessoas</b><span data-i18n="exStat2Label">máx por turma</span></div>
+<div class="stat" style="--c:#c9b8ff;--c2:#9cc9ff"><b data-i18n="exStat3Val">4 módulos</b><span data-i18n="exStat3Label">com labs guiados</span></div>
+<div class="stat" style="--c:#e9c97f;--c2:#f0a1a1"><b data-i18n="exStat4Val">PT/EN</b><span data-i18n="exStat4Label">bilíngue</span></div>
 </div>
+
+<h3 class="sub-h" data-i18n="exModsTitle">Módulos em detalhe</h3>
 <ol class="steps">
-<li style="--c:#9cc9ff"><span class="num">D1 AM</span><div class="txt"><strong data-i18n="exD1Title">Fundamentos e prompting</strong><span data-i18n="exD1Body">GenAI, LLMs, limites e riscos. Frameworks de prompting (role, contexto, formato, restrições) com ChatGPT e Claude, exercícios com casos reais do time.</span></div></li>
-<li style="--c:#8fe3cf"><span class="num">D1 PM</span><div class="txt"><strong data-i18n="exD2Title">Copilot no M365</strong><span data-i18n="exD2Body">Word, Excel, Teams e Outlook. Demos e laboratórios guiados em cada ferramenta, com foco em produtividade e redução de tarefas repetitivas.</span></div></li>
-<li style="--c:#c9b8ff"><span class="num">D2 AM</span><div class="txt"><strong data-i18n="exD3Title">Cases e automações</strong><span data-i18n="exD3Body">Brainstorming de casos de uso por área, priorização por impacto e esforço. Introdução a Power Automate, Zapier e Make, com um fluxo real construído em grupo.</span></div></li>
-<li style="--c:#e9c97f"><span class="num">D2 PM</span><div class="txt"><strong data-i18n="exD4Title">Governança e plano de adoção</strong><span data-i18n="exD4Body">Ética, segurança, LGPD e uso responsável. Cada área sai com um plano de adoção em 30 dias, playbook de prompts e KPIs definidos.</span></div></li>
+<li style="--c:#9cc9ff"><span class="num">M1 · 4h</span><div class="txt"><strong data-i18n="exMod1Title">ChatGPT e prompting avançado</strong><span data-i18n="exMod1Body">Modelos (GPT-4o, o1, mini) e quando usar cada um. Anatomia do prompt: papel, contexto, tarefa, formato, restrições e exemplos. Técnicas: zero-shot, few-shot, chain-of-thought, ReAct, self-consistency e least-to-most. Saída estruturada em JSON, tabelas e tags XML. Recursos: Custom GPTs, Projects, Memory, Canvas, Data Analysis e Deep Research. Limitações: alucinação, viés, corte de conhecimento e injeção de prompt. Comparativo com Claude e Gemini.</span></div></li>
+<li style="--c:#8fe3cf"><span class="num">M2 · 6h</span><div class="txt"><strong data-i18n="exMod2Title">Copilot no Microsoft 365</strong><span data-i18n="exMod2Body">Copilot Chat vs Copilot in-app, grounding em Microsoft Graph vs web. Word: redação, resumo, reescrita por tom, referências. Excel: fórmulas, tabelas dinâmicas, análise de dados, Python e Copilot em colunas. PowerPoint: slides a partir de documento, notas do apresentador, design e tradução. Outlook: resumo de thread, coaching de escrita, agendamento. Teams: recap de reunião, action items, legendas ao vivo, tradução e Copilot na reunião. Loop: co-criação. SharePoint: busca semântica. Boas práticas de prompts com referência a arquivos.</span></div></li>
+<li style="--c:#c9b8ff"><span class="num">M3 · 3h</span><div class="txt"><strong data-i18n="exMod3Title">Copilot Studio e automações</strong><span data-i18n="exMod3Body">Diferença entre Copilot for M365, Copilot Studio e Azure AI Foundry. Anatomia de um agente: tópicos, entidades, variáveis e mensagens. Generative answers vs respostas determinísticas. Conectores (SharePoint, Dataverse, APIs REST). Publicação em Teams, web e WhatsApp. Power Automate com Copilot, Zapier, Make e n8n. Permissões, DLP e autenticação de usuário final.</span></div></li>
+<li style="--c:#e9c97f"><span class="num">M4 · 3h</span><div class="txt"><strong data-i18n="exMod4Title">Governança, segurança e adoção</strong><span data-i18n="exMod4Body">Microsoft Purview, sensitivity labels, DLP, retenção e eDiscovery. Oversharing em SharePoint e herança de permissões. LGPD/GDPR, residência de dados e data controls da OpenAI. Shadow AI, injeção de prompt e exfiltração de dados. Viva Insights e Copilot Dashboard para métricas de adoção. Champion program, playbook de prompts e roadmap 30/60/90.</span></div></li>
 </ol>
-<div class="grid3" style="margin-top:20px">
-<div class="surf tint front" style="--c:#8fe3cf"><h3 data-i18n="exDv1Title">Material e prompts</h3><p data-i18n="exDv1Body">Slides, caderno de exercícios e biblioteca de prompts por área.</p><span class="tag" data-i18n="exDv1Tag" style="--c:#8fe3cf">Kit</span></div>
-<div class="surf tint front" style="--c:#9cc9ff"><h3 data-i18n="exDv2Title">Laboratórios guiados</h3><p data-i18n="exDv2Body">Exercícios hands-on com Copilot, ChatGPT e Google Gemini em casos reais.</p><span class="tag" data-i18n="exDv2Tag" style="--c:#9cc9ff">Prática</span></div>
-<div class="surf tint front" style="--c:#c9b8ff"><h3 data-i18n="exDv3Title">Plano de adoção</h3><p data-i18n="exDv3Body">Cada área sai com roadmap de 30 dias, KPIs e dono do caso de uso.</p><span class="tag" data-i18n="exDv3Tag" style="--c:#c9b8ff">Roadmap</span></div>
-<div class="surf tint front" style="--c:#e9c97f"><h3 data-i18n="exDv4Title">Follow-up</h3><p data-i18n="exDv4Body">Sessão de acompanhamento em 30 dias, certificado e FAQ atualizado.</p><span class="tag" data-i18n="exDv4Tag" style="--c:#e9c97f">Pós</span></div>
+
+<h3 class="sub-h" data-i18n="exFocusTitle">Áreas de foco em detalhe</h3>
+<div class="grid2">
+<div class="surf tint card" style="--c:#9cc9ff">
+<h3 data-i18n="exFocus1Title">ChatGPT em profundidade</h3>
+<ul class="ml" style="--c:#9cc9ff">
+<li data-i18n="exF1L1">Modelos, custo, latência e raciocínio: quando usar o1 vs 4o vs mini</li>
+<li data-i18n="exF1L2">Frameworks de prompt: CRISPE, RTF, CO-STAR e few-shot com exemplos</li>
+<li data-i18n="exF1L3">Custom GPTs, Projects e Memory para reuso por área</li>
+<li data-i18n="exF1L4">Data Analysis, Canvas e Deep Research para análises longas</li>
+<li data-i18n="exF1L5">Anti-padrões: prompt vago, contexto insuficiente, confiar sem verificar</li>
+</ul>
+<span class="tag" data-i18n="exFocus1Tag" style="--c:#9cc9ff">IA Generativa</span>
+</div>
+<div class="surf tint card" style="--c:#8fe3cf">
+<h3 data-i18n="exFocus2Title">Copilot no M365</h3>
+<ul class="ml" style="--c:#8fe3cf">
+<li data-i18n="exF2L1">Word: redação assistida, resumo de doc longo, reescrita por tom</li>
+<li data-i18n="exF2L2">Excel: fórmulas, tabela dinâmica, análise e Python no Copilot</li>
+<li data-i18n="exF2L3">PowerPoint: doc → deck, notas, design, tradução e narração</li>
+<li data-i18n="exF2L4">Outlook e Teams: resumo de thread, recap, action items, legendas</li>
+<li data-i18n="exF2L5">Boas práticas: prompt com referência a arquivo, escopo e formato</li>
+</ul>
+<span class="tag" data-i18n="exFocus2Tag" style="--c:#8fe3cf">Produtividade</span>
+</div>
+<div class="surf tint card" style="--c:#c9b8ff">
+<h3 data-i18n="exFocus3Title">Copilot Studio</h3>
+<ul class="ml" style="--c:#c9b8ff">
+<li data-i18n="exF3L1">Anatomia do agente: tópicos, entidades, variáveis, mensagens</li>
+<li data-i18n="exF3L2">Generative answers vs respostas determinísticas e quando escolher</li>
+<li data-i18n="exF3L3">Conectores: SharePoint, Dataverse, Power Platform, APIs REST</li>
+<li data-i18n="exF3L4">Publicação: Teams, web, WhatsApp via Azure e canais custom</li>
+<li data-i18n="exF3L5">Segurança: permissões, DLP, autenticação e auditoria</li>
+</ul>
+<span class="tag" data-i18n="exFocus3Tag" style="--c:#c9b8ff">Agentes</span>
+</div>
+<div class="surf tint card" style="--c:#e9c97f">
+<h3 data-i18n="exFocus4Title">Governança e adoção</h3>
+<ul class="ml" style="--c:#e9c97f">
+<li data-i18n="exF4L1">Purview, sensitivity labels, DLP, retenção e eDiscovery</li>
+<li data-i18n="exF4L2">LGPD/GDPR, data residency e data controls da OpenAI</li>
+<li data-i18n="exF4L3">Shadow AI, injeção de prompt e exfiltração de dados</li>
+<li data-i18n="exF4L4">Viva Insights e Copilot Dashboard: medir adoção com KPI</li>
+<li data-i18n="exF4L5">Champion program, playbook e roadmap 30/60/90</li>
+</ul>
+<span class="tag" data-i18n="exFocus4Tag" style="--c:#e9c97f">Risco e ROI</span>
+</div>
+</div>
+
+<h3 class="sub-h" data-i18n="exLabTitle">Laboratórios guiados</h3>
+<div class="grid2">
+<div class="surf card" style="--c:#9cc9ff"><h3 data-i18n="exLab1Title">Lab 1 · Reescrita executiva</h3><p data-i18n="exLab1Body">Reescrever um e-mail executivo em 3 versões (direto, diplomático, executivo curto) usando ChatGPT com role prompting e formatação em bullets. Comparar com Copilot no Outlook.</p></div>
+<div class="surf card" style="--c:#8fe3cf"><h3 data-i18n="exLab2Title">Lab 2 · Análise de planilha</h3><p data-i18n="exLab2Body">A partir de uma planilha de vendas, gerar com Copilot no Excel: fórmulas de variação, tabela dinâmica, top 5 insights e um resumo executivo em 10 linhas.</p></div>
+<div class="surf card" style="--c:#c9b8ff"><h3 data-i18n="exLab3Title">Lab 3 · Documento em deck</h3><p data-i18n="exLab3Body">Transformar um documento de estratégia em apresentação de 10 slides com Copilot no PowerPoint, ajustar tom, adicionar notas do apresentador e traduzir para inglês.</p></div>
+<div class="surf card" style="--c:#e9c97f"><h3 data-i18n="exLab4Title">Lab 4 · Agente de FAQ</h3><p data-i18n="exLab4Body">Construir um agente de FAQ de RH no Copilot Studio, conectar a uma base SharePoint e publicar no Teams. Testar 5 perguntas reais e ajustar respostas generativas.</p></div>
+<div class="surf card" style="--c:#f0a1a1"><h3 data-i18n="exLab5Title">Lab 5 · Política de uso</h3><p data-i18n="exLab5Body">Em grupos, montar matriz de riscos (dados sensíveis, prompt injection, shadow AI) e rascunhar política de uso responsável com 8 regras e fluxo de aprovação.</p></div>
+</div>
+
+<h3 class="sub-h" data-i18n="exPromptsTitle">Biblioteca de prompts por função</h3>
+<table class="mini-table">
+<thead><tr><th data-i18n="exPromptRoleH">Função</th><th data-i18n="exPromptH">Prompt de exemplo</th></tr></thead>
+<tbody>
+<tr><td data-i18n="exPrompt1Role">Vendas</td><td data-i18n="exPrompt1">Atue como pré-vendas sênior. Com base neste briefing do cliente [colar], gere 5 perguntas de descoberta, 3 objeções prováveis com respostas e um e-mail de follow-up em 120 palavras.</td></tr>
+<tr><td data-i18n="exPrompt2Role">RH</td><td data-i18n="exPrompt2">Atue como recrutador sênior. Analise este CV [colar] contra esta descrição de vaga [colar]. Devolva aderência por requisito em tabela, 3 pontos fortes, 3 gaps e 5 perguntas de entrevista por competência.</td></tr>
+<tr><td data-i18n="exPrompt3Role">Operações</td><td data-i18n="exPrompt3">Atue como analista de processos. A partir desta transcrição de reunião [colar], gere ata executiva, decisões, action items com dono e prazo, e riscos em tabela.</td></tr>
+<tr><td data-i18n="exPrompt4Role">Marketing</td><td data-i18n="exPrompt4">Atue como estrategista de conteúdo. A partir deste briefing [colar], gere 3 personas com dores e desejos, 5 headlines, 3 variações de copy por canal e um calendário editorial de 30 dias.</td></tr>
+<tr><td data-i18n="exPrompt5Role">Financeiro</td><td data-i18n="exPrompt5">Atue como controller. A partir desta planilha [anexar], explique a variação mês a mês por conta, destaque desvios acima de 10%, sugira 3 hipóteses de causa e um resumo executivo de 1 página.</td></tr>
+</tbody>
+</table>
+
+<h3 class="sub-h" data-i18n="exDelivTitle">Entregáveis</h3>
+<div class="grid3">
+<div class="surf tint front" style="--c:#8fe3cf"><h3 data-i18n="exDv1Title">Kit de material</h3><p data-i18n="exDv1Body">Slides, caderno de exercícios, biblioteca de prompts por área e gravações das sessões.</p><span class="tag" data-i18n="exDv1Tag" style="--c:#8fe3cf">Kit</span></div>
+<div class="surf tint front" style="--c:#9cc9ff"><h3 data-i18n="exDv2Title">Laboratórios hands-on</h3><p data-i18n="exDv2Body">5 labs guiados, com dados sintéticos e exercícios aplicados ao contexto da empresa.</p><span class="tag" data-i18n="exDv2Tag" style="--c:#9cc9ff">Prática</span></div>
+<div class="surf tint front" style="--c:#c9b8ff"><h3 data-i18n="exDv3Title">Plano de adoção</h3><p data-i18n="exDv3Body">Roadmap 30/60/90 por área, KPIs, dono do caso de uso e política de uso responsável.</p><span class="tag" data-i18n="exDv3Tag" style="--c:#c9b8ff">Roadmap</span></div>
+<div class="surf tint front" style="--c:#e9c97f"><h3 data-i18n="exDv4Title">Follow-up e certificado</h3><p data-i18n="exDv4Body">Sessão de acompanhamento em 30 dias, certificado de conclusão e FAQ atualizado.</p><span class="tag" data-i18n="exDv4Tag" style="--c:#e9c97f">Pós</span></div>
 </div>
 </section>
 
@@ -298,20 +376,61 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
       met3Title:'Integração', met3Body:'Plugin/API conectado ao fluxo real (reunião, evento ou atendimento).',
       met4Title:'Go-live + Handover', met4Body:'Playbook, treinamento e KPIs para a equipe operar com autonomia.',
       exEyebrow:'Exemplo de treinamento',
-      exTitle:'Copilot e GenAI para times de negócio',
-      exLede:'Um workshop real de 2 dias (16h) para 20 pessoas de operações, vendas e RH. Foco em produtividade com Copilot no M365, prompting avançado e governança de IA, com laboratórios guiados em casos reais da empresa.',
-      exStat1Val:'2 dias', exStat1Label:'16h de workshop',
-      exStat2Val:'20 pessoas', exStat2Label:'times de negócio',
-      exStat3Val:'Presencial', exStat3Label:'ou remoto',
-      exStat4Val:'PT ou EN', exStat4Label:'bilíngue',
-      exD1Title:'Fundamentos e prompting', exD1Body:'GenAI, LLMs, limites e riscos. Frameworks de prompting (role, contexto, formato, restrições) com ChatGPT e Claude, exercícios com casos reais do time.',
-      exD2Title:'Copilot no M365', exD2Body:'Word, Excel, Teams e Outlook. Demos e laboratórios guiados em cada ferramenta, com foco em produtividade e redução de tarefas repetitivas.',
-      exD3Title:'Cases e automações', exD3Body:'Brainstorming de casos de uso por área, priorização por impacto e esforço. Introdução a Power Automate, Zapier e Make, com um fluxo real construído em grupo.',
-      exD4Title:'Governança e plano de adoção', exD4Body:'Ética, segurança, LGPD e uso responsável. Cada área sai com um plano de adoção em 30 dias, playbook de prompts e KPIs definidos.',
-      exDv1Title:'Material e prompts', exDv1Body:'Slides, caderno de exercícios e biblioteca de prompts por área.', exDv1Tag:'Kit',
-      exDv2Title:'Laboratórios guiados', exDv2Body:'Exercícios hands-on com Copilot, ChatGPT e Google Gemini em casos reais.', exDv2Tag:'Prática',
-      exDv3Title:'Plano de adoção', exDv3Body:'Cada área sai com roadmap de 30 dias, KPIs e dono do caso de uso.', exDv3Tag:'Roadmap',
-      exDv4Title:'Follow-up', exDv4Body:'Sessão de acompanhamento em 30 dias, certificado e FAQ atualizado.', exDv4Tag:'Pós',
+      exTitle:'Copilot + ChatGPT para times de negócio',
+      exLede:'Workshop imersivo de 2 dias (16h) para até 24 pessoas. Combina fundamentos de GenAI, prompting avançado, Copilot no Microsoft 365 (Word, Excel, PowerPoint, Outlook, Teams, Loop), Copilot Studio, automações e governança. Cada módulo tem laboratório guiado com casos reais da empresa, e cada área sai com plano de adoção próprio.',
+      exStat1Val:'2 dias', exStat1Label:'16h imersivas',
+      exStat2Val:'24 pessoas', exStat2Label:'máx por turma',
+      exStat3Val:'4 módulos', exStat3Label:'com labs guiados',
+      exStat4Val:'PT/EN', exStat4Label:'bilíngue',
+      exModsTitle:'Módulos em detalhe',
+      exMod1Title:'ChatGPT e prompting avançado', exMod1Body:'Modelos (GPT-4o, o1, mini) e quando usar cada um. Anatomia do prompt: papel, contexto, tarefa, formato, restrições e exemplos. Técnicas: zero-shot, few-shot, chain-of-thought, ReAct, self-consistency e least-to-most. Saída estruturada em JSON, tabelas e tags XML. Recursos: Custom GPTs, Projects, Memory, Canvas, Data Analysis e Deep Research. Limitações: alucinação, viés, corte de conhecimento e injeção de prompt. Comparativo com Claude e Gemini.',
+      exMod2Title:'Copilot no Microsoft 365', exMod2Body:'Copilot Chat vs Copilot in-app, grounding em Microsoft Graph vs web. Word: redação, resumo, reescrita por tom, referências. Excel: fórmulas, tabelas dinâmicas, análise de dados, Python e Copilot em colunas. PowerPoint: slides a partir de documento, notas do apresentador, design e tradução. Outlook: resumo de thread, coaching de escrita, agendamento. Teams: recap de reunião, action items, legendas ao vivo, tradução e Copilot na reunião. Loop: co-criação. SharePoint: busca semântica. Boas práticas de prompts com referência a arquivos.',
+      exMod3Title:'Copilot Studio e automações', exMod3Body:'Diferença entre Copilot for M365, Copilot Studio e Azure AI Foundry. Anatomia de um agente: tópicos, entidades, variáveis e mensagens. Generative answers vs respostas determinísticas. Conectores (SharePoint, Dataverse, APIs REST). Publicação em Teams, web e WhatsApp. Power Automate com Copilot, Zapier, Make e n8n. Permissões, DLP e autenticação de usuário final.',
+      exMod4Title:'Governança, segurança e adoção', exMod4Body:'Microsoft Purview, sensitivity labels, DLP, retenção e eDiscovery. Oversharing em SharePoint e herança de permissões. LGPD/GDPR, residência de dados e data controls da OpenAI. Shadow AI, injeção de prompt e exfiltração de dados. Viva Insights e Copilot Dashboard para métricas de adoção. Champion program, playbook de prompts e roadmap 30/60/90.',
+      exFocusTitle:'Áreas de foco em detalhe',
+      exFocus1Title:'ChatGPT em profundidade', exFocus1Tag:'IA Generativa',
+      exF1L1:'Modelos, custo, latência e raciocínio: quando usar o1 vs 4o vs mini',
+      exF1L2:'Frameworks de prompt: CRISPE, RTF, CO-STAR e few-shot com exemplos',
+      exF1L3:'Custom GPTs, Projects e Memory para reuso por área',
+      exF1L4:'Data Analysis, Canvas e Deep Research para análises longas',
+      exF1L5:'Anti-padrões: prompt vago, contexto insuficiente, confiar sem verificar',
+      exFocus2Title:'Copilot no M365', exFocus2Tag:'Produtividade',
+      exF2L1:'Word: redação assistida, resumo de doc longo, reescrita por tom',
+      exF2L2:'Excel: fórmulas, tabela dinâmica, análise e Python no Copilot',
+      exF2L3:'PowerPoint: doc para deck, notas, design, tradução e narração',
+      exF2L4:'Outlook e Teams: resumo de thread, recap, action items, legendas',
+      exF2L5:'Boas práticas: prompt com referência a arquivo, escopo e formato',
+      exFocus3Title:'Copilot Studio', exFocus3Tag:'Agentes',
+      exF3L1:'Anatomia do agente: tópicos, entidades, variáveis, mensagens',
+      exF3L2:'Generative answers vs respostas determinísticas e quando escolher',
+      exF3L3:'Conectores: SharePoint, Dataverse, Power Platform, APIs REST',
+      exF3L4:'Publicação: Teams, web, WhatsApp via Azure e canais custom',
+      exF3L5:'Segurança: permissões, DLP, autenticação e auditoria',
+      exFocus4Title:'Governança e adoção', exFocus4Tag:'Risco e ROI',
+      exF4L1:'Purview, sensitivity labels, DLP, retenção e eDiscovery',
+      exF4L2:'LGPD/GDPR, data residency e data controls da OpenAI',
+      exF4L3:'Shadow AI, injeção de prompt e exfiltração de dados',
+      exF4L4:'Viva Insights e Copilot Dashboard: medir adoção com KPI',
+      exF4L5:'Champion program, playbook e roadmap 30/60/90',
+      exLabTitle:'Laboratórios guiados',
+      exLab1Title:'Lab 1 · Reescrita executiva', exLab1Body:'Reescrever um e-mail executivo em 3 versões (direto, diplomático, executivo curto) usando ChatGPT com role prompting e formatação em bullets. Comparar com Copilot no Outlook.',
+      exLab2Title:'Lab 2 · Análise de planilha', exLab2Body:'A partir de uma planilha de vendas, gerar com Copilot no Excel: fórmulas de variação, tabela dinâmica, top 5 insights e um resumo executivo em 10 linhas.',
+      exLab3Title:'Lab 3 · Documento em deck', exLab3Body:'Transformar um documento de estratégia em apresentação de 10 slides com Copilot no PowerPoint, ajustar tom, adicionar notas do apresentador e traduzir para inglês.',
+      exLab4Title:'Lab 4 · Agente de FAQ', exLab4Body:'Construir um agente de FAQ de RH no Copilot Studio, conectar a uma base SharePoint e publicar no Teams. Testar 5 perguntas reais e ajustar respostas generativas.',
+      exLab5Title:'Lab 5 · Política de uso', exLab5Body:'Em grupos, montar matriz de riscos (dados sensíveis, prompt injection, shadow AI) e rascunhar política de uso responsável com 8 regras e fluxo de aprovação.',
+      exPromptsTitle:'Biblioteca de prompts por função',
+      exPromptRoleH:'Função', exPromptH:'Prompt de exemplo',
+      exPrompt1Role:'Vendas', exPrompt1:'Atue como pré-vendas sênior. Com base neste briefing do cliente [colar], gere 5 perguntas de descoberta, 3 objeções prováveis com respostas e um e-mail de follow-up em 120 palavras.',
+      exPrompt2Role:'RH', exPrompt2:'Atue como recrutador sênior. Analise este CV [colar] contra esta descrição de vaga [colar]. Devolva aderência por requisito em tabela, 3 pontos fortes, 3 gaps e 5 perguntas de entrevista por competência.',
+      exPrompt3Role:'Operações', exPrompt3:'Atue como analista de processos. A partir desta transcrição de reunião [colar], gere ata executiva, decisões, action items com dono e prazo, e riscos em tabela.',
+      exPrompt4Role:'Marketing', exPrompt4:'Atue como estrategista de conteúdo. A partir deste briefing [colar], gere 3 personas com dores e desejos, 5 headlines, 3 variações de copy por canal e um calendário editorial de 30 dias.',
+      exPrompt5Role:'Financeiro', exPrompt5:'Atue como controller. A partir desta planilha [anexar], explique a variação mês a mês por conta, destaque desvios acima de 10%, sugira 3 hipóteses de causa e um resumo executivo de 1 página.',
+      exDelivTitle:'Entregáveis',
+      exDv1Title:'Kit de material', exDv1Body:'Slides, caderno de exercícios, biblioteca de prompts por área e gravações das sessões.', exDv1Tag:'Kit',
+      exDv2Title:'Laboratórios hands-on', exDv2Body:'5 labs guiados, com dados sintéticos e exercícios aplicados ao contexto da empresa.', exDv2Tag:'Prática',
+      exDv3Title:'Plano de adoção', exDv3Body:'Roadmap 30/60/90 por área, KPIs, dono do caso de uso e política de uso responsável.', exDv3Tag:'Roadmap',
+      exDv4Title:'Follow-up e certificado', exDv4Body:'Sessão de acompanhamento em 30 dias, certificado de conclusão e FAQ atualizado.', exDv4Tag:'Pós',
+
 
       difEyebrow:'Diferenciais', difTitle:'Por que comigo',
       dif1:'<strong>Visão ponta a ponta:</strong> não entrego só o plugin, entrego o fluxo (entrada → tradução → saída → dado).',
@@ -362,20 +481,61 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
       met3Title:'Integration', met3Body:'Plugin/API connected to the real flow (meeting, event or support).',
       met4Title:'Go-live + Handover', met4Body:'Playbook, training and KPIs so the team operates with autonomy.',
       exEyebrow:'Training example',
-      exTitle:'Copilot and GenAI for business teams',
-      exLede:'A real 2-day workshop (16h) for 20 people from operations, sales and HR. Focus on productivity with Copilot in M365, advanced prompting and AI governance, with guided labs on real company cases.',
-      exStat1Val:'2 days', exStat1Label:'16h workshop',
-      exStat2Val:'20 people', exStat2Label:'business teams',
-      exStat3Val:'On-site', exStat3Label:'or remote',
-      exStat4Val:'PT or EN', exStat4Label:'bilingual',
-      exD1Title:'Fundamentals and prompting', exD1Body:'GenAI, LLMs, limits and risks. Prompting frameworks (role, context, format, constraints) with ChatGPT and Claude, exercises with real team cases.',
-      exD2Title:'Copilot in M365', exD2Body:'Word, Excel, Teams and Outlook. Demos and guided labs in each tool, focused on productivity and reducing repetitive tasks.',
-      exD3Title:'Use cases and automations', exD3Body:'Brainstorming use cases by area, prioritization by impact and effort. Intro to Power Automate, Zapier and Make, with a real flow built in group.',
-      exD4Title:'Governance and adoption plan', exD4Body:'Ethics, security, GDPR and responsible use. Each area leaves with a 30-day adoption plan, prompt playbook and defined KPIs.',
-      exDv1Title:'Material and prompts', exDv1Body:'Slides, exercise workbook and prompt library by area.', exDv1Tag:'Kit',
-      exDv2Title:'Guided labs', exDv2Body:'Hands-on exercises with Copilot, ChatGPT and Google Gemini on real cases.', exDv2Tag:'Practice',
-      exDv3Title:'Adoption plan', exDv3Body:'Each area leaves with a 30-day roadmap, KPIs and use case owner.', exDv3Tag:'Roadmap',
-      exDv4Title:'Follow-up', exDv4Body:'30-day follow-up session, certificate and updated FAQ.', exDv4Tag:'Post',
+      exTitle:'Copilot + ChatGPT for business teams',
+      exLede:'Immersive 2-day workshop (16h) for up to 24 people. Combines GenAI fundamentals, advanced prompting, Copilot in Microsoft 365 (Word, Excel, PowerPoint, Outlook, Teams, Loop), Copilot Studio, automations and governance. Each module includes a guided lab with real company cases, and each area leaves with its own adoption plan.',
+      exStat1Val:'2 days', exStat1Label:'16h immersive',
+      exStat2Val:'24 people', exStat2Label:'max per class',
+      exStat3Val:'4 modules', exStat3Label:'with guided labs',
+      exStat4Val:'PT/EN', exStat4Label:'bilingual',
+      exModsTitle:'Modules in detail',
+      exMod1Title:'ChatGPT and advanced prompting', exMod1Body:'Models (GPT-4o, o1, mini) and when to use each. Prompt anatomy: role, context, task, format, constraints and examples. Techniques: zero-shot, few-shot, chain-of-thought, ReAct, self-consistency and least-to-most. Structured output in JSON, tables and XML tags. Features: Custom GPTs, Projects, Memory, Canvas, Data Analysis and Deep Research. Limitations: hallucination, bias, knowledge cutoff and prompt injection. Comparison with Claude and Gemini.',
+      exMod2Title:'Copilot in Microsoft 365', exMod2Body:'Copilot Chat vs Copilot in-app, grounding in Microsoft Graph vs web. Word: drafting, summaries, tone rewrite, references. Excel: formulas, pivot tables, data analysis, Python and Copilot in columns. PowerPoint: doc to deck, presenter notes, design and translation. Outlook: thread summary, writing coaching, scheduling. Teams: meeting recap, action items, live captions, translation and Copilot in meetings. Loop: co-creation. SharePoint: semantic search. Best practices for prompts with file references.',
+      exMod3Title:'Copilot Studio and automations', exMod3Body:'Difference between Copilot for M365, Copilot Studio and Azure AI Foundry. Anatomy of an agent: topics, entities, variables and messages. Generative answers vs deterministic responses. Connectors (SharePoint, Dataverse, REST APIs). Publishing to Teams, web and WhatsApp. Power Automate with Copilot, Zapier, Make and n8n. Permissions, DLP and end-user authentication.',
+      exMod4Title:'Governance, security and adoption', exMod4Body:'Microsoft Purview, sensitivity labels, DLP, retention and eDiscovery. SharePoint oversharing and permission inheritance. GDPR/LGPD, data residency and OpenAI data controls. Shadow AI, prompt injection and data exfiltration. Viva Insights and Copilot Dashboard for adoption metrics. Champion program, prompt playbook and 30/60/90 roadmap.',
+      exFocusTitle:'Focus areas in detail',
+      exFocus1Title:'ChatGPT in depth', exFocus1Tag:'Generative AI',
+      exF1L1:'Models, cost, latency and reasoning: when to use o1 vs 4o vs mini',
+      exF1L2:'Prompt frameworks: CRISPE, RTF, CO-STAR and few-shot with examples',
+      exF1L3:'Custom GPTs, Projects and Memory for reuse by area',
+      exF1L4:'Data Analysis, Canvas and Deep Research for long analyses',
+      exF1L5:'Anti-patterns: vague prompt, missing context, trusting without verifying',
+      exFocus2Title:'Copilot in M365', exFocus2Tag:'Productivity',
+      exF2L1:'Word: assisted drafting, long-doc summary, tone rewrite',
+      exF2L2:'Excel: formulas, pivot tables, analysis and Python in Copilot',
+      exF2L3:'PowerPoint: doc to deck, notes, design, translation and narration',
+      exF2L4:'Outlook and Teams: thread summary, recap, action items, captions',
+      exF2L5:'Best practices: prompts with file references, scope and format',
+      exFocus3Title:'Copilot Studio', exFocus3Tag:'Agents',
+      exF3L1:'Agent anatomy: topics, entities, variables, messages',
+      exF3L2:'Generative answers vs deterministic responses and when to choose',
+      exF3L3:'Connectors: SharePoint, Dataverse, Power Platform, REST APIs',
+      exF3L4:'Publishing: Teams, web, WhatsApp via Azure and custom channels',
+      exF3L5:'Security: permissions, DLP, authentication and audit',
+      exFocus4Title:'Governance and adoption', exFocus4Tag:'Risk and ROI',
+      exF4L1:'Purview, sensitivity labels, DLP, retention and eDiscovery',
+      exF4L2:'GDPR/LGPD, data residency and OpenAI data controls',
+      exF4L3:'Shadow AI, prompt injection and data exfiltration',
+      exF4L4:'Viva Insights and Copilot Dashboard: measure adoption with KPIs',
+      exF4L5:'Champion program, playbook and 30/60/90 roadmap',
+      exLabTitle:'Guided labs',
+      exLab1Title:'Lab 1 · Executive rewrite', exLab1Body:'Rewrite an executive email into 3 versions (direct, diplomatic, short executive) using ChatGPT with role prompting and bullet formatting. Compare with Copilot in Outlook.',
+      exLab2Title:'Lab 2 · Spreadsheet analysis', exLab2Body:'From a sales spreadsheet, use Copilot in Excel to generate variance formulas, a pivot table, top 5 insights and a 10-line executive summary.',
+      exLab3Title:'Lab 3 · Document to deck', exLab3Body:'Turn a strategy document into a 10-slide deck with Copilot in PowerPoint, adjust tone, add presenter notes and translate to English.',
+      exLab4Title:'Lab 4 · FAQ agent', exLab4Body:'Build an HR FAQ agent in Copilot Studio, connect a SharePoint base and publish to Teams. Test 5 real questions and tune generative answers.',
+      exLab5Title:'Lab 5 · Usage policy', exLab5Body:'In groups, build a risk matrix (sensitive data, prompt injection, shadow AI) and draft a responsible use policy with 8 rules and an approval flow.',
+      exPromptsTitle:'Prompt library by function',
+      exPromptRoleH:'Function', exPromptH:'Example prompt',
+      exPrompt1Role:'Sales', exPrompt1:'Act as a senior pre-sales. Based on this client briefing [paste], generate 5 discovery questions, 3 likely objections with answers and a 120-word follow-up email.',
+      exPrompt2Role:'HR', exPrompt2:'Act as a senior recruiter. Analyze this CV [paste] against this job description [paste]. Return fit per requirement in a table, 3 strengths, 3 gaps and 5 competency-based interview questions.',
+      exPrompt3Role:'Operations', exPrompt3:'Act as a process analyst. From this meeting transcript [paste], generate an executive summary, decisions, action items with owner and due date, and risks in a table.',
+      exPrompt4Role:'Marketing', exPrompt4:'Act as a content strategist. From this briefing [paste], generate 3 personas with pains and desires, 5 headlines, 3 copy variations per channel and a 30-day editorial calendar.',
+      exPrompt5Role:'Finance', exPrompt5:'Act as a controller. From this spreadsheet [attach], explain month-over-month variance per account, highlight deviations above 10%, suggest 3 hypotheses for cause and a 1-page executive summary.',
+      exDelivTitle:'Deliverables',
+      exDv1Title:'Material kit', exDv1Body:'Slides, exercise workbook, prompt library by area and session recordings.', exDv1Tag:'Kit',
+      exDv2Title:'Hands-on labs', exDv2Body:'5 guided labs with synthetic data and exercises applied to the company context.', exDv2Tag:'Practice',
+      exDv3Title:'Adoption plan', exDv3Body:'30/60/90 roadmap per area, KPIs, use case owner and responsible use policy.', exDv3Tag:'Roadmap',
+      exDv4Title:'Follow-up and certificate', exDv4Body:'30-day follow-up session, completion certificate and updated FAQ.', exDv4Tag:'Post',
+
 
       difEyebrow:'Differentiators', difTitle:'Why with me',
       dif1:'<strong>End-to-end view:</strong> I do not just deliver the plugin, I deliver the flow (input → translation → output → data).',
@@ -426,20 +586,61 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
       met3Title:'Integración', met3Body:'Plugin/API conectado al flujo real (reunión, evento o atención).',
       met4Title:'Go-live + Handover', met4Body:'Playbook, capacitación y KPIs para que el equipo opere con autonomía.',
       exEyebrow:'Ejemplo de entrenamiento',
-      exTitle:'Copilot y GenAI para equipos de negocio',
-      exLede:'Un taller real de 2 días (16h) para 20 personas de operaciones, ventas y RRHH. Foco en productividad con Copilot en M365, prompting avanzado y gobernanza de IA, con laboratorios guiados en casos reales de la empresa.',
-      exStat1Val:'2 días', exStat1Label:'16h de taller',
-      exStat2Val:'20 personas', exStat2Label:'equipos de negocio',
-      exStat3Val:'Presencial', exStat3Label:'o remoto',
-      exStat4Val:'PT o EN', exStat4Label:'bilingüe',
-      exD1Title:'Fundamentos y prompting', exD1Body:'GenAI, LLMs, límites y riesgos. Frameworks de prompting (rol, contexto, formato, restricciones) con ChatGPT y Claude, ejercicios con casos reales del equipo.',
-      exD2Title:'Copilot en M365', exD2Body:'Word, Excel, Teams y Outlook. Demos y laboratorios guiados en cada herramienta, con foco en productividad y reducción de tareas repetitivas.',
-      exD3Title:'Casos y automatizaciones', exD3Body:'Brainstorming de casos de uso por área, priorización por impacto y esfuerzo. Introducción a Power Automate, Zapier y Make, con un flujo real construido en grupo.',
-      exD4Title:'Gobernanza y plan de adopción', exD4Body:'Ética, seguridad, LGPD y uso responsable. Cada área sale con un plan de adopción en 30 días, playbook de prompts y KPIs definidos.',
-      exDv1Title:'Material y prompts', exDv1Body:'Slides, cuaderno de ejercicios y biblioteca de prompts por área.', exDv1Tag:'Kit',
-      exDv2Title:'Laboratorios guiados', exDv2Body:'Ejercicios hands-on con Copilot, ChatGPT y Google Gemini en casos reales.', exDv2Tag:'Práctica',
-      exDv3Title:'Plan de adopción', exDv3Body:'Cada área sale con roadmap de 30 días, KPIs y dueño del caso de uso.', exDv3Tag:'Roadmap',
-      exDv4Title:'Follow-up', exDv4Body:'Sesión de seguimiento en 30 días, certificado y FAQ actualizado.', exDv4Tag:'Post',
+      exTitle:'Copilot + ChatGPT para equipos de negocio',
+      exLede:'Taller inmersivo de 2 días (16h) para hasta 24 personas. Combina fundamentos de GenAI, prompting avanzado, Copilot en Microsoft 365 (Word, Excel, PowerPoint, Outlook, Teams, Loop), Copilot Studio, automatizaciones y gobernanza. Cada módulo incluye un laboratorio guiado con casos reales de la empresa, y cada área sale con su propio plan de adopción.',
+      exStat1Val:'2 días', exStat1Label:'16h inmersivas',
+      exStat2Val:'24 personas', exStat2Label:'máx por clase',
+      exStat3Val:'4 módulos', exStat3Label:'con labs guiados',
+      exStat4Val:'PT/EN', exStat4Label:'bilingüe',
+      exModsTitle:'Módulos en detalle',
+      exMod1Title:'ChatGPT y prompting avanzado', exMod1Body:'Modelos (GPT-4o, o1, mini) y cuándo usar cada uno. Anatomía del prompt: rol, contexto, tarea, formato, restricciones y ejemplos. Técnicas: zero-shot, few-shot, chain-of-thought, ReAct, self-consistency y least-to-most. Salida estructurada en JSON, tablas y etiquetas XML. Recursos: Custom GPTs, Projects, Memory, Canvas, Data Analysis y Deep Research. Limitaciones: alucinación, sesgo, corte de conocimiento e inyección de prompt. Comparativo con Claude y Gemini.',
+      exMod2Title:'Copilot en Microsoft 365', exMod2Body:'Copilot Chat vs Copilot in-app, grounding en Microsoft Graph vs web. Word: redacción, resumen, reescritura por tono, referencias. Excel: fórmulas, tablas dinámicas, análisis de datos, Python y Copilot en columnas. PowerPoint: slides a partir de documento, notas del presentador, diseño y traducción. Outlook: resumen de hilo, coaching de escritura, agendamiento. Teams: recap de reunión, action items, subtítulos en vivo, traducción y Copilot en la reunión. Loop: co-creación. SharePoint: búsqueda semántica. Buenas prácticas de prompts con referencia a archivos.',
+      exMod3Title:'Copilot Studio y automatizaciones', exMod3Body:'Diferencia entre Copilot for M365, Copilot Studio y Azure AI Foundry. Anatomía de un agente: tópicos, entidades, variables y mensajes. Generative answers vs respuestas determinísticas. Conectores (SharePoint, Dataverse, APIs REST). Publicación en Teams, web y WhatsApp. Power Automate con Copilot, Zapier, Make y n8n. Permisos, DLP y autenticación de usuario final.',
+      exMod4Title:'Gobernanza, seguridad y adopción', exMod4Body:'Microsoft Purview, sensitivity labels, DLP, retención y eDiscovery. Oversharing en SharePoint y herencia de permisos. LGPD/GDPR, residencia de datos y data controls de OpenAI. Shadow AI, inyección de prompt y exfiltración de datos. Viva Insights y Copilot Dashboard para métricas de adopción. Champion program, playbook de prompts y roadmap 30/60/90.',
+      exFocusTitle:'Áreas de foco en detalle',
+      exFocus1Title:'ChatGPT en profundidad', exFocus1Tag:'IA Generativa',
+      exF1L1:'Modelos, costo, latencia y razonamiento: cuándo usar o1 vs 4o vs mini',
+      exF1L2:'Frameworks de prompt: CRISPE, RTF, CO-STAR y few-shot con ejemplos',
+      exF1L3:'Custom GPTs, Projects y Memory para reutilización por área',
+      exF1L4:'Data Analysis, Canvas y Deep Research para análisis largos',
+      exF1L5:'Anti-patrones: prompt vago, contexto insuficiente, confiar sin verificar',
+      exFocus2Title:'Copilot en M365', exFocus2Tag:'Productividad',
+      exF2L1:'Word: redacción asistida, resumen de doc largo, reescritura por tono',
+      exF2L2:'Excel: fórmulas, tabla dinámica, análisis y Python en Copilot',
+      exF2L3:'PowerPoint: doc para deck, notas, diseño, traducción y narración',
+      exF2L4:'Outlook y Teams: resumen de hilo, recap, action items, subtítulos',
+      exF2L5:'Buenas prácticas: prompt con referencia a archivo, alcance y formato',
+      exFocus3Title:'Copilot Studio', exFocus3Tag:'Agentes',
+      exF3L1:'Anatomía del agente: tópicos, entidades, variables, mensajes',
+      exF3L2:'Generative answers vs respuestas determinísticas y cuándo elegir',
+      exF3L3:'Conectores: SharePoint, Dataverse, Power Platform, APIs REST',
+      exF3L4:'Publicación: Teams, web, WhatsApp vía Azure y canales custom',
+      exF3L5:'Seguridad: permisos, DLP, autenticación y auditoría',
+      exFocus4Title:'Gobernanza y adopción', exFocus4Tag:'Riesgo y ROI',
+      exF4L1:'Purview, sensitivity labels, DLP, retención y eDiscovery',
+      exF4L2:'LGPD/GDPR, data residency y data controls de OpenAI',
+      exF4L3:'Shadow AI, inyección de prompt y exfiltración de datos',
+      exF4L4:'Viva Insights y Copilot Dashboard: medir adopción con KPI',
+      exF4L5:'Champion program, playbook y roadmap 30/60/90',
+      exLabTitle:'Laboratorios guiados',
+      exLab1Title:'Lab 1 · Reescritura ejecutiva', exLab1Body:'Reescribir un e-mail ejecutivo en 3 versiones (directo, diplomático, ejecutivo corto) usando ChatGPT con role prompting y formato en bullets. Comparar con Copilot en Outlook.',
+      exLab2Title:'Lab 2 · Análisis de planilla', exLab2Body:'A partir de una planilla de ventas, generar con Copilot en Excel: fórmulas de variación, tabla dinámica, top 5 insights y un resumen ejecutivo en 10 líneas.',
+      exLab3Title:'Lab 3 · Documento en deck', exLab3Body:'Transformar un documento de estrategia en presentación de 10 slides con Copilot en PowerPoint, ajustar tono, agregar notas del presentador y traducir al inglés.',
+      exLab4Title:'Lab 4 · Agente de FAQ', exLab4Body:'Construir un agente de FAQ de RRHH en Copilot Studio, conectar a una base SharePoint y publicar en Teams. Probar 5 preguntas reales y ajustar respuestas generativas.',
+      exLab5Title:'Lab 5 · Política de uso', exLab5Body:'En grupos, montar matriz de riesgos (datos sensibles, prompt injection, shadow AI) y redactar política de uso responsable con 8 reglas y flujo de aprobación.',
+      exPromptsTitle:'Biblioteca de prompts por función',
+      exPromptRoleH:'Función', exPromptH:'Prompt de ejemplo',
+      exPrompt1Role:'Ventas', exPrompt1:'Actúa como pre-venta sénior. Con base en este briefing del cliente [pegar], genera 5 preguntas de descubrimiento, 3 objeciones probables con respuestas y un e-mail de follow-up en 120 palabras.',
+      exPrompt2Role:'RRHH', exPrompt2:'Actúa como reclutador sénior. Analiza este CV [pegar] contra esta descripción de puesto [pegar]. Devuelve adherencia por requisito en tabla, 3 fortalezas, 3 gaps y 5 preguntas de entrevista por competencia.',
+      exPrompt3Role:'Operaciones', exPrompt3:'Actúa como analista de procesos. A partir de esta transcripción de reunión [pegar], genera acta ejecutiva, decisiones, action items con dueño y plazo, y riesgos en tabla.',
+      exPrompt4Role:'Marketing', exPrompt4:'Actúa como estratega de contenido. A partir de este briefing [pegar], genera 3 personas con dolores y deseos, 5 titulares, 3 variaciones de copy por canal y un calendario editorial de 30 días.',
+      exPrompt5Role:'Financiero', exPrompt5:'Actúa como controller. A partir de esta planilla [adjuntar], explica la variación mes a mes por cuenta, destaca desvíos por encima de 10%, sugiere 3 hipótesis de causa y un resumen ejecutivo de 1 página.',
+      exDelivTitle:'Entregables',
+      exDv1Title:'Kit de material', exDv1Body:'Slides, cuaderno de ejercicios, biblioteca de prompts por área y grabaciones de las sesiones.', exDv1Tag:'Kit',
+      exDv2Title:'Laboratorios hands-on', exDv2Body:'5 labs guiados con datos sintéticos y ejercicios aplicados al contexto de la empresa.', exDv2Tag:'Práctica',
+      exDv3Title:'Plan de adopción', exDv3Body:'Roadmap 30/60/90 por área, KPIs, dueño del caso de uso y política de uso responsable.', exDv3Tag:'Roadmap',
+      exDv4Title:'Follow-up y certificado', exDv4Body:'Sesión de seguimiento en 30 días, certificado de finalización y FAQ actualizado.', exDv4Tag:'Post',
+
 
       difEyebrow:'Diferenciales', difTitle:'Por qué conmigo',
       dif1:'<strong>Visión de punta a punta:</strong> no entrego solo el plugin, entrego el flujo (entrada → traducción → salida → dato).',
@@ -490,20 +691,61 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
       met3Title:'Intégration', met3Body:'Plugin/API connecté au flux réel (réunion, événement ou support).',
       met4Title:'Go-live + Handover', met4Body:'Playbook, formation et KPIs pour que l\'équipe opère en autonomie.',
       exEyebrow:'Exemple de formation',
-      exTitle:'Copilot et GenAI pour les équipes métier',
-      exLede:'Un atelier réel de 2 jours (16h) pour 20 personnes des opérations, des ventes et des RH. Focus sur la productivité avec Copilot dans M365, le prompting avancé et la gouvernance de l\'IA, avec des labs guidés sur des cas réels de l\'entreprise.',
-      exStat1Val:'2 jours', exStat1Label:'atelier de 16h',
-      exStat2Val:'20 personnes', exStat2Label:'équipes métier',
-      exStat3Val:'Présentiel', exStat3Label:'ou distanciel',
-      exStat4Val:'PT ou EN', exStat4Label:'bilingue',
-      exD1Title:'Fondamentaux et prompting', exD1Body:'GenAI, LLMs, limites et risques. Frameworks de prompting (rôle, contexte, format, contraintes) avec ChatGPT et Claude, exercices sur des cas réels de l\'équipe.',
-      exD2Title:'Copilot dans M365', exD2Body:'Word, Excel, Teams et Outlook. Démos et labs guidés dans chaque outil, axés sur la productivité et la réduction des tâches répétitives.',
-      exD3Title:'Cas d\'usage et automatisations', exD3Body:'Brainstorming des cas d\'usage par domaine, priorisation par impact et effort. Introduction à Power Automate, Zapier et Make, avec un flux réel construit en groupe.',
-      exD4Title:'Gouvernance et plan d\'adoption', exD4Body:'Éthique, sécurité, RGPD et usage responsable. Chaque domaine repart avec un plan d\'adoption à 30 jours, un playbook de prompts et des KPIs définis.',
-      exDv1Title:'Matériel et prompts', exDv1Body:'Slides, cahier d\'exercices et bibliothèque de prompts par domaine.', exDv1Tag:'Kit',
-      exDv2Title:'Labs guidés', exDv2Body:'Exercices hands-on avec Copilot, ChatGPT et Google Gemini sur des cas réels.', exDv2Tag:'Pratique',
-      exDv3Title:'Plan d\'adoption', exDv3Body:'Chaque domaine repart avec une roadmap à 30 jours, des KPIs et un propriétaire de cas d\'usage.', exDv3Tag:'Roadmap',
-      exDv4Title:'Suivi', exDv4Body:'Session de suivi à 30 jours, certificat et FAQ mise à jour.', exDv4Tag:'Post',
+      exTitle:'Copilot + ChatGPT pour les équipes métier',
+      exLede:'Atelier immersif de 2 jours (16h) pour jusqu\'à 24 personnes. Combine fondamentaux de GenAI, prompting avancé, Copilot dans Microsoft 365 (Word, Excel, PowerPoint, Outlook, Teams, Loop), Copilot Studio, automatisations et gouvernance. Chaque module inclut un lab guidé sur des cas réels de l\'entreprise, et chaque domaine repart avec son propre plan d\'adoption.',
+      exStat1Val:'2 jours', exStat1Label:'16h immersives',
+      exStat2Val:'24 personnes', exStat2Label:'max par classe',
+      exStat3Val:'4 modules', exStat3Label:'avec labs guidés',
+      exStat4Val:'PT/EN', exStat4Label:'bilingue',
+      exModsTitle:'Modules en détail',
+      exMod1Title:'ChatGPT et prompting avancé', exMod1Body:'Modèles (GPT-4o, o1, mini) et quand utiliser chacun. Anatomie du prompt : rôle, contexte, tâche, format, contraintes et exemples. Techniques : zero-shot, few-shot, chain-of-thought, ReAct, self-consistency et least-to-most. Sortie structurée en JSON, tableaux et balises XML. Fonctionnalités : Custom GPTs, Projects, Memory, Canvas, Data Analysis et Deep Research. Limites : hallucination, biais, coupure de connaissance et injection de prompt. Comparatif avec Claude et Gemini.',
+      exMod2Title:'Copilot dans Microsoft 365', exMod2Body:'Copilot Chat vs Copilot in-app, grounding dans Microsoft Graph vs web. Word : rédaction, résumé, réécriture par ton, références. Excel : formules, tableaux croisés, analyse de données, Python et Copilot dans les colonnes. PowerPoint : doc vers deck, notes du présentateur, design et traduction. Outlook : résumé de fil, coaching d\'écriture, planification. Teams : recap de réunion, action items, sous-titres en direct, traduction et Copilot en réunion. Loop : co-création. SharePoint : recherche sémantique. Bonnes pratiques de prompts avec références à des fichiers.',
+      exMod3Title:'Copilot Studio et automatisations', exMod3Body:'Différence entre Copilot for M365, Copilot Studio et Azure AI Foundry. Anatomie d\'un agent : sujets, entités, variables et messages. Generative answers vs réponses déterministes. Connecteurs (SharePoint, Dataverse, APIs REST). Publication sur Teams, web et WhatsApp. Power Automate avec Copilot, Zapier, Make et n8n. Permissions, DLP et authentification de l\'utilisateur final.',
+      exMod4Title:'Gouvernance, sécurité et adoption', exMod4Body:'Microsoft Purview, sensitivity labels, DLP, rétention et eDiscovery. Oversharing SharePoint et héritage des permissions. RGPD/LGPD, résidence des données et data controls d\'OpenAI. Shadow AI, injection de prompt et exfiltration de données. Viva Insights et Copilot Dashboard pour les métriques d\'adoption. Champion program, playbook de prompts et roadmap 30/60/90.',
+      exFocusTitle:'Domaines de focus en détail',
+      exFocus1Title:'ChatGPT en profondeur', exFocus1Tag:'IA Générative',
+      exF1L1:'Modèles, coût, latence et raisonnement : quand utiliser o1 vs 4o vs mini',
+      exF1L2:'Frameworks de prompt : CRISPE, RTF, CO-STAR et few-shot avec exemples',
+      exF1L3:'Custom GPTs, Projects et Memory pour la réutilisation par domaine',
+      exF1L4:'Data Analysis, Canvas et Deep Research pour les analyses longues',
+      exF1L5:'Anti-patterns : prompt vague, contexte insuffisant, faire confiance sans vérifier',
+      exFocus2Title:'Copilot dans M365', exFocus2Tag:'Productivité',
+      exF2L1:'Word : rédaction assistée, résumé de doc long, réécriture par ton',
+      exF2L2:'Excel : formules, tableau croisé, analyse et Python dans Copilot',
+      exF2L3:'PowerPoint : doc vers deck, notes, design, traduction et narration',
+      exF2L4:'Outlook et Teams : résumé de fil, recap, action items, sous-titres',
+      exF2L5:'Bonnes pratiques : prompt avec référence à un fichier, périmètre et format',
+      exFocus3Title:'Copilot Studio', exFocus3Tag:'Agents',
+      exF3L1:'Anatomie de l\'agent : sujets, entités, variables, messages',
+      exF3L2:'Generative answers vs réponses déterministes et quand choisir',
+      exF3L3:'Connecteurs : SharePoint, Dataverse, Power Platform, APIs REST',
+      exF3L4:'Publication : Teams, web, WhatsApp via Azure et canaux custom',
+      exF3L5:'Sécurité : permissions, DLP, authentification et audit',
+      exFocus4Title:'Gouvernance et adoption', exFocus4Tag:'Risque et ROI',
+      exF4L1:'Purview, sensitivity labels, DLP, rétention et eDiscovery',
+      exF4L2:'RGPD/LGPD, data residency et data controls d\'OpenAI',
+      exF4L3:'Shadow AI, injection de prompt et exfiltration de données',
+      exF4L4:'Viva Insights et Copilot Dashboard : mesurer l\'adoption avec des KPIs',
+      exF4L5:'Champion program, playbook et roadmap 30/60/90',
+      exLabTitle:'Labs guidés',
+      exLab1Title:'Lab 1 · Réécriture exécutive', exLab1Body:'Réécrire un e-mail exécutif en 3 versions (direct, diplomatique, exécutif court) avec ChatGPT en role prompting et formatage en bullets. Comparer avec Copilot dans Outlook.',
+      exLab2Title:'Lab 2 · Analyse de tableur', exLab2Body:'À partir d\'un tableur de ventes, générer avec Copilot dans Excel : formules de variation, tableau croisé, top 5 insights et un résumé exécutif de 10 lignes.',
+      exLab3Title:'Lab 3 · Document en deck', exLab3Body:'Transformer un document de stratégie en présentation de 10 slides avec Copilot dans PowerPoint, ajuster le ton, ajouter des notes du présentateur et traduire en anglais.',
+      exLab4Title:'Lab 4 · Agent de FAQ', exLab4Body:'Construire un agent de FAQ RH dans Copilot Studio, connecter une base SharePoint et publier sur Teams. Tester 5 questions réelles et ajuster les réponses génératives.',
+      exLab5Title:'Lab 5 · Politique d\'usage', exLab5Body:'En groupes, construire une matrice de risques (données sensibles, prompt injection, shadow AI) et rédiger une politique d\'usage responsable avec 8 règles et un flux d\'approbation.',
+      exPromptsTitle:'Bibliothèque de prompts par fonction',
+      exPromptRoleH:'Fonction', exPromptH:'Prompt d\'exemple',
+      exPrompt1Role:'Ventes', exPrompt1:'Agis comme un pré-vente senior. À partir de ce briefing client [coller], génère 5 questions de découverte, 3 objections probables avec réponses et un e-mail de follow-up en 120 mots.',
+      exPrompt2Role:'RH', exPrompt2:'Agis comme un recruteur senior. Analyse ce CV [coller] contre cette description de poste [coller]. Renvoie l\'adéquation par exigence en tableau, 3 forces, 3 gaps et 5 questions d\'entretien par compétence.',
+      exPrompt3Role:'Opérations', exPrompt3:'Agis comme un analyste de processus. À partir de cette transcription de réunion [coller], génère un compte-rendu exécutif, les décisions, les action items avec propriétaire et échéance, et les risques en tableau.',
+      exPrompt4Role:'Marketing', exPrompt4:'Agis comme un stratège de contenu. À partir de ce briefing [coller], génère 3 personas avec douleurs et désirs, 5 titres, 3 variations de copy par canal et un calendrier éditorial de 30 jours.',
+      exPrompt5Role:'Finance', exPrompt5:'Agis comme un contrôleur de gestion. À partir de ce tableur [joindre], explique la variation mois par mois par compte, signale les écarts au-dessus de 10%, propose 3 hypothèses de cause et un résumé exécutif d\'1 page.',
+      exDelivTitle:'Livrables',
+      exDv1Title:'Kit de matériel', exDv1Body:'Slides, cahier d\'exercices, bibliothèque de prompts par domaine et enregistrements des sessions.', exDv1Tag:'Kit',
+      exDv2Title:'Labs hands-on', exDv2Body:'5 labs guidés avec données synthétiques et exercices appliqués au contexte de l\'entreprise.', exDv2Tag:'Pratique',
+      exDv3Title:'Plan d\'adoption', exDv3Body:'Roadmap 30/60/90 par domaine, KPIs, propriétaire du cas d\'usage et politique d\'usage responsable.', exDv3Tag:'Roadmap',
+      exDv4Title:'Suivi et certificat', exDv4Body:'Session de suivi à 30 jours, certificat de réussite et FAQ mise à jour.', exDv4Tag:'Post',
+
 
       difEyebrow:'Différentiels', difTitle:'Pourquoi avec moi',
       dif1:'<strong>Vue de bout en bout :</strong> je ne livre pas seulement le plugin, je livre le flux (entrée → traduction → sortie → donnée).',

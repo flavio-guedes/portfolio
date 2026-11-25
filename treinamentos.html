@@ -16,9 +16,13 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
 .gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
-.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
-.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.lang-sw{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--surf);border:1px solid var(--hair);flex-shrink:0}
+.lang-pill{font:500 11px "JetBrains Mono",monospace;letter-spacing:.06em;padding:6px 11px;border-radius:999px;background:transparent;border:0;color:var(--fg-faint);cursor:pointer;transition:color var(--fast) var(--ease),background var(--fast) var(--ease)}
+.lang-pill:hover{color:var(--fg-dim)}
+.lang-pill[aria-selected="true"]{background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;box-shadow:0 2px 10px -4px rgba(143,227,207,.5)}
+.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease);flex-shrink:0}
 .top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
 .top-cta svg{width:15px;height:15px}
 .hero{position:relative;overflow:hidden;padding-block:56px 40px}
@@ -74,21 +78,24 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
 .foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
 .foot a:hover{color:var(--mint)}
 .foot .contact{display:flex;gap:20px;flex-wrap:wrap}
-.js .rv:not(.in){opacity:0;transform:translateY(8px)}
-.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
-.rv.in{opacity:1;transform:none}
-@media(max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
+@media(max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px;gap:10px}.top-cta span{display:none}.top-cta{padding:10px 12px}.brand i{display:none}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}.lang-pill{padding:6px 8px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
 <header class="top">
 <div class="top-in">
-<span class="brand">Tradução Simultânea <i>· Do plugin à operação</i></span>
+<span class="brand" data-i18n="brand">Tradução Simultânea <i>· Do plugin à operação</i></span>
+<div class="lang-sw" role="tablist" aria-label="Idioma / Language / Idioma / Langue">
+<button class="lang-pill" data-lang="pt-BR" role="tab" aria-selected="true" aria-label="Português">PT</button>
+<button class="lang-pill" data-lang="en" role="tab" aria-selected="false" aria-label="English">EN</button>
+<button class="lang-pill" data-lang="es" role="tab" aria-selected="false" aria-label="Español">ES</button>
+<button class="lang-pill" data-lang="fr" role="tab" aria-selected="false" aria-label="Français">FR</button>
+</div>
 <a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-<span>Falar com especialista</span>
+<span data-i18n="navCta">Falar com especialista</span>
 </a>
 </div>
 </header>
@@ -98,143 +105,127 @@ h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;f
 <div class="halo h1" aria-hidden="true"></div>
 <div class="halo h2" aria-hidden="true"></div>
 <div class="hero-in">
-<p class="kicker gt rv in" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">IA Generativa · Tradução · Automação</p>
-<h1 id="titulo" class="rv in">Tradução simultânea com IA: <span class="grad-text">do plugin à operação escalável</span> com latência, custo e dado sob controle.</h1>
-<p class="lede rv in">Reuniões e eventos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins de tradução não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas e stacks customizadas.</p>
-<p class="lede rv in" style="margin-top:16px">A proposta é atuar em três frentes integradas — diagnóstico, integração e operação — com entrega por ciclo de 4 semanas, medição de latência e custo/minuto, e fluxo único do evento ao registro.</p>
-<a class="cta-main rv in" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
+<p class="kicker gt" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf" data-i18n="kicker">IA Generativa · Tradução · Automação</p>
+<h1 id="titulo" data-i18n="heroTitle">Tradução simultânea com IA: <span class="grad-text">do plugin à operação escalável</span> com latência, custo e dado sob controle.</h1>
+<p class="lede" data-i18n="heroLede1">Reuniões e eventos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins de tradução não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas e stacks customizadas.</p>
+<p class="lede" style="margin-top:16px" data-i18n="heroLede2">A proposta é atuar em três frentes integradas, diagnóstico, integração e operação, com entrega por ciclo de 4 semanas, medição de latência e custo/minuto, e fluxo único do evento ao registro.</p>
+<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-Vamos rodar um diagnóstico rápido
+<span data-i18n="heroCta">Vamos rodar um diagnóstico rápido</span>
 </a>
-<span class="cta-sub rv in">30 minutos para mapear casos de uso e devolver uma <strong>recomendação inicial de stack</strong> — sem custo.</span>
-<div class="stats rv in">
-<div class="stat" style="--c:#9cc9ff;--c2:#c9b8ff"><b>&lt; 2s</b><span>meta de latência por trecho</span></div>
-<div class="stat" style="--c:#8fe3cf;--c2:#7fd3e8"><b>4 semanas</b><span>por ciclo de entrega</span></div>
-<div class="stat" style="--c:#e9c97f;--c2:#f0a1a1"><b>3 frentes</b><span>diagnóstico, integração, operação</span></div>
-<div class="stat" style="--c:#c9b8ff;--c2:#9cc9ff"><b>ponta a ponta</b><span>entrada → tradução → saída → dado</span></div>
+<span class="cta-sub" data-i18n="heroCtaSub">30 minutos para mapear casos de uso e devolver uma <strong>recomendação inicial de stack</strong>, sem custo.</span>
+<div class="stats">
+<div class="stat" style="--c:#9cc9ff;--c2:#c9b8ff"><b>&lt; 2s</b><span data-i18n="stat1Label">meta de latência por trecho</span></div>
+<div class="stat" style="--c:#8fe3cf;--c2:#7fd3e8"><b>4 semanas</b><span data-i18n="stat2Label">por ciclo de entrega</span></div>
+<div class="stat" style="--c:#e9c97f;--c2:#f0a1a1"><b>3 frentes</b><span data-i18n="stat3Label">diagnóstico, integração, operação</span></div>
+<div class="stat" style="--c:#c9b8ff;--c2:#9cc9ff"><b>ponta a ponta</b><span data-i18n="stat4Label">entrada → tradução → saída → dado</span></div>
 </div>
 </div>
 </section>
 
 <section class="sec" aria-labelledby="problema">
 <div class="sec-h">
-<p class="eyebrow">Diagnóstico</p>
-<h2 id="problema">O problema que resolvo</h2>
-<p class="lede-s">Reuniões, eventos e atendimentos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins existentes (Zoom, Meet, Teams, OBS) não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas (Wordly, Interprefy, KUDO) e stacks customizadas (Whisper + DeepL/Azure + LLM).</p>
+<p class="eyebrow" data-i18n="problemEyebrow">Diagnóstico</p>
+<h2 id="problema" data-i18n="problemTitle">O problema que resolvo</h2>
+<p class="lede-s" data-i18n="problemLede">Reuniões, eventos e atendimentos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins existentes (Zoom, Meet, Teams, OBS) não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas (Wordly, Interprefy, KUDO) e stacks customizadas (Whisper + DeepL/Azure + LLM).</p>
 <div class="sec-rule" style="--g1:#9cc9ff;--g2:#c9b8ff"></div>
 </div>
 <div class="grid2">
-<div class="surf tint card" style="--c:#f0a1a1">
-<h3>Ferramenta errada</h3>
-<p>Escolha sem critério técnico entre pronta e customizada gera custo alto e experiência ruim.</p>
-<span class="tag" style="--c:#f0a1a1">Risco</span>
-</div>
-<div class="surf tint card" style="--c:#e9c97f">
-<h3>Latência alta</h3>
-<p>Tradução em tempo real acima de 2s por trecho quebra a fluidez da reunião ou evento.</p>
-<span class="tag" style="--c:#e9c97f">Experiência</span>
-</div>
-<div class="surf tint card" style="--c:#9cc9ff">
-<h3>Fluxo manual</h3>
-<p>Sem integração entre plugin, CRM e WhatsApp, o dado se perde e a equipe retrabalha.</p>
-<span class="tag" style="--c:#9cc9ff">Operação</span>
-</div>
-<div class="surf tint card" style="--c:#c9b8ff">
-<h3>Nenhum dado de performance</h3>
-<p>Sem métrica de latência, custo/minuto e taxa de erro, o próximo investimento fica no escuro.</p>
-<span class="tag" style="--c:#c9b8ff">Decisão</span>
-</div>
+<div class="surf tint card" style="--c:#f0a1a1"><h3 data-i18n="prob1Title">Ferramenta errada</h3><p data-i18n="prob1Body">Escolha sem critério técnico entre pronta e customizada gera custo alto e experiência ruim.</p><span class="tag" data-i18n="prob1Tag" style="--c:#f0a1a1">Risco</span></div>
+<div class="surf tint card" style="--c:#e9c97f"><h3 data-i18n="prob2Title">Latência alta</h3><p data-i18n="prob2Body">Tradução em tempo real acima de 2s por trecho quebra a fluidez da reunião ou evento.</p><span class="tag" data-i18n="prob2Tag" style="--c:#e9c97f">Experiência</span></div>
+<div class="surf tint card" style="--c:#9cc9ff"><h3 data-i18n="prob3Title">Fluxo manual</h3><p data-i18n="prob3Body">Sem integração entre plugin, CRM e WhatsApp, o dado se perde e a equipe retrabalha.</p><span class="tag" data-i18n="prob3Tag" style="--c:#9cc9ff">Operação</span></div>
+<div class="surf tint card" style="--c:#c9b8ff"><h3 data-i18n="prob4Title">Nenhum dado de performance</h3><p data-i18n="prob4Body">Sem métrica de latência, custo/minuto e taxa de erro, o próximo investimento fica no escuro.</p><span class="tag" data-i18n="prob4Tag" style="--c:#c9b8ff">Decisão</span></div>
 </div>
 </section>
 
 <section class="sec" aria-labelledby="atuacao">
 <div class="sec-h">
-<p class="eyebrow">Atuação</p>
-<h2 id="atuacao">Três frentes integradas</h2>
-<p class="lede-s">Entrega por ciclo, com começo, meio e fim claros — e iteração contínua: cada ciclo gera dados para o próximo.</p>
+<p class="eyebrow" data-i18n="atuacaoEyebrow">Atuação</p>
+<h2 id="atuacao" data-i18n="atuacaoTitle">Três frentes integradas</h2>
+<p class="lede-s" data-i18n="atuacaoLede">Entrega por ciclo, com começo, meio e fim claros, e iteração contínua: cada ciclo gera dados para o próximo.</p>
 <div class="sec-rule" style="--g1:#8fe3cf;--g2:#7fd3e8"></div>
 </div>
 <ol class="steps">
-<li style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Diagnóstico &amp; Arquitetura</strong>Mapear casos de uso (evento, call, suporte, conteúdo) e definir stack com matriz de decisão: latência, custo/minuto, idiomas, privacidade (on-prem vs. cloud) e facilidade de integração.</div></li>
-<li style="--c:#8fe3cf"><span class="num">02</span><div class="txt"><strong>Integração &amp; Automação</strong>Conectar plugins, APIs e fluxos via Python, webhooks, n8n e LLMs locais (Ollama) — do Zoom/Meet/Teams ao WhatsApp Cloud API e CRM.</div></li>
-<li style="--c:#c9b8ff"><span class="num">03</span><div class="txt"><strong>Operação &amp; Medição</strong>Treinar equipe, monitorar latência/qualidade e gerar relatórios com KPIs: latência, custo/minuto, taxa de erro e satisfação.</div></li>
+<li style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong data-i18n="step1Title">Diagnóstico &amp; Arquitetura</strong><span data-i18n="step1Body">Mapear casos de uso (evento, call, suporte, conteúdo) e definir stack com matriz de decisão: latência, custo/minuto, idiomas, privacidade (on-prem vs. cloud) e facilidade de integração.</span></div></li>
+<li style="--c:#8fe3cf"><span class="num">02</span><div class="txt"><strong data-i18n="step2Title">Integração &amp; Automação</strong><span data-i18n="step2Body">Conectar plugins, APIs e fluxos via Python, webhooks, n8n e LLMs locais (Ollama), do Zoom/Meet/Teams ao WhatsApp Cloud API e CRM.</span></div></li>
+<li style="--c:#c9b8ff"><span class="num">03</span><div class="txt"><strong data-i18n="step3Title">Operação &amp; Medição</strong><span data-i18n="step3Body">Treinar equipe, monitorar latência/qualidade e gerar relatórios com KPIs: latência, custo/minuto, taxa de erro e satisfação.</span></div></li>
 </ol>
 </section>
 
 <section class="sec" aria-labelledby="stack">
 <div class="sec-h">
-<p class="eyebrow">Stack</p>
-<h2 id="stack">O que domino e recomendo</h2>
-<p class="lede-s">Critério de escolha: latência, custo por minuto, idiomas, privacidade e facilidade de integração.</p>
+<p class="eyebrow" data-i18n="stackEyebrow">Stack</p>
+<h2 id="stack" data-i18n="stackTitle">O que domino e recomendo</h2>
+<p class="lede-s" data-i18n="stackLede">Critério de escolha: latência, custo por minuto, idiomas, privacidade e facilidade de integração.</p>
 <div class="sec-rule" style="--g1:#c9b8ff;--g2:#9cc9ff"></div>
 </div>
 <div class="grid3">
-<div class="surf tint front" style="--c:#9cc9ff"><h3>Tradução em tempo real</h3><p>DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).</p><span class="tag" style="--c:#9cc9ff">Core</span></div>
-<div class="surf tint front" style="--c:#8fe3cf"><h3>Plugins de reunião</h3><p>Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.</p><span class="tag" style="--c:#8fe3cf">Canais</span></div>
-<div class="surf tint front" style="--c:#7fd3e8"><h3>Legendas/streaming</h3><p>OBS + legendas ao vivo, WebRTC, transcrição incremental.</p><span class="tag" style="--c:#7fd3e8">Tempo real</span></div>
-<div class="surf tint front" style="--c:#e9c97f"><h3>Automação &amp; orquestração</h3><p>Python, n8n, webhooks, filas, Ollama (LLM local para pós-edição).</p><span class="tag" style="--c:#e9c97f">Fluxo</span></div>
-<div class="surf tint front" style="--c:#f0a1a1"><h3>Canais de saída</h3><p>WhatsApp (Cloud API), e-mail, CRM, dashboards.</p><span class="tag" style="--c:#f0a1a1">Entrega</span></div>
+<div class="surf tint front" style="--c:#9cc9ff"><h3 data-i18n="stack1Title">Tradução em tempo real</h3><p data-i18n="stack1Body">DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).</p><span class="tag" data-i18n="stack1Tag" style="--c:#9cc9ff">Core</span></div>
+<div class="surf tint front" style="--c:#8fe3cf"><h3 data-i18n="stack2Title">Plugins de reunião</h3><p data-i18n="stack2Body">Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.</p><span class="tag" data-i18n="stack2Tag" style="--c:#8fe3cf">Canais</span></div>
+<div class="surf tint front" style="--c:#7fd3e8"><h3 data-i18n="stack3Title">Legendas/streaming</h3><p data-i18n="stack3Body">OBS + legendas ao vivo, WebRTC, transcrição incremental.</p><span class="tag" data-i18n="stack3Tag" style="--c:#7fd3e8">Tempo real</span></div>
+<div class="surf tint front" style="--c:#e9c97f"><h3 data-i18n="stack4Title">Automação &amp; orquestração</h3><p data-i18n="stack4Body">Python, n8n, webhooks, filas, Ollama (LLM local para pós-edição).</p><span class="tag" data-i18n="stack4Tag" style="--c:#e9c97f">Fluxo</span></div>
+<div class="surf tint front" style="--c:#f0a1a1"><h3 data-i18n="stack5Title">Canais de saída</h3><p data-i18n="stack5Body">WhatsApp (Cloud API), e-mail, CRM, dashboards.</p><span class="tag" data-i18n="stack5Tag" style="--c:#f0a1a1">Entrega</span></div>
 </div>
 </section>
 
 <section class="sec" aria-labelledby="metodo">
 <div class="sec-h">
-<p class="eyebrow">Metodologia</p>
-<h2 id="metodo">Ciclo de 4 semanas por entrega</h2>
-<p class="lede-s">Cada semana tem um entregável claro. Ao final, playbook, treinamento e KPIs — e dados para o próximo ciclo.</p>
+<p class="eyebrow" data-i18n="metodoEyebrow">Metodologia</p>
+<h2 id="metodo" data-i18n="metodoTitle">Ciclo de 4 semanas por entrega</h2>
+<p class="lede-s" data-i18n="metodoLede">Cada semana tem um entregável claro. Ao final, playbook, treinamento e KPIs, e dados para o próximo ciclo.</p>
 <div class="sec-rule" style="--g1:#e9c97f;--g2:#8fe3cf"></div>
 </div>
 <ol class="steps">
-<li style="--c:#9cc9ff"><span class="num">Sem 1</span><div class="txt"><strong>Discovery</strong>Casos reais, volumes, idiomas e restrições (LGPD, on-prem).</div></li>
-<li style="--c:#8fe3cf"><span class="num">Sem 2</span><div class="txt"><strong>PoC</strong>Teste com 2 stacks concorrentes, medição de latência e qualidade.</div></li>
-<li style="--c:#c9b8ff"><span class="num">Sem 3</span><div class="txt"><strong>Integração</strong>Plugin/API conectado ao fluxo real (reunião, evento ou atendimento).</div></li>
-<li style="--c:#e9c97f"><span class="num">Sem 4</span><div class="txt"><strong>Go-live + Handover</strong>Playbook, treinamento e KPIs para a equipe operar com autonomia.</div></li>
+<li style="--c:#9cc9ff"><span class="num">Sem 1</span><div class="txt"><strong data-i18n="met1Title">Discovery</strong><span data-i18n="met1Body">Casos reais, volumes, idiomas e restrições (LGPD, on-prem).</span></div></li>
+<li style="--c:#8fe3cf"><span class="num">Sem 2</span><div class="txt"><strong data-i18n="met2Title">PoC</strong><span data-i18n="met2Body">Teste com 2 stacks concorrentes, medição de latência e qualidade.</span></div></li>
+<li style="--c:#c9b8ff"><span class="num">Sem 3</span><div class="txt"><strong data-i18n="met3Title">Integração</strong><span data-i18n="met3Body">Plugin/API conectado ao fluxo real (reunião, evento ou atendimento).</span></div></li>
+<li style="--c:#e9c97f"><span class="num">Sem 4</span><div class="txt"><strong data-i18n="met4Title">Go-live + Handover</strong><span data-i18n="met4Body">Playbook, treinamento e KPIs para a equipe operar com autonomia.</span></div></li>
 </ol>
 </section>
 
 <section class="sec" aria-labelledby="diferenciais">
 <div class="sec-h">
-<p class="eyebrow">Diferenciais</p>
-<h2 id="diferenciais">Por que comigo</h2>
+<p class="eyebrow" data-i18n="difEyebrow">Diferenciais</p>
+<h2 id="diferenciais" data-i18n="difTitle">Por que comigo</h2>
 <div class="sec-rule" style="--g1:#f0a1a1;--g2:#c9b8ff"></div>
 </div>
 <div class="surf card" style="--c:#8fe3cf">
 <ul class="check">
-<li><strong>Visão ponta a ponta:</strong> não entrego só o plugin — entrego o fluxo (entrada → tradução → saída → dado).</li>
-<li><strong>Automação com IA local:</strong> LLMs via Ollama para pós-edição e classificação sem depender 100% de cloud.</li>
-<li><strong>Integração com WhatsApp e CRM:</strong> experiência validada em automações de disparo e enriquecimento de contatos.</li>
-<li><strong>Foco em métrica:</strong> latência, custo/minuto, taxa de erro e satisfação — tudo reportado.</li>
-<li><strong>Portfólio técnico real:</strong> versionado e público no GitHub.</li>
+<li data-i18n="dif1"><strong>Visão ponta a ponta:</strong> não entrego só o plugin, entrego o fluxo (entrada → tradução → saída → dado).</li>
+<li data-i18n="dif2"><strong>Automação com IA local:</strong> LLMs via Ollama para pós-edição e classificação sem depender 100% de cloud.</li>
+<li data-i18n="dif3"><strong>Integração com WhatsApp e CRM:</strong> experiência validada em automações de disparo e enriquecimento de contatos.</li>
+<li data-i18n="dif4"><strong>Foco em métrica:</strong> latência, custo/minuto, taxa de erro e satisfação, tudo reportado.</li>
+<li data-i18n="dif5"><strong>Portfólio técnico real:</strong> versionado e público no GitHub.</li>
 </ul>
 </div>
 </section>
 
 <section class="sec" aria-labelledby="resultados">
 <div class="sec-h">
-<p class="eyebrow">Resultados</p>
-<h2 id="resultados">O que esperar</h2>
+<p class="eyebrow" data-i18n="resEyebrow">Resultados</p>
+<h2 id="resultados" data-i18n="resTitle">O que esperar</h2>
 <div class="sec-rule" style="--g1:#7fd3e8;--g2:#9cc9ff"></div>
 </div>
 <div class="grid2">
-<div class="surf tint card" style="--c:#8fe3cf"><h3>Latência &lt; 2s</h3><p>Redução de latência na tradução em tempo real, com meta de menos de 2 segundos por trecho.</p></div>
-<div class="surf tint card" style="--c:#9cc9ff"><h3>Custo previsível</h3><p>Comparativo cloud vs. on-prem para decidir com base em custo por minuto/idioma.</p></div>
-<div class="surf tint card" style="--c:#c9b8ff"><h3>Fluxo único</h3><p>Reunião/evento → tradução → registro automático em CRM/WhatsApp.</p></div>
-<div class="surf tint card" style="--c:#e9c97f"><h3>Autonomia da equipe</h3><p>Playbook, treinamento e dashboard de KPIs para operar sem dependência.</p></div>
+<div class="surf tint card" style="--c:#8fe3cf"><h3 data-i18n="res1Title">Latência &lt; 2s</h3><p data-i18n="res1Body">Redução de latência na tradução em tempo real, com meta de menos de 2 segundos por trecho.</p></div>
+<div class="surf tint card" style="--c:#9cc9ff"><h3 data-i18n="res2Title">Custo previsível</h3><p data-i18n="res2Body">Comparativo cloud vs. on-prem para decidir com base em custo por minuto/idioma.</p></div>
+<div class="surf tint card" style="--c:#c9b8ff"><h3 data-i18n="res3Title">Fluxo único</h3><p data-i18n="res3Body">Reunião/evento → tradução → registro automático em CRM/WhatsApp.</p></div>
+<div class="surf tint card" style="--c:#e9c97f"><h3 data-i18n="res4Title">Autonomia da equipe</h3><p data-i18n="res4Body">Playbook, treinamento e dashboard de KPIs para operar sem dependência.</p></div>
 </div>
 </section>
 
-<section class="cta-band rv">
-<h2>Vamos rodar um diagnóstico rápido?</h2>
-<p>Em 30 minutos mapeio os casos de uso e devolvo uma recomendação inicial de stack — sem custo.</p>
+<section class="cta-band">
+<h2 data-i18n="ctaTitle">Vamos rodar um diagnóstico rápido?</h2>
+<p data-i18n="ctaBody">Em 30 minutos mapeio os casos de uso e devolvo uma recomendação inicial de stack, sem custo.</p>
 <a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-Chamar no WhatsApp
+<span data-i18n="ctaBtn">Chamar no WhatsApp</span>
 </a>
-<span class="cta-sub">Ou se preferir: <strong>flavioguedesmkt@gmail.com</strong> · (21) 99971-9474</span>
+<span class="cta-sub" data-i18n="ctaSub">Ou se preferir: <strong>flavioguedesmkt@gmail.com</strong> · (21) 99971-9474</span>
 </section>
 
 <footer class="foot">
-<span>Tradução Simultânea com IA · Flávio Guedes</span>
+<span data-i18n="footBrand">Tradução Simultânea com IA · Flávio Guedes</span>
 <div class="contact">
 <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener">LinkedIn</a>
 <a href="https://flavio-guedes.github.io/portfolio/parceria.html">Parceria IA</a>
@@ -243,4 +234,221 @@ Chamar no WhatsApp
 </footer>
 
 </main>
+<script>
+(function(){
+  var T = {
+    'pt-BR': {
+      brand:'Tradução Simultânea <i>· Do plugin à operação</i>',
+      navCta:'Falar com especialista', kicker:'IA Generativa · Tradução · Automação',
+      heroTitle:'Tradução simultânea com IA: <span class="grad-text">do plugin à operação escalável</span> com latência, custo e dado sob controle.',
+      heroLede1:'Reuniões e eventos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins de tradução não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas e stacks customizadas.',
+      heroLede2:'A proposta é atuar em três frentes integradas, diagnóstico, integração e operação, com entrega por ciclo de 4 semanas, medição de latência e custo/minuto, e fluxo único do evento ao registro.',
+      heroCta:'Vamos rodar um diagnóstico rápido',
+      heroCtaSub:'30 minutos para mapear casos de uso e devolver uma <strong>recomendação inicial de stack</strong>, sem custo.',
+      stat1Label:'meta de latência por trecho', stat2Label:'por ciclo de entrega', stat3Label:'diagnóstico, integração, operação', stat4Label:'entrada → tradução → saída → dado',
+      problemEyebrow:'Diagnóstico', problemTitle:'O problema que resolvo',
+      problemLede:'Reuniões, eventos e atendimentos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins existentes (Zoom, Meet, Teams, OBS) não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas (Wordly, Interprefy, KUDO) e stacks customizadas (Whisper + DeepL/Azure + LLM).',
+      prob1Title:'Ferramenta errada', prob1Body:'Escolha sem critério técnico entre pronta e customizada gera custo alto e experiência ruim.', prob1Tag:'Risco',
+      prob2Title:'Latência alta', prob2Body:'Tradução em tempo real acima de 2s por trecho quebra a fluidez da reunião ou evento.', prob2Tag:'Experiência',
+      prob3Title:'Fluxo manual', prob3Body:'Sem integração entre plugin, CRM e WhatsApp, o dado se perde e a equipe retrabalha.', prob3Tag:'Operação',
+      prob4Title:'Nenhum dado de performance', prob4Body:'Sem métrica de latência, custo/minuto e taxa de erro, o próximo investimento fica no escuro.', prob4Tag:'Decisão',
+      atuacaoEyebrow:'Atuação', atuacaoTitle:'Três frentes integradas',
+      atuacaoLede:'Entrega por ciclo, com começo, meio e fim claros, e iteração contínua: cada ciclo gera dados para o próximo.',
+      step1Title:'Diagnóstico &amp; Arquitetura', step1Body:'Mapear casos de uso (evento, call, suporte, conteúdo) e definir stack com matriz de decisão: latência, custo/minuto, idiomas, privacidade (on-prem vs. cloud) e facilidade de integração.',
+      step2Title:'Integração &amp; Automação', step2Body:'Conectar plugins, APIs e fluxos via Python, webhooks, n8n e LLMs locais (Ollama), do Zoom/Meet/Teams ao WhatsApp Cloud API e CRM.',
+      step3Title:'Operação &amp; Medição', step3Body:'Treinar equipe, monitorar latência/qualidade e gerar relatórios com KPIs: latência, custo/minuto, taxa de erro e satisfação.',
+      stackEyebrow:'Stack', stackTitle:'O que domino e recomendo',
+      stackLede:'Critério de escolha: latência, custo por minuto, idiomas, privacidade e facilidade de integração.',
+      stack1Title:'Tradução em tempo real', stack1Body:'DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).', stack1Tag:'Core',
+      stack2Title:'Plugins de reunião', stack2Body:'Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.', stack2Tag:'Canais',
+      stack3Title:'Legendas/streaming', stack3Body:'OBS + legendas ao vivo, WebRTC, transcrição incremental.', stack3Tag:'Tempo real',
+      stack4Title:'Automação &amp; orquestração', stack4Body:'Python, n8n, webhooks, filas, Ollama (LLM local para pós-edição).', stack4Tag:'Fluxo',
+      stack5Title:'Canais de saída', stack5Body:'WhatsApp (Cloud API), e-mail, CRM, dashboards.', stack5Tag:'Entrega',
+      metodoEyebrow:'Metodologia', metodoTitle:'Ciclo de 4 semanas por entrega',
+      metodoLede:'Cada semana tem um entregável claro. Ao final, playbook, treinamento e KPIs, e dados para o próximo ciclo.',
+      met1Title:'Discovery', met1Body:'Casos reais, volumes, idiomas e restrições (LGPD, on-prem).',
+      met2Title:'PoC', met2Body:'Teste com 2 stacks concorrentes, medição de latência e qualidade.',
+      met3Title:'Integração', met3Body:'Plugin/API conectado ao fluxo real (reunião, evento ou atendimento).',
+      met4Title:'Go-live + Handover', met4Body:'Playbook, treinamento e KPIs para a equipe operar com autonomia.',
+      difEyebrow:'Diferenciais', difTitle:'Por que comigo',
+      dif1:'<strong>Visão ponta a ponta:</strong> não entrego só o plugin, entrego o fluxo (entrada → tradução → saída → dado).',
+      dif2:'<strong>Automação com IA local:</strong> LLMs via Ollama para pós-edição e classificação sem depender 100% de cloud.',
+      dif3:'<strong>Integração com WhatsApp e CRM:</strong> experiência validada em automações de disparo e enriquecimento de contatos.',
+      dif4:'<strong>Foco em métrica:</strong> latência, custo/minuto, taxa de erro e satisfação, tudo reportado.',
+      dif5:'<strong>Portfólio técnico real:</strong> versionado e público no GitHub.',
+      resEyebrow:'Resultados', resTitle:'O que esperar',
+      res1Title:'Latência &lt; 2s', res1Body:'Redução de latência na tradução em tempo real, com meta de menos de 2 segundos por trecho.',
+      res2Title:'Custo previsível', res2Body:'Comparativo cloud vs. on-prem para decidir com base em custo por minuto/idioma.',
+      res3Title:'Fluxo único', res3Body:'Reunião/evento → tradução → registro automático em CRM/WhatsApp.',
+      res4Title:'Autonomia da equipe', res4Body:'Playbook, treinamento e dashboard de KPIs para operar sem dependência.',
+      ctaTitle:'Vamos rodar um diagnóstico rápido?', ctaBody:'Em 30 minutos mapeio os casos de uso e devolvo uma recomendação inicial de stack, sem custo.',
+      ctaBtn:'Chamar no WhatsApp', ctaSub:'Ou se preferir: <strong>flavioguedesmkt@gmail.com</strong> · (21) 99971-9474',
+      footBrand:'Tradução Simultânea com IA · Flávio Guedes'
+    },
+    'en': {
+      brand:'Simultaneous Translation <i>· From plugin to operation</i>',
+      navCta:'Talk to a specialist', kicker:'Generative AI · Translation · Automation',
+      heroTitle:'AI simultaneous translation: <span class="grad-text">from plugin to scalable operation</span> with latency, cost and data under control.',
+      heroLede1:'Multilingual meetings and events stall due to the wrong tool, high latency or manual workflow. Translation plugins do not talk to each other or to CRM/WhatsApp. There is no technical criteria to choose between ready-made solutions and custom stacks.',
+      heroLede2:'The proposal is to work on three integrated fronts, diagnosis, integration and operation, delivering in 4-week cycles, measuring latency and cost per minute, with a single flow from event to record.',
+      heroCta:'Let us run a quick diagnostic',
+      heroCtaSub:'30 minutes to map use cases and return an <strong>initial stack recommendation</strong>, no cost.',
+      stat1Label:'latency target per segment', stat2Label:'per delivery cycle', stat3Label:'diagnosis, integration, operation', stat4Label:'input → translation → output → data',
+      problemEyebrow:'Diagnosis', problemTitle:'The problem I solve',
+      problemLede:'Multilingual meetings, events and support stall due to the wrong tool, high latency or manual workflow. Existing plugins (Zoom, Meet, Teams, OBS) do not talk to each other or to CRM/WhatsApp. There is no technical criteria to choose between ready-made solutions (Wordly, Interprefy, KUDO) and custom stacks (Whisper + DeepL/Azure + LLM).',
+      prob1Title:'Wrong tool', prob1Body:'Choosing without technical criteria between ready-made and custom leads to high cost and poor experience.', prob1Tag:'Risk',
+      prob2Title:'High latency', prob2Body:'Real-time translation over 2s per segment breaks the flow of a meeting or event.', prob2Tag:'Experience',
+      prob3Title:'Manual workflow', prob3Body:'Without integration between plugin, CRM and WhatsApp, data is lost and the team reworks.', prob3Tag:'Operation',
+      prob4Title:'No performance data', prob4Body:'Without latency, cost per minute and error rate metrics, the next investment is blind.', prob4Tag:'Decision',
+      atuacaoEyebrow:'Approach', atuacaoTitle:'Three integrated fronts',
+      atuacaoLede:'Delivery by cycle, with clear start, middle and end, and continuous iteration: each cycle generates data for the next.',
+      step1Title:'Diagnosis &amp; Architecture', step1Body:'Map use cases (event, call, support, content) and define the stack with a decision matrix: latency, cost per minute, languages, privacy (on-prem vs. cloud) and integration ease.',
+      step2Title:'Integration &amp; Automation', step2Body:'Connect plugins, APIs and flows via Python, webhooks, n8n and local LLMs (Ollama), from Zoom/Meet/Teams to WhatsApp Cloud API and CRM.',
+      step3Title:'Operation &amp; Measurement', step3Body:'Train the team, monitor latency and quality and generate reports with KPIs: latency, cost per minute, error rate and satisfaction.',
+      stackEyebrow:'Stack', stackTitle:'What I master and recommend',
+      stackLede:'Selection criteria: latency, cost per minute, languages, privacy and integration ease.',
+      stack1Title:'Real-time translation', stack1Body:'DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).', stack1Tag:'Core',
+      stack2Title:'Meeting plugins', stack2Body:'Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.', stack2Tag:'Channels',
+      stack3Title:'Captions and streaming', stack3Body:'OBS + live captions, WebRTC, incremental transcription.', stack3Tag:'Real-time',
+      stack4Title:'Automation &amp; orchestration', stack4Body:'Python, n8n, webhooks, queues, Ollama (local LLM for post-editing).', stack4Tag:'Flow',
+      stack5Title:'Output channels', stack5Body:'WhatsApp (Cloud API), email, CRM, dashboards.', stack5Tag:'Delivery',
+      metodoEyebrow:'Methodology', metodoTitle:'4-week cycle per delivery',
+      metodoLede:'Each week has a clear deliverable. At the end, playbook, training and KPIs, and data for the next cycle.',
+      met1Title:'Discovery', met1Body:'Real cases, volumes, languages and constraints (GDPR, on-prem).',
+      met2Title:'PoC', met2Body:'Test with 2 competing stacks, measure latency and quality.',
+      met3Title:'Integration', met3Body:'Plugin/API connected to the real flow (meeting, event or support).',
+      met4Title:'Go-live + Handover', met4Body:'Playbook, training and KPIs so the team operates with autonomy.',
+      difEyebrow:'Differentiators', difTitle:'Why with me',
+      dif1:'<strong>End-to-end view:</strong> I do not just deliver the plugin, I deliver the flow (input → translation → output → data).',
+      dif2:'<strong>Local AI automation:</strong> LLMs via Ollama for post-editing and classification without 100% cloud dependency.',
+      dif3:'<strong>WhatsApp and CRM integration:</strong> experience validated in broadcast automations and contact enrichment.',
+      dif4:'<strong>Metric focus:</strong> latency, cost per minute, error rate and satisfaction, all reported.',
+      dif5:'<strong>Real technical portfolio:</strong> versioned and public on GitHub.',
+      resEyebrow:'Results', resTitle:'What to expect',
+      res1Title:'Latency &lt; 2s', res1Body:'Latency reduction in real-time translation, targeting under 2 seconds per segment.',
+      res2Title:'Predictable cost', res2Body:'Cloud vs. on-prem comparison to decide based on cost per minute and language.',
+      res3Title:'Single flow', res3Body:'Meeting or event → translation → automatic record in CRM/WhatsApp.',
+      res4Title:'Team autonomy', res4Body:'Playbook, training and KPI dashboard to operate without dependency.',
+      ctaTitle:'Let us run a quick diagnostic?', ctaBody:'In 30 minutes I map the use cases and return an initial stack recommendation, no cost.',
+      ctaBtn:'Chat on WhatsApp', ctaSub:'Or if you prefer: <strong>flavioguedesmkt@gmail.com</strong> · +55 21 99971-9474',
+      footBrand:'AI Simultaneous Translation · Flávio Guedes'
+    },
+    'es': {
+      brand:'Traducción Simultánea <i>· Del plugin a la operación</i>',
+      navCta:'Hablar con especialista', kicker:'IA Generativa · Traducción · Automatización',
+      heroTitle:'Traducción simultánea con IA: <span class="grad-text">del plugin a la operación escalable</span> con latencia, costo y datos bajo control.',
+      heroLede1:'Reuniones y eventos multilingües se atascan por herramienta equivocada, latencia alta o flujo manual. Los plugins de traducción no se comunican entre sí ni con CRM/WhatsApp. Falta criterio técnico para elegir entre soluciones listas y stacks personalizados.',
+      heroLede2:'La propuesta es actuar en tres frentes integrados, diagnóstico, integración y operación, con entrega por ciclo de 4 semanas, medición de latencia y costo por minuto, y flujo único del evento al registro.',
+      heroCta:'Hagamos un diagnóstico rápido',
+      heroCtaSub:'30 minutos para mapear casos de uso y devolver una <strong>recomendación inicial de stack</strong>, sin costo.',
+      stat1Label:'meta de latencia por segmento', stat2Label:'por ciclo de entrega', stat3Label:'diagnóstico, integración, operación', stat4Label:'entrada → traducción → salida → dato',
+      problemEyebrow:'Diagnóstico', problemTitle:'El problema que resuelvo',
+      problemLede:'Reuniones, eventos y atenciones multilingües se atascan por herramienta equivocada, latencia alta o flujo manual. Los plugins existentes (Zoom, Meet, Teams, OBS) no se comunican entre sí ni con CRM/WhatsApp. Falta criterio técnico para elegir entre soluciones listas (Wordly, Interprefy, KUDO) y stacks personalizados (Whisper + DeepL/Azure + LLM).',
+      prob1Title:'Herramienta equivocada', prob1Body:'Elegir sin criterio técnico entre lista y personalizada genera costo alto y mala experiencia.', prob1Tag:'Riesgo',
+      prob2Title:'Latencia alta', prob2Body:'Traducción en tiempo real por encima de 2s por segmento rompe la fluidez de la reunión o evento.', prob2Tag:'Experiencia',
+      prob3Title:'Flujo manual', prob3Body:'Sin integración entre plugin, CRM y WhatsApp, el dato se pierde y el equipo retrabaja.', prob3Tag:'Operación',
+      prob4Title:'Sin datos de performance', prob4Body:'Sin métrica de latencia, costo por minuto y tasa de error, la próxima inversión queda a ciegas.', prob4Tag:'Decisión',
+      atuacaoEyebrow:'Actuación', atuacaoTitle:'Tres frentes integrados',
+      atuacaoLede:'Entrega por ciclo, con inicio, medio y fin claros, e iteración continua: cada ciclo genera datos para el próximo.',
+      step1Title:'Diagnóstico &amp; Arquitectura', step1Body:'Mapear casos de uso (evento, llamada, soporte, contenido) y definir stack con matriz de decisión: latencia, costo por minuto, idiomas, privacidad (on-prem vs. cloud) y facilidad de integración.',
+      step2Title:'Integración &amp; Automatización', step2Body:'Conectar plugins, APIs y flujos vía Python, webhooks, n8n y LLMs locales (Ollama), de Zoom/Meet/Teams a WhatsApp Cloud API y CRM.',
+      step3Title:'Operación &amp; Medición', step3Body:'Capacitar al equipo, monitorear latencia y calidad y generar informes con KPIs: latencia, costo por minuto, tasa de error y satisfacción.',
+      stackEyebrow:'Stack', stackTitle:'Lo que domino y recomiendo',
+      stackLede:'Criterio de elección: latencia, costo por minuto, idiomas, privacidad y facilidad de integración.',
+      stack1Title:'Traducción en tiempo real', stack1Body:'DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).', stack1Tag:'Core',
+      stack2Title:'Plugins de reunión', stack2Body:'Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.', stack2Tag:'Canales',
+      stack3Title:'Subtítulos y streaming', stack3Body:'OBS + subtítulos en vivo, WebRTC, transcripción incremental.', stack3Tag:'Tiempo real',
+      stack4Title:'Automatización &amp; orquestación', stack4Body:'Python, n8n, webhooks, colas, Ollama (LLM local para posedición).', stack4Tag:'Flujo',
+      stack5Title:'Canales de salida', stack5Body:'WhatsApp (Cloud API), email, CRM, dashboards.', stack5Tag:'Entrega',
+      metodoEyebrow:'Metodología', metodoTitle:'Ciclo de 4 semanas por entrega',
+      metodoLede:'Cada semana tiene un entregable claro. Al final, playbook, capacitación y KPIs, y datos para el próximo ciclo.',
+      met1Title:'Discovery', met1Body:'Casos reales, volúmenes, idiomas y restricciones (LGPD, on-prem).',
+      met2Title:'PoC', met2Body:'Prueba con 2 stacks competidores, medición de latencia y calidad.',
+      met3Title:'Integración', met3Body:'Plugin/API conectado al flujo real (reunión, evento o atención).',
+      met4Title:'Go-live + Handover', met4Body:'Playbook, capacitación y KPIs para que el equipo opere con autonomía.',
+      difEyebrow:'Diferenciales', difTitle:'Por qué conmigo',
+      dif1:'<strong>Visión de punta a punta:</strong> no entrego solo el plugin, entrego el flujo (entrada → traducción → salida → dato).',
+      dif2:'<strong>Automatización con IA local:</strong> LLMs vía Ollama para posedición y clasificación sin depender 100% de cloud.',
+      dif3:'<strong>Integración con WhatsApp y CRM:</strong> experiencia validada en automatizaciones de envío y enriquecimiento de contactos.',
+      dif4:'<strong>Foco en métrica:</strong> latencia, costo por minuto, tasa de error y satisfacción, todo reportado.',
+      dif5:'<strong>Portafolio técnico real:</strong> versionado y público en GitHub.',
+      resEyebrow:'Resultados', resTitle:'Qué esperar',
+      res1Title:'Latencia &lt; 2s', res1Body:'Reducción de latencia en la traducción en tiempo real, con meta de menos de 2 segundos por segmento.',
+      res2Title:'Costo previsible', res2Body:'Comparativo cloud vs. on-prem para decidir con base en costo por minuto e idioma.',
+      res3Title:'Flujo único', res3Body:'Reunión o evento → traducción → registro automático en CRM/WhatsApp.',
+      res4Title:'Autonomía del equipo', res4Body:'Playbook, capacitación y dashboard de KPIs para operar sin dependencia.',
+      ctaTitle:'Hagamos un diagnóstico rápido?', ctaBody:'En 30 minutos mapeo los casos de uso y devuelvo una recomendación inicial de stack, sin costo.',
+      ctaBtn:'Hablar por WhatsApp', ctaSub:'O si prefieres: <strong>flavioguedesmkt@gmail.com</strong> · +55 21 99971-9474',
+      footBrand:'Traducción Simultánea con IA · Flávio Guedes'
+    },
+    'fr': {
+      brand:'Traduction Simultanée <i>· Du plugin à l\'opération</i>',
+      navCta:'Parler à un expert', kicker:'IA Générative · Traduction · Automatisation',
+      heroTitle:'Traduction simultanée avec IA : <span class="grad-text">du plugin à l\'opération évolutive</span> avec latence, coût et données sous contrôle.',
+      heroLede1:'Les réunions et événements multilingues bloquent à cause du mauvais outil, d\'une latence élevée ou d\'un flux manuel. Les plugins de traduction ne communiquent pas entre eux ni avec le CRM/WhatsApp. Il manque des critères techniques pour choisir entre solutions prêtes et stacks personnalisées.',
+      heroLede2:'La proposition est d\'agir sur trois fronts intégrés, diagnostic, intégration et opération, avec livraison par cycle de 4 semaines, mesure de latence et coût par minute, et flux unique de l\'événement à l\'enregistrement.',
+      heroCta:'Faisons un diagnostic rapide',
+      heroCtaSub:'30 minutes pour cartographier les cas d\'usage et renvoyer une <strong>recommandation initiale de stack</strong>, sans frais.',
+      stat1Label:'objectif de latence par segment', stat2Label:'par cycle de livraison', stat3Label:'diagnostic, intégration, opération', stat4Label:'entrée → traduction → sortie → donnée',
+      problemEyebrow:'Diagnostic', problemTitle:'Le problème que je résous',
+      problemLede:'Les réunions, événements et supports multilingues bloquent à cause du mauvais outil, d\'une latence élevée ou d\'un flux manuel. Les plugins existants (Zoom, Meet, Teams, OBS) ne communiquent pas entre eux ni avec le CRM/WhatsApp. Il manque des critères techniques pour choisir entre solutions prêtes (Wordly, Interprefy, KUDO) et stacks personnalisées (Whisper + DeepL/Azure + LLM).',
+      prob1Title:'Mauvais outil', prob1Body:'Choisir sans critères techniques entre prête et personnalisée génère un coût élevé et une mauvaise expérience.', prob1Tag:'Risque',
+      prob2Title:'Latence élevée', prob2Body:'Une traduction en temps réel au-dessus de 2s par segment casse la fluidité de la réunion ou de l\'événement.', prob2Tag:'Expérience',
+      prob3Title:'Flux manuel', prob3Body:'Sans intégration entre plugin, CRM et WhatsApp, la donnée est perdue et l\'équipe retravaille.', prob3Tag:'Opération',
+      prob4Title:'Aucune donnée de performance', prob4Body:'Sans métrique de latence, coût par minute et taux d\'erreur, le prochain investissement se fait à l\'aveugle.', prob4Tag:'Décision',
+      atuacaoEyebrow:'Approche', atuacaoTitle:'Trois fronts intégrés',
+      atuacaoLede:'Livraison par cycle, avec début, milieu et fin clairs, et itération continue : chaque cycle génère des données pour le suivant.',
+      step1Title:'Diagnostic &amp; Architecture', step1Body:'Cartographier les cas d\'usage (événement, appel, support, contenu) et définir la stack avec une matrice de décision : latence, coût par minute, langues, confidentialité (on-prem vs. cloud) et facilité d\'intégration.',
+      step2Title:'Intégration &amp; Automatisation', step2Body:'Connecter plugins, APIs et flux via Python, webhooks, n8n et LLMs locaux (Ollama), de Zoom/Meet/Teams à WhatsApp Cloud API et CRM.',
+      step3Title:'Opération &amp; Mesure', step3Body:'Former l\'équipe, surveiller latence et qualité et générer des rapports avec KPIs : latence, coût par minute, taux d\'erreur et satisfaction.',
+      stackEyebrow:'Stack', stackTitle:'Ce que je maîtrise et recommande',
+      stackLede:'Critères de choix : latence, coût par minute, langues, confidentialité et facilité d\'intégration.',
+      stack1Title:'Traduction en temps réel', stack1Body:'DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).', stack1Tag:'Core',
+      stack2Title:'Plugins de réunion', stack2Body:'Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.', stack2Tag:'Canaux',
+      stack3Title:'Sous-titres et streaming', stack3Body:'OBS + sous-titres en direct, WebRTC, transcription incrémentale.', stack3Tag:'Temps réel',
+      stack4Title:'Automatisation &amp; orchestration', stack4Body:'Python, n8n, webhooks, files, Ollama (LLM local pour post-édition).', stack4Tag:'Flux',
+      stack5Title:'Canaux de sortie', stack5Body:'WhatsApp (Cloud API), e-mail, CRM, dashboards.', stack5Tag:'Livraison',
+      metodoEyebrow:'Méthodologie', metodoTitle:'Cycle de 4 semaines par livraison',
+      metodoLede:'Chaque semaine a un livrable clair. À la fin, playbook, formation et KPIs, et des données pour le cycle suivant.',
+      met1Title:'Discovery', met1Body:'Cas réels, volumes, langues et contraintes (RGPD, on-prem).',
+      met2Title:'PoC', met2Body:'Test avec 2 stacks concurrentes, mesure de latence et qualité.',
+      met3Title:'Intégration', met3Body:'Plugin/API connecté au flux réel (réunion, événement ou support).',
+      met4Title:'Go-live + Handover', met4Body:'Playbook, formation et KPIs pour que l\'équipe opère en autonomie.',
+      difEyebrow:'Différentiels', difTitle:'Pourquoi avec moi',
+      dif1:'<strong>Vue de bout en bout :</strong> je ne livre pas seulement le plugin, je livre le flux (entrée → traduction → sortie → donnée).',
+      dif2:'<strong>Automatisation avec IA locale :</strong> LLMs via Ollama pour post-édition et classification sans dépendance 100% cloud.',
+      dif3:'<strong>Intégration WhatsApp et CRM :</strong> expérience validée dans des automatisations d\'envoi et d\'enrichissement de contacts.',
+      dif4:'<strong>Focus métrique :</strong> latence, coût par minute, taux d\'erreur et satisfaction, tout est rapporté.',
+      dif5:'<strong>Portfolio technique réel :</strong> versionné et public sur GitHub.',
+      resEyebrow:'Résultats', resTitle:'À quoi s\'attendre',
+      res1Title:'Latence &lt; 2s', res1Body:'Réduction de la latence en traduction temps réel, avec objectif de moins de 2 secondes par segment.',
+      res2Title:'Coût prévisible', res2Body:'Comparatif cloud vs. on-prem pour décider sur la base du coût par minute et par langue.',
+      res3Title:'Flux unique', res3Body:'Réunion ou événement → traduction → enregistrement automatique dans le CRM/WhatsApp.',
+      res4Title:'Autonomie de l\'équipe', res4Body:'Playbook, formation et dashboard de KPIs pour opérer sans dépendance.',
+      ctaTitle:'Faisons un diagnostic rapide ?', ctaBody:'En 30 minutes je cartographie les cas d\'usage et renvoie une recommandation initiale de stack, sans frais.',
+      ctaBtn:'Discuter sur WhatsApp', ctaSub:'Ou si vous préférez : <strong>flavioguedesmkt@gmail.com</strong> · +55 21 99971-9474',
+      footBrand:'Traduction Simultanée avec IA · Flávio Guedes'
+    }
+  };
+  var SUPPORTED = ['pt-BR','en','es','fr'];
+  function applyLang(lang){
+    if (SUPPORTED.indexOf(lang) < 0) lang = 'pt-BR';
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n');
+      if (T[lang] && T[lang][k] != null) el.innerHTML = T[lang][k];
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-pill').forEach(function(b){
+      b.setAttribute('aria-selected', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    try { localStorage.setItem('lang', lang); } catch(e){}
+  }
+  document.querySelectorAll('.lang-pill').forEach(function(b){
+    b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); });
+  });
+  var saved;
+  try { saved = localStorage.getItem('lang'); } catch(e){}
+  applyLang(saved || (navigator.language && navigator.language.indexOf('pt') === 0 ? 'pt-BR' : 'pt-BR'));
+})();
+</script>
 </body></html>

@@ -1,156 +1,246 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Treinamentos · Tradução Simultânea com IA</title>
-  <style>
-    :root{--bg1:#0f0c29;--bg2:#302b63;--bg3:#24243e;--glass:rgba(255,255,255,.05);--glass-border:rgba(255,255,255,.1);--text:#e8e8f0;--text-dim:#a0a0b0;--accent:#8a7fbf}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));background-attachment:fixed;color:var(--text);line-height:1.6;min-height:100vh;padding:3rem 1.5rem;display:flex;flex-direction:column;align-items:center}
-    .container{max-width:900px;width:100%}
-    .hero{text-align:center;margin-bottom:3rem;padding:2.5rem 1.5rem;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-border);border-radius:24px}
-    .hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:600;letter-spacing:-.02em;background:linear-gradient(90deg,#e8e8f0,#b0a8d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem}
-    .hero p{color:var(--text-dim);font-size:.95rem;max-width:600px;margin:0 auto}
-    .hero .meta{margin-top:1rem;font-size:.8rem;color:#7a7a90;letter-spacing:.04em;text-transform:uppercase}
-    .slides{display:grid;gap:1.2rem}
-    .slide{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:20px;padding:1.8rem 1.6rem;transition:border-color .25s ease,transform .25s ease}
-    .slide:hover{border-color:rgba(255,255,255,.22);transform:translateY(-2px)}
-    .slide-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
-    .icon{width:28px;height:28px;flex-shrink:0;color:#8a8a9e}
-    .slide h2{font-size:1.1rem;font-weight:600;letter-spacing:-.01em;color:#d8d8e4}
-    .slide p,.slide li{font-size:.9rem;color:var(--text-dim)}
-    .slide ul{list-style:none;padding-left:0}
-    .slide li{position:relative;padding-left:1.1rem;margin-bottom:.45rem}
-    .slide li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:600}
-    .slide strong{color:#c8c2e0;font-weight:500}
-    .mini-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.5rem}
-    .mini-table th,.mini-table td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid rgba(255,255,255,.07)}
-    .mini-table th{color:#b0a8c8;font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
-    .mini-table td{color:var(--text-dim)}
-    .cta{margin-top:2rem;text-align:center;padding:2rem 1.5rem;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-border);border-radius:24px}
-    .cta h2{font-size:1.2rem;margin-bottom:.5rem;color:#d8d8e4}
-    .cta p{color:var(--text-dim);font-size:.9rem;margin-bottom:1.2rem}
-    .cta a{display:inline-block;color:#cfc8e8;text-decoration:none;font-size:.9rem;border-bottom:1px solid rgba(207,200,232,.3);transition:border-color .2s}
-    .cta a:hover{border-color:#cfc8e8}
-    .cta .links{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2rem;margin-top:1rem}
-    @media(max-width:600px){body{padding:2rem 1rem}.hero{padding:2rem 1.2rem}.slide{padding:1.4rem 1.2rem}}
-  </style>
+<!DOCTYPE html><html lang="pt-BR" class="js"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tradução Simultânea com IA · Do plugin à operação escalável</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0d0d12;--fg:#f0f0f4;--fg-dim:#aeaebb;--fg-faint:#74747f;--blue:#9cc9ff;--lilac:#c9b8ff;--mint:#8fe3cf;--gold:#e9c97f;--rose:#f0a1a1;--sky:#7fd3e8;--hair:rgba(255,255,255,.085);--surf:rgba(255,255,255,.03);--grad:linear-gradient(120deg,var(--blue),var(--lilac) 55%,var(--mint));--ease:cubic-bezier(.25,.46,.45,.94);--fast:250ms;--base:350ms}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15.5px/1.7 Manrope,system-ui,sans-serif;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 64px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;letter-spacing:-.015em;margin:0;font-weight:600;text-wrap:balance}h3{font-size:1.05rem;line-height:1.35}p{margin:0}strong{font-weight:600;color:var(--fg)}
+:focus-visible{outline:1px solid var(--blue);outline-offset:3px}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.gt{background:linear-gradient(100deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff) 60%,var(--g3,#8fe3cf));-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--hair)}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:600 14px Sora,sans-serif;letter-spacing:.01em}.brand i{font-style:normal;color:var(--fg-faint)}
+.top-cta{display:inline-flex;align-items:center;gap:8px;font:600 13px Manrope,sans-serif;color:#03110a;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 0 0 0 rgba(143,227,207,.5);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.top-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px -8px rgba(143,227,207,.7)}
+.top-cta svg{width:15px;height:15px}
+.hero{position:relative;overflow:hidden;padding-block:56px 40px}
+.halo{position:absolute;border-radius:50%;pointer-events:none}
+.halo.h1{width:520px;height:520px;top:-240px;right:-160px;background:radial-gradient(closest-side,rgba(156,201,255,.12),transparent)}
+.halo.h2{width:420px;height:420px;bottom:-260px;left:-140px;background:radial-gradient(closest-side,rgba(143,227,207,.07),transparent)}
+.hero-in{position:relative;z-index:1;max-width:820px}
+.kicker{font:500 11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+.hero h1{font-weight:600;font-size:clamp(1.95rem,4.4vw,2.8rem);line-height:1.1;margin:18px 0 20px}
+.lede{color:var(--fg-dim);max-width:64ch;font-size:16px;line-height:1.75}
+.cta-main{display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:18px 30px;border-radius:999px;background:linear-gradient(100deg,#8fe3cf,#7fd3e8);color:#03110a;font:600 15px Manrope,sans-serif;text-decoration:none;box-shadow:0 10px 30px -12px rgba(143,227,207,.7);transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease)}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(143,227,207,.9)}
+.cta-main svg{width:20px;height:20px}
+.cta-sub{display:block;margin-top:12px;font-size:13px;color:var(--fg-faint)}.cta-sub strong{color:var(--fg-dim)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;margin-top:40px;background:var(--hair);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.stat{padding:20px 18px 18px;background:var(--bg);min-width:0;position:relative}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c);opacity:.7}
+.stat b{display:block;font:600 1.35rem Sora,sans-serif;letter-spacing:-.01em;background:linear-gradient(100deg,var(--c),var(--c2,var(--c)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;font-size:13px;line-height:1.5;color:var(--fg-dim);margin-top:4px}
+.sec{margin-top:64px}
+.sec-h{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.sec-h h2{font-size:1.5rem;font-weight:600;line-height:1.25}
+.lede-s{color:var(--fg-dim);max-width:64ch;font-size:15px;line-height:1.7}
+.sec-rule{height:1px;margin-top:6px;background:linear-gradient(90deg,var(--g1,#9cc9ff),var(--g2,#c9b8ff),transparent)}
+.eyebrow{font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:4px}
+.surf{background:var(--surf);border:1px solid var(--hair);border-radius:16px;min-width:0;position:relative;transition:border-color var(--fast) var(--ease)}
+.surf:hover{border-color:rgba(255,255,255,.14)}
+.tint{background:radial-gradient(90% 130% at 0% 0%,color-mix(in srgb,var(--c) 12%,transparent),transparent 65%),var(--surf)}
+.card{padding:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px 24px;border-radius:16px;border:1px solid var(--hair);background:var(--surf);transition:border-color var(--fast) var(--ease)}
+.steps li:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent)}
+.steps .num{font:600 13px "JetBrains Mono",monospace;color:var(--c);padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);min-width:fit-content;white-space:nowrap}
+.steps .txt{min-width:0;color:var(--fg-dim);font-size:15px;line-height:1.7}
+.steps .txt strong{color:var(--fg);display:block;margin-bottom:4px;font-size:15.5px;font-family:Sora,sans-serif;font-weight:600}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.check li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-dim);font-size:14.5px;line-height:1.65}
+.check li::before{content:"";flex:0 0 auto;width:16px;height:16px;margin-top:5px;border-radius:50%;background:radial-gradient(closest-side,var(--mint) 0 35%,transparent 40%);border:1px solid rgba(143,227,207,.4)}
+.check strong{color:var(--fg)}
+.front{display:flex;flex-direction:column;gap:8px;padding:20px 22px}
+.front h3{font-size:1rem;font-family:Sora,sans-serif;font-weight:600;color:var(--fg);margin-bottom:4px}
+.front p{color:var(--fg-dim);font-size:14px;line-height:1.65}
+.front .tag{display:inline-flex;align-items:center;gap:6px;font:500 10px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 32%,transparent);width:fit-content;margin-top:10px}
+.cta-band{margin-top:72px;padding:40px 32px;border-radius:20px;background:radial-gradient(120% 140% at 0% 0%,rgba(143,227,207,.15),transparent 60%),radial-gradient(120% 140% at 100% 100%,rgba(156,201,255,.12),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(143,227,207,.25);text-align:center}
+.cta-band h2{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:14px}
+.cta-band p{color:var(--fg-dim);max-width:600px;margin:0 auto 28px;font-size:15.5px;line-height:1.7}
+.cta-band .cta-main{margin-top:0}
+.cta-band .cta-sub{color:var(--fg-faint);font-size:12.5px;margin-top:16px}
+.foot{margin-top:80px;padding-top:28px;border-top:1px solid var(--hair);color:var(--fg-faint);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.foot a{color:var(--fg-dim);text-decoration:none;transition:color var(--fast) var(--ease)}
+.foot a:hover{color:var(--mint)}
+.foot .contact{display:flex;gap:20px;flex-wrap:wrap}
+.js .rv:not(.in){opacity:0;transform:translateY(8px)}
+.rv{transition:opacity var(--base) var(--ease),transform var(--base) var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media(max-width:700px){.card{padding:20px}.steps li{padding:18px 18px;gap:14px}.top-in{padding:12px 16px}.top-cta span{display:none}.top-cta{padding:10px 12px}.cta-band{padding:32px 20px}.foot{flex-direction:column;align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv:not(.in){opacity:1;transform:none}}
+</style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero">
-      <h1>Tradução Simultânea com IA</h1>
-      <p>Do plugin à operação escalável — proposta de atuação técnica e estratégica.</p>
-      <div class="meta">Flávio Guedes · Estratégia, Growth &amp; IA</div>
-    </header>
-    <main class="slides">
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
-          <h2>O problema que resolvo</h2>
-        </div>
-        <ul>
-          <li>Reuniões e eventos multilíngues travam por <strong>ferramenta errada</strong>, <strong>latência alta</strong> ou fluxo manual.</li>
-          <li>Plugins de tradução (Zoom, Meet, Teams, OBS) <strong>não conversam entre si</strong> nem com CRM/WhatsApp.</li>
-          <li>Falta <strong>critério técnico</strong> para escolher entre soluções prontas e stacks customizadas.</li>
-          <li>Resultado: custo alto, experiência ruim e <strong>nenhum dado de performance</strong>.</li>
-        </ul>
-      </article>
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 16V8"/><path d="M12 16V4"/><path d="M18 16v-6"/></svg>
-          <h2>Minha proposta de atuação</h2>
-        </div>
-        <p>Três frentes integradas, com entrega por ciclo:</p>
-        <ul>
-          <li><strong>Diagnóstico &amp; Arquitetura</strong> — mapear casos de uso e definir stack.</li>
-          <li><strong>Integração &amp; Automação</strong> — conectar plugins, APIs e fluxos.</li>
-          <li><strong>Operação &amp; Medição</strong> — treinar equipe, monitorar latência e gerar relatórios.</li>
-        </ul>
-      </article>
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          <h2>Stack que domino / recomendo</h2>
-        </div>
-        <table class="mini-table">
-          <thead><tr><th>Camada</th><th>Ferramentas</th></tr></thead>
-          <tbody>
-            <tr><td>Tradução em tempo real</td><td>DeepL API, Azure Speech, Google Cloud Translation, Whisper</td></tr>
-            <tr><td>Plugins de reunião</td><td>Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy</td></tr>
-            <tr><td>Legendas/streaming</td><td>OBS + legendas ao vivo, WebRTC, transcrição incremental</td></tr>
-            <tr><td>Automação</td><td>Python, n8n, webhooks, filas, Ollama (LLM local)</td></tr>
-            <tr><td>Canais de saída</td><td>WhatsApp Cloud API, e-mail, CRM, dashboards</td></tr>
-          </tbody>
-        </table>
-      </article>
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
-          <h2>Como executo — ciclo de 4 semanas</h2>
-        </div>
-        <ul>
-          <li><strong>Semana 1 — Discovery:</strong> casos reais, volumes, idiomas, restrições (LGPD, on-prem).</li>
-          <li><strong>Semana 2 — PoC:</strong> teste com 2 stacks concorrentes, medição de latência e qualidade.</li>
-          <li><strong>Semana 3 — Integração:</strong> plugin/API conectado ao fluxo real.</li>
-          <li><strong>Semana 4 — Go-live + Handover:</strong> playbook, treinamento e KPIs.</li>
-        </ul>
-      </article>
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 16 14 18 22 12 17 6 22 8 14 2 9 9 9 12 2"/></svg>
-          <h2>Diferenciais</h2>
-        </div>
-        <ul>
-          <li><strong>Visão ponta a ponta:</strong> entrego o fluxo completo (entrada → tradução → saída → dado).</li>
-          <li><strong>Automação com IA local:</strong> LLMs via Ollama para pós-edição sem depender 100% de cloud.</li>
-          <li><strong>Integração com WhatsApp e CRM:</strong> experiência validada em automações reais.</li>
-          <li><strong>Foco em métrica:</strong> latência, custo/minuto, taxa de erro e satisfação.</li>
-          <li><strong>Portfólio técnico real</strong>, versionado e público no GitHub.</li>
-        </ul>
-      </article>
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <h2>Entregáveis por fase</h2>
-        </div>
-        <table class="mini-table">
-          <thead><tr><th>Fase</th><th>Entregável</th></tr></thead>
-          <tbody>
-            <tr><td>Diagnóstico</td><td>Matriz de decisão de ferramentas + arquitetura proposta</td></tr>
-            <tr><td>PoC</td><td>Relatório comparativo (latência, custo, qualidade)</td></tr>
-            <tr><td>Integração</td><td>Plugin/API funcionando no fluxo real + documentação</td></tr>
-            <tr><td>Operação</td><td>Playbook, treinamento e dashboard de KPIs</td></tr>
-            <tr><td>Evolução</td><td>Roadmap de automações e novos idiomas</td></tr>
-          </tbody>
-        </table>
-      </article>
-      <article class="slide">
-        <div class="slide-header">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <h2>Resultados esperados</h2>
-        </div>
-        <ul>
-          <li><strong>Redução de latência</strong> na tradução em tempo real (meta: &lt; 2s por trecho).</li>
-          <li><strong>Custo previsível</strong> por minuto/idioma, com comparativo cloud vs. on-prem.</li>
-          <li><strong>Fluxo único</strong> conectando reunião/evento → tradução → registro (CRM/WhatsApp).</li>
-          <li><strong>Autonomia da equipe</strong> com playbook e treinamento.</li>
-          <li><strong>Dados para decidir</strong> o próximo investimento em ferramentas.</li>
-        </ul>
-      </article>
-    </main>
-    <section class="cta">
-      <h2>Vamos rodar um diagnóstico rápido?</h2>
-      <p>Em 30 minutos mapeio os casos de uso e devolvo uma recomendação inicial de stack — sem custo.</p>
-      <div class="links">
-        <a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
-        <a href="https://wa.me/5521999719474" target="_blank" rel="noopener">(21) 99971-9474</a>
-        <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank" rel="noopener">Parceria IA</a>
-        <a href="https://flavio-guedes.github.io/portfolio/cases/epq.html" target="_blank" rel="noopener">Case EPQ</a>
-      </div>
-    </section>
-  </div>
-</body>
-</html>
+<script>document.documentElement.classList.add('js')</script>
+<header class="top">
+<div class="top-in">
+<span class="brand">Tradução Simultânea <i>· Do plugin à operação</i></span>
+<a class="top-cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+<span>Falar com especialista</span>
+</a>
+</div>
+</header>
+<main class="wrap">
+
+<section class="hero" aria-labelledby="titulo">
+<div class="halo h1" aria-hidden="true"></div>
+<div class="halo h2" aria-hidden="true"></div>
+<div class="hero-in">
+<p class="kicker gt rv in" style="--g1:#9cc9ff;--g2:#c9b8ff;--g3:#8fe3cf">IA Generativa · Tradução · Automação</p>
+<h1 id="titulo" class="rv in">Tradução simultânea com IA: <span class="grad-text">do plugin à operação escalável</span> com latência, custo e dado sob controle.</h1>
+<p class="lede rv in">Reuniões e eventos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins de tradução não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas e stacks customizadas.</p>
+<p class="lede rv in" style="margin-top:16px">A proposta é atuar em três frentes integradas — diagnóstico, integração e operação — com entrega por ciclo de 4 semanas, medição de latência e custo/minuto, e fluxo único do evento ao registro.</p>
+<a class="cta-main rv in" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+Vamos rodar um diagnóstico rápido
+</a>
+<span class="cta-sub rv in">30 minutos para mapear casos de uso e devolver uma <strong>recomendação inicial de stack</strong> — sem custo.</span>
+<div class="stats rv in">
+<div class="stat" style="--c:#9cc9ff;--c2:#c9b8ff"><b>&lt; 2s</b><span>meta de latência por trecho</span></div>
+<div class="stat" style="--c:#8fe3cf;--c2:#7fd3e8"><b>4 semanas</b><span>por ciclo de entrega</span></div>
+<div class="stat" style="--c:#e9c97f;--c2:#f0a1a1"><b>3 frentes</b><span>diagnóstico, integração, operação</span></div>
+<div class="stat" style="--c:#c9b8ff;--c2:#9cc9ff"><b>ponta a ponta</b><span>entrada → tradução → saída → dado</span></div>
+</div>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="problema">
+<div class="sec-h">
+<p class="eyebrow">Diagnóstico</p>
+<h2 id="problema">O problema que resolvo</h2>
+<p class="lede-s">Reuniões, eventos e atendimentos multilíngues travam por ferramenta errada, latência alta ou fluxo manual. Plugins existentes (Zoom, Meet, Teams, OBS) não conversam entre si nem com CRM/WhatsApp. Falta critério técnico para escolher entre soluções prontas (Wordly, Interprefy, KUDO) e stacks customizadas (Whisper + DeepL/Azure + LLM).</p>
+<div class="sec-rule" style="--g1:#9cc9ff;--g2:#c9b8ff"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card" style="--c:#f0a1a1">
+<h3>Ferramenta errada</h3>
+<p>Escolha sem critério técnico entre pronta e customizada gera custo alto e experiência ruim.</p>
+<span class="tag" style="--c:#f0a1a1">Risco</span>
+</div>
+<div class="surf tint card" style="--c:#e9c97f">
+<h3>Latência alta</h3>
+<p>Tradução em tempo real acima de 2s por trecho quebra a fluidez da reunião ou evento.</p>
+<span class="tag" style="--c:#e9c97f">Experiência</span>
+</div>
+<div class="surf tint card" style="--c:#9cc9ff">
+<h3>Fluxo manual</h3>
+<p>Sem integração entre plugin, CRM e WhatsApp, o dado se perde e a equipe retrabalha.</p>
+<span class="tag" style="--c:#9cc9ff">Operação</span>
+</div>
+<div class="surf tint card" style="--c:#c9b8ff">
+<h3>Nenhum dado de performance</h3>
+<p>Sem métrica de latência, custo/minuto e taxa de erro, o próximo investimento fica no escuro.</p>
+<span class="tag" style="--c:#c9b8ff">Decisão</span>
+</div>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="atuacao">
+<div class="sec-h">
+<p class="eyebrow">Atuação</p>
+<h2 id="atuacao">Três frentes integradas</h2>
+<p class="lede-s">Entrega por ciclo, com começo, meio e fim claros — e iteração contínua: cada ciclo gera dados para o próximo.</p>
+<div class="sec-rule" style="--g1:#8fe3cf;--g2:#7fd3e8"></div>
+</div>
+<ol class="steps">
+<li style="--c:#9cc9ff"><span class="num">01</span><div class="txt"><strong>Diagnóstico &amp; Arquitetura</strong>Mapear casos de uso (evento, call, suporte, conteúdo) e definir stack com matriz de decisão: latência, custo/minuto, idiomas, privacidade (on-prem vs. cloud) e facilidade de integração.</div></li>
+<li style="--c:#8fe3cf"><span class="num">02</span><div class="txt"><strong>Integração &amp; Automação</strong>Conectar plugins, APIs e fluxos via Python, webhooks, n8n e LLMs locais (Ollama) — do Zoom/Meet/Teams ao WhatsApp Cloud API e CRM.</div></li>
+<li style="--c:#c9b8ff"><span class="num">03</span><div class="txt"><strong>Operação &amp; Medição</strong>Treinar equipe, monitorar latência/qualidade e gerar relatórios com KPIs: latência, custo/minuto, taxa de erro e satisfação.</div></li>
+</ol>
+</section>
+
+<section class="sec" aria-labelledby="stack">
+<div class="sec-h">
+<p class="eyebrow">Stack</p>
+<h2 id="stack">O que domino e recomendo</h2>
+<p class="lede-s">Critério de escolha: latência, custo por minuto, idiomas, privacidade e facilidade de integração.</p>
+<div class="sec-rule" style="--g1:#c9b8ff;--g2:#9cc9ff"></div>
+</div>
+<div class="grid3">
+<div class="surf tint front" style="--c:#9cc9ff"><h3>Tradução em tempo real</h3><p>DeepL API, Azure Speech, Google Cloud Translation, Whisper (local/OpenAI).</p><span class="tag" style="--c:#9cc9ff">Core</span></div>
+<div class="surf tint front" style="--c:#8fe3cf"><h3>Plugins de reunião</h3><p>Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy.</p><span class="tag" style="--c:#8fe3cf">Canais</span></div>
+<div class="surf tint front" style="--c:#7fd3e8"><h3>Legendas/streaming</h3><p>OBS + legendas ao vivo, WebRTC, transcrição incremental.</p><span class="tag" style="--c:#7fd3e8">Tempo real</span></div>
+<div class="surf tint front" style="--c:#e9c97f"><h3>Automação &amp; orquestração</h3><p>Python, n8n, webhooks, filas, Ollama (LLM local para pós-edição).</p><span class="tag" style="--c:#e9c97f">Fluxo</span></div>
+<div class="surf tint front" style="--c:#f0a1a1"><h3>Canais de saída</h3><p>WhatsApp (Cloud API), e-mail, CRM, dashboards.</p><span class="tag" style="--c:#f0a1a1">Entrega</span></div>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="metodo">
+<div class="sec-h">
+<p class="eyebrow">Metodologia</p>
+<h2 id="metodo">Ciclo de 4 semanas por entrega</h2>
+<p class="lede-s">Cada semana tem um entregável claro. Ao final, playbook, treinamento e KPIs — e dados para o próximo ciclo.</p>
+<div class="sec-rule" style="--g1:#e9c97f;--g2:#8fe3cf"></div>
+</div>
+<ol class="steps">
+<li style="--c:#9cc9ff"><span class="num">Sem 1</span><div class="txt"><strong>Discovery</strong>Casos reais, volumes, idiomas e restrições (LGPD, on-prem).</div></li>
+<li style="--c:#8fe3cf"><span class="num">Sem 2</span><div class="txt"><strong>PoC</strong>Teste com 2 stacks concorrentes, medição de latência e qualidade.</div></li>
+<li style="--c:#c9b8ff"><span class="num">Sem 3</span><div class="txt"><strong>Integração</strong>Plugin/API conectado ao fluxo real (reunião, evento ou atendimento).</div></li>
+<li style="--c:#e9c97f"><span class="num">Sem 4</span><div class="txt"><strong>Go-live + Handover</strong>Playbook, treinamento e KPIs para a equipe operar com autonomia.</div></li>
+</ol>
+</section>
+
+<section class="sec" aria-labelledby="diferenciais">
+<div class="sec-h">
+<p class="eyebrow">Diferenciais</p>
+<h2 id="diferenciais">Por que comigo</h2>
+<div class="sec-rule" style="--g1:#f0a1a1;--g2:#c9b8ff"></div>
+</div>
+<div class="surf card" style="--c:#8fe3cf">
+<ul class="check">
+<li><strong>Visão ponta a ponta:</strong> não entrego só o plugin — entrego o fluxo (entrada → tradução → saída → dado).</li>
+<li><strong>Automação com IA local:</strong> LLMs via Ollama para pós-edição e classificação sem depender 100% de cloud.</li>
+<li><strong>Integração com WhatsApp e CRM:</strong> experiência validada em automações de disparo e enriquecimento de contatos.</li>
+<li><strong>Foco em métrica:</strong> latência, custo/minuto, taxa de erro e satisfação — tudo reportado.</li>
+<li><strong>Portfólio técnico real:</strong> versionado e público no GitHub.</li>
+</ul>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="resultados">
+<div class="sec-h">
+<p class="eyebrow">Resultados</p>
+<h2 id="resultados">O que esperar</h2>
+<div class="sec-rule" style="--g1:#7fd3e8;--g2:#9cc9ff"></div>
+</div>
+<div class="grid2">
+<div class="surf tint card" style="--c:#8fe3cf"><h3>Latência &lt; 2s</h3><p>Redução de latência na tradução em tempo real, com meta de menos de 2 segundos por trecho.</p></div>
+<div class="surf tint card" style="--c:#9cc9ff"><h3>Custo previsível</h3><p>Comparativo cloud vs. on-prem para decidir com base em custo por minuto/idioma.</p></div>
+<div class="surf tint card" style="--c:#c9b8ff"><h3>Fluxo único</h3><p>Reunião/evento → tradução → registro automático em CRM/WhatsApp.</p></div>
+<div class="surf tint card" style="--c:#e9c97f"><h3>Autonomia da equipe</h3><p>Playbook, treinamento e dashboard de KPIs para operar sem dependência.</p></div>
+</div>
+</section>
+
+<section class="cta-band rv">
+<h2>Vamos rodar um diagnóstico rápido?</h2>
+<p>Em 30 minutos mapeio os casos de uso e devolvo uma recomendação inicial de stack — sem custo.</p>
+<a class="cta-main" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20de%20tradu%C3%A7%C3%A3o%20simult%C3%A2nea." target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+Chamar no WhatsApp
+</a>
+<span class="cta-sub">Ou se preferir: <strong>flavioguedesmkt@gmail.com</strong> · (21) 99971-9474</span>
+</section>
+
+<footer class="foot">
+<span>Tradução Simultânea com IA · Flávio Guedes</span>
+<div class="contact">
+<a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener">LinkedIn</a>
+<a href="https://flavio-guedes.github.io/portfolio/parceria.html">Parceria IA</a>
+<a href="https://flavio-guedes.github.io/portfolio/cases/epq.html">Case EPQ</a>
+</div>
+</footer>
+
+</main>
+</body></html>

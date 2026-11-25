@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treinamentos · Tradução Simultânea com IA</title>
+  <style>
+    :root{--bg1:#0f0c29;--bg2:#302b63;--bg3:#24243e;--glass:rgba(255,255,255,.05);--glass-border:rgba(255,255,255,.1);--text:#e8e8f0;--text-dim:#a0a0b0;--accent:#8a7fbf}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));background-attachment:fixed;color:var(--text);line-height:1.6;min-height:100vh;padding:3rem 1.5rem;display:flex;flex-direction:column;align-items:center}
+    .container{max-width:900px;width:100%}
+    .hero{text-align:center;margin-bottom:3rem;padding:2.5rem 1.5rem;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-border);border-radius:24px}
+    .hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:600;letter-spacing:-.02em;background:linear-gradient(90deg,#e8e8f0,#b0a8d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem}
+    .hero p{color:var(--text-dim);font-size:.95rem;max-width:600px;margin:0 auto}
+    .hero .meta{margin-top:1rem;font-size:.8rem;color:#7a7a90;letter-spacing:.04em;text-transform:uppercase}
+    .slides{display:grid;gap:1.2rem}
+    .slide{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:20px;padding:1.8rem 1.6rem;transition:border-color .25s ease,transform .25s ease}
+    .slide:hover{border-color:rgba(255,255,255,.22);transform:translateY(-2px)}
+    .slide-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+    .icon{width:28px;height:28px;flex-shrink:0;color:#8a8a9e}
+    .slide h2{font-size:1.1rem;font-weight:600;letter-spacing:-.01em;color:#d8d8e4}
+    .slide p,.slide li{font-size:.9rem;color:var(--text-dim)}
+    .slide ul{list-style:none;padding-left:0}
+    .slide li{position:relative;padding-left:1.1rem;margin-bottom:.45rem}
+    .slide li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:600}
+    .slide strong{color:#c8c2e0;font-weight:500}
+    .mini-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.5rem}
+    .mini-table th,.mini-table td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid rgba(255,255,255,.07)}
+    .mini-table th{color:#b0a8c8;font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+    .mini-table td{color:var(--text-dim)}
+    .cta{margin-top:2rem;text-align:center;padding:2rem 1.5rem;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-border);border-radius:24px}
+    .cta h2{font-size:1.2rem;margin-bottom:.5rem;color:#d8d8e4}
+    .cta p{color:var(--text-dim);font-size:.9rem;margin-bottom:1.2rem}
+    .cta a{display:inline-block;color:#cfc8e8;text-decoration:none;font-size:.9rem;border-bottom:1px solid rgba(207,200,232,.3);transition:border-color .2s}
+    .cta a:hover{border-color:#cfc8e8}
+    .cta .links{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2rem;margin-top:1rem}
+    @media(max-width:600px){body{padding:2rem 1rem}.hero{padding:2rem 1.2rem}.slide{padding:1.4rem 1.2rem}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>Tradução Simultânea com IA</h1>
+      <p>Do plugin à operação escalável — proposta de atuação técnica e estratégica.</p>
+      <div class="meta">Flávio Guedes · Estratégia, Growth &amp; IA</div>
+    </header>
+    <main class="slides">
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+          <h2>O problema que resolvo</h2>
+        </div>
+        <ul>
+          <li>Reuniões e eventos multilíngues travam por <strong>ferramenta errada</strong>, <strong>latência alta</strong> ou fluxo manual.</li>
+          <li>Plugins de tradução (Zoom, Meet, Teams, OBS) <strong>não conversam entre si</strong> nem com CRM/WhatsApp.</li>
+          <li>Falta <strong>critério técnico</strong> para escolher entre soluções prontas e stacks customizadas.</li>
+          <li>Resultado: custo alto, experiência ruim e <strong>nenhum dado de performance</strong>.</li>
+        </ul>
+      </article>
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 16V8"/><path d="M12 16V4"/><path d="M18 16v-6"/></svg>
+          <h2>Minha proposta de atuação</h2>
+        </div>
+        <p>Três frentes integradas, com entrega por ciclo:</p>
+        <ul>
+          <li><strong>Diagnóstico &amp; Arquitetura</strong> — mapear casos de uso e definir stack.</li>
+          <li><strong>Integração &amp; Automação</strong> — conectar plugins, APIs e fluxos.</li>
+          <li><strong>Operação &amp; Medição</strong> — treinar equipe, monitorar latência e gerar relatórios.</li>
+        </ul>
+      </article>
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <h2>Stack que domino / recomendo</h2>
+        </div>
+        <table class="mini-table">
+          <thead><tr><th>Camada</th><th>Ferramentas</th></tr></thead>
+          <tbody>
+            <tr><td>Tradução em tempo real</td><td>DeepL API, Azure Speech, Google Cloud Translation, Whisper</td></tr>
+            <tr><td>Plugins de reunião</td><td>Zoom Apps, Google Meet add-ons, MS Teams apps, Wordly, Interprefy</td></tr>
+            <tr><td>Legendas/streaming</td><td>OBS + legendas ao vivo, WebRTC, transcrição incremental</td></tr>
+            <tr><td>Automação</td><td>Python, n8n, webhooks, filas, Ollama (LLM local)</td></tr>
+            <tr><td>Canais de saída</td><td>WhatsApp Cloud API, e-mail, CRM, dashboards</td></tr>
+          </tbody>
+        </table>
+      </article>
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
+          <h2>Como executo — ciclo de 4 semanas</h2>
+        </div>
+        <ul>
+          <li><strong>Semana 1 — Discovery:</strong> casos reais, volumes, idiomas, restrições (LGPD, on-prem).</li>
+          <li><strong>Semana 2 — PoC:</strong> teste com 2 stacks concorrentes, medição de latência e qualidade.</li>
+          <li><strong>Semana 3 — Integração:</strong> plugin/API conectado ao fluxo real.</li>
+          <li><strong>Semana 4 — Go-live + Handover:</strong> playbook, treinamento e KPIs.</li>
+        </ul>
+      </article>
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 16 14 18 22 12 17 6 22 8 14 2 9 9 9 12 2"/></svg>
+          <h2>Diferenciais</h2>
+        </div>
+        <ul>
+          <li><strong>Visão ponta a ponta:</strong> entrego o fluxo completo (entrada → tradução → saída → dado).</li>
+          <li><strong>Automação com IA local:</strong> LLMs via Ollama para pós-edição sem depender 100% de cloud.</li>
+          <li><strong>Integração com WhatsApp e CRM:</strong> experiência validada em automações reais.</li>
+          <li><strong>Foco em métrica:</strong> latência, custo/minuto, taxa de erro e satisfação.</li>
+          <li><strong>Portfólio técnico real</strong>, versionado e público no GitHub.</li>
+        </ul>
+      </article>
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <h2>Entregáveis por fase</h2>
+        </div>
+        <table class="mini-table">
+          <thead><tr><th>Fase</th><th>Entregável</th></tr></thead>
+          <tbody>
+            <tr><td>Diagnóstico</td><td>Matriz de decisão de ferramentas + arquitetura proposta</td></tr>
+            <tr><td>PoC</td><td>Relatório comparativo (latência, custo, qualidade)</td></tr>
+            <tr><td>Integração</td><td>Plugin/API funcionando no fluxo real + documentação</td></tr>
+            <tr><td>Operação</td><td>Playbook, treinamento e dashboard de KPIs</td></tr>
+            <tr><td>Evolução</td><td>Roadmap de automações e novos idiomas</td></tr>
+          </tbody>
+        </table>
+      </article>
+      <article class="slide">
+        <div class="slide-header">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <h2>Resultados esperados</h2>
+        </div>
+        <ul>
+          <li><strong>Redução de latência</strong> na tradução em tempo real (meta: &lt; 2s por trecho).</li>
+          <li><strong>Custo previsível</strong> por minuto/idioma, com comparativo cloud vs. on-prem.</li>
+          <li><strong>Fluxo único</strong> conectando reunião/evento → tradução → registro (CRM/WhatsApp).</li>
+          <li><strong>Autonomia da equipe</strong> com playbook e treinamento.</li>
+          <li><strong>Dados para decidir</strong> o próximo investimento em ferramentas.</li>
+        </ul>
+      </article>
+    </main>
+    <section class="cta">
+      <h2>Vamos rodar um diagnóstico rápido?</h2>
+      <p>Em 30 minutos mapeio os casos de uso e devolvo uma recomendação inicial de stack — sem custo.</p>
+      <div class="links">
+        <a href="mailto:flavioguedesmkt@gmail.com">flavioguedesmkt@gmail.com</a>
+        <a href="https://wa.me/5521999719474" target="_blank" rel="noopener">(21) 99971-9474</a>
+        <a href="https://www.linkedin.com/in/fl%C3%A1vio-guedes/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank" rel="noopener">Parceria IA</a>
+        <a href="https://flavio-guedes.github.io/portfolio/cases/epq.html" target="_blank" rel="noopener">Case EPQ</a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
